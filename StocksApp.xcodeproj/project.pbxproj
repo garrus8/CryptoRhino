@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F4267B3725E831DA00988FEF /* StocksInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4267B3625E831DA00988FEF /* StocksInfo.swift */; };
+		F48FFD6225ED21EE007E07B2 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48FFD6125ED21EE007E07B2 /* TableViewCell.swift */; };
 		F4D2F79A25E7D7AE009EB2C6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D2F79925E7D7AE009EB2C6 /* AppDelegate.swift */; };
 		F4D2F79C25E7D7AE009EB2C6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D2F79B25E7D7AE009EB2C6 /* SceneDelegate.swift */; };
 		F4D2F79E25E7D7AE009EB2C6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D2F79D25E7D7AE009EB2C6 /* ViewController.swift */; };
@@ -16,6 +18,9 @@
 		F4D2F7A925E7D7B3009EB2C6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4D2F7A725E7D7B3009EB2C6 /* LaunchScreen.storyboard */; };
 		F4D2F7B425E7D7B3009EB2C6 /* StocksAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D2F7B325E7D7B3009EB2C6 /* StocksAppTests.swift */; };
 		F4D2F7BF25E7D7B3009EB2C6 /* StocksAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D2F7BE25E7D7B3009EB2C6 /* StocksAppUITests.swift */; };
+		F4D2F7DA25E7E1C5009EB2C6 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D2F7D925E7E1C5009EB2C6 /* Constants.swift */; };
+		F4D2F7E225E7E34A009EB2C6 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D2F7E125E7E34A009EB2C6 /* NetworkManager.swift */; };
+		F4D2F7E725E7EF43009EB2C6 /* StocksData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D2F7E625E7EF43009EB2C6 /* StocksData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +41,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F4267B3625E831DA00988FEF /* StocksInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StocksInfo.swift; sourceTree = "<group>"; };
+		F48FFD6125ED21EE007E07B2 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		F4D2F79625E7D7AE009EB2C6 /* StocksApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StocksApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4D2F79925E7D7AE009EB2C6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F4D2F79B25E7D7AE009EB2C6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -51,6 +58,9 @@
 		F4D2F7BA25E7D7B3009EB2C6 /* StocksAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StocksAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4D2F7BE25E7D7B3009EB2C6 /* StocksAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StocksAppUITests.swift; sourceTree = "<group>"; };
 		F4D2F7C025E7D7B3009EB2C6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F4D2F7D925E7E1C5009EB2C6 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		F4D2F7E125E7E34A009EB2C6 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		F4D2F7E625E7EF43009EB2C6 /* StocksData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StocksData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,14 +111,10 @@
 		F4D2F79825E7D7AE009EB2C6 /* StocksApp */ = {
 			isa = PBXGroup;
 			children = (
-				F4D2F79925E7D7AE009EB2C6 /* AppDelegate.swift */,
-				F4D2F79B25E7D7AE009EB2C6 /* SceneDelegate.swift */,
-				F4D2F79D25E7D7AE009EB2C6 /* ViewController.swift */,
-				F4D2F79F25E7D7AE009EB2C6 /* Main.storyboard */,
-				F4D2F7A525E7D7B3009EB2C6 /* Assets.xcassets */,
-				F4D2F7A725E7D7B3009EB2C6 /* LaunchScreen.storyboard */,
-				F4D2F7AA25E7D7B3009EB2C6 /* Info.plist */,
-				F4D2F7A225E7D7AE009EB2C6 /* StocksApp.xcdatamodeld */,
+				F4D2F7D525E7E04B009EB2C6 /* Model */,
+				F4D2F7D325E7E013009EB2C6 /* View */,
+				F4D2F7D225E7DFF3009EB2C6 /* Controller */,
+				F4D2F7D425E7E02E009EB2C6 /* SupportingFiles */,
 			);
 			path = StocksApp;
 			sourceTree = "<group>";
@@ -129,6 +135,47 @@
 				F4D2F7C025E7D7B3009EB2C6 /* Info.plist */,
 			);
 			path = StocksAppUITests;
+			sourceTree = "<group>";
+		};
+		F4D2F7D225E7DFF3009EB2C6 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				F4D2F79D25E7D7AE009EB2C6 /* ViewController.swift */,
+				F48FFD6125ED21EE007E07B2 /* TableViewCell.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		F4D2F7D325E7E013009EB2C6 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F4D2F79F25E7D7AE009EB2C6 /* Main.storyboard */,
+				F4D2F7A725E7D7B3009EB2C6 /* LaunchScreen.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		F4D2F7D425E7E02E009EB2C6 /* SupportingFiles */ = {
+			isa = PBXGroup;
+			children = (
+				F4D2F79925E7D7AE009EB2C6 /* AppDelegate.swift */,
+				F4D2F79B25E7D7AE009EB2C6 /* SceneDelegate.swift */,
+				F4D2F7D925E7E1C5009EB2C6 /* Constants.swift */,
+				F4D2F7AA25E7D7B3009EB2C6 /* Info.plist */,
+				F4D2F7A525E7D7B3009EB2C6 /* Assets.xcassets */,
+			);
+			path = SupportingFiles;
+			sourceTree = "<group>";
+		};
+		F4D2F7D525E7E04B009EB2C6 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				F4D2F7A225E7D7AE009EB2C6 /* StocksApp.xcdatamodeld */,
+				F4D2F7E125E7E34A009EB2C6 /* NetworkManager.swift */,
+				F4D2F7E625E7EF43009EB2C6 /* StocksData.swift */,
+				F4267B3625E831DA00988FEF /* StocksInfo.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -261,9 +308,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4D2F7E225E7E34A009EB2C6 /* NetworkManager.swift in Sources */,
+				F4D2F7DA25E7E1C5009EB2C6 /* Constants.swift in Sources */,
 				F4D2F79E25E7D7AE009EB2C6 /* ViewController.swift in Sources */,
+				F48FFD6225ED21EE007E07B2 /* TableViewCell.swift in Sources */,
+				F4D2F7E725E7EF43009EB2C6 /* StocksData.swift in Sources */,
 				F4D2F79A25E7D7AE009EB2C6 /* AppDelegate.swift in Sources */,
 				F4D2F7A425E7D7AE009EB2C6 /* StocksApp.xcdatamodeld in Sources */,
+				F4267B3725E831DA00988FEF /* StocksInfo.swift in Sources */,
 				F4D2F79C25E7D7AE009EB2C6 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -442,7 +494,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = XDTDGS84R4;
-				INFOPLIST_FILE = StocksApp/Info.plist;
+				INFOPLIST_FILE = StocksApp/SupportingFiles/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -450,7 +502,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = Tolkachev.StocksApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -461,7 +513,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = XDTDGS84R4;
-				INFOPLIST_FILE = StocksApp/Info.plist;
+				INFOPLIST_FILE = StocksApp/SupportingFiles/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -469,7 +521,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = Tolkachev.StocksApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
