@@ -21,7 +21,7 @@
 		F4D2F7BF25E7D7B3009EB2C6 /* StocksAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D2F7BE25E7D7B3009EB2C6 /* StocksAppUITests.swift */; };
 		F4D2F7DA25E7E1C5009EB2C6 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D2F7D925E7E1C5009EB2C6 /* Constants.swift */; };
 		F4D2F7E225E7E34A009EB2C6 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D2F7E125E7E34A009EB2C6 /* NetworkManager.swift */; };
-		F4D2F7E725E7EF43009EB2C6 /* StocksData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D2F7E625E7EF43009EB2C6 /* StocksData.swift */; };
+		F4D2F7E725E7EF43009EB2C6 /* WebSocketData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D2F7E625E7EF43009EB2C6 /* WebSocketData.swift */; };
 		F4EC4FBF25EE62760085F029 /* FavoritesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC4FBE25EE62760085F029 /* FavoritesTableViewController.swift */; };
 		F4EC4FC725EE64150085F029 /* FavoritesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC4FC625EE64150085F029 /* FavoritesTableViewCell.swift */; };
 		F4EC4FD225EE7E2C0085F029 /* DirectStockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC4FD125EE7E2C0085F029 /* DirectStockData.swift */; };
@@ -65,7 +65,7 @@
 		F4D2F7C025E7D7B3009EB2C6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F4D2F7D925E7E1C5009EB2C6 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		F4D2F7E125E7E34A009EB2C6 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
-		F4D2F7E625E7EF43009EB2C6 /* StocksData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StocksData.swift; sourceTree = "<group>"; };
+		F4D2F7E625E7EF43009EB2C6 /* WebSocketData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketData.swift; sourceTree = "<group>"; };
 		F4EC4FBE25EE62760085F029 /* FavoritesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesTableViewController.swift; sourceTree = "<group>"; };
 		F4EC4FC625EE64150085F029 /* FavoritesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesTableViewCell.swift; sourceTree = "<group>"; };
 		F4EC4FD125EE7E2C0085F029 /* DirectStockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectStockData.swift; sourceTree = "<group>"; };
@@ -183,7 +183,7 @@
 			children = (
 				F4D2F7A225E7D7AE009EB2C6 /* StocksApp.xcdatamodeld */,
 				F4D2F7E125E7E34A009EB2C6 /* NetworkManager.swift */,
-				F4D2F7E625E7EF43009EB2C6 /* StocksData.swift */,
+				F4D2F7E625E7EF43009EB2C6 /* WebSocketData.swift */,
 				F4EC4FD125EE7E2C0085F029 /* DirectStockData.swift */,
 				F4267B3625E831DA00988FEF /* StocksInfo.swift */,
 			);
@@ -328,7 +328,7 @@
 				F4EC4FBF25EE62760085F029 /* FavoritesTableViewController.swift in Sources */,
 				F48FFD6225ED21EE007E07B2 /* TableViewCell.swift in Sources */,
 				F431192C25F117E5002D07A0 /* WS.swift in Sources */,
-				F4D2F7E725E7EF43009EB2C6 /* StocksData.swift in Sources */,
+				F4D2F7E725E7EF43009EB2C6 /* WebSocketData.swift in Sources */,
 				F4D2F79A25E7D7AE009EB2C6 /* AppDelegate.swift in Sources */,
 				F4D2F7A425E7D7AE009EB2C6 /* StocksApp.xcdatamodeld in Sources */,
 				F4267B3725E831DA00988FEF /* StocksInfo.swift in Sources */,
