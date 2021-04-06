@@ -7,16 +7,38 @@
 
 import Foundation
 
+
+struct Crypto {
+    let name : String
+    var index : Double
+    let closePrice : Double
+    var diffPrice : Double {
+        return index - closePrice
+    }
+    
+}
+
+struct GetData: Decodable {
+    let c : [Double]
+}
+
 struct WebSocketData : Decodable {
     let data: [Datum]?
     
 }
 
-struct Datum: Decodable {
+
+struct Datum : Decodable  {
     let p: Double?
-    let s: String?
-    
+    var s: String?
+
 }
+
+    
+    
+
+    
+
 
 extension Decodable {
     static func decode(with decoder: JSONDecoder = JSONDecoder(), from data: Data) throws -> Self? {

@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F4267B3725E831DA00988FEF /* StocksInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4267B3625E831DA00988FEF /* StocksInfo.swift */; };
 		F431192C25F117E5002D07A0 /* WS.swift in Sources */ = {isa = PBXBuildFile; fileRef = F431192B25F117E5002D07A0 /* WS.swift */; };
+		F44B372B25FA57AB001D99A1 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44B372A25FA57AB001D99A1 /* File.swift */; };
 		F48FFD6225ED21EE007E07B2 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48FFD6125ED21EE007E07B2 /* TableViewCell.swift */; };
 		F4D2F79A25E7D7AE009EB2C6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D2F79925E7D7AE009EB2C6 /* AppDelegate.swift */; };
 		F4D2F79C25E7D7AE009EB2C6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D2F79B25E7D7AE009EB2C6 /* SceneDelegate.swift */; };
@@ -24,7 +24,6 @@
 		F4D2F7E725E7EF43009EB2C6 /* WebSocketData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D2F7E625E7EF43009EB2C6 /* WebSocketData.swift */; };
 		F4EC4FBF25EE62760085F029 /* FavoritesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC4FBE25EE62760085F029 /* FavoritesTableViewController.swift */; };
 		F4EC4FC725EE64150085F029 /* FavoritesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC4FC625EE64150085F029 /* FavoritesTableViewCell.swift */; };
-		F4EC4FD225EE7E2C0085F029 /* DirectStockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC4FD125EE7E2C0085F029 /* DirectStockData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,8 +44,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		F4267B3625E831DA00988FEF /* StocksInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StocksInfo.swift; sourceTree = "<group>"; };
 		F431192B25F117E5002D07A0 /* WS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WS.swift; sourceTree = "<group>"; };
+		F44B372A25FA57AB001D99A1 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		F48FFD6125ED21EE007E07B2 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		F4D2F79625E7D7AE009EB2C6 /* StocksApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StocksApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4D2F79925E7D7AE009EB2C6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -68,7 +67,6 @@
 		F4D2F7E625E7EF43009EB2C6 /* WebSocketData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketData.swift; sourceTree = "<group>"; };
 		F4EC4FBE25EE62760085F029 /* FavoritesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesTableViewController.swift; sourceTree = "<group>"; };
 		F4EC4FC625EE64150085F029 /* FavoritesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesTableViewCell.swift; sourceTree = "<group>"; };
-		F4EC4FD125EE7E2C0085F029 /* DirectStockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectStockData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,6 +148,7 @@
 			children = (
 				F4EC4FBE25EE62760085F029 /* FavoritesTableViewController.swift */,
 				F4D2F79D25E7D7AE009EB2C6 /* ViewController.swift */,
+				F44B372A25FA57AB001D99A1 /* File.swift */,
 				F431192B25F117E5002D07A0 /* WS.swift */,
 				F4EC4FC625EE64150085F029 /* FavoritesTableViewCell.swift */,
 				F48FFD6125ED21EE007E07B2 /* TableViewCell.swift */,
@@ -184,8 +183,6 @@
 				F4D2F7A225E7D7AE009EB2C6 /* StocksApp.xcdatamodeld */,
 				F4D2F7E125E7E34A009EB2C6 /* NetworkManager.swift */,
 				F4D2F7E625E7EF43009EB2C6 /* WebSocketData.swift */,
-				F4EC4FD125EE7E2C0085F029 /* DirectStockData.swift */,
-				F4267B3625E831DA00988FEF /* StocksInfo.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -321,7 +318,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F4EC4FC725EE64150085F029 /* FavoritesTableViewCell.swift in Sources */,
-				F4EC4FD225EE7E2C0085F029 /* DirectStockData.swift in Sources */,
+				F44B372B25FA57AB001D99A1 /* File.swift in Sources */,
 				F4D2F7E225E7E34A009EB2C6 /* NetworkManager.swift in Sources */,
 				F4D2F7DA25E7E1C5009EB2C6 /* Constants.swift in Sources */,
 				F4D2F79E25E7D7AE009EB2C6 /* ViewController.swift in Sources */,
@@ -331,7 +328,6 @@
 				F4D2F7E725E7EF43009EB2C6 /* WebSocketData.swift in Sources */,
 				F4D2F79A25E7D7AE009EB2C6 /* AppDelegate.swift in Sources */,
 				F4D2F7A425E7D7AE009EB2C6 /* StocksApp.xcdatamodeld in Sources */,
-				F4267B3725E831DA00988FEF /* StocksInfo.swift in Sources */,
 				F4D2F79C25E7D7AE009EB2C6 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

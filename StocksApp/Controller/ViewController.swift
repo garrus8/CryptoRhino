@@ -14,46 +14,68 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     let finHubToken = Constants.finHubToken
     let networkManager = NetworkManager()
     @IBOutlet weak var tableView: UITableView!
-    var results = [Datum]()
-    let symbols = ["BINANCE:BTCUSDT", "BINANCE:LTCUSDT"]
+//    var results = [Datum]()
+    var crypto = [Crypto]()
+    let symbols = ["BINANCE:BTCUSDT","BINANCE:LTCUSDT", "BINANCE:ETHUSDT"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        for i in self.symbols {
+            let crypto = Crypto(name: i, index: 0, closePrice: 0)
+            self.crypto.append(crypto)
+            json(symbol: i)
+        }
+        
         webSocketTask.resume()
         webSocket(symbols)
         receiveMessage()
         ping()
-        json()
+        
+        
     }
     
-    func json(){
+    
+    func json(symbol:String){
+        let currentDateUnix = Date().timeIntervalSince1970
+        let prevHourUnix = Int((Calendar.current.date(byAdding: .day, value: -1, to: Date()))!.timeIntervalSince1970)
+        print(Calendar.current.date(byAdding: .day, value: -1, to: Date()))
+        let nextMinuteUnix = Int((Calendar.current.date(byAdding: .minute, value: +1, to: Date()))!.timeIntervalSince1970)
+      
+
+        
         let request = NSMutableURLRequest(
-            url: NSURL(string: "https://finnhub-realtime-stock-price.p.rapidapi.com/quote?symbol=BINANCE:BTCUSDT")! as URL,
+            url: NSURL(string: "https://finnhub.io/api/v1/crypto/candle?symbol=\(symbol)&resolution=60&from=\(prevHourUnix)&to=\(nextMinuteUnix)&token=c12ev3748v6oi252n1fg")! as URL,
             cachePolicy: .useProtocolCachePolicy,
             timeoutInterval: 10.0)
         request.httpMethod = "GET"
         request.allHTTPHeaderFields = finHubToken
-        
+
         URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
             guard let stocksData = data, error == nil, response != nil else {return}
-            
-//            do {
-//                let decoder = JSONDecoder()
-//                let stocks = try decoder.decode(StocksData.self, from: stocksData)
-//                self.results = stocks.quotes
-//
-//                DispatchQueue.main.async {
-//                    self.tableView.reloadData()
-//                }
-//
-//            } catch let error as NSError {
-//                print(error.localizedDescription)
-//            }
-            
-            
-            
+
+            do {
+                let stocks = try GetData.decode(from: stocksData)
+                print(stocks)
+                let crypto = Crypto(name: symbol, index: (stocks?.c.last)!, closePrice: (stocks?.c.first)!)
+                
+                for (index,elem) in self.symbols.enumerated() {
+                    if elem == symbol {
+                        self.crypto[index] = crypto
+                    }
+                }
+
+                
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+
+            } catch let error as NSError {
+                print(error.localizedDescription)
+            }
+
         }.resume()
-        
+
     }
     
     
@@ -81,24 +103,23 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             case .success(let message):
                 switch message {
                 case .string(let text):
-//                    print("Received string: \(text)")
                     if let data: Data = text.data(using: .utf8) {
                         if let tickData = try? WebSocketData.decode(from: data)?.data {
-                            
-                            for i in tickData {
-                                if let symbol = i.s {
-                                    if !(self.array2.contains(symbol)) {
-                                        self.array2.append(symbol)
-                                        self.results.append(i)
-                                    }
-                                }
-                                
-                            }
+//                            for i in tickData {
+//                                if let symbol = i.s {
+//                                    if !(self.array2.contains(symbol)) {
+//                                        self.array2.append(symbol)
+//                                        let crypto = Crypto(name: symbol, index: i.p!)
+//                                        self.crypto.append(crypto)
+//                                    }
+//                                }
+//
+//                            }
                             
                             for itemA in tickData {
-                                for (indexB,itemB) in (self.results).enumerated() {
-                                    if itemA.s == itemB.s {
-                                        self.results[indexB] = itemA
+                                for (indexB,itemB) in (self.crypto).enumerated() {
+                                    if itemA.s == itemB.name {
+                                        self.crypto[indexB].index = itemA.p!
                                         
                                     }
                                 }
@@ -113,7 +134,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                     fatalError()
                 }
                 DispatchQueue.main.async {
-                    
                     self.tableView.reloadData()
                 }
                 self.receiveMessage()
@@ -121,44 +141,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
     
-    final func indexesOfStocks(stocks:[Datum]) -> [Int] {
-        
-        return stocks.reduce([]) { (currentResult, currentStocks) in
-            
-            if let currentStockIndex = self.results.firstIndex(where: { currentStocks.s == $0.s }) {
-                
-                return currentResult + [currentStockIndex]
-            }
-            return currentResult
-        }
-    }
-    final func updateArrContacts(indexesOfStocksValue:[Int], tickDataArr:[Datum]) {
-        
-        for i in stride(from: 0, to: indexesOfStocksValue.count, by: 1) {
-            
-            self.results[indexesOfStocksValue[i]] = tickDataArr[i]
-        }
-    }
-    final func updateRows(stocksIndexes:[Int]) {
-        
-        DispatchQueue.main.async {
-            
-            self.tableView.performBatchUpdates({
-                
-                let indexesToUpdate = stocksIndexes.reduce([], { (currentResult, currentStocksIndex) -> [IndexPath] in
-                    
-                    if currentStocksIndex < self.tableView.numberOfRows(inSection: 0) {
-                        
-                        return currentResult + [IndexPath.init(row: currentStocksIndex, section: 0)]
-                    }
-                    return currentResult
-                })
-                self.tableView.reloadRows(at: indexesToUpdate, with: UITableView.RowAnimation.automatic)
-            }) { (_) in
-                
-            }
-        }
-    }
     
     func ping() {
         webSocketTask.sendPing { error in
@@ -176,14 +158,15 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        results.count
+        crypto.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as? TableViewCell
         else {return UITableViewCell()}
-        cell.symbol.text = results[indexPath.row].s
-        cell.price.text = String(results[indexPath.row].p ?? 0)
+        cell.symbol.text = crypto[indexPath.row].name
+        cell.price.text = String(crypto[indexPath.row].index)
+        cell.change.text = String(crypto[indexPath.row].diffPrice)
         
         return cell
     }
@@ -201,9 +184,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let favoriteAction = UIContextualAction(style: .destructive, title: nil) { (_, _, completionHandler) in
             
             let context = self.getContext()
-            let favorite = self.results[indexPath.row].s
+            let favorite = self.crypto[indexPath.row].name
             let object = Favorites(context: context)
             object.symbol = favorite
+            print(object)
             
             do {
                 try context.save()
@@ -223,32 +207,5 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 }
 
 
-//    func json(){
-//        let request = NSMutableURLRequest(
-//            url: NSURL(string: "https://finnhub-realtime-stock-price.p.rapidapi.com/quote?symbol=AAPL")! as URL,
-//            cachePolicy: .useProtocolCachePolicy,
-//            timeoutInterval: 10.0)
-//        request.httpMethod = "GET"
-//        request.allHTTPHeaderFields = finHubToken
-//
-//        URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
-//            guard let stocksData = data, error == nil, response != nil else {return}
-//
-//            do {
-//                let decoder = JSONDecoder()
-//                let stocks = try decoder.decode(StocksData.self, from: stocksData)
-//                self.results = stocks.quotes
-//
-//                DispatchQueue.main.async {
-//                    self.tableView.reloadData()
-//                }
-//
-//            } catch let error as NSError {
-//                print(error.localizedDescription)
-//            }
-//
-//
-//
-//        }.resume()
-//
-//    }
+
+
