@@ -10,11 +10,12 @@ import UIKit
 class FavoritesTableViewCell: UITableViewCell {
     
 
-    @IBOutlet weak var title: UILabel!
+    @IBOutlet weak var name: UILabel!
     @IBOutlet weak var symbol: UILabel!
     @IBOutlet weak var price: UILabel!
     @IBOutlet weak var change: UILabel!
-    
+    @IBOutlet weak var percent: UILabel!
+    var textViewTest = String()
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

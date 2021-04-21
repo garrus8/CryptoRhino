@@ -3,13 +3,19 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7E670F0AA105247B86810881 /* Pods_StocksApp_StocksAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8EA864FB6837FEF61194A8E /* Pods_StocksApp_StocksAppUITests.framework */; };
+		8BBC6D716BE8913B2680CC80 /* Pods_StocksApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B5B48C8BCF0308669361F87 /* Pods_StocksApp.framework */; };
+		E7AB39C5283235AE05A555D2 /* Pods_StocksAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76591ECDC68B1C118D507B7E /* Pods_StocksAppTests.framework */; };
 		F431192C25F117E5002D07A0 /* WS.swift in Sources */ = {isa = PBXBuildFile; fileRef = F431192B25F117E5002D07A0 /* WS.swift */; };
 		F44B372B25FA57AB001D99A1 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44B372A25FA57AB001D99A1 /* File.swift */; };
 		F48FFD6225ED21EE007E07B2 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48FFD6125ED21EE007E07B2 /* TableViewCell.swift */; };
+		F4B5CDF22620378600B43385 /* NewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4B5CDF12620378600B43385 /* NewsViewController.swift */; };
+		F4B5CDFA26203C8800B43385 /* NewsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4B5CDF926203C8800B43385 /* NewsTableViewCell.swift */; };
+		F4B5CE022620734500B43385 /* DetailNewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4B5CE012620734500B43385 /* DetailNewsViewController.swift */; };
 		F4D2F79A25E7D7AE009EB2C6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D2F79925E7D7AE009EB2C6 /* AppDelegate.swift */; };
 		F4D2F79C25E7D7AE009EB2C6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D2F79B25E7D7AE009EB2C6 /* SceneDelegate.swift */; };
 		F4D2F79E25E7D7AE009EB2C6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D2F79D25E7D7AE009EB2C6 /* ViewController.swift */; };
@@ -20,8 +26,9 @@
 		F4D2F7B425E7D7B3009EB2C6 /* StocksAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D2F7B325E7D7B3009EB2C6 /* StocksAppTests.swift */; };
 		F4D2F7BF25E7D7B3009EB2C6 /* StocksAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D2F7BE25E7D7B3009EB2C6 /* StocksAppUITests.swift */; };
 		F4D2F7DA25E7E1C5009EB2C6 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D2F7D925E7E1C5009EB2C6 /* Constants.swift */; };
-		F4D2F7E225E7E34A009EB2C6 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D2F7E125E7E34A009EB2C6 /* NetworkManager.swift */; };
+		F4D2F7E225E7E34A009EB2C6 /* WebSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D2F7E125E7E34A009EB2C6 /* WebSocketManager.swift */; };
 		F4D2F7E725E7EF43009EB2C6 /* WebSocketData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D2F7E625E7EF43009EB2C6 /* WebSocketData.swift */; };
+		F4DE6652261C9DC100109F0A /* ChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DE6651261C9DC100109F0A /* ChartViewController.swift */; };
 		F4EC4FBF25EE62760085F029 /* FavoritesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC4FBE25EE62760085F029 /* FavoritesTableViewController.swift */; };
 		F4EC4FC725EE64150085F029 /* FavoritesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC4FC625EE64150085F029 /* FavoritesTableViewCell.swift */; };
 /* End PBXBuildFile section */
@@ -44,9 +51,20 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4B5B48C8BCF0308669361F87 /* Pods_StocksApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StocksApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6B4112A22E513E94EB43E437 /* Pods-StocksApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StocksApp.release.xcconfig"; path = "Target Support Files/Pods-StocksApp/Pods-StocksApp.release.xcconfig"; sourceTree = "<group>"; };
+		6B5099287209389FAFBFFD4E /* Pods-StocksApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StocksApp.debug.xcconfig"; path = "Target Support Files/Pods-StocksApp/Pods-StocksApp.debug.xcconfig"; sourceTree = "<group>"; };
+		76591ECDC68B1C118D507B7E /* Pods_StocksAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StocksAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		92F501BC6C605ADF1FE4D758 /* Pods-StocksAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StocksAppTests.debug.xcconfig"; path = "Target Support Files/Pods-StocksAppTests/Pods-StocksAppTests.debug.xcconfig"; sourceTree = "<group>"; };
+		9C9C71ADCE88369D27AA0E03 /* Pods-StocksApp-StocksAppUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StocksApp-StocksAppUITests.debug.xcconfig"; path = "Target Support Files/Pods-StocksApp-StocksAppUITests/Pods-StocksApp-StocksAppUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		A8EA864FB6837FEF61194A8E /* Pods_StocksApp_StocksAppUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StocksApp_StocksAppUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D9F5920A1F207904AA5B2B5B /* Pods-StocksApp-StocksAppUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StocksApp-StocksAppUITests.release.xcconfig"; path = "Target Support Files/Pods-StocksApp-StocksAppUITests/Pods-StocksApp-StocksAppUITests.release.xcconfig"; sourceTree = "<group>"; };
 		F431192B25F117E5002D07A0 /* WS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WS.swift; sourceTree = "<group>"; };
 		F44B372A25FA57AB001D99A1 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		F48FFD6125ED21EE007E07B2 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
+		F4B5CDF12620378600B43385 /* NewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NewsViewController.swift; path = StocksApp/Controller/NewsViewController.swift; sourceTree = SOURCE_ROOT; };
+		F4B5CDF926203C8800B43385 /* NewsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsTableViewCell.swift; sourceTree = "<group>"; };
+		F4B5CE012620734500B43385 /* DetailNewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailNewsViewController.swift; sourceTree = "<group>"; };
 		F4D2F79625E7D7AE009EB2C6 /* StocksApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StocksApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4D2F79925E7D7AE009EB2C6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F4D2F79B25E7D7AE009EB2C6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -63,10 +81,12 @@
 		F4D2F7BE25E7D7B3009EB2C6 /* StocksAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StocksAppUITests.swift; sourceTree = "<group>"; };
 		F4D2F7C025E7D7B3009EB2C6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F4D2F7D925E7E1C5009EB2C6 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		F4D2F7E125E7E34A009EB2C6 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		F4D2F7E125E7E34A009EB2C6 /* WebSocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketManager.swift; sourceTree = "<group>"; };
 		F4D2F7E625E7EF43009EB2C6 /* WebSocketData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketData.swift; sourceTree = "<group>"; };
+		F4DE6651261C9DC100109F0A /* ChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ChartViewController.swift; path = StocksApp/Controller/ChartViewController.swift; sourceTree = SOURCE_ROOT; };
 		F4EC4FBE25EE62760085F029 /* FavoritesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesTableViewController.swift; sourceTree = "<group>"; };
 		F4EC4FC625EE64150085F029 /* FavoritesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesTableViewCell.swift; sourceTree = "<group>"; };
+		F9EEB2663EE7E821205B32B2 /* Pods-StocksAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StocksAppTests.release.xcconfig"; path = "Target Support Files/Pods-StocksAppTests/Pods-StocksAppTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +94,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8BBC6D716BE8913B2680CC80 /* Pods_StocksApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,6 +102,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E7AB39C5283235AE05A555D2 /* Pods_StocksAppTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,12 +110,36 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7E670F0AA105247B86810881 /* Pods_StocksApp_StocksAppUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1EBB436E7619744DA57E2249 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4B5B48C8BCF0308669361F87 /* Pods_StocksApp.framework */,
+				A8EA864FB6837FEF61194A8E /* Pods_StocksApp_StocksAppUITests.framework */,
+				76591ECDC68B1C118D507B7E /* Pods_StocksAppTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8917D0386144E6FA493DB3FC /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				6B5099287209389FAFBFFD4E /* Pods-StocksApp.debug.xcconfig */,
+				6B4112A22E513E94EB43E437 /* Pods-StocksApp.release.xcconfig */,
+				9C9C71ADCE88369D27AA0E03 /* Pods-StocksApp-StocksAppUITests.debug.xcconfig */,
+				D9F5920A1F207904AA5B2B5B /* Pods-StocksApp-StocksAppUITests.release.xcconfig */,
+				92F501BC6C605ADF1FE4D758 /* Pods-StocksAppTests.debug.xcconfig */,
+				F9EEB2663EE7E821205B32B2 /* Pods-StocksAppTests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		F4D2F78D25E7D7AD009EB2C6 = {
 			isa = PBXGroup;
 			children = (
@@ -101,6 +147,8 @@
 				F4D2F7B225E7D7B3009EB2C6 /* StocksAppTests */,
 				F4D2F7BD25E7D7B3009EB2C6 /* StocksAppUITests */,
 				F4D2F79725E7D7AE009EB2C6 /* Products */,
+				8917D0386144E6FA493DB3FC /* Pods */,
+				1EBB436E7619744DA57E2249 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -147,7 +195,9 @@
 			isa = PBXGroup;
 			children = (
 				F4EC4FBE25EE62760085F029 /* FavoritesTableViewController.swift */,
+				F4DE6651261C9DC100109F0A /* ChartViewController.swift */,
 				F4D2F79D25E7D7AE009EB2C6 /* ViewController.swift */,
+				F4B5CDF12620378600B43385 /* NewsViewController.swift */,
 				F44B372A25FA57AB001D99A1 /* File.swift */,
 				F431192B25F117E5002D07A0 /* WS.swift */,
 				F4EC4FC625EE64150085F029 /* FavoritesTableViewCell.swift */,
@@ -161,6 +211,8 @@
 			children = (
 				F4D2F79F25E7D7AE009EB2C6 /* Main.storyboard */,
 				F4D2F7A725E7D7B3009EB2C6 /* LaunchScreen.storyboard */,
+				F4B5CE012620734500B43385 /* DetailNewsViewController.swift */,
+				F4B5CDF926203C8800B43385 /* NewsTableViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -181,7 +233,7 @@
 			isa = PBXGroup;
 			children = (
 				F4D2F7A225E7D7AE009EB2C6 /* StocksApp.xcdatamodeld */,
-				F4D2F7E125E7E34A009EB2C6 /* NetworkManager.swift */,
+				F4D2F7E125E7E34A009EB2C6 /* WebSocketManager.swift */,
 				F4D2F7E625E7EF43009EB2C6 /* WebSocketData.swift */,
 			);
 			path = Model;
@@ -194,9 +246,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4D2F7C325E7D7B3009EB2C6 /* Build configuration list for PBXNativeTarget "StocksApp" */;
 			buildPhases = (
+				E8E57C138F657FE5A893D5E6 /* [CP] Check Pods Manifest.lock */,
 				F4D2F79225E7D7AE009EB2C6 /* Sources */,
 				F4D2F79325E7D7AE009EB2C6 /* Frameworks */,
 				F4D2F79425E7D7AE009EB2C6 /* Resources */,
+				6DAA82EAD1DF535DE7FA3FF6 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -211,6 +265,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4D2F7C625E7D7B3009EB2C6 /* Build configuration list for PBXNativeTarget "StocksAppTests" */;
 			buildPhases = (
+				24992D5E1957C0E6A65B79ED /* [CP] Check Pods Manifest.lock */,
 				F4D2F7AB25E7D7B3009EB2C6 /* Sources */,
 				F4D2F7AC25E7D7B3009EB2C6 /* Frameworks */,
 				F4D2F7AD25E7D7B3009EB2C6 /* Resources */,
@@ -229,9 +284,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4D2F7C925E7D7B3009EB2C6 /* Build configuration list for PBXNativeTarget "StocksAppUITests" */;
 			buildPhases = (
+				D4BA93B6F1D54D18D12C2612 /* [CP] Check Pods Manifest.lock */,
 				F4D2F7B625E7D7B3009EB2C6 /* Sources */,
 				F4D2F7B725E7D7B3009EB2C6 /* Frameworks */,
 				F4D2F7B825E7D7B3009EB2C6 /* Resources */,
+				369691481A7EE3C615F1F41C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -312,6 +369,109 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		24992D5E1957C0E6A65B79ED /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-StocksAppTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		369691481A7EE3C615F1F41C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-StocksApp-StocksAppUITests/Pods-StocksApp-StocksAppUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-StocksApp-StocksAppUITests/Pods-StocksApp-StocksAppUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-StocksApp-StocksAppUITests/Pods-StocksApp-StocksAppUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6DAA82EAD1DF535DE7FA3FF6 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-StocksApp/Pods-StocksApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-StocksApp/Pods-StocksApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-StocksApp/Pods-StocksApp-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D4BA93B6F1D54D18D12C2612 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-StocksApp-StocksAppUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E8E57C138F657FE5A893D5E6 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-StocksApp-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		F4D2F79225E7D7AE009EB2C6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -319,14 +479,18 @@
 			files = (
 				F4EC4FC725EE64150085F029 /* FavoritesTableViewCell.swift in Sources */,
 				F44B372B25FA57AB001D99A1 /* File.swift in Sources */,
-				F4D2F7E225E7E34A009EB2C6 /* NetworkManager.swift in Sources */,
+				F4B5CDFA26203C8800B43385 /* NewsTableViewCell.swift in Sources */,
+				F4D2F7E225E7E34A009EB2C6 /* WebSocketManager.swift in Sources */,
 				F4D2F7DA25E7E1C5009EB2C6 /* Constants.swift in Sources */,
+				F4DE6652261C9DC100109F0A /* ChartViewController.swift in Sources */,
 				F4D2F79E25E7D7AE009EB2C6 /* ViewController.swift in Sources */,
 				F4EC4FBF25EE62760085F029 /* FavoritesTableViewController.swift in Sources */,
+				F4B5CE022620734500B43385 /* DetailNewsViewController.swift in Sources */,
 				F48FFD6225ED21EE007E07B2 /* TableViewCell.swift in Sources */,
 				F431192C25F117E5002D07A0 /* WS.swift in Sources */,
 				F4D2F7E725E7EF43009EB2C6 /* WebSocketData.swift in Sources */,
 				F4D2F79A25E7D7AE009EB2C6 /* AppDelegate.swift in Sources */,
+				F4B5CDF22620378600B43385 /* NewsViewController.swift in Sources */,
 				F4D2F7A425E7D7AE009EB2C6 /* StocksApp.xcdatamodeld in Sources */,
 				F4D2F79C25E7D7AE009EB2C6 /* SceneDelegate.swift in Sources */,
 			);
@@ -501,6 +665,7 @@
 		};
 		F4D2F7C425E7D7B3009EB2C6 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6B5099287209389FAFBFFD4E /* Pods-StocksApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -520,6 +685,7 @@
 		};
 		F4D2F7C525E7D7B3009EB2C6 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6B4112A22E513E94EB43E437 /* Pods-StocksApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -539,6 +705,7 @@
 		};
 		F4D2F7C725E7D7B3009EB2C6 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 92F501BC6C605ADF1FE4D758 /* Pods-StocksAppTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -561,6 +728,7 @@
 		};
 		F4D2F7C825E7D7B3009EB2C6 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F9EEB2663EE7E821205B32B2 /* Pods-StocksAppTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -583,6 +751,7 @@
 		};
 		F4D2F7CA25E7D7B3009EB2C6 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9C9C71ADCE88369D27AA0E03 /* Pods-StocksApp-StocksAppUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -603,6 +772,7 @@
 		};
 		F4D2F7CB25E7D7B3009EB2C6 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D9F5920A1F207904AA5B2B5B /* Pods-StocksApp-StocksAppUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
