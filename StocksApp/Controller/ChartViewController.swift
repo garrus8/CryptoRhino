@@ -15,6 +15,7 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     var values: [ChartDataEntry] = []
     var textTest = String()
     var symbolOfCurrentCrypto = String()
+    
 
     
     @IBOutlet weak var lineChartView: LineChartView!

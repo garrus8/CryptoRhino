@@ -185,7 +185,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="FavoriteCell" rowHeight="95" id="9fv-3H-X2t" customClass="FavoritesTableViewCell" customModule="StocksApp" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="FavoriteCell" rowHeight="95" id="9fv-3H-X2t" customClass="TableViewCell" customModule="StocksApp" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="414" height="95"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="9fv-3H-X2t" id="dpH-Xx-W5U">
@@ -230,11 +230,11 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="change" destination="3sn-LD-LNN" id="C4o-0I-nys"/>
-                                    <outlet property="name" destination="s2Y-iH-fRd" id="4dO-Js-iD1"/>
-                                    <outlet property="percent" destination="yof-Ab-bVI" id="Zus-Ud-txM"/>
-                                    <outlet property="price" destination="Na1-bK-5nQ" id="rTJ-UL-4CI"/>
-                                    <outlet property="symbol" destination="z0A-er-wbq" id="t3F-As-Pa6"/>
+                                    <outlet property="change" destination="3sn-LD-LNN" id="DzP-fg-th7"/>
+                                    <outlet property="name" destination="s2Y-iH-fRd" id="MLB-zS-Ost"/>
+                                    <outlet property="percent" destination="yof-Ab-bVI" id="DGc-ci-jku"/>
+                                    <outlet property="price" destination="Na1-bK-5nQ" id="fAx-Zv-vYV"/>
+                                    <outlet property="symbol" destination="z0A-er-wbq" id="aNu-j8-H55"/>
                                     <segue destination="SXZ-Tf-UEQ" kind="show" identifier="ChartViewSegueFromFavorites" id="xBa-ox-Dsf"/>
                                 </connections>
                             </tableViewCell>
