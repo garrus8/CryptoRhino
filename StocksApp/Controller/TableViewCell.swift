@@ -15,6 +15,8 @@ class TableViewCell: UITableViewCell {
     @IBOutlet weak var change: UILabel!
     @IBOutlet weak var percent: UILabel!
     var textViewTest = String()
+    var symbolOfTicker = String()
+    var idOfCrypto = String()
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

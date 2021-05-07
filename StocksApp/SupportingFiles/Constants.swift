@@ -8,6 +8,6 @@
 import Foundation
 
 struct Constants {
-    static let finHubToken = ["X-Finnhub-Token": "c12ev3748v6oi252n1fg"]
+    static let finHubToken = ["X-Finnhub-Token": "sandbox_c0vndt748v6t383lk640"]
     static let mboumToken = ["X-Mboum-Secret": "fk32ou9aLqz5yoJ3LD9eaQfYANPVjFdeSZ8fK5hSKBM40wkqlQOdXZzaI7hv"]
 }

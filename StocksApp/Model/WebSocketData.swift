@@ -8,28 +8,38 @@
 import Foundation
 
 
+
 class Crypto {
     var symbolOfCrypto : String
     var index : Double
     var closePrice : Double
     var nameOfCrypto : String?
     var descriptionOfCrypto : String?
-    
+    var symbolOfTicker : String?
+
     var diffPrice : Double {
         return closePrice - index
     }
     var percent : Double {
         return (index - closePrice) / closePrice
     }
-    init(symbolOfCrypto : String, index : Double, closePrice: Double, nameOfCrypto: String?, descriptionOfCrypto: String?) {
+
+
+    init(symbolOfCrypto : String, index : Double, closePrice: Double, nameOfCrypto: String?, descriptionOfCrypto: String?, symbolOfTicker : String?) {
         self.symbolOfCrypto = symbolOfCrypto
         self.index = index
         self.closePrice = closePrice
         self.nameOfCrypto = nameOfCrypto
         self.descriptionOfCrypto = descriptionOfCrypto
+        self.symbolOfTicker = symbolOfTicker
 
     }
 }
+
+struct FullCoinCapList: Codable {
+    let data: [[String: String?]]?
+}
+
 // JSON1
 struct GetData: Decodable {
     let c : [Double]?
@@ -113,6 +123,21 @@ struct Weiss: Codable {
     }
 }
 
+// MARK: - FullBinanceListElement
+
+
+struct FullBinanceListElement: Codable {
+    var fullBinanceListDescription, displaySymbol, symbol, id: String?
+    var rank : Int?
+
+    enum CodingKeys: String, CodingKey {
+        case fullBinanceListDescription = "description"
+        case displaySymbol, symbol
+    }
+}
+
+typealias FullBinanceList = [FullBinanceListElement]
+
 //NEWS
 struct News: Codable {
     let data: [NewsData]?
@@ -154,7 +179,7 @@ struct SourceInfo: Codable {
 
 // CoinGecko
 struct GeckoListElement: Codable {
-    let id, symbol : String?
+    let id, symbol, name : String?
 }
 
 typealias GeckoList = [GeckoListElement]
@@ -325,6 +350,11 @@ struct Links: Codable {
     }
 }
 
+//struct SearchElement {
+//    var name : String?
+//    var symbol : String?
+//}
+
 
 
 extension Decodable {
@@ -347,3 +377,4 @@ extension Decodable {
         }
     }
 }
+

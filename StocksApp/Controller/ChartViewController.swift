@@ -15,7 +15,9 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     var values: [ChartDataEntry] = []
     var textTest = String()
     var symbolOfCurrentCrypto = String()
-    
+    var symbolOfTicker = String()
+    let tableView = UITableView()
+    var idOfCrypto = String()
 
     
     @IBOutlet weak var lineChartView: LineChartView!
@@ -26,15 +28,21 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     }
     @IBAction func favoritesButton(_ sender: Any) {
         let context = self.getContext()
-        let favorite = symbolOfCurrentCrypto
+        let favoriteSymbol = symbolOfCurrentCrypto
+        let favoriteTicker = symbolOfTicker
         let object = Favorites(context: context)
-        object.symbol = favorite
+        object.symbol = favoriteSymbol
+        object.symbolOfTicker = favoriteTicker
+        
         
         do {
             try context.save()
         } catch let error as NSError {
             print(error.localizedDescription)
         }
+        
+        
+        
     }
     
     @IBAction func deleteFromFavorites(_ sender: Any) {
@@ -42,15 +50,15 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     }
     @IBAction func dayChartButton(_ sender: Any) {
         values.removeAll()
-        json(symbol: "BINANCE:\(symbolOfCurrentCrypto)USDT", interval: "day")
+        json(symbol: symbolOfTicker, interval: "day")
     }
     @IBAction func monthChartButton(_ sender: Any) {
         values.removeAll()
-        json(symbol: "BINANCE:\(symbolOfCurrentCrypto)USDT", interval: "month")
+        json(symbol: symbolOfTicker, interval: "month")
     }
     @IBAction func yearChartButton(_ sender: Any) {
         values.removeAll()
-        json(symbol: "BINANCE:\(symbolOfCurrentCrypto)USDT", interval: "year")
+        json(symbol: symbolOfTicker, interval: "year")
     }
     
     @IBOutlet weak var textView: UITextView!
@@ -68,9 +76,46 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        json(symbol: "BINANCE:\(symbolOfCurrentCrypto)USDT", interval: "day")
+        
+        json(symbol: symbolOfTicker, interval: "day")
         lineChartViewSetup()
-        textView.text = textTest
+        
+
+        
+        if textTest.isEmpty {
+            self.getCoinGeckoData2(symbol: idOfCrypto)
+        } else {
+            textView.text = textTest
+        }
+        
+
+    }
+    
+    func getCoinGeckoData2(symbol: String) {
+        
+            let request = NSMutableURLRequest(
+                url: NSURL(string: "https://api.coingecko.com/api/v3/coins/\(symbol)?localization=false&tickers=false&market_data=false&community_data=true&developer_data=false&sparkline=false")! as URL,
+                cachePolicy: .useProtocolCachePolicy,
+                timeoutInterval: 10.0)
+            request.httpMethod = "GET"
+            
+            URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
+                guard let stocksData = data, error == nil, response != nil else {return}
+                do {
+                    let stocks = try GeckoSymbol.decode(from: stocksData)
+                    
+                    
+                    
+                    DispatchQueue.main.async {
+                        self.textView.text = stocks?.geckoSymbolDescription?.en
+                        self.tableView.reloadData()
+                    }
+                    
+                } catch let error as NSError {
+                    print(error.localizedDescription)
+                }
+            }.resume()
+        
     }
     
     func json(symbol:String, interval : String){
@@ -102,7 +147,7 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         }
         
         let request = NSMutableURLRequest(
-            url: NSURL(string: "https://finnhub.io/api/v1/crypto/candle?symbol=\(symbol)&resolution=\(resolution)&from=\(prevValue)&to=\(nextMinuteUnix)&token=c12ev3748v6oi252n1fg")! as URL,
+            url: NSURL(string: "https://finnhub.io/api/v1/crypto/candle?symbol=\(symbol)&resolution=\(resolution)&from=\(prevValue)&to=\(nextMinuteUnix)&token=sandbox_c0vndt748v6t383lk640")! as URL,
             cachePolicy: .useProtocolCachePolicy,
             timeoutInterval: 10.0)
         request.httpMethod = "GET"
