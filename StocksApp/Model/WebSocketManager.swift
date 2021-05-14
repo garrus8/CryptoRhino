@@ -37,13 +37,29 @@ class NetworkManager  {
     var dict = [String : [Crypto]]()
     //    var searchElements = [SearchElement]()
     
+    static let shared = NetworkManager()
+    private init() {}
     
     private func getContext () -> NSManagedObjectContext {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         return appDelegate.persistentContainer.viewContext
     }
- 
-    
+    func deleteAllData() {
+        let context = getContext()
+        let fetchRequest : NSFetchRequest<Favorites> = Favorites.fetchRequest()
+        if let objects = try? context.fetch(fetchRequest) {
+            for object in objects {
+                context.delete(object)
+            }
+        }
+
+        do {
+            try context.save()
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+    }
+
     func getData() {
         
         let context = getContext()
@@ -54,18 +70,21 @@ class NetworkManager  {
         do {
             favorites = try context.fetch(fetchRequest)
             
-            
+            resultsF.removeAll()
             for i in favorites {
                 if let symbol = i.symbol{
                     
-                    symbolsF.append(symbol)
+                    
                     let crypto = Crypto(symbolOfCrypto: symbol, index: 0, closePrice: 0, nameOfCrypto: nil, descriptionOfCrypto: nil, symbolOfTicker: i.symbolOfTicker)
+                    
                     self.resultsF.append(crypto)
+                    
                     
                     
                 }
                 
             }
+            
             
         } catch let error as NSError {
             print(error.localizedDescription)

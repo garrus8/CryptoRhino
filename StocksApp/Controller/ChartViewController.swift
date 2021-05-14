@@ -22,7 +22,7 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     let imageOfHeartFill = UIImage(systemName: "heart.fill")
     var bool = false
     var favorites = [Favorites]()
-    let networkManager = NetworkManager()
+//    let networkManager = NetworkManager()
     @IBOutlet weak var lineChartView: LineChartView!
     
     private func getContext () -> NSManagedObjectContext {
@@ -79,6 +79,11 @@ class ChartViewController: UIViewController, ChartViewDelegate {
                     
                 }
             }
+            for (index,j) in NetworkManager.shared.resultsF.enumerated() {
+                if j.symbolOfCrypto == favoriteSymbol {
+                    NetworkManager.shared.resultsF.remove(at: index)
+                }
+            }
             
             
             do {
@@ -103,11 +108,15 @@ class ChartViewController: UIViewController, ChartViewDelegate {
             } catch let error as NSError {
                 print(error.localizedDescription)
             }
+            NetworkManager.shared.getData()
+            NetworkManager.shared.getTopOfCrypto(tableView: [self.tableView])
+            NetworkManager.shared.getFullListOfCrypto()
+            NetworkManager.shared.test(tableView: [self.tableView])
+
             
         }
         bool.toggle()
-        self.networkManager.getData()
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newDataNotif"), object: nil)
+//        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newDataNotif"), object: nil)
   
     }
    

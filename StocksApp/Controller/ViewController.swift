@@ -12,7 +12,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     
     let finHubToken = Constants.finHubToken
-    let networkManager = NetworkManager()
+//    let networkManager = NetworkManager()
     @IBOutlet weak var tableView: UITableView!
     var results = [Crypto]()
     var symbols = [String]()
@@ -50,16 +50,16 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let queue1 = DispatchQueue(label: "1")
         
         queue1.sync {
-            
-            self.networkManager.getData()
-            self.networkManager.getTopOfCrypto(tableView: [self.tableView])
-            self.networkManager.getFullListOfCrypto()
-            self.networkManager.test(tableView: [self.tableView])
-//            self.networkManager.webSocket(symbols: self.networkManager.symbols, symbolsF: self.networkManager.symbolsF)
-//            self.networkManager.receiveMessage(tableView: [self.tableView])
+//            NetworkManager.shared.deleteAllData()
+            NetworkManager.shared.getData()
+            NetworkManager.shared.getTopOfCrypto(tableView: [self.tableView])
+            NetworkManager.shared.getFullListOfCrypto()
+            NetworkManager.shared.test(tableView: [self.tableView])
+            NetworkManager.shared.webSocket(symbols: NetworkManager.shared.symbols, symbolsF: NetworkManager.shared.symbolsF)
+            NetworkManager.shared.receiveMessage(tableView: [self.tableView])
             
 //            self.networkManager.getFullBinanceList()
-            self.networkManager.getFullCoinCapList()
+            NetworkManager.shared.getFullCoinCapList()
             
         }
         
@@ -74,7 +74,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             return filteredResults.count
         }
         
-        return networkManager.results.count
+        return NetworkManager.shared.results.count
         
     }
     
@@ -95,7 +95,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             cell.textViewTest = ""
             
         } else {
-            let results = networkManager.results[indexPath.row]
+            let results = NetworkManager.shared.results[indexPath.row]
             cell.symbol.text = results.symbolOfCrypto
             cell.name.text = results.nameOfCrypto
             cell.price.text = String(results.index)
@@ -147,7 +147,7 @@ extension ViewController : UISearchResultsUpdating   {
     }
     func filterContentForSearchText(_ searchText : String){
         
-        filteredResults = networkManager.fullBinanceList.filter({ (searchElem : FullBinanceListElement) -> Bool in
+        filteredResults = NetworkManager.shared.fullBinanceList.filter({ (searchElem : FullBinanceListElement) -> Bool in
 
             return searchElem.fullBinanceListDescription!.lowercased().hasPrefix(searchText.lowercased()) ||
                 searchElem.displaySymbol!.split(separator: "/").first!.lowercased().hasPrefix(searchText.lowercased())
