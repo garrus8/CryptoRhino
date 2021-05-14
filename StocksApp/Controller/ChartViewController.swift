@@ -18,8 +18,11 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     var symbolOfTicker = String()
     let tableView = UITableView()
     var idOfCrypto = String()
-
-    
+    let imageOfHeart = UIImage(systemName: "heart")
+    let imageOfHeartFill = UIImage(systemName: "heart.fill")
+    var bool = false
+    var favorites = [Favorites]()
+    let networkManager = NetworkManager()
     @IBOutlet weak var lineChartView: LineChartView!
     
     private func getContext () -> NSManagedObjectContext {
@@ -45,9 +48,69 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         
     }
     
-    @IBAction func deleteFromFavorites(_ sender: Any) {
+    private func navigationBarSetup() {
+      
+        let butt = UIBarButtonItem(image: imageOfHeart, style: .done, target: self, action: #selector(saveTapped))
+        for i in favorites {
+            if let symbol = i.symbol {
+                if symbolOfCurrentCrypto == symbol {
+                    bool = true
+                    butt.image = imageOfHeartFill
+                }
+            }
+        }
+        navigationItem.rightBarButtonItem = butt
         
+//        navigationItem.rightBarButtonItem?.tintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+//        navigationItem.backBarButtonItem?.tintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+//        navigationController?.navigationBar.tintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
     }
+    
+    @objc func saveTapped() {
+        if bool == true {
+            navigationItem.rightBarButtonItem?.image = imageOfHeart
+            
+            let context = self.getContext()
+            let favoriteSymbol = symbolOfCurrentCrypto
+            
+            for i in favorites {
+                if i.symbol == favoriteSymbol {
+                    context.delete(i)
+                    
+                }
+            }
+            
+            
+            do {
+                try context.save()
+            } catch let error as NSError {
+                print(error.localizedDescription)
+            }
+            
+        } else {
+            navigationItem.rightBarButtonItem?.image = imageOfHeartFill
+            
+            let context = self.getContext()
+            let favoriteSymbol = symbolOfCurrentCrypto
+            let favoriteTicker = symbolOfTicker
+            let object = Favorites(context: context)
+            object.symbol = favoriteSymbol
+            object.symbolOfTicker = favoriteTicker
+            
+            
+            do {
+                try context.save()
+            } catch let error as NSError {
+                print(error.localizedDescription)
+            }
+            
+        }
+        bool.toggle()
+        self.networkManager.getData()
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newDataNotif"), object: nil)
+  
+    }
+   
     @IBAction func dayChartButton(_ sender: Any) {
         values.removeAll()
         json(symbol: symbolOfTicker, interval: "day")
@@ -76,9 +139,10 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        getData()
         json(symbol: symbolOfTicker, interval: "day")
         lineChartViewSetup()
+        navigationBarSetup()
         
 
         
@@ -88,7 +152,24 @@ class ChartViewController: UIViewController, ChartViewDelegate {
             textView.text = textTest
         }
         
+        
 
+    }
+    func getData() {
+        
+        let context = getContext()
+        let fetchRequest : NSFetchRequest<Favorites> = Favorites.fetchRequest()
+        let sortDescriptor = NSSortDescriptor(key: "symbol", ascending: false)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        
+        do {
+            favorites = try context.fetch(fetchRequest)
+
+            
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+        
     }
     
     func getCoinGeckoData2(symbol: String) {

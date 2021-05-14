@@ -11,6 +11,7 @@
 		8BBC6D716BE8913B2680CC80 /* Pods_StocksApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B5B48C8BCF0308669361F87 /* Pods_StocksApp.framework */; };
 		E7AB39C5283235AE05A555D2 /* Pods_StocksAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76591ECDC68B1C118D507B7E /* Pods_StocksAppTests.framework */; };
 		F431192C25F117E5002D07A0 /* WS.swift in Sources */ = {isa = PBXBuildFile; fileRef = F431192B25F117E5002D07A0 /* WS.swift */; };
+		F4416B43264D1A6A00505F7A /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4416B42264D1A6A00505F7A /* NetworkManager.swift */; };
 		F44B372B25FA57AB001D99A1 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44B372A25FA57AB001D99A1 /* File.swift */; };
 		F48FFD6225ED21EE007E07B2 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48FFD6125ED21EE007E07B2 /* TableViewCell.swift */; };
 		F4B5CDF22620378600B43385 /* NewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4B5CDF12620378600B43385 /* NewsViewController.swift */; };
@@ -60,6 +61,7 @@
 		A8EA864FB6837FEF61194A8E /* Pods_StocksApp_StocksAppUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StocksApp_StocksAppUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9F5920A1F207904AA5B2B5B /* Pods-StocksApp-StocksAppUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StocksApp-StocksAppUITests.release.xcconfig"; path = "Target Support Files/Pods-StocksApp-StocksAppUITests/Pods-StocksApp-StocksAppUITests.release.xcconfig"; sourceTree = "<group>"; };
 		F431192B25F117E5002D07A0 /* WS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WS.swift; sourceTree = "<group>"; };
+		F4416B42264D1A6A00505F7A /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		F44B372A25FA57AB001D99A1 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		F48FFD6125ED21EE007E07B2 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		F4B5CDF12620378600B43385 /* NewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NewsViewController.swift; path = StocksApp/Controller/NewsViewController.swift; sourceTree = SOURCE_ROOT; };
@@ -213,6 +215,7 @@
 				F4D2F7A725E7D7B3009EB2C6 /* LaunchScreen.storyboard */,
 				F4B5CE012620734500B43385 /* DetailNewsViewController.swift */,
 				F4B5CDF926203C8800B43385 /* NewsTableViewCell.swift */,
+				F4416B42264D1A6A00505F7A /* NetworkManager.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -487,6 +490,7 @@
 				F4EC4FBF25EE62760085F029 /* FavoritesTableViewController.swift in Sources */,
 				F4B5CE022620734500B43385 /* DetailNewsViewController.swift in Sources */,
 				F48FFD6225ED21EE007E07B2 /* TableViewCell.swift in Sources */,
+				F4416B43264D1A6A00505F7A /* NetworkManager.swift in Sources */,
 				F431192C25F117E5002D07A0 /* WS.swift in Sources */,
 				F4D2F7E725E7EF43009EB2C6 /* WebSocketData.swift in Sources */,
 				F4D2F79A25E7D7AE009EB2C6 /* AppDelegate.swift in Sources */,

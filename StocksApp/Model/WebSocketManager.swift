@@ -42,7 +42,7 @@ class NetworkManager  {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         return appDelegate.persistentContainer.viewContext
     }
-    
+ 
     
     func getData() {
         
@@ -57,6 +57,7 @@ class NetworkManager  {
             
             for i in favorites {
                 if let symbol = i.symbol{
+                    
                     symbolsF.append(symbol)
                     let crypto = Crypto(symbolOfCrypto: symbol, index: 0, closePrice: 0, nameOfCrypto: nil, descriptionOfCrypto: nil, symbolOfTicker: i.symbolOfTicker)
                     self.resultsF.append(crypto)
@@ -102,6 +103,7 @@ class NetworkManager  {
                         for i in self.symbolsF {
                             self.getFinHubData(symbol: i, tableView : tableView)
                         }
+                        
                     }
 
                 } catch let error as NSError {
@@ -174,13 +176,12 @@ class NetworkManager  {
                             self.resultsF[index].symbolOfCrypto = symbol
                             self.resultsF[index].index = stockLast
                             self.resultsF[index].closePrice = stockFirst
+                            
 
                         }
                     }
 
-
-                    self.dict["Key"] = self.resultsF
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "WebsocketDataUpdate"), object: nil, userInfo: self.dict)
+                 
 
 //                    for (indexB,itemB) in (self.resultsF).enumerated() {
 //                        let itemBForFinHub = "BINANCE:\(itemB.symbolOfCrypto.uppercased())USDT"
@@ -358,6 +359,7 @@ class NetworkManager  {
     //
     //
     //    }
+ 
     func getFullBinanceList() {
         groupA.wait()
         queueD.sync{

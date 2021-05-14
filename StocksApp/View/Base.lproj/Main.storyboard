@@ -153,20 +153,7 @@
                         <viewLayoutGuide key="safeArea" id="gM5-Vc-JXC"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <navigationItem key="navigationItem" id="0ky-hA-wad">
-                        <rightBarButtonItems>
-                            <barButtonItem style="plain" systemItem="add" id="ZD9-c6-88B">
-                                <connections>
-                                    <action selector="favoritesButton:" destination="SXZ-Tf-UEQ" id="naN-ca-GC4"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem style="plain" systemItem="stop" id="vL4-P6-eDR">
-                                <connections>
-                                    <action selector="deleteFromFavorites:" destination="SXZ-Tf-UEQ" id="nv8-tZ-oQy"/>
-                                </connections>
-                            </barButtonItem>
-                        </rightBarButtonItems>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="0ky-hA-wad"/>
                     <connections>
                         <outlet property="lineChartView" destination="Nkm-LJ-rhp" id="ujK-Mb-o6q"/>
                         <outlet property="textView" destination="COG-pB-Sww" id="2h3-3B-r5R"/>

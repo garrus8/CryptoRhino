@@ -50,17 +50,21 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let queue1 = DispatchQueue(label: "1")
         
         queue1.sync {
+            
             self.networkManager.getData()
             self.networkManager.getTopOfCrypto(tableView: [self.tableView])
             self.networkManager.getFullListOfCrypto()
             self.networkManager.test(tableView: [self.tableView])
-            self.networkManager.webSocket(symbols: self.networkManager.symbols, symbolsF: self.networkManager.symbolsF)
-            self.networkManager.receiveMessage(tableView: [self.tableView])
+//            self.networkManager.webSocket(symbols: self.networkManager.symbols, symbolsF: self.networkManager.symbolsF)
+//            self.networkManager.receiveMessage(tableView: [self.tableView])
+            
 //            self.networkManager.getFullBinanceList()
             self.networkManager.getFullCoinCapList()
+            
         }
-
-
+        
+        
+        
     }
 
 
@@ -104,13 +108,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         
         
-//        cell.symbol.text = results.symbolOfCrypto
-//        cell.name.text = results.nameOfCrypto
-//        cell.price.text = String(results.index)
-//        cell.change.text = String(results.diffPrice)
-//        cell.percent.text = String(results.percent)
-//        cell.textViewTest = results.descriptionOfCrypto ?? ""
-        
         
         return cell
     }
@@ -138,29 +135,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
     
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath)
-    -> UISwipeActionsConfiguration? {
-        let favoriteAction = UIContextualAction(style: .destructive, title: nil) { (_, _, completionHandler) in
-            
-            let context = self.getContext()
-            let favorite = self.results[indexPath.row].symbolOfCrypto
-            let object = Favorites(context: context)
-            object.symbol = favorite
-            
-            do {
-                try context.save()
-            } catch let error as NSError {
-                print(error.localizedDescription)
-            }
-            
-            completionHandler(true)
-        }
-        
-        favoriteAction.image = UIImage(systemName: "suit.heart.fill")
-        favoriteAction.backgroundColor = .systemBlue
-        let configuration = UISwipeActionsConfiguration(actions: [favoriteAction])
-        return configuration
-    }
+
     
     
     

@@ -16,22 +16,36 @@ class FavoritesTableViewController: UITableViewController {
     var results = [Crypto]()
     var symbols = [String]()
     var coinGecoList = [GeckoListElement]()
-   
+    
     
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
         // DELEGATE
 //        networkManager.delegate = self
         NotificationCenter.default.addObserver(self, selector: #selector(websocketDataUpdate), name: NSNotification.Name(rawValue: "WebsocketDataUpdate"), object: nil)
-//        delete()
+        NotificationCenter.default.addObserver(self, selector: #selector(self.refresh), name: NSNotification.Name(rawValue: "newDataNotif"), object: nil)
  
     }
+    
+    @objc func refresh() {
+        print("WORKING")
+        
+        
+        
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+
+   }
+    
 
     
     @objc func websocketDataUpdate (notification : Notification) {
         guard let userInfo = notification.userInfo else {return}
+        
         let crypto = userInfo["Key"]
         results = crypto as! [Crypto]
         DispatchQueue.main.async {
@@ -39,22 +53,7 @@ class FavoritesTableViewController: UITableViewController {
         }
     }
     
-    func delete() {
-        let context = getContext()
-        let fetchRequest : NSFetchRequest<Favorites> = Favorites.fetchRequest()
-        if let favorites = try? context.fetch(fetchRequest){
-            for i in favorites {
-                context.delete(i)
-            }
-        }
-        
-        
-        do {
-            try context.save()
-        } catch let error as NSError {
-            print(error.localizedDescription)
-        }
-    }
+
     
     private func getContext () -> NSManagedObjectContext {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
