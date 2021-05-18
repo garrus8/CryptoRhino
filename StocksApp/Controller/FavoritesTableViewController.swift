@@ -17,16 +17,18 @@ class FavoritesTableViewController: UITableViewController {
     var symbols = [String]()
     var coinGecoList = [GeckoListElement]()
     
-    
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        
+ 
+
         // DELEGATE
 //        networkManager.delegate = self
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: NSNotification.Name(rawValue: "WebsocketDataUpdate"), object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(self.refresh), name: NSNotification.Name(rawValue: "newDataNotif"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.refresh), name: NSNotification.Name(rawValue: "newDataNotif"), object: nil)
  
     }
     

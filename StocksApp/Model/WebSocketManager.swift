@@ -36,7 +36,7 @@ class NetworkManager  {
     var coinCapDict = [[String: String?]]()
     var dict = [String : [Crypto]]()
     //    var searchElements = [SearchElement]()
-    
+    let favoriteVC = FavoritesTableViewController()
     static let shared = NetworkManager()
     private init() {}
     
@@ -59,40 +59,41 @@ class NetworkManager  {
             print(error.localizedDescription)
         }
     }
-
+    let queueA = DispatchQueue(label: "A")
+    let groupA = DispatchGroup()
+    let groupCoreData = DispatchGroup()
+    
     func getData() {
         
-        let context = getContext()
+        groupCoreData.enter()
+        let context = self.getContext()
         let fetchRequest : NSFetchRequest<Favorites> = Favorites.fetchRequest()
-        let sortDescriptor = NSSortDescriptor(key: "symbol", ascending: false)
+        let sortDescriptor = NSSortDescriptor(key: "date", ascending: false)
         fetchRequest.sortDescriptors = [sortDescriptor]
         
         do {
-            favorites = try context.fetch(fetchRequest)
+            self.favorites = try context.fetch(fetchRequest)
             
-            resultsF.removeAll()
-            for i in favorites {
+            self.resultsF.removeAll()
+            for i in self.favorites {
                 if let symbol = i.symbol{
                     
-                    
                     let crypto = Crypto(symbolOfCrypto: symbol, index: 0, closePrice: 0, nameOfCrypto: nil, descriptionOfCrypto: nil, symbolOfTicker: i.symbolOfTicker)
-                    
+                    self.symbolsF.append(i.symbol!)
                     self.resultsF.append(crypto)
-                    
-                    
-                    
+                    self.getFinHubData(symbol: symbol, tableView : [favoriteVC.tableView])
                 }
                 
             }
-            
+         
             
         } catch let error as NSError {
             print(error.localizedDescription)
         }
-        
+        groupCoreData.leave()
     }
-    let queueA = DispatchQueue(label: "A")
-    let groupA = DispatchGroup()
+    
+    
     
     func getTopOfCrypto(tableView : [UITableView]){
         groupA.enter()
@@ -118,11 +119,13 @@ class NetworkManager  {
                         self.symbols.append(string!)
                         let crypto = Crypto(symbolOfCrypto: string!, index: 0, closePrice: 0, nameOfCrypto: nil, descriptionOfCrypto: nil, symbolOfTicker: "\(string!)USDT")
                         self.results.append(crypto)
-                        self.getFinHubData(symbol: string!, tableView : tableView)
-                        for i in self.symbolsF {
-                            self.getFinHubData(symbol: i, tableView : tableView)
-                        }
                         
+                        self.getFinHubData(symbol: string!, tableView : tableView)
+                        
+//                        for i in self.symbols {
+//                            self.getFinHubData(symbol: i, tableView : tableView)
+//                        }
+
                     }
 
                 } catch let error as NSError {
@@ -141,6 +144,7 @@ class NetworkManager  {
     func getFinHubData(symbol:String, tableView : [UITableView]){
         groupA.enter()
         queueA.async(group : groupA, flags: .barrier){
+            
 
             let symbolForFinHub = "BINANCE:\(symbol)USDT"
 
@@ -166,6 +170,7 @@ class NetworkManager  {
                     if stocks == nil {
                         for (index, elem) in self.symbols.enumerated() {
                             if elem == symbol {
+                                
                                 self.symbols.remove(at: index)
                                 self.results.remove(at: index)
 
@@ -173,6 +178,7 @@ class NetworkManager  {
                         }
                         for (index, elem) in self.symbolsF.enumerated() {
                             if elem == symbol {
+                               
                                 self.symbolsF.remove(at: index)
                                 self.resultsF.remove(at: index)
 
@@ -185,16 +191,31 @@ class NetworkManager  {
 
                     for (index,elem) in self.symbols.enumerated() {
                         if elem == symbol {
+
                             self.results[index].symbolOfCrypto = symbol
                             self.results[index].index = stockLast
                             self.results[index].closePrice = stockFirst
                         }
                     }
-                    for (index,elem) in self.symbolsF.enumerated() {
-                        if elem == symbol {
-                            self.resultsF[index].symbolOfCrypto = symbol
-                            self.resultsF[index].index = stockLast
-                            self.resultsF[index].closePrice = stockFirst
+
+                    
+//                    for (index,elem) in self.symbolsF.enumerated() {
+//                        if elem == symbol {
+//                           // Index out of range
+//                            self.resultsF[index].symbolOfCrypto = symbol
+//                            self.resultsF[index].index = stockLast
+//                            self.resultsF[index].closePrice = stockFirst
+//
+//
+//                        }
+//                    }
+                    
+                    for elem in self.resultsF {
+                        if elem.symbolOfCrypto == symbol {
+                           // Index out of range
+                            
+                            elem.index = stockLast
+                            elem.closePrice = stockFirst
                             
 
                         }
@@ -276,6 +297,7 @@ class NetworkManager  {
             self.getCoinGeckoData(symbol: self.coinGecoList[indexOfSymbol!].id!, tableView: tableView)
         }
         for i in self.symbolsF {
+            
             let indexOfSymbol = self.binarySearchFoCoinGeckoList(key: i.lowercased(), list: self.coinGecoList)
             self.getCoinGeckoData(symbol: self.coinGecoList[indexOfSymbol!].id!, tableView: tableView)
             
@@ -429,7 +451,6 @@ class NetworkManager  {
                         
                     }
                 }
-                    print(btc)
                 
                 self.fullBinanceList.sort{$0.rank ?? 101 < $1.rank ?? 101}
                 

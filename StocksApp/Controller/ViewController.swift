@@ -53,10 +53,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 //            NetworkManager.shared.deleteAllData()
             NetworkManager.shared.getData()
             NetworkManager.shared.getTopOfCrypto(tableView: [self.tableView])
+
             NetworkManager.shared.getFullListOfCrypto()
             NetworkManager.shared.test(tableView: [self.tableView])
-            NetworkManager.shared.webSocket(symbols: NetworkManager.shared.symbols, symbolsF: NetworkManager.shared.symbolsF)
-            NetworkManager.shared.receiveMessage(tableView: [self.tableView])
+//            NetworkManager.shared.webSocket(symbols: NetworkManager.shared.symbols, symbolsF: NetworkManager.shared.symbolsF)
+//            NetworkManager.shared.receiveMessage(tableView: [self.tableView])
             
 //            self.networkManager.getFullBinanceList()
             NetworkManager.shared.getFullCoinCapList()

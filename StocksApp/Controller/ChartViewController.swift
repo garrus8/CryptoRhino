@@ -21,7 +21,7 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     let imageOfHeart = UIImage(systemName: "heart")
     let imageOfHeartFill = UIImage(systemName: "heart.fill")
     var bool = false
-    var favorites = [Favorites]()
+//    var favorites = [Favorites]()
 //    let networkManager = NetworkManager()
     @IBOutlet weak var lineChartView: LineChartView!
     
@@ -51,7 +51,7 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     private func navigationBarSetup() {
       
         let butt = UIBarButtonItem(image: imageOfHeart, style: .done, target: self, action: #selector(saveTapped))
-        for i in favorites {
+        for i in NetworkManager.shared.favorites {
             if let symbol = i.symbol {
                 if symbolOfCurrentCrypto == symbol {
                     bool = true
@@ -73,7 +73,7 @@ class ChartViewController: UIViewController, ChartViewDelegate {
             let context = self.getContext()
             let favoriteSymbol = symbolOfCurrentCrypto
             
-            for i in favorites {
+            for i in NetworkManager.shared.favorites {
                 if i.symbol == favoriteSymbol {
                     context.delete(i)
                     
@@ -84,7 +84,6 @@ class ChartViewController: UIViewController, ChartViewDelegate {
                     NetworkManager.shared.resultsF.remove(at: index)
                 }
             }
-            
             
             do {
                 try context.save()
@@ -101,6 +100,7 @@ class ChartViewController: UIViewController, ChartViewDelegate {
             let object = Favorites(context: context)
             object.symbol = favoriteSymbol
             object.symbolOfTicker = favoriteTicker
+            object.date = Date()
             
             
             do {
@@ -109,14 +109,14 @@ class ChartViewController: UIViewController, ChartViewDelegate {
                 print(error.localizedDescription)
             }
             NetworkManager.shared.getData()
-            NetworkManager.shared.getTopOfCrypto(tableView: [self.tableView])
-            NetworkManager.shared.getFullListOfCrypto()
+//            NetworkManager.shared.getFullListOfCrypto()
             NetworkManager.shared.test(tableView: [self.tableView])
+//            NetworkManager.shared.getFullCoinCapList()
 
             
         }
         bool.toggle()
-//        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newDataNotif"), object: nil)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newDataNotif"), object: nil)
   
     }
    
@@ -148,7 +148,7 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        getData()
+//        getData()
         json(symbol: symbolOfTicker, interval: "day")
         lineChartViewSetup()
         navigationBarSetup()
@@ -164,22 +164,22 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         
 
     }
-    func getData() {
-        
-        let context = getContext()
-        let fetchRequest : NSFetchRequest<Favorites> = Favorites.fetchRequest()
-        let sortDescriptor = NSSortDescriptor(key: "symbol", ascending: false)
-        fetchRequest.sortDescriptors = [sortDescriptor]
-        
-        do {
-            favorites = try context.fetch(fetchRequest)
-
-            
-        } catch let error as NSError {
-            print(error.localizedDescription)
-        }
-        
-    }
+//    func getData() {
+//
+//        let context = getContext()
+//        let fetchRequest : NSFetchRequest<Favorites> = Favorites.fetchRequest()
+//        let sortDescriptor = NSSortDescriptor(key: "symbol", ascending: false)
+//        fetchRequest.sortDescriptors = [sortDescriptor]
+//
+//        do {
+//            favorites = try context.fetch(fetchRequest)
+//
+//
+//        } catch let error as NSError {
+//            print(error.localizedDescription)
+//        }
+//
+//    }
     
     func getCoinGeckoData2(symbol: String) {
         
