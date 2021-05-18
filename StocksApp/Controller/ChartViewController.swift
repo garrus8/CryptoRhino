@@ -109,9 +109,9 @@ class ChartViewController: UIViewController, ChartViewDelegate {
                 print(error.localizedDescription)
             }
             NetworkManager.shared.getData()
-//            NetworkManager.shared.getFullListOfCrypto()
             NetworkManager.shared.test(tableView: [self.tableView])
-//            NetworkManager.shared.getFullCoinCapList()
+            NetworkManager.shared.webSocket(symbols: NetworkManager.shared.symbols, symbolsF: NetworkManager.shared.symbolsF)
+
 
             
         }

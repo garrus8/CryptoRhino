@@ -540,6 +540,7 @@ func webSocket(symbols : [String], symbolsF : [String]) {
         
         self.webSocketTask.resume()
         self.ping()
+        
     }
 }
 
