@@ -8,12 +8,15 @@
 import UIKit
 import CoreData
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
+
+    
     
     
     let finHubToken = Constants.finHubToken
 //    let networkManager = NetworkManager()
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var collectionView: UICollectionView!
     var results = [Crypto]()
     var symbols = [String]()
     var coinGecoList = [GeckoListElement]()
@@ -21,6 +24,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     var favorites = [Favorites]()
     var resultsF = [Crypto]()
     var symbolsF = [String]()
+    
+    
     
     private var filteredResults = [FullBinanceListElement]()
     private var isFiltering : Bool {
@@ -41,6 +46,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         super.viewDidLoad()
         // DELEGATE
 //        networkManager.delegate = self
+        collectionView.delegate = self
+        collectionView.dataSource = self
         
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
@@ -53,15 +60,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 //            NetworkManager.shared.deleteAllData()
             NetworkManager.shared.getData()
             NetworkManager.shared.getTopOfCrypto(tableView: [self.tableView])
-
             NetworkManager.shared.getFullListOfCrypto()
             NetworkManager.shared.test(tableView: [self.tableView])
-            NetworkManager.shared.webSocket(symbols: NetworkManager.shared.symbols, symbolsF: NetworkManager.shared.symbolsF)
-            NetworkManager.shared.receiveMessage(tableView: [self.tableView])
-            
-//            self.networkManager.getFullBinanceList()
+//            NetworkManager.shared.webSocket(symbols: NetworkManager.shared.symbols, symbolsF: NetworkManager.shared.symbolsF)
+            NetworkManager.shared.webSocket2(symbols: NetworkManager.shared.websocketArray)
+            NetworkManager.shared.receiveMessage(tableView: [self.tableView], collectionView: self.collectionView)
+        
             NetworkManager.shared.getFullCoinCapList()
-            
+            self.collectionView.reloadData()
         }
         
         
@@ -75,6 +81,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             return filteredResults.count
         }
         
+//        return NetworkManager.shared.results.count
         return NetworkManager.shared.results.count
         
     }
@@ -96,6 +103,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             cell.textViewTest = ""
             
         } else {
+//            let results = NetworkManager.shared.results[indexPath.row]
             let results = NetworkManager.shared.results[indexPath.row]
             cell.symbol.text = results.symbolOfCrypto
             cell.name.text = results.nameOfCrypto
@@ -112,6 +120,23 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         return cell
     }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//        return NetworkManager.shared.collectionViewArray.count
+        NetworkManager.shared.collectionViewArray.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as? CollectionViewCell else {return UICollectionViewCell()}
+//        cell.label.text = NetworkManager.shared.collectionViewArray[indexPath.row].nameOfCrypto
+        let item = NetworkManager.shared.collectionViewArray[indexPath.item]
+        cell.update(item: item)
+        cell.backgroundColor = .blue
+        return cell
+    }
+    
+    
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -129,9 +154,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             chartVC.symbolOfCurrentCrypto = cell.symbol.text!
             chartVC.symbolOfTicker = cell.symbolOfTicker
             chartVC.idOfCrypto = cell.idOfCrypto
-            
-            
-            
             
         }
     }
