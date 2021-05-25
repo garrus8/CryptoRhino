@@ -59,8 +59,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             NetworkManager.shared.getData()
             NetworkManager.shared.getTopOfCrypto(tableView: [self.tableView])
             NetworkManager.shared.getFullListOfCrypto()
-            NetworkManager.shared.test(tableView: [self.tableView])
+            NetworkManager.shared.test2(array: &NetworkManager.shared.resultsF)
+            NetworkManager.shared.test2(array: &NetworkManager.shared.results)
 //            NetworkManager.shared.webSocket(symbols: NetworkManager.shared.symbols, symbolsF: NetworkManager.shared.symbolsF)
+            
+            
+            
             NetworkManager.shared.webSocket2(symbols: NetworkManager.shared.websocketArray)
             NetworkManager.shared.receiveMessage(tableView: [self.tableView], collectionView: self.collectionView)
         

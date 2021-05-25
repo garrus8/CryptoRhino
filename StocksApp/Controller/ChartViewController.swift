@@ -61,17 +61,30 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         lineChartViewSetup()
         navigationBarSetup()
         if priceOfCryptoText.isEmpty {
-            NetworkManager.shared.getFinHubData2(symbol: symbolOfCurrentCrypto) { (arr) in
+//            NetworkManager.shared.getFinHubData2(symbol: symbolOfCurrentCrypto) { (arr) in
+//                DispatchQueue.main.async {
+//                    self.priceOfCrypto.text = String(arr.first!)
+//                    self.diffPriceOfCrypto.text = {
+//                        return String((arr.first! - arr[1]) / arr[1])
+//                    }()
+//                }
+//                
+//                
+//            }
+            
+            NetworkManager.shared.getFinHubData(symbol: symbolOfCurrentCrypto) { (stocks) in
                 DispatchQueue.main.async {
-                    self.priceOfCrypto.text = String(arr.first!)
+                    guard let stockLast = stocks?.c?.last else {return}
+                    guard let stockFirst = stocks?.c?.first else {return}
+                    
+                    self.priceOfCrypto.text = String(stockLast)
                     self.diffPriceOfCrypto.text = {
-                        return String((arr.first! - arr[1]) / arr[1])
+                        return String((stockLast - stockFirst) / stockFirst)
                     }()
                 }
-                
+            }
                 
             }
-        }
         
         diffPriceOfCrypto.text = diffPriceOfCryptoText
         priceOfCrypto.text = priceOfCryptoText
@@ -152,7 +165,8 @@ class ChartViewController: UIViewController, ChartViewDelegate {
                 print(error.localizedDescription)
             }
             NetworkManager.shared.getData()
-            NetworkManager.shared.test(tableView: [self.tableView])
+//            NetworkManager.shared.test(tableView: [self.tableView])
+            NetworkManager.shared.test2(array: &NetworkManager.shared.resultsF)
             NetworkManager.shared.webSocket(symbols: NetworkManager.shared.symbols, symbolsF: NetworkManager.shared.symbolsF)
 
         }
