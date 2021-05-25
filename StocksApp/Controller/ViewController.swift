@@ -11,8 +11,6 @@ import CoreData
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
 
     
-    
-    
     let finHubToken = Constants.finHubToken
 //    let networkManager = NetworkManager()
     @IBOutlet weak var tableView: UITableView!
@@ -130,6 +128,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as? CollectionViewCell else {return UICollectionViewCell()}
 //        cell.label.text = NetworkManager.shared.collectionViewArray[indexPath.row].nameOfCrypto
         let item = NetworkManager.shared.collectionViewArray[indexPath.item]
+        
         cell.update(item: item)
         cell.backgroundColor = .blue
         return cell
@@ -147,15 +146,29 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "ChartViewSegue" {
-            let chartVC = segue.destination as! ChartViewController
+        let chartVC = segue.destination as! ChartViewController
+        if segue.identifier == "TableVIewSegue" {
             let cell = sender as! TableViewCell
             chartVC.textTest = cell.textViewTest
             chartVC.symbolOfCurrentCrypto = cell.symbol.text!
             chartVC.symbolOfTicker = cell.symbolOfTicker
             chartVC.idOfCrypto = cell.idOfCrypto
+            chartVC.diffPriceOfCryptoText = cell.percent.text!
+            chartVC.priceOfCryptoText = cell.price.text!
+            chartVC.nameOfCryptoText = cell.name.text!
             
         }
+        if segue.identifier == "CollectionViewSegue" {
+            let cell = sender as! CollectionViewCell
+            chartVC.symbolOfCurrentCrypto = cell.symbolOfCrypto
+            chartVC.textTest = cell.textViewTest
+            chartVC.nameOfCrypto = cell.nameOfElelm
+            chartVC.diffPriceOfCryptoText = cell.percent
+            chartVC.priceOfCryptoText = cell.index.text!
+            chartVC.nameOfCryptoText = cell.nameOfElelm.text!
+            chartVC.symbolOfTicker = cell.symbolOfTicker
+        }
+        
     }
     
 

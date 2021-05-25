@@ -21,9 +21,14 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     let imageOfHeart = UIImage(systemName: "heart")
     let imageOfHeartFill = UIImage(systemName: "heart.fill")
     var bool = false
-//    var favorites = [Favorites]()
-//    let networkManager = NetworkManager()
+    var diffPriceOfCryptoText = String()
+    var priceOfCryptoText = String()
+    var nameOfCryptoText = String()
+
     @IBOutlet weak var lineChartView: LineChartView!
+    @IBOutlet weak var nameOfCrypto: UILabel!
+    @IBOutlet weak var priceOfCrypto: UILabel!
+    @IBOutlet weak var diffPriceOfCrypto: UILabel!
     
     private func getContext () -> NSManagedObjectContext {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -47,6 +52,44 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         
         
     }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+//        getData()
+        print(idOfCrypto)
+        json(symbol: symbolOfTicker, interval: "day")
+        lineChartViewSetup()
+        navigationBarSetup()
+        if priceOfCryptoText.isEmpty {
+            NetworkManager.shared.getFinHubData2(symbol: symbolOfCurrentCrypto) { (arr) in
+                DispatchQueue.main.async {
+                    self.priceOfCrypto.text = String(arr.first!)
+                    self.diffPriceOfCrypto.text = {
+                        return String((arr.first! - arr[1]) / arr[1])
+                    }()
+                }
+                
+                
+            }
+        }
+        
+        diffPriceOfCrypto.text = diffPriceOfCryptoText
+        priceOfCrypto.text = priceOfCryptoText
+        nameOfCrypto.text = nameOfCryptoText
+
+        
+        if textTest.isEmpty {
+            self.getCoinGeckoData2(symbol: idOfCrypto)
+        } else {
+            textView.text = textTest
+        }
+
+        
+        
+
+    }
+    
+  
     
     private func navigationBarSetup() {
       
@@ -112,8 +155,6 @@ class ChartViewController: UIViewController, ChartViewDelegate {
             NetworkManager.shared.test(tableView: [self.tableView])
             NetworkManager.shared.webSocket(symbols: NetworkManager.shared.symbols, symbolsF: NetworkManager.shared.symbolsF)
 
-
-            
         }
         bool.toggle()
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newDataNotif"), object: nil)
@@ -145,41 +186,7 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         
     }
     
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-//        getData()
-        json(symbol: symbolOfTicker, interval: "day")
-        lineChartViewSetup()
-        navigationBarSetup()
-        
 
-        
-        if textTest.isEmpty {
-            self.getCoinGeckoData2(symbol: idOfCrypto)
-        } else {
-            textView.text = textTest
-        }
-        
-        
-
-    }
-//    func getData() {
-//
-//        let context = getContext()
-//        let fetchRequest : NSFetchRequest<Favorites> = Favorites.fetchRequest()
-//        let sortDescriptor = NSSortDescriptor(key: "symbol", ascending: false)
-//        fetchRequest.sortDescriptors = [sortDescriptor]
-//
-//        do {
-//            favorites = try context.fetch(fetchRequest)
-//
-//
-//        } catch let error as NSError {
-//            print(error.localizedDescription)
-//        }
-//
-//    }
     
     func getCoinGeckoData2(symbol: String) {
         
@@ -194,10 +201,9 @@ class ChartViewController: UIViewController, ChartViewDelegate {
                 do {
                     let stocks = try GeckoSymbol.decode(from: stocksData)
                     
-                    
-                    
                     DispatchQueue.main.async {
                         self.textView.text = stocks?.geckoSymbolDescription?.en
+                        
                         self.tableView.reloadData()
                     }
                     
@@ -211,7 +217,7 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     func json(symbol:String, interval : String){
         
         let prevDayUnix = Int((Calendar.current.date(byAdding: .hour, value: -25, to: Date()))!.timeIntervalSince1970)
-        let prevMonthUnix = Int((Calendar.current.date(byAdding: .day, value: -20, to: Date()))!.timeIntervalSince1970)
+        let prevMonthUnix = Int((Calendar.current.date(byAdding: .day, value: -21, to: Date()))!.timeIntervalSince1970)
         let prevYearUnix = Int((Calendar.current.date(byAdding: .month, value: -12, to: Date()))!.timeIntervalSince1970)
         let nextMinuteUnix = Int((Calendar.current.date(byAdding: .minute, value: +1, to: Date()))!.timeIntervalSince1970)
         
@@ -237,26 +243,32 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         }
         
         let request = NSMutableURLRequest(
-            url: NSURL(string: "https://finnhub.io/api/v1/crypto/candle?symbol=\(symbol)&resolution=\(resolution)&from=\(prevValue)&to=\(nextMinuteUnix)&token=sandbox_c0vndt748v6t383lk640")! as URL,
+            url: NSURL(string: "https://finnhub.io/api/v1/crypto/candle?symbol=\(symbol)&resolution=\(resolution)&from=\(prevValue)&to=\(nextMinuteUnix)&token=c12ev3748v6oi252n1fg")! as URL,
             cachePolicy: .useProtocolCachePolicy,
             timeoutInterval: 10.0)
         request.httpMethod = "GET"
         request.allHTTPHeaderFields = finHubToken
-        
         URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
             guard let stocksData = data, error == nil, response != nil else {return}
             
             do {
-                let stocks = try GetData.decode(from: stocksData)
+                guard let stocks = try GetData.decode(from: stocksData) else {return}
+                guard let stocksC = stocks.c else {return}
                 
-                for (indexC,elemC) in stocks!.c!.enumerated() {
-                    let elemT = stocks!.t![indexC]
+                for (indexC,elemC) in stocksC.enumerated() {
+                    let elemT = stocks.t![indexC]
                     let chartData = ChartDataEntry(x: Double(elemT), y: elemC)
                     self.values.append(chartData)
                     
                 }
                 
+                guard let stockLast = stocksC.last else {return}
+                guard let stockFirst = stocksC.first else {return}
+                
                 DispatchQueue.main.async {
+                    self.diffPriceOfCrypto.text = {
+                        return String((stockLast - stockFirst) / stockFirst * 100)
+                    }()
                     self.setData()
                     self.lineChartView.xAxis.valueFormatter = MyXAxisFormatter(dateFormat: dateFormat)
                     self.lineChartViewSetup()

@@ -72,7 +72,7 @@
                                             <outlet property="percent" destination="XzT-Bg-FsZ" id="360-rT-yoN"/>
                                             <outlet property="price" destination="XBi-db-xHF" id="SbP-te-PK0"/>
                                             <outlet property="symbol" destination="ohp-SP-xce" id="jFd-mf-Ir0"/>
-                                            <segue destination="SXZ-Tf-UEQ" kind="show" identifier="ChartViewSegue" id="gC9-gB-Kg9"/>
+                                            <segue destination="SXZ-Tf-UEQ" kind="show" identifier="TableVIewSegue" id="gC9-gB-Kg9"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -119,6 +119,7 @@
                                         <connections>
                                             <outlet property="index" destination="nVX-be-pUy" id="Kzy-av-gSW"/>
                                             <outlet property="nameOfElelm" destination="tD3-aY-tWX" id="ro4-N1-8EQ"/>
+                                            <segue destination="SXZ-Tf-UEQ" kind="show" identifier="CollectionViewSegue" id="L9i-0z-Mv5"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -157,12 +158,12 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Nkm-LJ-rhp" customClass="LineChartView" customModule="Charts">
-                                <rect key="frame" x="0.0" y="88" width="414" height="428"/>
+                                <rect key="frame" x="0.0" y="166" width="414" height="428"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W8Z-Jh-oPg">
-                                <rect key="frame" x="100" y="522" width="36" height="30"/>
+                                <rect key="frame" x="99" y="600" width="36" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="День"/>
                                 <connections>
@@ -170,7 +171,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RSV-gf-jOK">
-                                <rect key="frame" x="184" y="524" width="47" height="30"/>
+                                <rect key="frame" x="183" y="602" width="47" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Месяц"/>
                                 <connections>
@@ -178,7 +179,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QDG-Hd-GG5">
-                                <rect key="frame" x="281" y="523" width="30" height="30"/>
+                                <rect key="frame" x="280" y="601" width="30" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Год"/>
                                 <connections>
@@ -186,20 +187,44 @@
                                 </connections>
                             </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="COG-pB-Sww">
-                                <rect key="frame" x="33" y="578" width="361" height="235"/>
+                                <rect key="frame" x="0.0" y="640" width="394" height="173"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <color key="textColor" systemColor="labelColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xkc-Rp-C9z">
+                                <rect key="frame" x="20" y="115" width="115" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KPN-tu-ZtZ">
+                                <rect key="frame" x="131" y="114" width="99" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a27-O9-HNU">
+                                <rect key="frame" x="268" y="114" width="126" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="gM5-Vc-JXC"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="0ky-hA-wad"/>
                     <connections>
+                        <outlet property="diffPriceOfCrypto" destination="a27-O9-HNU" id="lmX-Um-8J4"/>
                         <outlet property="lineChartView" destination="Nkm-LJ-rhp" id="ujK-Mb-o6q"/>
+                        <outlet property="nameOfCrypto" destination="Xkc-Rp-C9z" id="Eka-T1-jdm"/>
+                        <outlet property="priceOfCrypto" destination="KPN-tu-ZtZ" id="wcL-UY-Y1b"/>
                         <outlet property="textView" destination="COG-pB-Sww" id="2h3-3B-r5R"/>
                     </connections>
                 </viewController>
@@ -462,7 +487,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="gC9-gB-Kg9"/>
+        <segue reference="L9i-0z-Mv5"/>
     </inferredMetricsTieBreakers>
     <resources>
         <systemColor name="labelColor">

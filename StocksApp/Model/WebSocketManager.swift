@@ -78,25 +78,27 @@ class NetworkManager  {
         
         do {
             self.favorites = try context.fetch(fetchRequest)
-            
-            self.resultsF.removeAll()
-            for i in self.favorites {
-                if let symbol = i.symbol{
-                    
-                    let crypto = Crypto(symbolOfCrypto: symbol, index: 0, closePrice: 0, nameOfCrypto: nil, descriptionOfCrypto: nil, symbolOfTicker: i.symbolOfTicker)
-                    self.symbolsF.append(i.symbol!)
-                    self.resultsF.append(crypto)
-                    self.getFinHubData(symbol: symbol, tableView : [favoriteVC.tableView])
-                    self.websocketArray.append(symbol)
-                }
-                
-            }
-         
+            setData()
             
         } catch let error as NSError {
             print(error.localizedDescription)
         }
         groupCoreData.leave()
+    }
+    
+    func setData() {
+        self.resultsF.removeAll()
+        for i in self.favorites {
+            if let symbol = i.symbol{
+                
+                let crypto = Crypto(symbolOfCrypto: symbol, index: 0, closePrice: 0, nameOfCrypto: nil, descriptionOfCrypto: nil, symbolOfTicker: i.symbolOfTicker)
+                self.symbolsF.append(i.symbol!)
+                self.resultsF.append(crypto)
+                self.getFinHubData(symbol: symbol, tableView : [favoriteVC.tableView])
+                self.websocketArray.append(symbol)
+            }
+            
+        }
     }
     
     
@@ -106,7 +108,7 @@ class NetworkManager  {
         queueA.async(group : groupA, flags: .barrier){
 
             let request = NSMutableURLRequest(
-                url: NSURL(string: "https://min-api.cryptocompare.com/data/top/totalvolfull?limit=10&tsym=USD")! as URL,
+                url: NSURL(string: "https://min-api.cryptocompare.com/data/top/totalvolfull?limit=20&tsym=USD")! as URL,
                 cachePolicy: .useProtocolCachePolicy,
                 timeoutInterval: 10.0)
             request.httpMethod = "GET"
@@ -115,20 +117,24 @@ class NetworkManager  {
                 guard let stocksData = data, error == nil, response != nil else {return}
                 do {
 
-                    let stocks = try Toplist.decode(from: stocksData)
+                    guard let stocks = try Toplist.decode(from: stocksData) else {return}
+                    guard let stocksData = stocks.data else {return}
 
-                    for i in 0..<(stocks?.data!.count)! {
+                    for i in 0..<(stocksData.count) {
 
-                        let elem = stocks?.data![i]
-                        let string = elem!.coinInfo!.name
+                        let elem = stocksData[i]
+                        guard let string = elem.coinInfo!.name else {return}
                         
                         //                        let string = "\(elem!.coinInfo!.name!)USDT"
-                        self.symbols.append(string!)
-                        let crypto = Crypto(symbolOfCrypto: string!, index: 0, closePrice: 0, nameOfCrypto: nil, descriptionOfCrypto: nil, symbolOfTicker: "\(string!)USDT")
-                        self.results.append(crypto)
-                        
-                        self.getFinHubData(symbol: string!, tableView : tableView)
-                        self.websocketArray.append(string!)
+                        if string != "USDT" {
+                            self.symbols.append(string)
+                            let crypto = Crypto(symbolOfCrypto: string, index: 0, closePrice: 0, nameOfCrypto: nil, descriptionOfCrypto: nil, symbolOfTicker: "\(string)USDT")
+                            self.results.append(crypto)
+                            
+                            self.getFinHubData(symbol: string, tableView : tableView)
+                            self.websocketArray.append(string)
+                        }
+                    
 //                        for i in self.symbols {
 //                            self.getFinHubData(symbol: i, tableView : tableView)
 //                        }
@@ -249,10 +255,9 @@ class NetworkManager  {
     
     
     func getFinHubData2(symbol:String, complition : @escaping ([Double])-> ()){
-
             let symbolForFinHub = "BINANCE:\(symbol)USDT"
 
-            let prevDayUnix = Int((Calendar.current.date(byAdding: .hour, value: -24, to: Date()))!.timeIntervalSince1970)
+            let prevDayUnix = Int((Calendar.current.date(byAdding: .hour, value: -25, to: Date()))!.timeIntervalSince1970)
             let nextMinuteUnix = Int((Calendar.current.date(byAdding: .minute, value: +1, to: Date()))!.timeIntervalSince1970)
 
 
@@ -278,23 +283,6 @@ class NetworkManager  {
                     let arr = [stockLast,stockFirst]
                     complition(arr)
 
-                    
-//                    for elem in self.collectionViewArray {
-//                        if elem.symbolOfCrypto == symbol {
-//
-//                            elem.index = stockLast
-//                            elem.closePrice = stockFirst
-//                        }
-//                    }
-
-                 
-
-
-//                    DispatchQueue.main.async {
-//                        for i in tableView {
-//                            i.reloadData()
-//                        }
-//                    }
 
                 } catch let error as NSError {
                     print(error.localizedDescription)
@@ -305,6 +293,7 @@ class NetworkManager  {
         
     
         }
+    
 
     
     let queueB = DispatchQueue(label: "B")

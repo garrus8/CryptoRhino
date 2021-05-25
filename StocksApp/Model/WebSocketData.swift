@@ -18,10 +18,10 @@ class Crypto {
     var symbolOfTicker : String?
 
     var diffPrice : Double {
-        return closePrice - index
+        return index - closePrice
     }
     var percent : Double {
-        return (index - closePrice) / closePrice
+        return (index - closePrice) / closePrice * 100
     }
 
 
