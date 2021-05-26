@@ -288,7 +288,7 @@ class NetworkManager  {
     func getFinHubData(symbol : String, interval : String = "day", complition : @escaping ([String : Any])->()){
         groupA.enter()
         queueA.async(group : groupA, flags: .barrier){
-            print("SYMBOL \(symbol)")
+            
             
             let symbolForFinHub = "BINANCE:\(symbol)USDT"
             
