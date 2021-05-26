@@ -11,7 +11,6 @@ import CoreData
 class FavoritesTableViewController: UITableViewController {
     
     let finHubToken = Constants.finHubToken
-//    let networkManager = NetworkManager()
     var favorites = [Favorites]()
     var results = [Crypto]()
     var symbols = [String]()
