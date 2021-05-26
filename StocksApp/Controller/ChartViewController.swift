@@ -57,7 +57,8 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         super.viewDidLoad()
 //        getData()
         print(idOfCrypto)
-        json(symbol: symbolOfTicker, interval: "day")
+        // HHHHHHHHHHHHHH
+        chartLoad(symbol: symbolOfCurrentCrypto, interval: "day")
         lineChartViewSetup()
         navigationBarSetup()
         if priceOfCryptoText.isEmpty {
@@ -72,17 +73,19 @@ class ChartViewController: UIViewController, ChartViewDelegate {
 //                
 //            }
             
-            NetworkManager.shared.getFinHubData(symbol: symbolOfCurrentCrypto) { (stocks) in
-                DispatchQueue.main.async {
-                    guard let stockLast = stocks?.c?.last else {return}
-                    guard let stockFirst = stocks?.c?.first else {return}
-                    
-                    self.priceOfCrypto.text = String(stockLast)
-                    self.diffPriceOfCrypto.text = {
-                        return String((stockLast - stockFirst) / stockFirst)
-                    }()
-                }
-            }
+//            NetworkManager.shared.getFinHubData(symbol: symbolOfCurrentCrypto) { (dict) in
+//                DispatchQueue.main.async {
+//                    // HHHHHHH
+//                    let stocks = dict["stocks"] as! GetData
+//                    guard let stockLast = stocks.c?.last else {return}
+//                    guard let stockFirst = stocks.c?.first else {return}
+//
+//                    self.priceOfCrypto.text = String(stockLast)
+//                    self.diffPriceOfCrypto.text = {
+//                        return String((stockLast - stockFirst) / stockFirst)
+//                    }()
+//                }
+//            }
                 
             }
         
@@ -91,15 +94,22 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         nameOfCrypto.text = nameOfCryptoText
 
         
+//        if textTest.isEmpty {
+//            self.getCoinGeckoData2(symbol: idOfCrypto)
+//        } else {
+//            textView.text = textTest
+//        }
         if textTest.isEmpty {
-            self.getCoinGeckoData2(symbol: idOfCrypto)
+            NetworkManager.shared.getCoinGeckoData2(symbol: idOfCrypto) { (stocks) in
+                DispatchQueue.main.async {
+                    self.textView.text = stocks.geckoSymbolDescription?.en
+                    
+                    self.tableView.reloadData()
+                }
+            }
         } else {
             textView.text = textTest
         }
-
-        
-        
-
     }
     
   
@@ -174,18 +184,21 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newDataNotif"), object: nil)
   
     }
-   
+   // HHHHHHHHHHHHHHH
     @IBAction func dayChartButton(_ sender: Any) {
         values.removeAll()
-        json(symbol: symbolOfTicker, interval: "day")
+//        json(symbol: symbolOfTicker, interval: "day")
+        chartLoad(symbol: symbolOfCurrentCrypto, interval: "day")
     }
     @IBAction func monthChartButton(_ sender: Any) {
         values.removeAll()
-        json(symbol: symbolOfTicker, interval: "month")
+//        json(symbol: symbolOfTicker, interval: "month")
+        chartLoad(symbol: symbolOfCurrentCrypto, interval: "month")
     }
     @IBAction func yearChartButton(_ sender: Any) {
         values.removeAll()
-        json(symbol: symbolOfTicker, interval: "year")
+//        json(symbol: symbolOfTicker, interval: "year")
+        chartLoad(symbol: symbolOfCurrentCrypto, interval: "year")
     }
     
     @IBOutlet weak var textView: UITextView!
@@ -202,100 +215,132 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     
 
     
-    func getCoinGeckoData2(symbol: String) {
-        
-            let request = NSMutableURLRequest(
-                url: NSURL(string: "https://api.coingecko.com/api/v3/coins/\(symbol)?localization=false&tickers=false&market_data=false&community_data=true&developer_data=false&sparkline=false")! as URL,
-                cachePolicy: .useProtocolCachePolicy,
-                timeoutInterval: 10.0)
-            request.httpMethod = "GET"
-            
-            URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
-                guard let stocksData = data, error == nil, response != nil else {return}
-                do {
-                    let stocks = try GeckoSymbol.decode(from: stocksData)
-                    
-                    DispatchQueue.main.async {
-                        self.textView.text = stocks?.geckoSymbolDescription?.en
-                        
-                        self.tableView.reloadData()
-                    }
-                    
-                } catch let error as NSError {
-                    print(error.localizedDescription)
-                }
-            }.resume()
-        
-    }
+//    func getCoinGeckoData2(symbol: String) {
+//
+//            let request = NSMutableURLRequest(
+//                url: NSURL(string: "https://api.coingecko.com/api/v3/coins/\(symbol)?localization=false&tickers=false&market_data=false&community_data=true&developer_data=false&sparkline=false")! as URL,
+//                cachePolicy: .useProtocolCachePolicy,
+//                timeoutInterval: 10.0)
+//            request.httpMethod = "GET"
+//
+//            URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
+//                guard let stocksData = data, error == nil, response != nil else {return}
+//                do {
+//                    let stocks = try GeckoSymbol.decode(from: stocksData)
+//
+//                    DispatchQueue.main.async {
+//                        self.textView.text = stocks?.geckoSymbolDescription?.en
+//
+//                        self.tableView.reloadData()
+//                    }
+//
+//                } catch let error as NSError {
+//                    print(error.localizedDescription)
+//                }
+//            }.resume()
+//
+//    }
     
-    func json(symbol:String, interval : String){
+//    func json(symbol:String, interval : String){
+//
+//        let prevDayUnix = Int((Calendar.current.date(byAdding: .hour, value: -25, to: Date()))!.timeIntervalSince1970)
+//        let prevMonthUnix = Int((Calendar.current.date(byAdding: .day, value: -21, to: Date()))!.timeIntervalSince1970)
+//        let prevYearUnix = Int((Calendar.current.date(byAdding: .month, value: -12, to: Date()))!.timeIntervalSince1970)
+//        let nextMinuteUnix = Int((Calendar.current.date(byAdding: .minute, value: +1, to: Date()))!.timeIntervalSince1970)
+//
+//        var prevValue = Int()
+//        var resolution = String()
+//        var dateFormat = String()
+//
+//        switch interval {
+//        case "day":
+//            dateFormat = "MM/dd HH:mm"
+//            prevValue = prevDayUnix
+//            resolution = "5"
+//        case "month":
+//            dateFormat = "MMM d"
+//            prevValue = prevMonthUnix
+//            resolution = "60"
+//        case "year":
+//            dateFormat = "dd.MM.yy"
+//            prevValue = prevYearUnix
+//            resolution = "D"
+//        default:
+//            print("ПРОБЛЕМА В СВИЧ")
+//        }
+//
+//        let request = NSMutableURLRequest(
+//            url: NSURL(string: "https://finnhub.io/api/v1/crypto/candle?symbol=\(symbol)&resolution=\(resolution)&from=\(prevValue)&to=\(nextMinuteUnix)&token=c12ev3748v6oi252n1fg")! as URL,
+//            cachePolicy: .useProtocolCachePolicy,
+//            timeoutInterval: 10.0)
+//        request.httpMethod = "GET"
+//        request.allHTTPHeaderFields = finHubToken
+//        URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
+//            guard let stocksData = data, error == nil, response != nil else {return}
+//
+//            do {
+//                guard let stocks = try GetData.decode(from: stocksData) else {return}
+//
+//
+//                guard let stocksC = stocks.c else {return}
+//
+//                for (indexC,elemC) in stocksC.enumerated() {
+//                    let elemT = stocks.t![indexC]
+//                    let chartData = ChartDataEntry(x: Double(elemT), y: elemC)
+//                    self.values.append(chartData)
+//
+//                }
+//
+//                guard let stockLast = stocksC.last else {return}
+//                guard let stockFirst = stocksC.first else {return}
+//
+//                DispatchQueue.main.async {
+//                    self.diffPriceOfCrypto.text = {
+//                        return String((stockLast - stockFirst) / stockFirst * 100)
+//                    }()
+//                    self.setData()
+//                    self.lineChartView.xAxis.valueFormatter = MyXAxisFormatter(dateFormat: dateFormat)
+//                    self.lineChartViewSetup()
+//                }
+//
+//
+//            } catch let error as NSError {
+//                print(error.localizedDescription)
+//            }
+//
+//        }.resume()
+//
+//    }
+    
+    func chartLoad(symbol : String, interval : String) {
         
-        let prevDayUnix = Int((Calendar.current.date(byAdding: .hour, value: -25, to: Date()))!.timeIntervalSince1970)
-        let prevMonthUnix = Int((Calendar.current.date(byAdding: .day, value: -21, to: Date()))!.timeIntervalSince1970)
-        let prevYearUnix = Int((Calendar.current.date(byAdding: .month, value: -12, to: Date()))!.timeIntervalSince1970)
-        let nextMinuteUnix = Int((Calendar.current.date(byAdding: .minute, value: +1, to: Date()))!.timeIntervalSince1970)
-        
-        var prevValue = Int()
-        var resolution = String()
-        var dateFormat = String()
-        
-        switch interval {
-        case "day":
-            dateFormat = "MM/dd HH:mm"
-            prevValue = prevDayUnix
-            resolution = "5"
-        case "month":
-            dateFormat = "MMM d"
-            prevValue = prevMonthUnix
-            resolution = "60"
-        case "year":
-            dateFormat = "dd.MM.yy"
-            prevValue = prevYearUnix
-            resolution = "D"
-        default:
-            print("ПРОБЛЕМА В СВИЧ")
-        }
-        
-        let request = NSMutableURLRequest(
-            url: NSURL(string: "https://finnhub.io/api/v1/crypto/candle?symbol=\(symbol)&resolution=\(resolution)&from=\(prevValue)&to=\(nextMinuteUnix)&token=c12ev3748v6oi252n1fg")! as URL,
-            cachePolicy: .useProtocolCachePolicy,
-            timeoutInterval: 10.0)
-        request.httpMethod = "GET"
-        request.allHTTPHeaderFields = finHubToken
-        URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
-            guard let stocksData = data, error == nil, response != nil else {return}
+        NetworkManager.shared.getFinHubData(symbol: symbol, interval: interval) { (dict) in
+            let stocks = dict["stocks"] as! GetData
+            let dateFormat = dict["dateFormat"] as! String
             
-            do {
-                guard let stocks = try GetData.decode(from: stocksData) else {return}
-                guard let stocksC = stocks.c else {return}
+            guard let stocksC = stocks.c else {return}
+            for (indexC,elemC) in stocksC.enumerated() {
+                let elemT = stocks.t![indexC]
+                let chartData = ChartDataEntry(x: Double(elemT), y: elemC)
+                self.values.append(chartData)
                 
-                for (indexC,elemC) in stocksC.enumerated() {
-                    let elemT = stocks.t![indexC]
-                    let chartData = ChartDataEntry(x: Double(elemT), y: elemC)
-                    self.values.append(chartData)
-                    
-                }
-                
-                guard let stockLast = stocksC.last else {return}
-                guard let stockFirst = stocksC.first else {return}
-                
-                DispatchQueue.main.async {
-                    self.diffPriceOfCrypto.text = {
-                        return String((stockLast - stockFirst) / stockFirst * 100)
-                    }()
-                    self.setData()
-                    self.lineChartView.xAxis.valueFormatter = MyXAxisFormatter(dateFormat: dateFormat)
-                    self.lineChartViewSetup()
-                }
-                
-                
-            } catch let error as NSError {
-                print(error.localizedDescription)
             }
             
-        }.resume()
-        
+            guard let stockLast = stocksC.last else {return}
+            guard let stockFirst = stocksC.first else {return}
+            
+            DispatchQueue.main.async {
+                self.diffPriceOfCrypto.text = {
+                    return String((stockLast - stockFirst) / stockFirst * 100)
+                }()
+                self.priceOfCrypto.text = String(stockLast)
+                self.setData()
+                self.lineChartView.xAxis.valueFormatter = MyXAxisFormatter(dateFormat: dateFormat)
+                self.lineChartViewSetup()
+            }
+        }
     }
+    
     
     func setData() {
         let set1 = LineChartDataSet(entries: values)

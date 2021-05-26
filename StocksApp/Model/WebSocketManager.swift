@@ -245,20 +245,82 @@ class NetworkManager  {
 //        }
 //        self.groupA.leave()
 //    }
-    func getFinHubData(symbol : String, complition : @escaping (GetData?)->()){
+    
+    
+//    func getFinHubData(symbol : String, complition : @escaping (GetData?)->()){
+//        groupA.enter()
+//        queueA.async(group : groupA, flags: .barrier){
+//
+//
+//            let symbolForFinHub = "BINANCE:\(symbol)USDT"
+//
+//            // Вынести все юниксы в константы в другой файл
+//            let prevDayUnix = Int((Calendar.current.date(byAdding: .hour, value: -25, to: Date()))!.timeIntervalSince1970)
+//            let nextMinuteUnix = Int((Calendar.current.date(byAdding: .minute, value: +1, to: Date()))!.timeIntervalSince1970)
+//
+//
+//            let request = NSMutableURLRequest(
+//                url: NSURL(string: "https://finnhub.io/api/v1/crypto/candle?symbol=\(symbolForFinHub)&resolution=5&from=\(prevDayUnix)&to=\(nextMinuteUnix)&token=c12ev3748v6oi252n1fg")! as URL,
+//                cachePolicy: .useProtocolCachePolicy,
+//                timeoutInterval: 10.0)
+//            //Нужно ли указывать метод? Он же по дефолту ГЕТ
+//            request.httpMethod = "GET"
+//            request.allHTTPHeaderFields = self.finHubToken
+//
+//
+//            URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
+//                guard let stocksData = data, error == nil, response != nil else {return}
+//
+//                do {
+//                    let stocks = try GetData.decode(from: stocksData)
+//                    complition(stocks)
+//
+//                } catch let error as NSError {
+//                    print(error.localizedDescription)
+//                }
+//
+//
+//            }.resume()
+//        }
+//        self.groupA.leave()
+//    }
+    
+    func getFinHubData(symbol : String, interval : String = "day", complition : @escaping ([String : Any])->()){
         groupA.enter()
         queueA.async(group : groupA, flags: .barrier){
-            
+            print("SYMBOL \(symbol)")
             
             let symbolForFinHub = "BINANCE:\(symbol)USDT"
             
             // Вынести все юниксы в константы в другой файл
-            let prevDayUnix = Int((Calendar.current.date(byAdding: .hour, value: -24, to: Date()))!.timeIntervalSince1970)
+            let prevDayUnix = Int((Calendar.current.date(byAdding: .hour, value: -25, to: Date()))!.timeIntervalSince1970)
+            let prevMonthUnix = Int((Calendar.current.date(byAdding: .day, value: -21, to: Date()))!.timeIntervalSince1970)
+            let prevYearUnix = Int((Calendar.current.date(byAdding: .month, value: -12, to: Date()))!.timeIntervalSince1970)
             let nextMinuteUnix = Int((Calendar.current.date(byAdding: .minute, value: +1, to: Date()))!.timeIntervalSince1970)
             
+            var prevValue = Int()
+            var resolution = String()
+            var dateFormat = String()
+            
+            switch interval {
+            case "day":
+                dateFormat = "MM/dd HH:mm"
+                prevValue = prevDayUnix
+                resolution = "5"
+            case "month":
+                dateFormat = "MMM d"
+                prevValue = prevMonthUnix
+                resolution = "60"
+            case "year":
+                dateFormat = "dd.MM.yy"
+                prevValue = prevYearUnix
+                resolution = "D"
+            default:
+                print("ПРОБЛЕМА В СВИЧ")
+            }
             
             let request = NSMutableURLRequest(
-                url: NSURL(string: "https://finnhub.io/api/v1/crypto/candle?symbol=\(symbolForFinHub)&resolution=5&from=\(prevDayUnix)&to=\(nextMinuteUnix)&token=c12ev3748v6oi252n1fg")! as URL,
+                url: NSURL(string: "https://finnhub.io/api/v1/crypto/candle?symbol=\(symbolForFinHub)&resolution=\(resolution)&from=\(prevValue)&to=\(nextMinuteUnix)&token=c12ev3748v6oi252n1fg")! as URL,
                 cachePolicy: .useProtocolCachePolicy,
                 timeoutInterval: 10.0)
             //Нужно ли указывать метод? Он же по дефолту ГЕТ
@@ -270,8 +332,10 @@ class NetworkManager  {
                 guard let stocksData = data, error == nil, response != nil else {return}
                 
                 do {
-                    let stocks = try GetData.decode(from: stocksData)
-                    complition(stocks)
+                    guard let stocks = try GetData.decode(from: stocksData) else {return}
+                    let dict = ["stocks" : stocks, "dateFormat" : dateFormat] as [String : Any]
+
+                    complition(dict)
                     
                 } catch let error as NSError {
                     print(error.localizedDescription)
@@ -283,9 +347,10 @@ class NetworkManager  {
         self.groupA.leave()
     }
     
+    
     func newMethod(symbol:String) {
         
-        getFinHubData(symbol: symbol) { (stocks) in
+        getFinHubData(symbol: symbol) { (dict) in
             
 //            if stocks == nil {
 //                for (index, elem) in self.symbols.enumerated() {
@@ -304,9 +369,12 @@ class NetworkManager  {
 //                    }
 //                }
 //            }
+            
+            // HHHHHHHHHH
+            let stocks = dict["stocks"] as! GetData
 
-            guard let stockLast = stocks?.c?.last else {return}
-            guard let stockFirst = stocks?.c?.first else {return}
+            guard let stockLast = stocks.c?.last else {return}
+            guard let stockFirst = stocks.c?.first else {return}
             
             for (index,elem) in self.symbols.enumerated() {
                 if elem == symbol {
@@ -443,56 +511,55 @@ class NetworkManager  {
         for i in array {
             let symbol = i.symbolOfCrypto
             let indexOfSymbol = self.binarySearchFoCoinGeckoList(key: symbol.lowercased(), list: self.coinGecoList)
-            self.getCoinGeckoData2(symbol: self.coinGecoList[indexOfSymbol!].id!, array: array) { (stocks) in
+            self.getCoinGeckoData2(symbol: self.coinGecoList[indexOfSymbol!].id!) { (stocks) in
                 i.descriptionOfCrypto = stocks.geckoSymbolDescription?.en
                 i.nameOfCrypto = stocks.name
                 
             }
         }
-        
     }
     
     
     
-    func getCoinGeckoData(symbol: String, tableView : [UITableView]) {
-        
-        queueB.sync(flags: .barrier){
-            
-            let request = NSMutableURLRequest(
-                url: NSURL(string: "https://api.coingecko.com/api/v3/coins/\(symbol)?localization=false&tickers=false&market_data=false&community_data=true&developer_data=false&sparkline=false")! as URL,
-                cachePolicy: .useProtocolCachePolicy,
-                timeoutInterval: 10.0)
-            request.httpMethod = "GET"
-            
-            URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
-                guard let stocksData = data, error == nil, response != nil else {return}
-                do {
-                    let stocks = try GeckoSymbol.decode(from: stocksData)
-                    for elemOfResults in self.results {
-                        if elemOfResults.symbolOfCrypto == stocks?.symbol?.uppercased() {
-                            elemOfResults.nameOfCrypto = stocks?.name
-                            elemOfResults.descriptionOfCrypto = stocks?.geckoSymbolDescription?.en
-                        }
-                    }
-                    for elemOfResults in self.resultsF {
-                        if elemOfResults.symbolOfCrypto == stocks?.symbol?.uppercased() {
-                            elemOfResults.nameOfCrypto = stocks?.name
-                            elemOfResults.descriptionOfCrypto = stocks?.geckoSymbolDescription?.en
-                            
-                        }
-                    }
-                    DispatchQueue.main.async {
-                        tableView.first?.reloadData()
-                    }
-                    
-                } catch let error as NSError {
-                    print(error.localizedDescription)
-                }
-            }.resume()
-        }
-    }
+//    func getCoinGeckoData(symbol: String, tableView : [UITableView]) {
+//
+//        queueB.sync(flags: .barrier){
+//
+//            let request = NSMutableURLRequest(
+//                url: NSURL(string: "https://api.coingecko.com/api/v3/coins/\(symbol)?localization=false&tickers=false&market_data=false&community_data=true&developer_data=false&sparkline=false")! as URL,
+//                cachePolicy: .useProtocolCachePolicy,
+//                timeoutInterval: 10.0)
+//            request.httpMethod = "GET"
+//
+//            URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
+//                guard let stocksData = data, error == nil, response != nil else {return}
+//                do {
+//                    let stocks = try GeckoSymbol.decode(from: stocksData)
+//                    for elemOfResults in self.results {
+//                        if elemOfResults.symbolOfCrypto == stocks?.symbol?.uppercased() {
+//                            elemOfResults.nameOfCrypto = stocks?.name
+//                            elemOfResults.descriptionOfCrypto = stocks?.geckoSymbolDescription?.en
+//                        }
+//                    }
+//                    for elemOfResults in self.resultsF {
+//                        if elemOfResults.symbolOfCrypto == stocks?.symbol?.uppercased() {
+//                            elemOfResults.nameOfCrypto = stocks?.name
+//                            elemOfResults.descriptionOfCrypto = stocks?.geckoSymbolDescription?.en
+//
+//                        }
+//                    }
+//                    DispatchQueue.main.async {
+//                        tableView.first?.reloadData()
+//                    }
+//
+//                } catch let error as NSError {
+//                    print(error.localizedDescription)
+//                }
+//            }.resume()
+//        }
+//    }
     
-    func getCoinGeckoData2(symbol: String, array : [Crypto], complition : @escaping (GeckoSymbol)->()) {
+    func getCoinGeckoData2(symbol: String, complition : @escaping (GeckoSymbol)->()) {
         
         queueB.sync(flags: .barrier){
             
@@ -580,25 +647,23 @@ class NetworkManager  {
         
         URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
             guard let stocksData = data, error == nil, response != nil else {return}
+            
             do {
-                
                 guard let elems = try FullBinanceList.decode(from: stocksData) else {return}
-                
-                var index = 0
-                var btc = 0
+//                var index = 0
+//                var btc = 0
                 
                 for i in elems {
                     
                     let secondElementOfSymbol = i.displaySymbol?.split(separator: "/")[1]
                     let firstElementOfSymbol = i.displaySymbol?.split(separator: "/").first
-                    
                     let symbolOfFinHubList = String((i.displaySymbol?.split(separator: "/").first)!)
                     let indexOfGeckoList = self.binarySearchFoCoinGeckoList(key: symbolOfFinHubList.lowercased(), list: self.coinGecoList)
-                    if firstElementOfSymbol == "BTC" {
-                        btc += 1
-                    }
+                    
+//                    if firstElementOfSymbol == "BTC" {
+//                        btc += 1
+//                    }
                     if secondElementOfSymbol == "USDT" {
-                        
                         if indexOfGeckoList != nil {
                             let name = self.coinGecoList[indexOfGeckoList!].name!
                             let displaySymbol = self.coinGecoList[indexOfGeckoList!].symbol?.uppercased()
@@ -608,53 +673,49 @@ class NetworkManager  {
                                 if j["symbol"]!! == firstElementOfSymbol! {
                                     rank = Int(j["rank"]!!)!
                                 }
-                                
                             }
                             let elem = FullBinanceListElement(fullBinanceListDescription: name, displaySymbol: displaySymbol, symbol: i.symbol, id : id, rank: rank)
                             self.fullBinanceList.append(elem)
-                            index += 1
+//                            index += 1
                         }
-                        
-                        
                     }
                 }
                 
                 self.fullBinanceList.sort{$0.rank ?? 101 < $1.rank ?? 101}
                 
-                for index in 0..<20 {
-                    let symbolOfCrypto = self.fullBinanceList[index].displaySymbol!
-                    let crypto = Crypto(symbolOfCrypto: symbolOfCrypto, index: 0.0, closePrice: 0.0, nameOfCrypto: self.fullBinanceList[index].fullBinanceListDescription, descriptionOfCrypto: "", symbolOfTicker: self.fullBinanceList[index].symbol)
-                    
-                    self.collectionViewArray.append(crypto)
-                    self.websocketArray.append(symbolOfCrypto)
-                    
-                    
-//                    self.getFinHubData2(symbol: symbolOfCrypto) { (arr) in
-//                        let firstNumber = arr.first!
-//                        let secondNumber = arr[1]
-//                        self.collectionViewArray[index].index = firstNumber
-//                        self.collectionViewArray[index].closePrice = secondNumber
-//                    }
-                    
-                    self.getFinHubData(symbol: symbolOfCrypto) { (stocks) in
-                        guard let stockLast = stocks?.c?.last else {return}
-                        guard let stockFirst = stocks?.c?.first else {return}
-                        self.collectionViewArray[index].index = stockLast
-                        self.collectionViewArray[index].closePrice = stockFirst
-                    }
-
-                }
-                self.test2(array: &self.collectionViewArray)
-                self.webSocket2(symbols: self.websocketArray)
-                
-                
-                
+                self.collectionViewLoad()
                 
                 
             } catch let error as NSError {
                 print(error.localizedDescription)
             }
         }.resume()
+        
+    }
+    
+    func collectionViewLoad() {
+        
+        for index in 0..<20 {
+            let symbolOfCrypto = self.fullBinanceList[index].displaySymbol!
+            
+            let crypto = Crypto(symbolOfCrypto: symbolOfCrypto, index: 0.0, closePrice: 0.0, nameOfCrypto: self.fullBinanceList[index].fullBinanceListDescription, descriptionOfCrypto: "", symbolOfTicker: self.fullBinanceList[index].symbol)
+            
+            self.collectionViewArray.append(crypto)
+            self.websocketArray.append(symbolOfCrypto)
+            
+            
+            self.getFinHubData(symbol: symbolOfCrypto) { (dict) in
+                let stocks = dict["stocks"] as! GetData
+                guard let stockLast = stocks.c?.last else {return}
+                guard let stockFirst = stocks.c?.first else {return}
+                self.collectionViewArray[index].index = stockLast
+                self.collectionViewArray[index].closePrice = stockFirst
+            }
+
+        }
+        
+        self.test2(array: &self.collectionViewArray)
+        self.webSocket2(symbols: self.websocketArray)
         
     }
     
