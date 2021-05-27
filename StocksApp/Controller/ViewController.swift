@@ -12,7 +12,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
     
     let finHubToken = Constants.finHubToken
-//    let networkManager = NetworkManager()
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var collectionView: UICollectionView!
     var results = [Crypto]()
@@ -82,8 +81,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         if isFiltering {
             return filteredResults.count
         }
-        
-//        return NetworkManager.shared.results.count
         return NetworkManager.shared.results.count
         
     }
@@ -105,7 +102,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             cell.textViewTest = ""
             
         } else {
-//            let results = NetworkManager.shared.results[indexPath.row]
             let results = NetworkManager.shared.results[indexPath.row]
             cell.symbol.text = results.symbolOfCrypto
             cell.name.text = results.nameOfCrypto
@@ -115,7 +111,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             cell.textViewTest = results.descriptionOfCrypto ?? ""
             cell.symbolOfTicker = "BINANCE:\(results.symbolOfTicker!)"
             
-            
         }
         
         
@@ -124,13 +119,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return NetworkManager.shared.collectionViewArray.count
         NetworkManager.shared.collectionViewArray.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as? CollectionViewCell else {return UICollectionViewCell()}
-//        cell.label.text = NetworkManager.shared.collectionViewArray[indexPath.row].nameOfCrypto
         let item = NetworkManager.shared.collectionViewArray[indexPath.item]
         
         cell.update(item: item)

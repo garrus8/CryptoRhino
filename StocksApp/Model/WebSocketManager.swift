@@ -204,6 +204,7 @@ class NetworkManager  {
                 do {
                     guard let stocks = try GetData.decode(from: stocksData) else {return}
                     let dict = ["stocks" : stocks, "dateFormat" : dateFormat] as [String : Any]
+                    
 
                     complition(dict)
                     
@@ -481,7 +482,6 @@ class NetworkManager  {
                 }
             }
             
-            
             self.webSocketTask.resume()
             self.ping()
             
@@ -502,6 +502,78 @@ class NetworkManager  {
         }
     }
     
+//    func receiveMessage(tableView : [UITableView], collectionView : UICollectionView) {
+//        groupA.wait()
+//        queueC.async {
+//            self.webSocketTask.receive { [weak self] result in
+//                guard let self = self else {return}
+//                switch result {
+//                case .failure(let error):
+//                    print("Error in receiving message: \(error)")
+//                case .success(let message):
+//                    switch message {
+//                    case .string(let text):
+//                        if let data: Data = text.data(using: .utf8) {
+//                            if let tickData = try? WebSocketData.decode(from: data)?.data {
+//
+//                                for itemA in tickData {
+//                                    for (indexB,itemB) in (self.results).enumerated() {
+//                                        let itemBForFinHub = "BINANCE:\(itemB.symbolOfCrypto.uppercased())USDT"
+//                                        if itemA.s == itemBForFinHub {
+//
+//                                            self.results[indexB].index = itemA.p
+//
+//
+//                                            // DELEGATE
+//                                            //                                        self.delegate?.updateData(results: self.results)
+//
+//                                        }
+//                                    }
+//                                    for (indexB,itemB) in (self.collectionViewArray).enumerated() {
+//                                        let itemBForFinHub = "BINANCE:\(itemB.symbolOfCrypto.uppercased())USDT"
+//                                        if itemA.s == itemBForFinHub {
+//
+//                                            self.collectionViewArray[indexB].index = itemA.p
+//
+//
+//                                            // DELEGATE
+//                                            //                                        self.delegate?.updateData(results: self.results)
+//
+//                                        }
+//                                    }
+//                                    for (indexB,itemB) in (self.resultsF).enumerated() {
+//                                        let itemBForFinHub = "BINANCE:\(itemB.symbolOfCrypto.uppercased())USDT"
+//                                        if itemA.s == itemBForFinHub {
+//                                            self.resultsF[indexB].index = itemA.p
+//                                            self.dict["Key"] = self.resultsF
+//                                            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "WebsocketDataUpdate"), object: nil, userInfo: self.dict)
+//
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                        }
+//
+//
+//                    case .data(let data):
+//                        print("Received data: \(data)")
+//                    @unknown default:
+//                        fatalError()
+//                    }
+//
+//                    DispatchQueue.main.async {
+//                        for i in tableView {
+//                            i.reloadData()
+//                        }
+//                        collectionView.reloadData()
+//
+//                    }
+//                    self.receiveMessage(tableView: tableView, collectionView: collectionView)
+//                }
+//            }
+//        }
+//    }
+    
     func receiveMessage(tableView : [UITableView], collectionView : UICollectionView) {
         groupA.wait()
         queueC.async {
@@ -516,50 +588,19 @@ class NetworkManager  {
                         if let data: Data = text.data(using: .utf8) {
                             if let tickData = try? WebSocketData.decode(from: data)?.data {
                                 
-                                for itemA in tickData {
-                                    for (indexB,itemB) in (self.results).enumerated() {
-                                        let itemBForFinHub = "BINANCE:\(itemB.symbolOfCrypto.uppercased())USDT"
-                                        if itemA.s == itemBForFinHub {
-                                            
-                                            self.results[indexB].index = itemA.p
-                                            
-                                            
-                                            // DELEGATE
-                                            //                                        self.delegate?.updateData(results: self.results)
-                                            
-                                        }
-                                    }
-                                    for (indexB,itemB) in (self.collectionViewArray).enumerated() {
-                                        let itemBForFinHub = "BINANCE:\(itemB.symbolOfCrypto.uppercased())USDT"
-                                        if itemA.s == itemBForFinHub {
-                                            
-                                            self.collectionViewArray[indexB].index = itemA.p
-                                            
-                                            
-                                            // DELEGATE
-                                            //                                        self.delegate?.updateData(results: self.results)
-                                            
-                                        }
-                                    }
-                                    for (indexB,itemB) in (self.resultsF).enumerated() {
-                                        let itemBForFinHub = "BINANCE:\(itemB.symbolOfCrypto.uppercased())USDT"
-                                        if itemA.s == itemBForFinHub {
-                                            self.resultsF[indexB].index = itemA.p
-                                            self.dict["Key"] = self.resultsF
-                                            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "WebsocketDataUpdate"), object: nil, userInfo: self.dict)
-                                            
-                                        }
-                                    }
-                                }
+                                self.putDataFromWebSocket(tickData: tickData, array: self.collectionViewArray)
+                                self.putDataFromWebSocket(tickData: tickData, array: self.results)
+                                self.putDataFromWebSocket(tickData: tickData, array: self.resultsF, isFavorite: true)
+                                //                        self.putDataFromWebSocket(tickData: tickData)
                             }
                         }
-                        
                         
                     case .data(let data):
                         print("Received data: \(data)")
                     @unknown default:
                         fatalError()
                     }
+                    
                     
                     DispatchQueue.main.async {
                         for i in tableView {
@@ -569,6 +610,52 @@ class NetworkManager  {
                         
                     }
                     self.receiveMessage(tableView: tableView, collectionView: collectionView)
+                }
+            }
+        }
+    }
+    
+    
+    func putDataFromWebSocket (tickData : [Datum]) {
+
+        for itemA in tickData {
+            
+            for (indexB,itemB) in (self.results).enumerated() {
+                let itemBForFinHub = "BINANCE:\(itemB.symbolOfCrypto.uppercased())USDT"
+                if itemA.s == itemBForFinHub {
+                    self.results[indexB].index = itemA.p
+                }
+            }
+            for (indexB,itemB) in (self.collectionViewArray).enumerated() {
+                let itemBForFinHub = "BINANCE:\(itemB.symbolOfCrypto.uppercased())USDT"
+                if itemA.s == itemBForFinHub {
+                    self.collectionViewArray[indexB].index = itemA.p
+
+                }
+            }
+            for (indexB,itemB) in (self.resultsF).enumerated() {
+                let itemBForFinHub = "BINANCE:\(itemB.symbolOfCrypto.uppercased())USDT"
+                if itemA.s == itemBForFinHub {
+                    self.resultsF[indexB].index = itemA.p
+                    self.dict["Key"] = self.resultsF
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "WebsocketDataUpdate"), object: nil, userInfo: self.dict)
+
+                }
+            }
+        }
+
+    }
+    func putDataFromWebSocket (tickData : [Datum], array : [Crypto], isFavorite : Bool = false) {
+
+        for itemA in tickData {
+            for (indexB,itemB) in array.enumerated() {
+                let itemBForFinHub = "BINANCE:\(itemB.symbolOfCrypto.uppercased())USDT"
+                if itemA.s == itemBForFinHub {
+                    array[indexB].index = itemA.p
+                    if isFavorite {
+                        self.dict["Key"] = self.resultsF
+                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "WebsocketDataUpdate"), object: nil, userInfo: self.dict)
+                    }
                 }
             }
         }
