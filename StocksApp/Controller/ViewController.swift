@@ -51,25 +51,37 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         searchController.searchBar.placeholder = "Name or symbol of cryptocurrency"
         navigationItem.searchController = searchController
         definesPresentationContext = true
-        let queue1 = DispatchQueue(label: "1")
         
-        queue1.sync {
-//            NetworkManager.shared.deleteAllData()
+        
+            //            NetworkManager.shared.deleteAllData()
             NetworkManager.shared.getData()
-            NetworkManager.shared.getTopOfCrypto(tableView: [self.tableView])
-            NetworkManager.shared.getFullListOfCrypto()
-            NetworkManager.shared.test2(array: &NetworkManager.shared.resultsF)
-            NetworkManager.shared.test2(array: &NetworkManager.shared.results)
-//            NetworkManager.shared.webSocket(symbols: NetworkManager.shared.symbols, symbolsF: NetworkManager.shared.symbolsF)
+            NetworkManager.shared.getTopOfCrypto()
+            NetworkManager.shared.getFullListOfCoinGecko()
+            NetworkManager.shared.getFullCoinCapList()
+            NetworkManager.shared.getFullBinanceList()
+        
+            NetworkManager.shared.putCoinGeckoData(array: &NetworkManager.shared.results, group: NetworkManager.shared.groupTwo)
+            //        NetworkManager.shared.putCoinGeckoData(array: &NetworkManager.shared.resultsF)
+            
+            
+            
+            
+            
+            NetworkManager.shared.collectionViewLoad()
+            NetworkManager.shared.updateUI(tableViews: [self.tableView, self.favoritesVC.tableView], collectionViews: [self.collectionView])
+            
+            //            NetworkManager.shared.webSocket(symbols: NetworkManager.shared.symbols, symbolsF: NetworkManager.shared.symbolsF)
             
             
             
             NetworkManager.shared.webSocket2(symbols: NetworkManager.shared.websocketArray)
-            NetworkManager.shared.receiveMessage(tableView: [self.tableView], collectionView: self.collectionView)
+            NetworkManager.shared.receiveMessage(tableView: [self.tableView], collectionView: [self.collectionView])
+            
         
-            NetworkManager.shared.getFullCoinCapList()
-            self.collectionView.reloadData()
-        }
+        
+            
+            
+        
         
         
         

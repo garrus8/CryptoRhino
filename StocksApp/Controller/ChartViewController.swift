@@ -65,7 +65,7 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         nameOfCrypto.text = nameOfCryptoText
 
         if textTest.isEmpty {
-            NetworkManager.shared.getCoinGeckoData2(symbol: idOfCrypto) { (stocks) in
+            NetworkManager.shared.getCoinGeckoData(symbol: idOfCrypto, group: NetworkManager.shared.groupTwo) { (stocks) in
                 DispatchQueue.main.async {
                     self.textView.text = stocks.geckoSymbolDescription?.en
                     
@@ -131,6 +131,8 @@ class ChartViewController: UIViewController, ChartViewDelegate {
             let object = Favorites(context: context)
             object.symbol = favoriteSymbol
             object.symbolOfTicker = favoriteTicker
+            object.name = nameOfCryptoText
+            object.descrtiption = textView.text
             object.date = Date()
             
             
@@ -140,7 +142,7 @@ class ChartViewController: UIViewController, ChartViewDelegate {
                 print(error.localizedDescription)
             }
             NetworkManager.shared.getData()
-            NetworkManager.shared.test2(array: &NetworkManager.shared.resultsF)
+//            NetworkManager.shared.putCoinGeckoData(array: &NetworkManager.shared.resultsF, group: NetworkManager.shared.groupTwo)
             NetworkManager.shared.webSocket(symbols: NetworkManager.shared.symbols, symbolsF: NetworkManager.shared.symbolsF)
 
         }
@@ -177,7 +179,7 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     
     func chartLoad(symbol : String, interval : String) {
         
-        NetworkManager.shared.getFinHubData(symbol: symbol, interval: interval) { (dict) in
+        NetworkManager.shared.getFinHubData(symbol: symbol, interval: interval, group: NetworkManager.shared.groupTwo) { (dict) in
             let stocks = dict["stocks"] as! GetData
             let dateFormat = dict["dateFormat"] as! String
             
