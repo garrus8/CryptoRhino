@@ -339,19 +339,7 @@ class NetworkManager  {
                 
                 
                 print("SYMBOLS COUNT:", self.symbols.count,"RESULTS COUNT:", self.results.count, "SYMBOLS:", self.symbols, "RESULTS:", self.results.map({ $0.symbolOfCrypto}) )
-                //                for (index,elem) in self.symbols.enumerated() {
-                //                    if elem == symbol {
-                //
-                //                        DispatchQueue.global().async(flags: .barrier) {
-                //                            group.enter()
-                //                            self.results[index].symbolOfCrypto = symbol
-                //                            self.results[index].index = stockLast
-                //                            self.results[index].closePrice = stockFirst
-                //                            print("putFinHubData out")
-                //                            group.leave()
-                //                        }
-                //                    }
-                //                }
+
                 for elem in self.results {
                     if elem.symbolOfCrypto == symbol {
                         DispatchQueue.global().async(group: self.groupTwo,flags: .barrier) {
@@ -380,48 +368,7 @@ class NetworkManager  {
             //            self.groupTwo.leave()
         }
     }
-    
-    //    func putFinHubData(symbol:String, group : DispatchGroup) {
-    //        // GROUP 2
-    //
-    //        DispatchQueue.global().async(group: group) {
-    //            self.groupOne.wait()
-    //
-    //            print("putFinHubData in")
-    //            self.getFinHubData(symbol: symbol) { (dict) in
-    //                let stocks = dict["stocks"] as! GetData
-    //
-    //                guard let stockLast = stocks.c?.last else {return}
-    //                guard let stockFirst = stocks.c?.first else {return}
-    //
-    //                for elem in self.results {
-    //                    if elem.symbolOfCrypto == symbol {
-    //                        group.enter()
-    //                        DispatchQueue.global().async(flags: .barrier) {
-    //
-    //                            elem.index = stockLast
-    //                            elem.closePrice = stockFirst
-    //                            print("putFinHubData out")
-    //                            group.leave()
-    //                        }
-    //                    }
-    //                }
-    //
-    //                for elem in self.resultsF {
-    //                    if elem.symbolOfCrypto == symbol {
-    //                        group.enter()
-    //                        DispatchQueue.global().async(flags: .barrier) {
-    //
-    //                            elem.index = stockLast
-    //                            elem.closePrice = stockFirst
-    //                            print("putFinHubData out")
-    //                            group.leave()
-    //                        }
-    //                    }
-    //                }
-    //            }
-    //        }
-    //    }
+ 
     
     func putCoinGeckoData(array : inout [Crypto], group: DispatchGroup) {
         print("putCoinGeckoData wait")
@@ -523,86 +470,6 @@ class NetworkManager  {
     }
     let queue = DispatchQueue(label: "123", qos: .userInitiated)
     
-    //    func collectionViewLoad() {
-    //        // GROUP 3
-    //        groupOne.wait()
-    //        groupTwo.wait()
-    //        // Если элемент есть уже в результатах для tableview, не делать запрос, добавлять этот элемент
-    //        print("____________________________")
-    //        DispatchQueue.global().async{
-    //            print("collectionViewArray count 1:", self.collectionViewArray.count)
-    //
-    //            for index in 0..<15 {
-    //                self.groupThree.enter()
-    //                //            DispatchQueue.global().async{
-    //                print("INDEX",index)
-    //                let symbolOfCrypto = self.fullBinanceList[index].displaySymbol!
-    //                print("SYMBOL OF CRYPTO", symbolOfCrypto)
-    //                let crypto = Crypto(symbolOfCrypto: symbolOfCrypto, index: 0.0, closePrice: 0.0, nameOfCrypto: self.fullBinanceList[index].fullBinanceListDescription, descriptionOfCrypto: "", symbolOfTicker: self.fullBinanceList[index].symbol)
-    //
-    //                self.queue.async {
-    //                    print("!!!!!!!!!!!",index,crypto.symbolOfCrypto)
-    //                    self.collectionViewArray.append(crypto)
-    //                    self.websocketArray.append(symbolOfCrypto)
-    //                    print("collectionViewArray count 2:", self.collectionViewArray.count)
-    //
-    //                }
-    //
-    //                self.queue.async {
-    //                    if self.symbols.contains(symbolOfCrypto) {
-    //                        for (index,elem) in self.results.enumerated() {
-    //                            if elem.symbolOfCrypto == symbolOfCrypto {
-    //                                print("INDEX2", index)
-    //                                print(elem.symbolOfCrypto, symbolOfCrypto)
-    //                                self.collectionViewArray[index].index = elem.index
-    //                                self.collectionViewArray[index].closePrice = elem.closePrice
-    //                            }
-    //                        }
-    //
-    //                    } else {
-    //                        self.getFinHubData(symbol: symbolOfCrypto, group: self.groupThree) { (dict) in
-    //                            let stocks = dict["stocks"] as! GetData
-    //                            print("STOCKSSTOCKSSTOCKS")
-    //                            guard let stockLast = stocks.c?.last else {return}
-    //                            guard let stockFirst = stocks.c?.first else {return}
-    //                            print("self.collectionViewArray[index]",self.collectionViewArray[index])
-    //                            print("collectionViewArray count 3:", self.collectionViewArray.count)
-    //                            self.collectionViewArray[index].index = stockLast
-    //                            self.collectionViewArray[index].closePrice = stockFirst
-    //                        }
-    //                    }
-    //
-    //                }
-    //
-    //
-    //                //                self.queue.async {
-    //                //                    print("SymbolOfCrypto", symbolOfCrypto)
-    //                //                    self.getFinHubData(symbol: symbolOfCrypto, group: self.groupThree) { (dict) in
-    //                ////                        print("Dict", dict)
-    //                //                        let stocks = dict["stocks"] as! GetData
-    //                //                        print("STOCKSSTOCKSSTOCKS")
-    //                //                        guard let stockLast = stocks.c?.last else {return}
-    //                //                        guard let stockFirst = stocks.c?.first else {return}
-    //                ////                        print("StockLast",stockLast)
-    //                //
-    //                //
-    //                //                        print("self.collectionViewArray[index]",self.collectionViewArray[index])
-    //                //                        print("collectionViewArray count 3:", self.collectionViewArray.count)
-    //                //                        self.collectionViewArray[index].index = stockLast
-    //                //                        self.collectionViewArray[index].closePrice = stockFirst
-    //                //                    }
-    //                //                }
-    //                self.groupThree.leave()
-    //            }
-    //
-    //        }
-    //
-    //        //        self.groupThree.wait()
-    //        //        DispatchQueue.global().async {
-    //        //            self.putCoinGeckoData(array: &self.collectionViewArray, group: self.groupFour)
-    //        //
-    //        //        }
-    //    }
     func collectionViewLoad() {
         // GROUP 3
         groupOne.wait()
