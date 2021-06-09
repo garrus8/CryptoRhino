@@ -67,7 +67,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             
             
             
-            NetworkManager.shared.collectionViewLoad()
+//            NetworkManager.shared.collectionViewLoad()
             NetworkManager.shared.updateUI(tableViews: [self.tableView, self.favoritesVC.tableView], collectionViews: [self.collectionView])
             
             //            NetworkManager.shared.webSocket(symbols: NetworkManager.shared.symbols, symbolsF: NetworkManager.shared.symbolsF)

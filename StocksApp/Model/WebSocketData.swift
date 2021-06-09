@@ -16,6 +16,8 @@ class Crypto {
     var nameOfCrypto : String?
     var descriptionOfCrypto : String?
     var symbolOfTicker : String?
+    var id : String?
+    var percentString : String?
 
     var diffPrice : Double {
         return index - closePrice
@@ -25,13 +27,38 @@ class Crypto {
     }
 
 
-    init(symbolOfCrypto : String, index : Double, closePrice: Double, nameOfCrypto: String?, descriptionOfCrypto: String?, symbolOfTicker : String?) {
+    init(symbolOfCrypto : String, index : Double, closePrice: Double, nameOfCrypto: String?, descriptionOfCrypto: String?, symbolOfTicker : String?, id : String?, percentString : String?) {
         self.symbolOfCrypto = symbolOfCrypto
         self.index = index
         self.closePrice = closePrice
         self.nameOfCrypto = nameOfCrypto
         self.descriptionOfCrypto = descriptionOfCrypto
         self.symbolOfTicker = symbolOfTicker
+        self.id = id
+        self.percentString = percentString
+
+    }
+}
+class Crypto2 {
+    var symbolOfCrypto : String
+    var price : String
+    var change : String
+    var nameOfCrypto : String?
+    var descriptionOfCrypto : String?
+    var symbolOfTicker : String?
+    var id : String?
+    var percent : String?
+
+
+    init(symbolOfCrypto : String, price : String, change: String, nameOfCrypto: String?, descriptionOfCrypto: String?, symbolOfTicker : String?, id : String?, percent : String?) {
+        self.symbolOfCrypto = symbolOfCrypto
+        self.price = price
+        self.change = change
+        self.nameOfCrypto = nameOfCrypto
+        self.descriptionOfCrypto = descriptionOfCrypto
+        self.symbolOfTicker = symbolOfTicker
+        self.id = id
+        self.percent = percent
 
     }
 }
