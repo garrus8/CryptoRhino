@@ -9,37 +9,37 @@ import Foundation
 
 
 
+//class Crypto {
+//    var symbolOfCrypto : String
+//    var index : Double
+//    var closePrice : Double
+//    var nameOfCrypto : String?
+//    var descriptionOfCrypto : String?
+//    var symbolOfTicker : String?
+//    var id : String?
+//    var percentString : String?
+//
+//    var diffPrice : Double {
+//        return index - closePrice
+//    }
+//    var percent : Double {
+//        return (index - closePrice) / closePrice * 100
+//    }
+//
+//
+//    init(symbolOfCrypto : String, index : Double, closePrice: Double, nameOfCrypto: String?, descriptionOfCrypto: String?, symbolOfTicker : String?, id : String?, percentString : String?) {
+//        self.symbolOfCrypto = symbolOfCrypto
+//        self.index = index
+//        self.closePrice = closePrice
+//        self.nameOfCrypto = nameOfCrypto
+//        self.descriptionOfCrypto = descriptionOfCrypto
+//        self.symbolOfTicker = symbolOfTicker
+//        self.id = id
+//        self.percentString = percentString
+//
+//    }
+//}
 class Crypto {
-    var symbolOfCrypto : String
-    var index : Double
-    var closePrice : Double
-    var nameOfCrypto : String?
-    var descriptionOfCrypto : String?
-    var symbolOfTicker : String?
-    var id : String?
-    var percentString : String?
-
-    var diffPrice : Double {
-        return index - closePrice
-    }
-    var percent : Double {
-        return (index - closePrice) / closePrice * 100
-    }
-
-
-    init(symbolOfCrypto : String, index : Double, closePrice: Double, nameOfCrypto: String?, descriptionOfCrypto: String?, symbolOfTicker : String?, id : String?, percentString : String?) {
-        self.symbolOfCrypto = symbolOfCrypto
-        self.index = index
-        self.closePrice = closePrice
-        self.nameOfCrypto = nameOfCrypto
-        self.descriptionOfCrypto = descriptionOfCrypto
-        self.symbolOfTicker = symbolOfTicker
-        self.id = id
-        self.percentString = percentString
-
-    }
-}
-class Crypto2 {
     var symbolOfCrypto : String
     var price : String
     var change : String

@@ -65,7 +65,7 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         nameOfCrypto.text = nameOfCryptoText
 
         if textTest.isEmpty {
-            NetworkManager.shared.getCoinGeckoData(symbol: idOfCrypto, group: NetworkManager.shared.groupTwo) { (stocks) in
+            NetworkManager.shared.getCoinGeckoData(symbol: idOfCrypto, group: NetworkManager.shared.groupOne) { (stocks) in
                 DispatchQueue.main.async {
                     self.textView.text = stocks.geckoSymbolDescription?.en
                     

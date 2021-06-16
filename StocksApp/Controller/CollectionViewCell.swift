@@ -22,9 +22,11 @@ class CollectionViewCell: UICollectionViewCell {
     
     func update(item : Crypto) {
         self.nameOfElelm.text = item.nameOfCrypto
-        self.index.text = String(item.index)
+//        self.index.text = String(item.index)
+        self.index.text = item.price
         self.textViewTest = item.descriptionOfCrypto!
-        self.percent = String(item.percent)
+//        self.percent = String(item.percent)
+        self.percent = item.percent!
         self.symbolOfCrypto = item.symbolOfCrypto
         self.symbolOfTicker = "BINANCE:\(item.symbolOfCrypto)USDT"
         

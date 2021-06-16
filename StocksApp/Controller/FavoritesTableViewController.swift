@@ -83,9 +83,11 @@ class FavoritesTableViewController: UITableViewController {
             guard let results = NetworkManager.shared.resultsF[indexPath.row] as Crypto? else {return UITableViewCell()}
             cell.symbol.text = results.symbolOfCrypto
             cell.name.text = results.nameOfCrypto
-            cell.price.text = String(results.index)
-            cell.change.text = String(results.diffPrice)
-            cell.percent.text = String(results.percent)
+            //            cell.price.text = String(results.index)
+            //            cell.change.text = String(results.diffPrice)
+            //            cell.percent.text = String(results.percent)
+            cell.price.text = results.price
+            cell.percent.text = results.percent
             cell.textViewTest = results.descriptionOfCrypto ?? ""
             cell.symbolOfTicker = results.symbolOfTicker!
         }

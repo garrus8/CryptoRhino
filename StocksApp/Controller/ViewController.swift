@@ -53,36 +53,35 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         definesPresentationContext = true
         
         
-            //            NetworkManager.shared.deleteAllData()
-            NetworkManager.shared.getData()
+        //            NetworkManager.shared.deleteAllData()
+        let queue = DispatchQueue(label: "1", qos: .userInteractive)
+        NetworkManager.shared.getData()
+        queue.async {
             NetworkManager.shared.getTopOfCrypto()
             NetworkManager.shared.getFullListOfCoinGecko()
             NetworkManager.shared.getFullCoinCapList()
             NetworkManager.shared.getFullBinanceList()
+        }
         
-            NetworkManager.shared.putCoinGeckoData(array: &NetworkManager.shared.results, group: NetworkManager.shared.groupTwo)
-            //        NetworkManager.shared.putCoinGeckoData(array: &NetworkManager.shared.resultsF)
-            
-            
-            
-            
-            
-//            NetworkManager.shared.collectionViewLoad()
+        //        NetworkManager.shared.putCoinGeckoData(array: &NetworkManager.shared.results, group: NetworkManager.shared.groupTwo)
+        //                    NetworkManager.shared.putCoinGeckoData(array: &NetworkManager.shared.resultsF)
+        queue.async {
+            NetworkManager.shared.coinCap2Run()
+        }
+//        queue.async {
+//            NetworkManager.shared.collectionViewLoad(coinCapDict: NetworkManager.shared.coinCapDict)
+//            DispatchQueue.main.async {
+//                NetworkManager.shared.webSocket2(symbols: NetworkManager.shared.websocketArray)
+//                NetworkManager.shared.receiveMessage(tableView: [self.tableView], collectionView: [self.collectionView])
+//                NetworkManager.shared.updateUI(tableViews: [self.tableView, self.favoritesVC.tableView], collectionViews: [self.collectionView])
+//            }
+//        }
+        queue.sync {
+            NetworkManager.shared.collectionViewLoad(coinCapDict: NetworkManager.shared.coinCapDict)
+        }
+        NetworkManager.shared.webSocket2(symbols: NetworkManager.shared.websocketArray)
+        NetworkManager.shared.receiveMessage(tableView: [self.tableView], collectionView: [self.collectionView])
             NetworkManager.shared.updateUI(tableViews: [self.tableView, self.favoritesVC.tableView], collectionViews: [self.collectionView])
-            
-            //            NetworkManager.shared.webSocket(symbols: NetworkManager.shared.symbols, symbolsF: NetworkManager.shared.symbolsF)
-            
-            
-            
-            NetworkManager.shared.webSocket2(symbols: NetworkManager.shared.websocketArray)
-            NetworkManager.shared.receiveMessage(tableView: [self.tableView], collectionView: [self.collectionView])
-            
-        
-        
-            
-            
-        
-        
         
         
     }
@@ -117,9 +116,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             let results = NetworkManager.shared.results[indexPath.row]
             cell.symbol.text = results.symbolOfCrypto
             cell.name.text = results.nameOfCrypto
-            cell.price.text = String(results.index)
-            cell.change.text = String(results.diffPrice)
-            cell.percent.text = String(results.percent)
+//            cell.price.text = String(results.index)
+//            cell.change.text = String(results.diffPrice)
+//            cell.percent.text = String(results.percent)
+            cell.price.text = results.price
+            cell.percent.text = results.percent
             cell.textViewTest = results.descriptionOfCrypto ?? ""
             cell.symbolOfTicker = "BINANCE:\(results.symbolOfTicker!)"
             
@@ -159,6 +160,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         if segue.identifier == "TableVIewSegue" {
             let cell = sender as! TableViewCell
             chartVC.textTest = cell.textViewTest
+            print(cell.textViewTest)
             chartVC.symbolOfCurrentCrypto = cell.symbol.text!
             chartVC.symbolOfTicker = cell.symbolOfTicker
             chartVC.idOfCrypto = cell.idOfCrypto
@@ -191,20 +193,21 @@ extension ViewController : UISearchResultsUpdating   {
         filterContentForSearchText(searchController.searchBar.text!)
     }
     func filterContentForSearchText(_ searchText : String){
-        
+
         filteredResults = NetworkManager.shared.fullBinanceList.filter({ (searchElem : FullBinanceListElement) -> Bool in
 
             return searchElem.fullBinanceListDescription!.lowercased().hasPrefix(searchText.lowercased()) ||
                 searchElem.displaySymbol!.split(separator: "/").first!.lowercased().hasPrefix(searchText.lowercased())
-            
-            
+
+
         })
-       
+
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
-        
+
     }
+
     
 }
 
