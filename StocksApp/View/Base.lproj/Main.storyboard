@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="wUp-kr-Q0I">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="B8o-fI-DvF">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
@@ -147,7 +147,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1957.9710144927537" y="79.6875"/>
+            <point key="canvasLocation" x="1958" y="80"/>
         </scene>
         <!--Chart View Controller-->
         <scene sceneID="uqN-YB-TZe">
@@ -428,6 +428,38 @@
             </objects>
             <point key="canvasLocation" x="5039.130434782609" y="804.91071428571422"/>
         </scene>
+        <!--Main View Controller-->
+        <scene sceneID="c8M-3n-5kR">
+            <objects>
+                <viewController id="ejx-As-FIt" customClass="MainViewController" customModule="StocksApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="0MQ-MM-EDo">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="YwC-mm-E2P"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="CO9-fy-GTc"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="amg-Bn-Tre" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2337.68115942029" y="-710.49107142857144"/>
+        </scene>
+        <!--Search View Controller-->
+        <scene sceneID="Sz0-6r-eIL">
+            <objects>
+                <viewController id="Hcl-TE-HVV" customClass="SearchViewController" customModule="StocksApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Qnt-6Y-5Zs">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="hO7-NS-DV2"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="R01-mL-UuJ"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2B9-RO-ayM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4950.7246376811599" y="-770.08928571428567"/>
+        </scene>
         <!--Item-->
         <scene sceneID="TFG-vM-KdL">
             <objects>
@@ -485,9 +517,45 @@
             </objects>
             <point key="canvasLocation" x="1209" y="739"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="IKO-VX-ce6">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="B8o-fI-DvF" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="59K-SG-cTE">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="ejx-As-FIt" kind="relationship" relationship="rootViewController" id="wey-32-mIJ"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XEB-QK-qax" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1427.536231884058" y="-710.49107142857144"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="8Rc-J3-05H">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="X6D-oN-nPN" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="51b-po-l7v">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Hcl-TE-HVV" kind="relationship" relationship="rootViewController" id="rko-If-rfR"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pfg-dA-Duv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4040.579710144928" y="-770.08928571428567"/>
+        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="L9i-0z-Mv5"/>
+        <segue reference="gC9-gB-Kg9"/>
     </inferredMetricsTieBreakers>
     <resources>
         <systemColor name="labelColor">

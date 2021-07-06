@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+import UIKit
 
 
 //class Crypto {
@@ -39,18 +39,71 @@ import Foundation
 //
 //    }
 //}
-class Crypto {
+
+
+class SectionOfCrypto : Hashable, Equatable {
+    
+    static func == (lhs: SectionOfCrypto, rhs: SectionOfCrypto) -> Bool {
+        lhs.type == rhs.type
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(type)
+    }
+        
+    var type: String
+    var title : String
+    var items : [Crypto]
+    
+    init(type : String, title : String, items : [Crypto]) {
+        self.type = type
+        self.title = title
+        self.items = items
+    }
+}
+
+class SearchSectionOfCrypto : Hashable, Equatable {
+    
+    static func == (lhs: SearchSectionOfCrypto, rhs: SearchSectionOfCrypto) -> Bool {
+        lhs.type == rhs.type
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(type)
+    }
+        
+    var type: String
+    var items : FullBinanceList
+    
+    init(type : String, title : String, items : FullBinanceList) {
+        self.type = type
+        self.items = items
+    }
+}
+
+class Crypto : Hashable, Equatable {
+    
+    static func == (lhs: Crypto, rhs: Crypto) -> Bool {
+        lhs.symbolOfCrypto == rhs.symbolOfCrypto
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(symbolOfCrypto)
+    }
+    
+    
     var symbolOfCrypto : String
-    var price : String
-    var change : String
+    var price : String?
+    var change : String?
     var nameOfCrypto : String?
     var descriptionOfCrypto : String?
     var symbolOfTicker : String?
     var id : String?
     var percent : String?
-
+    var rank : Int?
 
     init(symbolOfCrypto : String, price : String, change: String, nameOfCrypto: String?, descriptionOfCrypto: String?, symbolOfTicker : String?, id : String?, percent : String?) {
+        
         self.symbolOfCrypto = symbolOfCrypto
         self.price = price
         self.change = change
@@ -61,7 +114,15 @@ class Crypto {
         self.percent = percent
 
     }
+    init(symbolOfCrypto : String, nameOfCrypto: String?,symbolOfTicker: String, id : String?, rank : Int = 101) {
+        self.symbolOfCrypto = symbolOfCrypto
+        self.nameOfCrypto = nameOfCrypto
+        self.id = id
+        self.rank = rank
+        self.symbolOfTicker = symbolOfTicker
+    }
 }
+
 
 struct FullCoinCapList: Codable {
     let data: [[String: String?]]?
@@ -153,7 +214,7 @@ struct Weiss: Codable {
 // MARK: - FullBinanceListElement
 
 
-struct FullBinanceListElement: Codable {
+struct FullBinanceListElement: Codable, Hashable {
     var fullBinanceListDescription, displaySymbol, symbol, id: String?
     var rank : Int?
 

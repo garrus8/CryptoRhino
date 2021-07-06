@@ -126,13 +126,13 @@ extension FavoritesTableViewController : UISearchResultsUpdating   {
     }
     func filterContentForSearchText(_ searchText : String){
         
-        filteredResults = NetworkManager.shared.fullBinanceList.filter({ (searchElem : FullBinanceListElement) -> Bool in
-
-            return searchElem.fullBinanceListDescription!.lowercased().hasPrefix(searchText.lowercased()) ||
-                searchElem.displaySymbol!.split(separator: "/").first!.lowercased().hasPrefix(searchText.lowercased())
+//        filteredResults = NetworkManager.shared.fullBinanceList.filter({ (searchElem : FullBinanceListElement) -> Bool in
+//
+//            return searchElem.fullBinanceListDescription!.lowercased().hasPrefix(searchText.lowercased()) ||
+//                searchElem.displaySymbol!.split(separator: "/").first!.lowercased().hasPrefix(searchText.lowercased())
             
             
-        })
+//        })
        
         DispatchQueue.main.async {
             self.tableView.reloadData()

@@ -22,8 +22,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     var resultsF = [Crypto]()
     var symbolsF = [String]()
     
-    
-    
     private var filteredResults = [FullBinanceListElement]()
     private var isFiltering : Bool {
         return searchController.isActive && !searchBarIsEmpty
@@ -81,7 +79,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         NetworkManager.shared.webSocket2(symbols: NetworkManager.shared.websocketArray)
         NetworkManager.shared.receiveMessage(tableView: [self.tableView], collectionView: [self.collectionView])
-            NetworkManager.shared.updateUI(tableViews: [self.tableView, self.favoritesVC.tableView], collectionViews: [self.collectionView])
+//            NetworkManager.shared.updateUI(tableViews: [self.tableView, self.favoritesVC.tableView], collectionViews: [self.collectionView])
         
         
     }
