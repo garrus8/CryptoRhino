@@ -13,12 +13,11 @@ class NewsViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        json()
+        getNews()
 
     }
     
-    
-    func json(){
+    func getNews(){
         
         let request = NSMutableURLRequest(
             url: NSURL(string: "https://min-api.cryptocompare.com/data/v2/news/?lang=EN")! as URL,
@@ -49,12 +48,6 @@ class NewsViewController: UITableViewController {
         
     }
     
-    
-    
-    
-    
-    
-    
 
     // MARK: - Table view data source
     
@@ -74,14 +67,16 @@ class NewsViewController: UITableViewController {
         return cell
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "DetailNewsViewController" {
-            let detailNewsVC = segue.destination as! DetailNewsViewController
-            let cell = sender as! NewsTableViewCell
-            detailNewsVC.newsTitleString = cell.title.text!
-            detailNewsVC.newsBodyString = cell.body
-            detailNewsVC.newsUrlString = cell.url
-        }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let detailNewsVC = self.storyboard?.instantiateViewController(withIdentifier: "DetailNewsViewController") as! DetailNewsViewController
+        let newsItem = newsData[indexPath.row]
+        detailNewsVC.newsTitleString = newsItem.title!
+        detailNewsVC.newsBodyString = newsItem.body!
+        detailNewsVC.newsUrlString = newsItem.url!
+//        self.navigationController?.pushViewController(detailNewsVC, animated: true)
+        present(detailNewsVC, animated: true, completion: nil)
     }
 
 }

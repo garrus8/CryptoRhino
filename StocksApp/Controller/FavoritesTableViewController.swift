@@ -9,13 +9,13 @@ import UIKit
 import CoreData
 
 class FavoritesTableViewController: UITableViewController {
-    
+//    let tableView = UITableView(frame: .zero, style: UITableView.Style.grouped)
     let finHubToken = Constants.finHubToken
     var favorites = [Favorites]()
     var results = [Crypto]()
     var symbols = [String]()
     var coinGecoList = [GeckoListElement]()
-    private var filteredResults = [FullBinanceListElement]()
+    private var filteredResults = [Crypto]()
     let searchController = UISearchController(searchResultsController: nil)
     var searchBarIsEmpty : Bool {
         guard let text = searchController.searchBar.text else {return false}
@@ -37,18 +37,21 @@ class FavoritesTableViewController: UITableViewController {
 
         // DELEGATE
 //        networkManager.delegate = self
-        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: NSNotification.Name(rawValue: "WebsocketDataUpdate"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.refresh), name: NSNotification.Name(rawValue: "newDataNotif"), object: nil)
+        refresh()
+//        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: NSNotification.Name(rawValue: "WebsocketDataUpdate"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.reloadData), name: NSNotification.Name(rawValue: "newDataNotif"), object: nil)
  
     }
     
     @objc func refresh() {
-        
-        DispatchQueue.main.async {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
             self.tableView.reloadData()
+            self.refresh()
         }
-
    }
+    @objc func reloadData() {
+        tableView.reloadData()
+    }
     
     
     // MARK: - Table view data source
@@ -64,52 +67,64 @@ class FavoritesTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "FavoriteCell", for: indexPath) as? TableViewCell else {return UITableViewCell()}
+//        guard let cell = tableView.dequeueReusableCell(withIdentifier: "FavoriteCell", for: indexPath) as? TableViewCell else {return UITableViewCell()}
+//
+//        if isFiltering {
+//            let results = filteredResults[indexPath.row]
+//            cell.symbol.text = results.symbolOfCrypto
+//            cell.name.text = results.nameOfCrypto
+//            cell.price.text = results.price
+//            cell.percent.text = results.percent
+//            cell.symbolOfTicker = results.symbolOfTicker!
+////            cell.idOfCrypto = results.id!
+//            cell.textViewTest = results.descriptionOfCrypto ?? ""
+//
+//        } else {
+//            guard let results = NetworkManager.shared.resultsF[indexPath.row] as Crypto? else {return UITableViewCell()}
+//            cell.symbol.text = results.symbolOfCrypto
+//            cell.name.text = results.nameOfCrypto
+//            //            cell.price.text = String(results.index)
+//            //            cell.change.text = String(results.diffPrice)
+//            //            cell.percent.text = String(results.percent)
+//            cell.price.text = results.price
+//            cell.percent.text = results.percent
+//            cell.textViewTest = results.descriptionOfCrypto ?? ""
+//            cell.symbolOfTicker = results.symbolOfTicker!
+//        }
+//
+//        return cell
         
-        
-        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: FavoritesCell.reuseId, for: indexPath) as? FavoritesCell else {return UITableViewCell()}
+
         if isFiltering {
             let results = filteredResults[indexPath.row]
-            cell.symbol.text = results.displaySymbol
-            cell.name.text = results.fullBinanceListDescription
-            cell.price.text = ""
-            cell.change.text = ""
-            cell.percent.text = ""
-            cell.symbolOfTicker = results.symbol!
-            cell.idOfCrypto = results.id!
-            cell.textViewTest = ""
-            
+            cell.configure(with: results)
+
+
         } else {
             guard let results = NetworkManager.shared.resultsF[indexPath.row] as Crypto? else {return UITableViewCell()}
-            cell.symbol.text = results.symbolOfCrypto
-            cell.name.text = results.nameOfCrypto
-            //            cell.price.text = String(results.index)
-            //            cell.change.text = String(results.diffPrice)
-            //            cell.percent.text = String(results.percent)
-            cell.price.text = results.price
-            cell.percent.text = results.percent
-            cell.textViewTest = results.descriptionOfCrypto ?? ""
-            cell.symbolOfTicker = results.symbolOfTicker!
+            cell.configure(with: results)
+
         }
-        
+
         return cell
-        
+//
     }
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "ChartViewSegueFromFavorites" {
-            let chartVC = segue.destination as! ChartViewController
-            let cell = sender as! TableViewCell
-            chartVC.textTest = cell.textViewTest
-            chartVC.symbolOfCurrentCrypto = cell.symbol.text!
-            chartVC.symbolOfTicker = cell.symbolOfTicker
-            chartVC.diffPriceOfCryptoText = cell.percent.text!
-            chartVC.priceOfCryptoText = cell.price.text!
-            chartVC.nameOfCryptoText = cell.name.text!
-            chartVC.idOfCrypto = cell.idOfCrypto
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let result: Crypto
+        if isFiltering {
+//            result = NetworkManager.shared.resultsF[indexPath.row]
+            result = filteredResults[indexPath.row]
+        } else {
+            result = NetworkManager.shared.resultsF[indexPath.row]
         }
-        
-    }
+        let ChartVC = self.storyboard?.instantiateViewController(withIdentifier: "ChartViewController") as! ChartViewController
+        ChartVC.crypto = result
+        self.navigationController?.pushViewController(ChartVC, animated: true)
     
+}
 }
 // DELEGATE
 //extension FavoritesTableViewController : NetworkManagerDelegate {
@@ -130,9 +145,16 @@ extension FavoritesTableViewController : UISearchResultsUpdating   {
 //
 //            return searchElem.fullBinanceListDescription!.lowercased().hasPrefix(searchText.lowercased()) ||
 //                searchElem.displaySymbol!.split(separator: "/").first!.lowercased().hasPrefix(searchText.lowercased())
-            
-            
+//
+//
 //        })
+        filteredResults = NetworkManager.shared.resultsF.filter({ (searchElem : Crypto) -> Bool in
+
+            return searchElem.symbolOfCrypto.lowercased().hasPrefix(searchText.lowercased()) ||
+                searchElem.nameOfCrypto!.split(separator: "/").first!.lowercased().hasPrefix(searchText.lowercased())
+            
+            
+        })
        
         DispatchQueue.main.async {
             self.tableView.reloadData()

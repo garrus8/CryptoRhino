@@ -114,6 +114,13 @@ class Crypto : Hashable, Equatable {
         self.percent = percent
 
     }
+    init(symbolOfCrypto: String, nameOfCrypto: String, descriptionOfCrypto: String, symbolOfTicker: String) {
+        self.symbolOfCrypto = symbolOfCrypto
+        self.nameOfCrypto = nameOfCrypto
+        self.descriptionOfCrypto = descriptionOfCrypto
+        self.symbolOfTicker = symbolOfTicker
+        
+    }
     init(symbolOfCrypto : String, nameOfCrypto: String?,symbolOfTicker: String, id : String?, rank : Int = 101) {
         self.symbolOfCrypto = symbolOfCrypto
         self.nameOfCrypto = nameOfCrypto

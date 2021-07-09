@@ -9,43 +9,57 @@ import UIKit
 
 class MainViewController: UIViewController {
     
-    let searchController = UISearchController(searchResultsController: nil)
-    var searchBarIsEmpty : Bool {
-        guard let text = searchController.searchBar.text else {return false}
-        return text.isEmpty
-    }
-    private var isFiltering : Bool {
-        return searchController.isActive && !searchBarIsEmpty
-    }
+//    let searchController = UISearchController(searchResultsController: nil)
+//    var searchBarIsEmpty : Bool {
+//        guard let text = searchController.searchBar.text else {return false}
+//        return text.isEmpty
+//    }
+//    private var isFiltering : Bool {
+//        return searchController.isActive && !searchBarIsEmpty
+//    }
     var dataSource : UICollectionViewDiffableDataSource<SectionOfCrypto, Crypto>?
     var collectionView : UICollectionView!
     let CollectionViewGroup = DispatchGroup()
     var sections = [SectionOfCrypto]()
     override func viewDidLoad() {
         super.viewDidLoad()
-        searchController.searchResultsUpdater = self
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Name or symbol of cryptocurrency"
-        navigationItem.searchController = searchController
+//        searchController.searchResultsUpdater = self
+//        searchController.obscuresBackgroundDuringPresentation = false
+//        searchController.searchBar.placeholder = "Name or symbol of cryptocurrency"
+//        navigationItem.searchController = searchController
         definesPresentationContext = true
         
-        
+//        NetworkManager.shared.deleteAllData()
         let queue = DispatchQueue(label: "1", qos: .userInteractive)
+        let queue2 = DispatchQueue(label: "2", qos: .userInteractive)
+//        let queue = DispatchQueue.global()
+        
         NetworkManager.shared.getData()
+        
         queue.async {
             NetworkManager.shared.getTopOfCrypto()
             NetworkManager.shared.getFullListOfCoinGecko()
-            NetworkManager.shared.getFullCoinCapList()
+//            NetworkManager.shared.getFullCoinCapList()
             NetworkManager.shared.getFullBinanceList()
+        }
+        queue2.sync {
+            NetworkManager.shared.getFullCoinCapList()
+        }
+        queue2.sync {
+            NetworkManager.shared.groupOne.wait()
+            NetworkManager.shared.groupTwo.wait()
+            NetworkManager.shared.collectionViewLoad()
         }
         
         queue.async {
             NetworkManager.shared.coinCap2Run()
         }
 
-        queue.async {
-            NetworkManager.shared.collectionViewLoad(coinCapDict: NetworkManager.shared.coinCapDict)
-        }
+//        queue.sync {
+//            NetworkManager.shared.groupOne.wait()
+//            NetworkManager.shared.groupTwo.wait()
+//            NetworkManager.shared.collectionViewLoad()
+//        }
 
         NetworkManager.shared.groupOne.wait()
         NetworkManager.shared.groupTwo.wait()
@@ -57,8 +71,8 @@ class MainViewController: UIViewController {
         NetworkManager.shared.webSocket2(symbols: NetworkManager.shared.websocketArray)
         NetworkManager.shared.receiveMessage(tableView: [], collectionView: [self.collectionView])
         
-        queue.sync {
-            CollectionViewGroup.wait()
+        queue.async {
+            self.CollectionViewGroup.wait()
             NetworkManager.shared.groupOne.wait()
             NetworkManager.shared.groupTwo.wait()
             NetworkManager.shared.groupThree.wait()
@@ -66,6 +80,7 @@ class MainViewController: UIViewController {
             NetworkManager.shared.setupSections()
             NetworkManager.shared.groupSetupSections.wait()
             self.reloadData()
+            NetworkManager.shared.recoursiveUpdateUI(tableViews: [], collectionViews: [self.collectionView])
         }
         
        
@@ -87,7 +102,7 @@ class MainViewController: UIViewController {
         collectionView.register(CarouselCollectionViewCell.self, forCellWithReuseIdentifier: CarouselCollectionViewCell.reuseId)
         collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SectionHeader.reuseId)
         CollectionViewGroup.leave()
-//        collectionView.delegate = self
+        collectionView.delegate = self
 //        collectionView.dataSource = self
         
     }
@@ -200,50 +215,59 @@ class MainViewController: UIViewController {
         return header
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let chartVC = segue.destination as! ChartViewController
-        if segue.identifier == "TableVIewSegue" {
-            let cell = sender as! TableViewCell
-            chartVC.textTest = cell.textViewTest
-            print(cell.textViewTest)
-            chartVC.symbolOfCurrentCrypto = cell.symbol.text!
-            chartVC.symbolOfTicker = cell.symbolOfTicker
-            chartVC.idOfCrypto = cell.idOfCrypto
-            chartVC.diffPriceOfCryptoText = cell.percent.text!
-            chartVC.priceOfCryptoText = cell.price.text!
-            chartVC.nameOfCryptoText = cell.name.text!
-
-        }
-        if segue.identifier == "CollectionViewSegue" {
-            let cell = sender as! CollectionViewCell
-            chartVC.symbolOfCurrentCrypto = cell.symbolOfCrypto
-            chartVC.textTest = cell.textViewTest
-            chartVC.nameOfCrypto = cell.nameOfElelm
-            chartVC.diffPriceOfCryptoText = cell.percent
-            chartVC.priceOfCryptoText = cell.index.text!
-            chartVC.nameOfCryptoText = cell.nameOfElelm.text!
-            chartVC.symbolOfTicker = cell.symbolOfTicker
-        }
-
-    }
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        let chartVC = segue.destination as! ChartViewController
+//        if segue.identifier == "TableVIewSegue" {
+//            let cell = sender as! TableViewCell
+//            chartVC.textTest = cell.textViewTest
+//            print(cell.textViewTest)
+//            chartVC.symbolOfCurrentCrypto = cell.symbol.text!
+//            chartVC.symbolOfTicker = cell.symbolOfTicker
+//            chartVC.idOfCrypto = cell.idOfCrypto
+//            chartVC.diffPriceOfCryptoText = cell.percent.text!
+//            chartVC.priceOfCryptoText = cell.price.text!
+//            chartVC.nameOfCryptoText = cell.name.text!
+//
+//        }
+//        if segue.identifier == "CollectionViewSegue" {
+//            let cell = sender as! CollectionViewCell
+//            chartVC.symbolOfCurrentCrypto = cell.symbolOfCrypto
+//            chartVC.textTest = cell.textViewTest
+//            chartVC.nameOfCrypto = cell.nameOfElelm
+//            chartVC.diffPriceOfCryptoText = cell.percent
+//            chartVC.priceOfCryptoText = cell.index.text!
+//            chartVC.nameOfCryptoText = cell.nameOfElelm.text!
+//            chartVC.symbolOfTicker = cell.symbolOfTicker
+//        }
+//
+//    }
 }
 extension MainViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let menuItem = self.dataSource!.itemIdentifier(for: indexPath) else { return }
-        collectionView.deselectItem(at: indexPath, animated: true)
+        guard let crypto = self.dataSource!.itemIdentifier(for: indexPath) else { return }
+//        let homeView = self.storyboard?.instantiateViewController(withIdentifier: "MainViewController") as! MainViewController
+//        let ChartVC = ChartViewController(crypto: crypto)
+//        let ChartVC = ChartViewController()
+        let ChartVC = self.storyboard?.instantiateViewController(withIdentifier: "ChartViewController") as! ChartViewController
+        ChartVC.crypto = crypto
+        print("Tapped")
+//        present(ChartVC, animated: true, completion: nil)
+        self.navigationController?.pushViewController(ChartVC, animated: true)
+//        collectionView.deselectItem(at: indexPath, animated: true)
         
         
     }
 }
-extension MainViewController : UISearchResultsUpdating   {
-    func updateSearchResults(for searchController: UISearchController) {
-        filterContentForSearchText(searchController.searchBar.text!)
-    }
-    func filterContentForSearchText(_ searchText : String){
-
-
-}
-}
+//extension MainViewController : UISearchResultsUpdating   {
+//    func updateSearchResults(for searchController: UISearchController) {
+//        
+//        filterContentForSearchText(searchController.searchBar.text!)
+//    }
+//    func filterContentForSearchText(_ searchText : String){
+//
+//
+//}
+//}
 //extension MainViewController : UICollectionViewDelegate, UICollectionViewDataSource {
 //
 //    func numberOfSections(in collectionView: UICollectionView) -> Int {

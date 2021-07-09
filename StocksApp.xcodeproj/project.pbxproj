@@ -23,6 +23,7 @@
 		F4B5CE022620734500B43385 /* DetailNewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4B5CE012620734500B43385 /* DetailNewsViewController.swift */; };
 		F4C1EECF2680789C0037C9F5 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1EECE2680789C0037C9F5 /* MainViewController.swift */; };
 		F4C1EED426809F7B0037C9F5 /* TableCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1EED326809F7B0037C9F5 /* TableCollectionViewCell.swift */; };
+		F4CC5FF026985F4000718010 /* FavoritesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CC5FEF26985F4000718010 /* FavoritesCell.swift */; };
 		F4D2F79A25E7D7AE009EB2C6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D2F79925E7D7AE009EB2C6 /* AppDelegate.swift */; };
 		F4D2F79C25E7D7AE009EB2C6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D2F79B25E7D7AE009EB2C6 /* SceneDelegate.swift */; };
 		F4D2F79E25E7D7AE009EB2C6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D2F79D25E7D7AE009EB2C6 /* ViewController.swift */; };
@@ -81,6 +82,7 @@
 		F4B5CE012620734500B43385 /* DetailNewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailNewsViewController.swift; sourceTree = "<group>"; };
 		F4C1EECE2680789C0037C9F5 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		F4C1EED326809F7B0037C9F5 /* TableCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableCollectionViewCell.swift; sourceTree = "<group>"; };
+		F4CC5FEF26985F4000718010 /* FavoritesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesCell.swift; sourceTree = "<group>"; };
 		F4D2F79625E7D7AE009EB2C6 /* StocksApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StocksApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4D2F79925E7D7AE009EB2C6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F4D2F79B25E7D7AE009EB2C6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -225,6 +227,7 @@
 				F44B372A25FA57AB001D99A1 /* File.swift */,
 				F431192B25F117E5002D07A0 /* WS.swift */,
 				F4EC4FC625EE64150085F029 /* FavoritesTableViewCell.swift */,
+				F4CC5FEF26985F4000718010 /* FavoritesCell.swift */,
 				F47BE9E5265407B700084BE8 /* CollectionViewCell.swift */,
 				F48FFD6125ED21EE007E07B2 /* TableViewCell.swift */,
 			);
@@ -523,6 +526,7 @@
 				F4416B43264D1A6A00505F7A /* NetworkManager.swift in Sources */,
 				F431192C25F117E5002D07A0 /* WS.swift in Sources */,
 				F4D2F7E725E7EF43009EB2C6 /* WebSocketData.swift in Sources */,
+				F4CC5FF026985F4000718010 /* FavoritesCell.swift in Sources */,
 				F4D2F79A25E7D7AE009EB2C6 /* AppDelegate.swift in Sources */,
 				F4B5CDF22620378600B43385 /* NewsViewController.swift in Sources */,
 				F4D2F7A425E7D7AE009EB2C6 /* StocksApp.xcdatamodeld in Sources */,

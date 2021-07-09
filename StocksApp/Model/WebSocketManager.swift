@@ -36,14 +36,15 @@ class NetworkManager  {
     var resultsF = [Crypto]()
     var symbolsF = [String]()
     var fullBinanceList = [FullBinanceListElement]()
-//    var fullBinanceList = [Crypto]()
-//    var coinCapDict = FullCoinCapList(data: [["":""]])
+    //    var fullBinanceList = [Crypto]()
+    //    var coinCapDict = FullCoinCapList(data: [["":""]])
     var coinCapDict = [[String: String?]]()
     var dict = [String : [Crypto]]()
     let favoriteVC = FavoritesTableViewController()
     var collectionViewSymbols = [String]()
     var collectionViewArray = [Crypto]()
     var websocketArray = [String]()
+    
     
     let groupOne = DispatchGroup()
     let groupTwo = DispatchGroup()
@@ -75,52 +76,68 @@ class NetworkManager  {
     
     func getData() {
         // GROUP 1
-        
-        let context = self.getContext()
-        let fetchRequest : NSFetchRequest<Favorites> = Favorites.fetchRequest()
-        let sortDescriptor = NSSortDescriptor(key: "date", ascending: false)
-        fetchRequest.sortDescriptors = [sortDescriptor]
-        
-        do {
+
+            let context = self.getContext()
+            let fetchRequest : NSFetchRequest<Favorites> = Favorites.fetchRequest()
+            let sortDescriptor = NSSortDescriptor(key: "date", ascending: false)
+            fetchRequest.sortDescriptors = [sortDescriptor]
             
-            self.favorites = try context.fetch(fetchRequest)
-            self.setData()
-            
-        } catch let error as NSError {
-            print(error.localizedDescription)
-        }
-        
+            do {
+                self.favorites = try context.fetch(fetchRequest)
+                self.setData()
+                
+            } catch let error as NSError {
+                print(error.localizedDescription)
+            }
     }
     
     
     
     func setData() {
-        DispatchQueue.global().async {
+        DispatchQueue.global().async(group: groupTwo) {
             self.resultsF.removeAll()
             for i in self.favorites {
                 if let symbol = i.symbol{
-                    
-//                    let crypto = Crypto(symbolOfCrypto: symbol, index: 0, closePrice: 0, nameOfCrypto: i.name, descriptionOfCrypto: i.descrtiption, symbolOfTicker: i.symbolOfTicker, id: "", percentString: "")
-                    let crypto = Crypto(symbolOfCrypto: symbol, price: "", change: "", nameOfCrypto: i.name, descriptionOfCrypto: i.descrtiption, symbolOfTicker: i.symbolOfTicker, id: "", percent: "")
+                    let crypto = Crypto(symbolOfCrypto: symbol, nameOfCrypto: i.name!, descriptionOfCrypto: i.descrtiption!, symbolOfTicker: i.symbolOfTicker!)
                     DispatchQueue.global().async(flags: .barrier) {
                         self.symbolsF.append(i.symbol!)
                         self.resultsF.append(crypto)
                         self.websocketArray.append(symbol)
                     }
-                    
-//                    self.putFinHubData(symbol: symbol, group: self.groupTwo)
-                    
                 }
             }
         }
     }
 
+    func addData(object : Favorites) {
+        
+            if let symbol = object.symbol {
+                let crypto = Crypto(symbolOfCrypto: symbol, nameOfCrypto: object.name!, descriptionOfCrypto: object.descrtiption!, symbolOfTicker: object.symbolOfTicker!)
+                for j in coinCapDict {
+                    if symbol == j["symbol"] {
+                        DispatchQueue.global().async(flags: .barrier) {
+                            crypto.price = j["priceUsd"]!!
+                            crypto.percent = j["changePercent24Hr"]!
+                        }
+                    }
+                }
+
+                    DispatchQueue.global().async(flags: .barrier) {
+                        self.symbolsF.insert(object.symbol!, at: 0)
+                        self.resultsF.insert(crypto, at: 0)
+                        self.websocketArray.append(symbol)
+                    }
+            }
+        }
+    
+
+    
     func getTopOfCrypto(){
         
         // GROUP 1
-        print("group 1 enter")
+        print("group 1 enter getTopOfCrypto")
         DispatchQueue.global().async(group: groupOne) {
-
+            
             let request = NSMutableURLRequest(
                 url: NSURL(string: "https://min-api.cryptocompare.com/data/top/totalvolfull?limit=20&tsym=USD")! as URL,
                 cachePolicy: .useProtocolCachePolicy,
@@ -130,7 +147,7 @@ class NetworkManager  {
             URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
                 
                 guard let stocksData = data, error == nil, response != nil else {return}
-                
+                print("getTopOfCrypto data")
                 do {
                     guard let stocksData = try (Toplist.decode(from: stocksData))?.data else {return}
                     
@@ -139,23 +156,18 @@ class NetworkManager  {
                         let elem = stocksData[i]
                         guard let cryptoCompareName = elem.coinInfo!.name else {return}
                         
-    
+                        
                         if cryptoCompareName != "USDT" && cryptoCompareName != "BNBBEAR" {
                             guard let cryptoCompareFullName = elem.coinInfo!.fullName else {return}
                             let id = cryptoCompareFullName.replacingOccurrences(of: " ", with: "-").lowercased()
                             let crypto = Crypto(symbolOfCrypto: cryptoCompareName, price: "", change: "", nameOfCrypto: cryptoCompareFullName, descriptionOfCrypto: nil, symbolOfTicker: "\(cryptoCompareName)USDT", id: id, percent: "")
                             
-//                            DispatchQueue.global().async(flags: .barrier) {
-                                
-                                self.results.append(crypto)
-                                self.websocketArray.append(cryptoCompareName)
-                                self.symbols.append(cryptoCompareName)
                             
-//                            }
-                            
-//                            self.putFinHubData(symbol: cryptoCompareName, group: self.groupTwo)
+                            self.results.append(crypto)
+                            print("getTopOfCrypto eleem",crypto.symbolOfCrypto)
+                            self.websocketArray.append(cryptoCompareName)
+                            self.symbols.append(cryptoCompareName)
                         }
-                        
                     }
                     
                 } catch let error as NSError {
@@ -167,7 +179,7 @@ class NetworkManager  {
         }
         print("group 1 leave")
     }
-
+    
     func getFullListOfCoinGecko(){
         
         // GROUP 1
@@ -181,18 +193,21 @@ class NetworkManager  {
             request.httpMethod = "GET"
             
             URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
-            
-                guard let stocksData = data, error == nil, response != nil else {return}
                 
+//                let x = try? JSONSerialization.jsonObject(with: data!, options: [])
+//                print("getFullListOfCoinGecko DATA",x, response, error)
+                guard let stocksData = data, error == nil, response != nil else {return}
                 do {
                     guard let stocks = try GeckoList.decode(from: stocksData) else {return}
+                    
                     DispatchQueue.global().async(group : self.groupOne, flags: .barrier) {
+                        
                         self.coinGecoList = stocks
-                        print("CoinGeckoList", self.coinGecoList.count)
+                        
                         self.quickSortForCoinGecko(&self.coinGecoList, start: 0, end: self.coinGecoList.count)
                         DispatchQueue.global().async(){
-                        self.putCoinGeckoData(array: &self.results, group: self.groupTwo)
-//                            self.collectionViewLoad(coinCapDict: self.coinCapDict)
+                            print("#####", self.coinGecoList.count)
+                            self.putCoinGeckoData(array: &self.results, group: self.groupTwo)
                         }
                     }
                     
@@ -205,35 +220,39 @@ class NetworkManager  {
         }
         print("group 1 leave")
     }
-
+    
     func getFullCoinCapList() {
         
         // GROUP 1
         print("group 1 enter getFullCoinCapList")
-        DispatchQueue.global().async(group: groupOne) {
+        queue.async(group : groupOne) {
             let request = NSMutableURLRequest(
-                url: NSURL(string: "https://api.coincap.io/v2/assets?limit=700")! as URL,
+                url: NSURL(string: "https://api.coincap.io/v2/assets?limit=500")! as URL,
                 cachePolicy: .useProtocolCachePolicy,
                 timeoutInterval: 10.0)
             request.httpMethod = "GET"
             
             URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
-
+                self.groupOne.enter()
+//                print("getFullCoinCapList DATATASKENTER")
+//                let x = try? JSONSerialization.jsonObject(with: data!, options: [])
+//                print("getFullCoinCapList DATA", x)
                 guard let stocksData = data, error == nil, response != nil else {return}
+                
                 do {
-                    // Дождаться заполнения результатов
+
                     guard let elems = try FullCoinCapList.decode(from: stocksData) else {return}
                     DispatchQueue.global().async(group: self.groupOne, flags: .barrier) {
                         self.coinCapDict = elems.data!
-                        print("!!!!! CoinCapDictAdd", self.coinCapDict.count)
+//                        print("!!!!! CoinCapDictAdd", self.coinCapDict.first?.count)
                     }
                 } catch let error as NSError {
                     print(error.localizedDescription)
                 }
-                
+                self.groupOne.leave()
             }.resume()
+                
         }
-        print("group 1 leave")
     }
     
     let testGroup = DispatchGroup()
@@ -241,38 +260,32 @@ class NetworkManager  {
     
     func coinCap2(arrayOfResults :  [Crypto], elems : [[String: String?]]) {
         // GROUP 2
-//        groupOne.wait()
-        DispatchQueue.global().async {
-        self.groupTwo.enter()
-        for i in arrayOfResults {
-            self.groupTwo.enter()
-            for j in elems {
-                if i.symbolOfCrypto == j["symbol"] {
-                    DispatchQueue.global().async(flags: .barrier) {
-                        self.groupTwo.enter()
-                        i.nameOfCrypto = j["name"]!
-                        i.price = j["priceUsd"]!!
-                        i.percent = j["changePercent24Hr"]!
-                        print("Symbol",i.symbolOfCrypto,"Percent", i.percent)
-                        self.groupTwo.leave()
+        DispatchQueue.global().async(group : groupTwo) {
+            for i in arrayOfResults {
+                for j in elems {
+                    if i.symbolOfCrypto == j["symbol"] {
+                        DispatchQueue.global().async(flags: .barrier) {
+                            i.nameOfCrypto = j["name"]!
+//                            i.price = j["priceUsd"]!!
+                            let priceDouble = Double(j["priceUsd"]!!)
+                            i.price = String((priceDouble!/100).rounded()*100)
+//                            i.percent = j["changePercent24Hr"]!
+                            let percentDouble = Double(j["changePercent24Hr"]!!)?.rounded()
+                            i.percent = String(percentDouble!)
+                        }
                     }
                 }
             }
-            self.groupTwo.leave()
         }
-            self.groupTwo.leave()
-        }
-}
+    }
     
     
     func coinCap2Run() {
         groupOne.wait()
-//        groupTwo.enter()
         DispatchQueue.global().async(flags: .barrier) { [self] in
             coinCap2(arrayOfResults: NetworkManager.shared.results, elems: coinCapDict)
             coinCap2(arrayOfResults: NetworkManager.shared.resultsF, elems: coinCapDict)
         }
-//        groupTwo.leave()
     }
     
     func getFinHubData(symbol : String, interval : String = "day", group: DispatchGroup, complition : @escaping ([String : Any])->()){
@@ -337,8 +350,8 @@ class NetworkManager  {
     }
     
     func getCoinGeckoData(symbol: String, group: DispatchGroup, complition : @escaping (GeckoSymbol)->()) {
-        DispatchQueue.global().async {
-            group.enter()
+        
+        DispatchQueue.global().async(group : group) {
 //            group.enter()
             let request = NSMutableURLRequest(
                 url: NSURL(string: "https://api.coingecko.com/api/v3/coins/\(symbol)?localization=false&tickers=false&market_data=false&community_data=true&developer_data=false&sparkline=false")! as URL,
@@ -351,43 +364,42 @@ class NetworkManager  {
                 guard let stocksData = data, error == nil, response != nil else {return}
                 
                 do {
-                    group.enter()
+//                    group.enter()
                     if let stocks = try GeckoSymbol.decode(from: stocksData) {
                         complition(stocks)
                     }
-                    group.leave()
+//                    group.leave()
                 } catch let error as NSError {
                     print(error.localizedDescription)
                 }
             }.resume()
-            group.leave()
+//            group.leave()
         }
     }
     
- 
+    
     
     func putCoinGeckoData(array : inout [Crypto], group: DispatchGroup) {
-
+        
         // GROUP 2
         groupOne.wait()
-//                DispatchQueue.global().sync {
+        
         for i in array {
             DispatchQueue.global().async(group: group) {
                 self.groupOne.wait()
                 let symbol = i.symbolOfCrypto
+                print("putCoinGeckoData", symbol, self.coinGecoList.count)
                 let indexOfSymbol = self.binarySearchFoCoinGeckoList(key: symbol.lowercased(), list: self.coinGecoList)
-                print("SYMBOL:", symbol, "INDEX", indexOfSymbol, "CoinGeckoList", self.coinGecoList.count)
-//                print("CCC", self.coinGecoList.count)
                 self.getCoinGeckoData(symbol: self.coinGecoList[indexOfSymbol!].id!, group: group) { (stocks) in
                     DispatchQueue.global().async(group: group, flags: .barrier) {
                         i.descriptionOfCrypto = stocks.geckoSymbolDescription?.en
-
+                        
                     }
                 }
             }
         }
     }
-  
+    
     
     func getFullBinanceList() {
         // GROUP 2
@@ -407,7 +419,7 @@ class NetworkManager  {
                 self.groupOne.wait()
                 
                 do {
-                    //                    self.groupTwo.enter()
+                    
                     guard let elems = try FullBinanceList.decode(from: stocksData) else {return}
                     
                     for i in elems {
@@ -430,18 +442,18 @@ class NetworkManager  {
                                     }
                                 }
                                 let elem = FullBinanceListElement(fullBinanceListDescription: name, displaySymbol: displaySymbol, symbol: i.symbol, id : id, rank: rank)
-                                DispatchQueue.global().async(flags: .barrier) {
-                                    self.groupTwo.enter()
-                                    self.fullBinanceList.append(elem)
-                                    self.groupTwo.leave()
-                                }
+                                
+                                self.groupTwo.enter()
+                                self.fullBinanceList.append(elem)
+                                self.groupTwo.leave()
+                                
                             }
                         }
                         self.groupTwo.leave()
                     }
                     
                     self.fullBinanceList.sort{$0.rank ?? 101 < $1.rank ?? 101}
-  
+                    
                 } catch let error as NSError {
                     print(error.localizedDescription)
                 }
@@ -451,47 +463,31 @@ class NetworkManager  {
     }
     let queue = DispatchQueue(label: "123", qos: .userInitiated)
     
-    func collectionViewLoad(coinCapDict : [[String : String?]]) {
-
+    func collectionViewLoad() {
+        
         // GROUP 3
         groupOne.wait()
         groupTwo.wait()
         // Если элемент есть уже в результатах для tableview, не делать запрос, добавлять этот элемент
-//        self.groupThree.enter()
-    
-        DispatchQueue.global().async(group: groupThree){
+        
+        queue.async(group : groupThree){
             self.groupOne.wait()
             self.groupTwo.wait()
             for index in 0..<15 {
-//                self.groupThree.enter()
-                // INDEX OUT OF RANGE
-                print("!!!!!! CoinCapDict chek", self.coinCapDict.count)
-                print(index)
-                let elemOfCoinCap = coinCapDict[index]
-
+                let elemOfCoinCap = self.coinCapDict[index]
+                
                 if elemOfCoinCap["symbol"]!! != "USDT" {
-                self.queue.async {
-//                    self.groupThree.enter()
                     let crypto = Crypto(symbolOfCrypto: elemOfCoinCap["symbol"]!!, price: elemOfCoinCap["priceUsd"]!!, change: "change", nameOfCrypto: elemOfCoinCap["name"]!, descriptionOfCrypto: "descriptionOfCrypto", symbolOfTicker: "symbolOfTicker", id: elemOfCoinCap["id"]!, percent: elemOfCoinCap["changePercent24Hr"]!)
                     self.collectionViewArray.append(crypto)
+                    print("CollectionArrayAppeend", crypto.symbolOfCrypto)
                     self.websocketArray.append(elemOfCoinCap["symbol"]!!)
                     if index == 14 {
-                        DispatchQueue.global().async {
-                            
-//                            self.putCoinGeckoData(array: &self.collectionViewArray, group: self.groupFour)
-                        }
-
+                        self.groupOne.wait()
+                        self.putCoinGeckoData(array: &self.collectionViewArray, group: self.groupThree)
                     }
-//                    self.groupThree.leave()
                 }
-
             }
-//            self.groupThree.leave()
-
         }
-            
-        }
-//        self.groupThree.leave()
     }
     
     func updateUI(tableViews : [UITableView], collectionViews: [UICollectionView]){
@@ -510,6 +506,12 @@ class NetworkManager  {
             }
         }
     }
+    func recoursiveUpdateUI(tableViews : [UITableView], collectionViews: [UICollectionView]){
+        updateUI(tableViews: tableViews, collectionViews: collectionViews)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+            self.recoursiveUpdateUI(tableViews: tableViews, collectionViews: collectionViews)
+        }
+    }
     let groupSetupSections = DispatchGroup()
     
     func setupSections(){
@@ -523,7 +525,7 @@ class NetworkManager  {
             let carousel = SectionOfCrypto(type: "carousel", title: "Top", items: self.collectionViewArray)
             let table = SectionOfCrypto(type: "table", title: "Hot", items: self.results)
             self.sections = [carousel,table]
-        print("SEctions Setuped", self.sections.count, self.sections.first?.items.count, self.sections[1].items.count)
+            print("SEctions Setuped", self.sections.count, self.sections.first?.items.count, self.sections[1].items.count)
         }
         
     }
@@ -620,9 +622,8 @@ class NetworkManager  {
                     @unknown default:
                         fatalError()
                     }
-                    
-                    self.updateUI(tableViews: tableView, collectionViews: collectionView)
                     self.receiveMessage(tableView: tableView, collectionView: collectionView)
+                    
                 }
             }
         }
@@ -630,23 +631,22 @@ class NetworkManager  {
     
     
     func putDataFromWebSocket (tickData : [Datum], array : [Crypto], isFavorite : Bool = false) {
-//            DispatchQueue.global().async {
-            for itemA in tickData {
-                for (indexB,itemB) in array.enumerated() {
-                    let itemBForFinHub = "BINANCE:\(itemB.symbolOfCrypto.uppercased())USDT"
-                    if itemA.s == itemBForFinHub {
-                        DispatchQueue.global().async(flags: .barrier) {
-//                            array[indexB].index = itemA.p
-                            array[indexB].price = String(itemA.p)
-                        }
-                        if isFavorite {
-                            self.dict["Key"] = self.resultsF
-                            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "WebsocketDataUpdate"), object: nil, userInfo: self.dict)
-                        }
+        //            DispatchQueue.global().async {
+        for itemA in tickData {
+            for (indexB,itemB) in array.enumerated() {
+                let itemBForFinHub = "BINANCE:\(itemB.symbolOfCrypto.uppercased())USDT"
+                if itemA.s == itemBForFinHub {
+                    DispatchQueue.global().async(flags: .barrier) {
+                        array[indexB].price = String(itemA.p)
                     }
+//                    if isFavorite {
+//                        self.dict["Key"] = self.resultsF
+//                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "WebsocketDataUpdate"), object: nil, userInfo: self.dict)
+//                    }
                 }
             }
-//        }
+        }
+        //        }
     }
     
     

@@ -21,29 +21,6 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        let queue = DispatchQueue(label: "1", qos: .userInteractive)
-        NetworkManager.shared.getData()
-        queue.async {
-            NetworkManager.shared.getTopOfCrypto()
-            NetworkManager.shared.getFullListOfCoinGecko()
-            NetworkManager.shared.getFullCoinCapList()
-            NetworkManager.shared.getFullBinanceList()
-        }
-        
-        queue.async {
-            NetworkManager.shared.coinCap2Run()
-        }
-
-        queue.sync {
-            NetworkManager.shared.collectionViewLoad(coinCapDict: NetworkManager.shared.coinCapDict)
-        }
-        NetworkManager.shared.webSocket2(symbols: NetworkManager.shared.websocketArray)
-        NetworkManager.shared.receiveMessage(tableView: [tableView], collectionView: [])
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            self.tableView.reloadData()
-            print("reload")
-            print(NetworkManager.shared.fullBinanceList.count)
-        }
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Name or symbol of cryptocurrency"
@@ -82,6 +59,19 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        let result: FullBinanceListElement
+        if isFiltering {
+            result = filteredResults[indexPath.row]
+        } else {
+            result = NetworkManager.shared.fullBinanceList[indexPath.row]
+        }
+        let ChartVC = self.storyboard?.instantiateViewController(withIdentifier: "ChartViewController") as! ChartViewController
+        let crypto = Crypto(symbolOfCrypto: result.displaySymbol!, nameOfCrypto: result.fullBinanceListDescription!, symbolOfTicker: result.symbol!, id: result.id!)
+        ChartVC.crypto = crypto
+        self.navigationController?.pushViewController(ChartVC, animated: true)
+        
+        
+        
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         60

@@ -24,7 +24,8 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     var diffPriceOfCryptoText = String()
     var priceOfCryptoText = String()
     var nameOfCryptoText = String()
-
+    var crypto = Crypto(symbolOfCrypto: "", price: "", change: "", nameOfCrypto: "", descriptionOfCrypto: "", symbolOfTicker: "", id: "", percent: "")
+    
     @IBOutlet weak var lineChartView: LineChartView!
     @IBOutlet weak var nameOfCrypto: UILabel!
     @IBOutlet weak var priceOfCrypto: UILabel!
@@ -55,21 +56,30 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(idOfCrypto)
+
+        symbolOfCurrentCrypto = crypto.symbolOfCrypto
+        textTest = crypto.descriptionOfCrypto ?? ""
+        nameOfCrypto.text = crypto.nameOfCrypto ?? ""
+        diffPriceOfCrypto.text = crypto.percent ?? ""
+        priceOfCrypto.text = crypto.price ?? ""
+        idOfCrypto = crypto.id ?? ""
+        symbolOfTicker = crypto.symbolOfTicker ?? ""
+
         chartLoad(symbol: symbolOfCurrentCrypto, interval: "day")
         lineChartViewSetup()
         navigationBarSetup()
         
-        diffPriceOfCrypto.text = diffPriceOfCryptoText
-        priceOfCrypto.text = priceOfCryptoText
-        nameOfCrypto.text = nameOfCryptoText
+//        diffPriceOfCrypto.text = diffPriceOfCryptoText
+//        priceOfCrypto.text = priceOfCryptoText
+//        nameOfCrypto.text = nameOfCryptoText
 
         if textTest.isEmpty {
-            NetworkManager.shared.getCoinGeckoData(symbol: idOfCrypto, group: NetworkManager.shared.groupOne) { (stocks) in
-                DispatchQueue.main.async {
-                    self.textView.text = stocks.geckoSymbolDescription?.en
-                    
-                    self.tableView.reloadData()
+            DispatchQueue.global().async {
+                NetworkManager.shared.getCoinGeckoData(symbol: self.idOfCrypto, group: NetworkManager.shared.groupOne) { (stocks) in
+                    DispatchQueue.main.async {
+                        self.textView.text = stocks.geckoSymbolDescription?.en
+                        self.tableView.reloadData()
+                    }
                 }
             }
         } else {
@@ -131,7 +141,7 @@ class ChartViewController: UIViewController, ChartViewDelegate {
             let object = Favorites(context: context)
             object.symbol = favoriteSymbol
             object.symbolOfTicker = favoriteTicker
-            object.name = nameOfCryptoText
+            object.name = nameOfCrypto.text
             object.descrtiption = textView.text
             object.date = Date()
             
@@ -141,8 +151,11 @@ class ChartViewController: UIViewController, ChartViewDelegate {
             } catch let error as NSError {
                 print(error.localizedDescription)
             }
-            NetworkManager.shared.getData()
-//            NetworkManager.shared.putCoinGeckoData(array: &NetworkManager.shared.resultsF, group: NetworkManager.shared.groupTwo)
+            
+            NetworkManager.shared.favorites.insert(object, at: 0)
+            NetworkManager.shared.addData(object: object)
+            
+//            NetworkManager.shared.coinCap2(arrayOfResults: NetworkManager.shared.resultsF, elems: NetworkManager.shared.coinCapDict)
             NetworkManager.shared.webSocket(symbols: NetworkManager.shared.symbols, symbolsF: NetworkManager.shared.symbolsF)
 
         }
@@ -179,29 +192,31 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     
     func chartLoad(symbol : String, interval : String) {
         
-        NetworkManager.shared.getFinHubData(symbol: symbol, interval: interval, group: NetworkManager.shared.groupTwo) { (dict) in
-            let stocks = dict["stocks"] as! GetData
-            let dateFormat = dict["dateFormat"] as! String
-            
-            guard let stocksC = stocks.c else {return}
-            for (indexC,elemC) in stocksC.enumerated() {
-                let elemT = stocks.t![indexC]
-                let chartData = ChartDataEntry(x: Double(elemT), y: elemC)
-                self.values.append(chartData)
+        DispatchQueue.global().async {
+            NetworkManager.shared.getFinHubData(symbol: symbol, interval: interval, group: NetworkManager.shared.groupTwo) { (dict) in
+                let stocks = dict["stocks"] as! GetData
+                let dateFormat = dict["dateFormat"] as! String
                 
-            }
-            
-            guard let stockLast = stocksC.last else {return}
-            guard let stockFirst = stocksC.first else {return}
-            
-            DispatchQueue.main.async {
-                self.diffPriceOfCrypto.text = {
-                    return String((stockLast - stockFirst) / stockFirst * 100)
-                }()
-                self.priceOfCrypto.text = String(stockLast)
-                self.setData()
-                self.lineChartView.xAxis.valueFormatter = MyXAxisFormatter(dateFormat: dateFormat)
-                self.lineChartViewSetup()
+                guard let stocksC = stocks.c else {return}
+                for (indexC,elemC) in stocksC.enumerated() {
+                    let elemT = stocks.t![indexC]
+                    let chartData = ChartDataEntry(x: Double(elemT), y: elemC)
+                    self.values.append(chartData)
+                    
+                }
+                
+                guard let stockLast = stocksC.last else {return}
+                guard let stockFirst = stocksC.first else {return}
+                
+                DispatchQueue.main.async {
+                    self.diffPriceOfCrypto.text = {
+                        return String((stockLast - stockFirst) / stockFirst * 100)
+                    }()
+                    self.priceOfCrypto.text = String(stockLast)
+                    self.setData()
+                    self.lineChartView.xAxis.valueFormatter = MyXAxisFormatter(dateFormat: dateFormat)
+                    self.lineChartViewSetup()
+                }
             }
         }
     }

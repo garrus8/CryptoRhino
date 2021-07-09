@@ -75,7 +75,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 //            }
 //        }
         queue.sync {
-            NetworkManager.shared.collectionViewLoad(coinCapDict: NetworkManager.shared.coinCapDict)
+            NetworkManager.shared.collectionViewLoad()
         }
         NetworkManager.shared.webSocket2(symbols: NetworkManager.shared.websocketArray)
         NetworkManager.shared.receiveMessage(tableView: [self.tableView], collectionView: [self.collectionView])
