@@ -39,7 +39,7 @@
 		F4DE6652261C9DC100109F0A /* ChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DE6651261C9DC100109F0A /* ChartViewController.swift */; };
 		F4E7DE27268F36480032D26B /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E7DE26268F36480032D26B /* SearchTableViewCell.swift */; };
 		F4E7DE2C268F44560032D26B /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E7DE2B268F44560032D26B /* SearchViewController.swift */; };
-		F4EC4FBF25EE62760085F029 /* FavoritesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC4FBE25EE62760085F029 /* FavoritesTableViewController.swift */; };
+		F4EC4FBF25EE62760085F029 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC4FBE25EE62760085F029 /* FavoritesViewController.swift */; };
 		F4EC4FC725EE64150085F029 /* FavoritesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC4FC625EE64150085F029 /* FavoritesTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -104,7 +104,7 @@
 		F4DE6651261C9DC100109F0A /* ChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ChartViewController.swift; path = StocksApp/Controller/ChartViewController.swift; sourceTree = SOURCE_ROOT; };
 		F4E7DE26268F36480032D26B /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		F4E7DE2B268F44560032D26B /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
-		F4EC4FBE25EE62760085F029 /* FavoritesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesTableViewController.swift; sourceTree = "<group>"; };
+		F4EC4FBE25EE62760085F029 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		F4EC4FC625EE64150085F029 /* FavoritesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesTableViewCell.swift; sourceTree = "<group>"; };
 		F9EEB2663EE7E821205B32B2 /* Pods-StocksAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StocksAppTests.release.xcconfig"; path = "Target Support Files/Pods-StocksAppTests/Pods-StocksAppTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -214,7 +214,7 @@
 		F4D2F7D225E7DFF3009EB2C6 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				F4EC4FBE25EE62760085F029 /* FavoritesTableViewController.swift */,
+				F4EC4FBE25EE62760085F029 /* FavoritesViewController.swift */,
 				F4DE6651261C9DC100109F0A /* ChartViewController.swift */,
 				F4D2F79D25E7D7AE009EB2C6 /* ViewController.swift */,
 				F4E7DE2B268F44560032D26B /* SearchViewController.swift */,
@@ -519,7 +519,7 @@
 				F4D2F7DA25E7E1C5009EB2C6 /* Constants.swift in Sources */,
 				F4DE6652261C9DC100109F0A /* ChartViewController.swift in Sources */,
 				F4D2F79E25E7D7AE009EB2C6 /* ViewController.swift in Sources */,
-				F4EC4FBF25EE62760085F029 /* FavoritesTableViewController.swift in Sources */,
+				F4EC4FBF25EE62760085F029 /* FavoritesViewController.swift in Sources */,
 				F4B5CE022620734500B43385 /* DetailNewsViewController.swift in Sources */,
 				F48FFD6225ED21EE007E07B2 /* TableViewCell.swift in Sources */,
 				F4E7DE2C268F44560032D26B /* SearchViewController.swift in Sources */,

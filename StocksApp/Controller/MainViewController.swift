@@ -21,6 +21,7 @@ class MainViewController: UIViewController {
     var collectionView : UICollectionView!
     let CollectionViewGroup = DispatchGroup()
     var sections = [SectionOfCrypto]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 //        searchController.searchResultsUpdater = self
@@ -30,36 +31,29 @@ class MainViewController: UIViewController {
         definesPresentationContext = true
         
 //        NetworkManager.shared.deleteAllData()
+        
         let queue = DispatchQueue(label: "1", qos: .userInteractive)
-        let queue2 = DispatchQueue(label: "2", qos: .userInteractive)
+//        let queue = DispatchQueue.global()
 //        let queue = DispatchQueue.global()
         
         NetworkManager.shared.getData()
         
         queue.async {
+            NetworkManager.shared.getFullCoinCapList()
             NetworkManager.shared.getTopOfCrypto()
             NetworkManager.shared.getFullListOfCoinGecko()
-//            NetworkManager.shared.getFullCoinCapList()
             NetworkManager.shared.getFullBinanceList()
         }
-        queue2.sync {
-            NetworkManager.shared.getFullCoinCapList()
+
+        queue.async {
+            NetworkManager.shared.coinCap2Run()
         }
-        queue2.sync {
+        queue.async {
             NetworkManager.shared.groupOne.wait()
             NetworkManager.shared.groupTwo.wait()
             NetworkManager.shared.collectionViewLoad()
         }
         
-        queue.async {
-            NetworkManager.shared.coinCap2Run()
-        }
-
-//        queue.sync {
-//            NetworkManager.shared.groupOne.wait()
-//            NetworkManager.shared.groupTwo.wait()
-//            NetworkManager.shared.collectionViewLoad()
-//        }
 
         NetworkManager.shared.groupOne.wait()
         NetworkManager.shared.groupTwo.wait()
@@ -82,8 +76,13 @@ class MainViewController: UIViewController {
             self.reloadData()
             NetworkManager.shared.recoursiveUpdateUI(tableViews: [], collectionViews: [self.collectionView])
         }
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.reloadCollectionView), name: NSNotification.Name(rawValue: "newImage"), object: nil)
        
+    }
+    @objc func reloadCollectionView() {
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
     }
     
     func setupCollectionView() {
@@ -93,7 +92,7 @@ class MainViewController: UIViewController {
         NetworkManager.shared.groupTwo.wait()
         NetworkManager.shared.groupThree.wait()
         NetworkManager.shared.groupFour.wait()
-        print("setupCollectionView()")
+        
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createCompositionalLayout())
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.backgroundColor = #colorLiteral(red: 0.968627451, green: 0.9725490196, blue: 0.9921568627, alpha: 1)
@@ -113,7 +112,7 @@ class MainViewController: UIViewController {
         NetworkManager.shared.groupTwo.wait()
         NetworkManager.shared.groupThree.wait()
         NetworkManager.shared.groupFour.wait()
-        print("setupDataSource()")
+        
         dataSource = UICollectionViewDiffableDataSource<SectionOfCrypto, Crypto>(collectionView: collectionView, cellProvider: { (collectionView, indexPath, crypto) -> UICollectionViewCell? in
             let carousel = SectionOfCrypto(type: "carousel", title: "Top", items: NetworkManager.shared.collectionViewArray)
             let table = SectionOfCrypto(type: "table", title: "Hot", items: NetworkManager.shared.results)
@@ -150,10 +149,10 @@ class MainViewController: UIViewController {
         NetworkManager.shared.groupThree.wait()
         NetworkManager.shared.groupFour.wait()
         NetworkManager.shared.groupSetupSections.wait()
-        print("reloadData()")
+    
             var snapshot = NSDiffableDataSourceSnapshot<SectionOfCrypto, Crypto>()
             snapshot.appendSections(NetworkManager.shared.sections)
-        print("!!!!!!!",NetworkManager.shared.sections.first?.items.count)
+        
             for section in NetworkManager.shared.sections {
                 snapshot.appendItems(section.items, toSection: section)
             }
@@ -250,7 +249,6 @@ extension MainViewController: UICollectionViewDelegate {
 //        let ChartVC = ChartViewController()
         let ChartVC = self.storyboard?.instantiateViewController(withIdentifier: "ChartViewController") as! ChartViewController
         ChartVC.crypto = crypto
-        print("Tapped")
 //        present(ChartVC, animated: true, completion: nil)
         self.navigationController?.pushViewController(ChartVC, animated: true)
 //        collectionView.deselectItem(at: indexPath, animated: true)

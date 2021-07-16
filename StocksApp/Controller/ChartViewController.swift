@@ -14,6 +14,8 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     let finHubToken = Constants.finHubToken
     var values: [ChartDataEntry] = []
     var textTest = String()
+    var image = UIImage()
+    var imageString = String()
     var symbolOfCurrentCrypto = String()
     var symbolOfTicker = String()
     let tableView = UITableView()
@@ -24,7 +26,7 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     var diffPriceOfCryptoText = String()
     var priceOfCryptoText = String()
     var nameOfCryptoText = String()
-    var crypto = Crypto(symbolOfCrypto: "", price: "", change: "", nameOfCrypto: "", descriptionOfCrypto: "", symbolOfTicker: "", id: "", percent: "")
+    var crypto = Crypto(symbolOfCrypto: "", price: "", change: "", nameOfCrypto: "", descriptionOfCrypto: "", symbolOfTicker: "", id: "", percent: "", image: UIImage(named: "pngwing.com")!)
     
     @IBOutlet weak var lineChartView: LineChartView!
     @IBOutlet weak var nameOfCrypto: UILabel!
@@ -51,7 +53,6 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         }
         
         
-        
     }
     
     override func viewDidLoad() {
@@ -64,6 +65,8 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         priceOfCrypto.text = crypto.price ?? ""
         idOfCrypto = crypto.id ?? ""
         symbolOfTicker = crypto.symbolOfTicker ?? ""
+        image = crypto.image ?? UIImage(named: "pngwing.com")!
+        
 
         chartLoad(symbol: symbolOfCurrentCrypto, interval: "day")
         lineChartViewSetup()
@@ -73,7 +76,7 @@ class ChartViewController: UIViewController, ChartViewDelegate {
 //        priceOfCrypto.text = priceOfCryptoText
 //        nameOfCrypto.text = nameOfCryptoText
 
-        if textTest.isEmpty {
+        if textTest == "" {
             DispatchQueue.global().async {
                 NetworkManager.shared.getCoinGeckoData(symbol: self.idOfCrypto, group: NetworkManager.shared.groupOne) { (stocks) in
                     DispatchQueue.main.async {
@@ -154,7 +157,6 @@ class ChartViewController: UIViewController, ChartViewDelegate {
             
             NetworkManager.shared.favorites.insert(object, at: 0)
             NetworkManager.shared.addData(object: object)
-            
 //            NetworkManager.shared.coinCap2(arrayOfResults: NetworkManager.shared.resultsF, elems: NetworkManager.shared.coinCapDict)
             NetworkManager.shared.webSocket(symbols: NetworkManager.shared.symbols, symbolsF: NetworkManager.shared.symbolsF)
 
@@ -163,7 +165,8 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newDataNotif"), object: nil)
   
     }
-
+    
+ 
     @IBAction func dayChartButton(_ sender: Any) {
         values.removeAll()
         chartLoad(symbol: symbolOfCurrentCrypto, interval: "day")

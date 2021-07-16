@@ -36,13 +36,20 @@ class TableCollectionViewCell: UICollectionViewCell {
         percent.translatesAutoresizingMaskIntoConstraints = false
     }
     
-    func configure(with crypto: Crypto) {
+    func configure (with crypto: Crypto) {
         nameOfCrypto.text = crypto.nameOfCrypto
         symbolOfCrypto.text = crypto.symbolOfCrypto
         price.text = crypto.price
         percent.text = crypto.percent
-        friendImageView.image = UIImage()
+        friendImageView.image = crypto.image
     }
+//    func configureForFavorite (with crypto: Crypto) {
+//        nameOfCrypto.text = crypto.nameOfCrypto
+//        symbolOfCrypto.text = crypto.symbolOfCrypto
+//        price.text = crypto.price
+//        percent.text = crypto.percent
+//        friendImageView.image = UIImage(data: crypto.imageData!)
+//    }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

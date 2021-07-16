@@ -7,19 +7,57 @@
 
 import UIKit
 
-class FavoritesCell: UITableViewCell {
-    
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-     super.init(style: style, reuseIdentifier: reuseIdentifier)
+class FavoritesCell: UICollectionViewCell {
+    static var reuseId: String = "FavoritesCell"
+//    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+//     super.init(style: style, reuseIdentifier: reuseIdentifier)
+//        backgroundColor = UIColor(white: 1, alpha: 1)
+//        setupElements()
+//        setupConstraints()
+//
+//        self.layer.cornerRadius = 8
+//        self.clipsToBounds = true
+//
+//        let shadowPath2 = UIBezierPath(rect: self.bounds)
+//        self.layer.masksToBounds = false
+//        self.layer.shadowColor = UIColor.black.cgColor
+//        self.layer.shadowOffset = CGSize(width: CGFloat(1.0), height: CGFloat(3.0))
+//        self.layer.shadowOpacity = 0.5
+//        self.layer.shadowPath = shadowPath2.cgPath
+//
+//    }
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         backgroundColor = UIColor(white: 1, alpha: 1)
         setupElements()
         setupConstraints()
         
-        self.layer.cornerRadius = 4
+        self.layer.cornerRadius = 8
         self.clipsToBounds = true
         
+//        let shadowPath2 = UIBezierPath(rect: self.bounds)
+//        self.layer.masksToBounds = false
+//        self.layer.shadowColor = UIColor.black.cgColor
+//        self.layer.shadowOffset = CGSize(width: CGFloat(1.0), height: CGFloat(3.0))
+//        self.layer.shadowOpacity = 0.5
+//        self.layer.shadowPath = shadowPath2.cgPath
+        
     }
-    static var reuseId: String = "FavoritesCell"
+//    override var frame: CGRect {
+//        get {
+//            return super.frame
+//        }
+//        set (newFrame) {
+//            var frame = newFrame
+//            let newWidth = frame.width * 0.95
+//            let space = (frame.width - newWidth) / 2
+//            frame.size.width = newWidth
+//            frame.origin.x += space
+//
+//            super.frame = frame
+//
+//        }
+//    }
     
     
     var friendImageView = UIImageView()

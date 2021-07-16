@@ -17,7 +17,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     var results = [Crypto]()
     var symbols = [String]()
     var coinGecoList = [GeckoListElement]()
-    let favoritesVC = FavoritesTableViewController()
+    let favoritesVC = FavoritesViewController()
     var favorites = [Favorites]()
     var resultsF = [Crypto]()
     var symbolsF = [String]()

@@ -101,8 +101,10 @@ class Crypto : Hashable, Equatable {
     var id : String?
     var percent : String?
     var rank : Int?
+    var image : UIImage?
+    var imageString : String?
 
-    init(symbolOfCrypto : String, price : String, change: String, nameOfCrypto: String?, descriptionOfCrypto: String?, symbolOfTicker : String?, id : String?, percent : String?) {
+    init(symbolOfCrypto : String, price : String, change: String, nameOfCrypto: String?, descriptionOfCrypto: String?, symbolOfTicker : String?, id : String?, percent : String?, image : UIImage) {
         
         self.symbolOfCrypto = symbolOfCrypto
         self.price = price
@@ -112,14 +114,15 @@ class Crypto : Hashable, Equatable {
         self.symbolOfTicker = symbolOfTicker
         self.id = id
         self.percent = percent
+        self.image = image
 
     }
-    init(symbolOfCrypto: String, nameOfCrypto: String, descriptionOfCrypto: String, symbolOfTicker: String) {
+    init(symbolOfCrypto: String, nameOfCrypto: String, descriptionOfCrypto: String, symbolOfTicker: String, image : UIImage) {
         self.symbolOfCrypto = symbolOfCrypto
         self.nameOfCrypto = nameOfCrypto
         self.descriptionOfCrypto = descriptionOfCrypto
         self.symbolOfTicker = symbolOfTicker
-        
+        self.image = image
     }
     init(symbolOfCrypto : String, nameOfCrypto: String?,symbolOfTicker: String, id : String?, rank : Int = 101) {
         self.symbolOfCrypto = symbolOfCrypto
@@ -127,6 +130,9 @@ class Crypto : Hashable, Equatable {
         self.id = id
         self.rank = rank
         self.symbolOfTicker = symbolOfTicker
+    }
+    deinit {
+        print("DEINIT CRYPTO")
     }
 }
 
