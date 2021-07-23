@@ -147,8 +147,9 @@ class NetworkManager  {
             request.httpMethod = "GET"
             
             URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
-                
+                DispatchQueue.global().async(group: self.groupOne) {
                 guard let stocksData = data, error == nil, response != nil else {return}
+                
                 do {
                     guard let stocksData = try (Toplist.decode(from: stocksData))?.data else {return}
                     
@@ -167,6 +168,7 @@ class NetworkManager  {
                             self.results.append(crypto)
                             print("RESULSTS ADDED", self.results.count)
                             self.websocketArray.append(cryptoCompareName)
+                                print(self.websocketArray)
                             self.symbols.append(cryptoCompareName)
                             }
                         }
@@ -176,8 +178,8 @@ class NetworkManager  {
                     print(error.localizedDescription)
                 }
                 
+            }
             }.resume()
-            
         }
         
     }
@@ -195,9 +197,7 @@ class NetworkManager  {
             request.httpMethod = "GET"
             
             URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
-                
-//                let x = try? JSONSerialization.jsonObject(with: data!, options: [])
-//                print("getFullListOfCoinGecko DATA",x, response, error)
+           
                 guard let stocksData = data, error == nil, response != nil else {return}
                 do {
                     guard let stocks = try GeckoList.decode(from: stocksData) else {return}
@@ -211,6 +211,8 @@ class NetworkManager  {
                         }
                         
                         self.quickSortForCoinGecko(&self.coinGecoList, start: 0, end: self.coinGecoList.count)
+//                        self.filterForCoinGecko(&self.coinGecoList)
+                        self.coinGecoList.removeAll{ $0.id!.contains("binance-peg")}
                         DispatchQueue.global().async(flags: .barrier) {
                             self.putCoinGeckoData(array: &self.results, group: self.groupTwo, isFavorites: false)
                             self.putCoinGeckoData(array: &self.resultsF, group: self.groupTwo, isFavorites: true)
@@ -304,6 +306,7 @@ class NetworkManager  {
             let prevDayUnix = Int((Calendar.current.date(byAdding: .hour, value: -25, to: Date()))!.timeIntervalSince1970)
             let prevMonthUnix = Int((Calendar.current.date(byAdding: .day, value: -21, to: Date()))!.timeIntervalSince1970)
             let prevYearUnix = Int((Calendar.current.date(byAdding: .month, value: -12, to: Date()))!.timeIntervalSince1970)
+            let prevWeekUnix = Int((Calendar.current.date(byAdding: .day, value: -7, to: Date()))!.timeIntervalSince1970)
             let nextMinuteUnix = Int((Calendar.current.date(byAdding: .minute, value: +1, to: Date()))!.timeIntervalSince1970)
             
             var prevValue = Int()
@@ -323,6 +326,10 @@ class NetworkManager  {
                 dateFormat = "dd.MM.yy"
                 prevValue = prevYearUnix
                 resolution = "D"
+            case "week":
+                dateFormat = "dd.MM.yy"
+                prevValue = prevWeekUnix
+                resolution = "60"
             default:
                 print("ПРОБЛЕМА В СВИЧ")
             }
@@ -362,7 +369,7 @@ class NetworkManager  {
             
 
             let request = NSMutableURLRequest(
-                url: NSURL(string: "https://api.coingecko.com/api/v3/coins/\(symbol)?localization=false&tickers=false&market_data=false&community_data=true&developer_data=false&sparkline=false")! as URL,
+                url: NSURL(string: "https://api.coingecko.com/api/v3/coins/\(symbol)?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false")! as URL,
                 cachePolicy: .useProtocolCachePolicy,
                 timeoutInterval: 10.0)
             request.httpMethod = "GET"
@@ -372,8 +379,10 @@ class NetworkManager  {
                 guard let stocksData = data, error == nil, response != nil else {return}
                 
                 do {
+                    
 
                     if let stocks = try GeckoSymbol.decode(from: stocksData) {
+                        
                         complition(stocks)
                     }
 
@@ -392,7 +401,6 @@ class NetworkManager  {
         // GROUP 2
         groupOne.wait()
         let countArray = array.count
-        print("countArray", countArray)
         var countIterations = 0
         for i in array {
             DispatchQueue.global().async(group: group) {
@@ -401,20 +409,32 @@ class NetworkManager  {
                 var indexOfSymbol: Int?
                 DispatchQueue.global().sync {
                      indexOfSymbol = self.binarySearchFoCoinGeckoList(key: symbol.lowercased(), list: self.coinGecoList)
+                    
                 }
-                self.getCoinGeckoData(symbol: self.coinGecoList[indexOfSymbol!].id!, group: group) { (stocks) in
+//                let symbolCoinGecko = self.coinGecoList[indexOfSymbol!].id!.replacingOccurrences(of: "binance-peg-", with: "")
+                let symbolCoinGecko = self.coinGecoList[indexOfSymbol!].id!
+                print("SYMBOLOFCG", symbolCoinGecko)
+                self.getCoinGeckoData(symbol: symbolCoinGecko, group: group) { (stocks) in
                     DispatchQueue.global().async(group: group, flags: .barrier) {
-                        self.obtainImage(StringUrl: (stocks.image?.large)!) { image in
+                        
+                        if let stringUrl = stocks.image?.large {
+                        self.obtainImage(StringUrl: stringUrl) { image in
                             i.image = image
                             i.imageString = (stocks.image?.large)!
                             countIterations += 1
-                            print("countIterations",countIterations)
                             if countIterations == countArray - 1 && !isFavorites {
                                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newImage"), object: nil)
                             }
                         }
-                    
+                        }
+                        
                         i.descriptionOfCrypto = stocks.geckoSymbolDescription?.en
+                        i.links = stocks.links
+                        guard let marketData = stocks.marketData else {return}
+                        i.marketDataArray = MarketDataArray(marketData: marketData)
+                        guard let communityData = stocks.communityData else {return}
+                        i.communityDataArray = CommunityDataArray(communityData: communityData)
+                        
                         
                     }
                 }
@@ -479,6 +499,7 @@ class NetworkManager  {
                         if secondElementOfSymbol == "USDT" {
                             if indexOfGeckoList != nil {
                                 
+//                                let name = coinGeckoListCopy![indexOfGeckoList!].name!.replacingOccurrences(of: "Binance-Peg", with: "")
                                 let name = coinGeckoListCopy![indexOfGeckoList!].name!
                                 let displaySymbol = coinGeckoListCopy![indexOfGeckoList!].symbol?.uppercased()
                                 var rank = 101
@@ -576,11 +597,11 @@ class NetworkManager  {
         groupThree.wait()
         groupFour.wait()
         
-        DispatchQueue.global().async(group : groupSetupSections) {
+        DispatchQueue.global().async(group : groupSetupSections, flags: .barrier) {
             let carousel = SectionOfCrypto(type: "carousel", title: "Top", items: self.collectionViewArray)
             let table = SectionOfCrypto(type: "table", title: "Hot", items: self.results)
             self.sections = [carousel,table]
-            print("SEctions Setuped", self.sections.count, self.sections.first?.items.count, self.sections[1].items.count)
+            
         }
         
     }
@@ -745,10 +766,8 @@ class NetworkManager  {
         
         while low <= high {
             let mid = low + (high - low) / 2
-//            if key < list[mid].symbol! || list[mid].id!.contains("binance-peg") {
             if key < list[mid].symbol! {
                 high = mid - 1
-//            } else if key > list[mid].symbol! || list[mid].id!.contains("binance-peg") {
             } else if key > list[mid].symbol! {
                 low = mid + 1
             } else {

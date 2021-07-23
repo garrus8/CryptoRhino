@@ -171,7 +171,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             let cell = sender as! CollectionViewCell
             chartVC.symbolOfCurrentCrypto = cell.symbolOfCrypto
             chartVC.textTest = cell.textViewTest
-            chartVC.nameOfCrypto = cell.nameOfElelm
+//            chartVC.nameOfCrypto = cell.nameOfElelm
             chartVC.diffPriceOfCryptoText = cell.percent
             chartVC.priceOfCryptoText = cell.index.text!
             chartVC.nameOfCryptoText = cell.nameOfElelm.text!

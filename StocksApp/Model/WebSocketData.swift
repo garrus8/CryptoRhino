@@ -39,6 +39,15 @@ import UIKit
 //
 //    }
 //}
+struct CoinGeckoPrice: Codable {
+    let prices, marketCaps, totalVolumes: [[Double]]?
+
+    enum CodingKeys: String, CodingKey {
+        case prices
+        case marketCaps = "market_caps"
+        case totalVolumes = "total_volumes"
+    }
+}
 
 
 class SectionOfCrypto : Hashable, Equatable {
@@ -103,7 +112,11 @@ class Crypto : Hashable, Equatable {
     var rank : Int?
     var image : UIImage?
     var imageString : String?
+    var marketDataArray : MarketDataArray?
+    var communityDataArray : CommunityDataArray?
+    var links : Links?
 
+// Main init
     init(symbolOfCrypto : String, price : String, change: String, nameOfCrypto: String?, descriptionOfCrypto: String?, symbolOfTicker : String?, id : String?, percent : String?, image : UIImage) {
         
         self.symbolOfCrypto = symbolOfCrypto
@@ -115,8 +128,12 @@ class Crypto : Hashable, Equatable {
         self.id = id
         self.percent = percent
         self.image = image
+        self.marketDataArray = nil
+        self.communityDataArray = nil
+        self.links = nil
 
     }
+    
     init(symbolOfCrypto: String, nameOfCrypto: String, descriptionOfCrypto: String, symbolOfTicker: String, image : UIImage) {
         self.symbolOfCrypto = symbolOfCrypto
         self.nameOfCrypto = nameOfCrypto
@@ -280,7 +297,7 @@ struct SourceInfo: Codable {
 
 // CoinGecko
 struct GeckoListElement: Codable {
-    let id, symbol, name : String?
+    var id, symbol, name : String?
 }
 
 typealias GeckoList = [GeckoListElement]
@@ -366,71 +383,117 @@ typealias GeckoList = [GeckoListElement]
 
 
 // MARK: - GeckoSymbol
-struct GeckoSymbol: Codable {
+struct GeckoSymbol: Decodable {
     let symbol, name: String?
-    let blockTimeInMinutes: Int?
     let geckoSymbolDescription: Description?
     let links: Links?
     let image: Image?
     let genesisDate: String?
-    let sentimentVotesUpPercentage, sentimentVotesDownPercentage: Double?
-    let icoData: IcoData?
     let marketCapRank, coingeckoRank: Int?
-    let coingeckoScore, developerScore, communityScore, liquidityScore: Double?
-    let publicInterestScore: Double?
+    let marketData: MarketData?
     let communityData: CommunityData?
 
     enum CodingKeys: String, CodingKey {
         case symbol, name
-        case blockTimeInMinutes = "block_time_in_minutes"
         case geckoSymbolDescription = "description"
         case links, image
         case genesisDate = "genesis_date"
-        case sentimentVotesUpPercentage = "sentiment_votes_up_percentage"
-        case sentimentVotesDownPercentage = "sentiment_votes_down_percentage"
-        case icoData = "ico_data"
         case marketCapRank = "market_cap_rank"
         case coingeckoRank = "coingecko_rank"
-        case coingeckoScore = "coingecko_score"
-        case developerScore = "developer_score"
-        case communityScore = "community_score"
-        case liquidityScore = "liquidity_score"
-        case publicInterestScore = "public_interest_score"
+        case marketData = "market_data"
         case communityData = "community_data"
     }
 }
 
 // MARK: - CommunityData
-struct CommunityData: Codable {
+struct CommunityData: Decodable {
     let twitterFollowers: Int?
     let redditAveragePosts48H, redditAverageComments48H: Double?
-    let redditSubscribers, telegramChannelUserCount: Int?
+    let redditSubscribers : Int?
 
     enum CodingKeys: String, CodingKey {
         case twitterFollowers = "twitter_followers"
         case redditAveragePosts48H = "reddit_average_posts_48h"
         case redditAverageComments48H = "reddit_average_comments_48h"
         case redditSubscribers = "reddit_subscribers"
-        case telegramChannelUserCount = "telegram_channel_user_count"
     }
 }
+struct CommunityDataArray {
+    let array : [MarketDataElem]
+    init(communityData : CommunityData) {
+        let twitterFollowers = String(communityData.twitterFollowers ?? 0)
+        let redditAveragePosts48H = String(communityData.redditAveragePosts48H ?? 0)
+        let redditAverageComments48H = String(communityData.redditAverageComments48H ?? 0)
+        let redditSubscribers = String(communityData.redditSubscribers ?? 0)
+        let array = [
+            MarketDataElem(name: "twitterFollowers", value: twitterFollowers),
+            MarketDataElem(name: "redditAveragePosts48H", value: redditAveragePosts48H),
+            MarketDataElem(name: "redditAverageComments48H", value: redditAverageComments48H),
+            MarketDataElem(name: "redditSubscribers", value: redditSubscribers)
+        ]
+        self.array = array
+    }
+}
+
+
+struct MarketData: Decodable {
+    
+     let marketCap: [String: Double]?
+     let marketCapRank: Int?
+     let totalVolume, high24H, low24H: [String: Double]?
+     let marketCapChangePercentage24H: Double?
+    let maxSupply, circulatingSupply: Double?
+
+     enum CodingKeys: String, CodingKey {
+        case marketCap = "market_cap"
+        case marketCapRank = "market_cap_rank"
+        case totalVolume = "total_volume"
+        case high24H = "high_24h"
+        case low24H = "low_24h"
+        case marketCapChangePercentage24H = "market_cap_change_percentage_24h"
+        case maxSupply = "max_supply"
+        case circulatingSupply = "circulating_supply"
+
+     }
+    
+}
+struct MarketDataArray {
+    let array : [MarketDataElem]
+    init(marketData : MarketData) {
+        let marketCap = String(marketData.marketCap?["usd"] ?? 0)
+        let marketCapRank = String(marketData.marketCapRank ?? 0)
+        let totalVolume = String(marketData.totalVolume?["usd"] ?? 0)
+        let high24H = String(marketData.high24H?["usd"] ?? 0)
+        let low24H = String(marketData.low24H?["usd"] ?? 0)
+        let marketCapChangePercentage24H = String(marketData.marketCapChangePercentage24H ?? 0)
+        let maxSupply = String(marketData.maxSupply ?? 0)
+        let circulatingSupply = String(marketData.circulatingSupply ?? 0)
+        let array = [
+            MarketDataElem(name: "marketCap", value: marketCap),
+            MarketDataElem(name: "marketCapRank", value: marketCapRank),
+            MarketDataElem(name: "totalVolume", value: totalVolume),
+            MarketDataElem(name: "high24H", value: high24H),
+            MarketDataElem(name: "low24H", value: low24H),
+            MarketDataElem(name: "marketCapChangePercentage24H", value: marketCapChangePercentage24H),
+            MarketDataElem(name: "maxSupply", value: maxSupply),
+            MarketDataElem(name: "circulatingSupply", value: circulatingSupply)
+        ]
+        self.array = array
+    }
+}
+
+struct MarketDataElem {
+    let name : String
+    let value : String
+}
+
 
 // MARK: - Description
 struct Description: Codable {
     let en: String?
 }
 
-// MARK: - IcoData
-struct IcoData: Codable {
-    let icoStartDate, icoEndDate, totalRaisedCurrency, totalRaised: String?
 
-    enum CodingKeys: String, CodingKey {
-        case icoStartDate = "ico_start_date"
-        case icoEndDate = "ico_end_date"
-        case totalRaisedCurrency = "total_raised_currency"
-        case totalRaised = "total_raised"
-    }
-}
 
 // MARK: - Image
 struct Image: Codable {
@@ -439,14 +502,11 @@ struct Image: Codable {
 
 // MARK: - Links
 struct Links: Codable {
-    let homepage, blockchainSite: [String]?
-    let telegramChannelIdentifier: String?
+    let homepage : [String]?
     let subredditURL: String?
 
     enum CodingKeys: String, CodingKey {
         case homepage
-        case blockchainSite = "blockchain_site"
-        case telegramChannelIdentifier = "telegram_channel_identifier"
         case subredditURL = "subreddit_url"
     }
 }

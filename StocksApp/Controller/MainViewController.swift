@@ -249,6 +249,7 @@ extension MainViewController: UICollectionViewDelegate {
 //        let ChartVC = ChartViewController()
         let ChartVC = self.storyboard?.instantiateViewController(withIdentifier: "ChartViewController") as! ChartViewController
         ChartVC.crypto = crypto
+        
 //        present(ChartVC, animated: true, completion: nil)
         self.navigationController?.pushViewController(ChartVC, animated: true)
 //        collectionView.deselectItem(at: indexPath, animated: true)
