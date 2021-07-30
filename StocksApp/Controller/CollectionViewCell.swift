@@ -7,29 +7,29 @@
 
 import UIKit
 
-class CollectionViewCell: UICollectionViewCell {
-    @IBOutlet weak var nameOfElelm: UILabel!
-    @IBOutlet weak var index: UILabel!
-    var textViewTest = String()
-    var percent = String()
-    var symbolOfCrypto = String()
-    var symbolOfTicker = String()
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        // IMAGE = nil
-    }
-    
-    func update(item : Crypto) {
-        self.nameOfElelm.text = item.nameOfCrypto
-//        self.index.text = String(item.index)
-        self.index.text = item.price
-        self.textViewTest = item.descriptionOfCrypto!
-//        self.percent = String(item.percent)
-        self.percent = item.percent!
-        self.symbolOfCrypto = item.symbolOfCrypto
-        self.symbolOfTicker = "BINANCE:\(item.symbolOfCrypto)USDT"
-        
-    }
-    
-}
+//class CollectionViewCell: UICollectionViewCell {
+//    @IBOutlet weak var nameOfElelm: UILabel!
+//    @IBOutlet weak var index: UILabel!
+//    var textViewTest = String()
+//    var percent = String()
+//    var symbolOfCrypto = String()
+//    var symbolOfTicker = String()
+//    
+//    override func prepareForReuse() {
+//        super.prepareForReuse()
+//        // IMAGE = nil
+//    }
+//    
+//    func update(item : Crypto) {
+//        self.nameOfElelm.text = item.nameOfCrypto
+////        self.index.text = String(item.index)
+//        self.index.text = item.price
+//        self.textViewTest = item.descriptionOfCrypto!
+////        self.percent = String(item.percent)
+//        self.percent = item.percent!
+//        self.symbolOfCrypto = item.symbolOfCrypto
+//        self.symbolOfTicker = "BINANCE:\(item.symbolOfCrypto)USDT"
+//        
+//    }
+//    
+//}

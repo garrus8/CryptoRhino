@@ -108,7 +108,7 @@ class Crypto : Hashable, Equatable {
     var descriptionOfCrypto : String?
     var symbolOfTicker : String?
     var id : String?
-    var percent : String?
+    var percentages : Persentages?
     var rank : Int?
     var image : UIImage?
     var imageString : String?
@@ -117,7 +117,7 @@ class Crypto : Hashable, Equatable {
     var links : Links?
 
 // Main init
-    init(symbolOfCrypto : String, price : String, change: String, nameOfCrypto: String?, descriptionOfCrypto: String?, symbolOfTicker : String?, id : String?, percent : String?, image : UIImage) {
+    init(symbolOfCrypto : String, price : String, change: String, nameOfCrypto: String?, descriptionOfCrypto: String?, symbolOfTicker : String?, id : String?, percentages : Persentages?, image : UIImage) {
         
         self.symbolOfCrypto = symbolOfCrypto
         self.price = price
@@ -126,20 +126,38 @@ class Crypto : Hashable, Equatable {
         self.descriptionOfCrypto = descriptionOfCrypto
         self.symbolOfTicker = symbolOfTicker
         self.id = id
-        self.percent = percent
+        self.percentages = percentages
         self.image = image
         self.marketDataArray = nil
         self.communityDataArray = nil
         self.links = nil
 
     }
+    init(symbolOfCrypto : String, id : String) {
+        
+        self.symbolOfCrypto = symbolOfCrypto
+        self.price = ""
+        self.change = ""
+        self.nameOfCrypto = ""
+        self.descriptionOfCrypto = ""
+        self.symbolOfTicker = ""
+        self.id = id
+        self.percentages = nil
+        self.image = nil
+        self.marketDataArray = nil
+        self.communityDataArray = nil
+        self.links = nil
+
+    }
     
-    init(symbolOfCrypto: String, nameOfCrypto: String, descriptionOfCrypto: String, symbolOfTicker: String, image : UIImage) {
+    init(symbolOfCrypto: String, nameOfCrypto: String, descriptionOfCrypto: String, symbolOfTicker: String, image : UIImage, percentages : Persentages?) {
         self.symbolOfCrypto = symbolOfCrypto
         self.nameOfCrypto = nameOfCrypto
         self.descriptionOfCrypto = descriptionOfCrypto
         self.symbolOfTicker = symbolOfTicker
         self.image = image
+        self.percentages = percentages
+        
     }
     init(symbolOfCrypto : String, nameOfCrypto: String?,symbolOfTicker: String, id : String?, rank : Int = 101) {
         self.symbolOfCrypto = symbolOfCrypto
@@ -153,6 +171,21 @@ class Crypto : Hashable, Equatable {
     }
 }
 
+struct Persentages {
+    var priceChangePercentage24H : String
+    var priceChangePercentage7D : String
+    var priceChangePercentage14D : String
+    var priceChangePercentage30D : String
+    var priceChangePercentage1Y : String
+    
+    init() {
+         priceChangePercentage24H = ""
+         priceChangePercentage7D = ""
+         priceChangePercentage14D = ""
+         priceChangePercentage30D = ""
+         priceChangePercentage1Y = ""
+    }
+}
 
 struct FullCoinCapList: Codable {
     let data: [[String: String?]]?
@@ -298,6 +331,7 @@ struct SourceInfo: Codable {
 // CoinGecko
 struct GeckoListElement: Codable {
     var id, symbol, name : String?
+    var rank : Int?
 }
 
 typealias GeckoList = [GeckoListElement]
@@ -384,6 +418,7 @@ typealias GeckoList = [GeckoListElement]
 
 // MARK: - GeckoSymbol
 struct GeckoSymbol: Decodable {
+    let id: String?
     let symbol, name: String?
     let geckoSymbolDescription: Description?
     let links: Links?
@@ -394,7 +429,7 @@ struct GeckoSymbol: Decodable {
     let communityData: CommunityData?
 
     enum CodingKeys: String, CodingKey {
-        case symbol, name
+        case id,symbol, name
         case geckoSymbolDescription = "description"
         case links, image
         case genesisDate = "genesis_date"
@@ -437,14 +472,21 @@ struct CommunityDataArray {
 
 
 struct MarketData: Decodable {
-    
-     let marketCap: [String: Double]?
-     let marketCapRank: Int?
-     let totalVolume, high24H, low24H: [String: Double]?
-     let marketCapChangePercentage24H: Double?
+    let currentPrice: [String: Double]?
+    let priceChange24H, priceChangePercentage24H, priceChangePercentage7D, priceChangePercentage30D, priceChangePercentage1Y : Double?
+    let marketCap: [String: Double]?
+    let marketCapRank: Int?
+    let totalVolume, high24H, low24H: [String: Double]?
+    let marketCapChangePercentage24H: Double?
     let maxSupply, circulatingSupply: Double?
 
      enum CodingKeys: String, CodingKey {
+        case currentPrice = "current_price"
+        case priceChange24H = "price_change_24h"
+        case priceChangePercentage24H = "price_change_percentage_24h"
+        case priceChangePercentage7D = "price_change_percentage_7d"
+        case priceChangePercentage30D = "price_change_percentage_30d"
+        case priceChangePercentage1Y = "price_change_percentage_1y"
         case marketCap = "market_cap"
         case marketCapRank = "market_cap_rank"
         case totalVolume = "total_volume"

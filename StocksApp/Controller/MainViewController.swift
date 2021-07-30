@@ -17,6 +17,8 @@ class MainViewController: UIViewController {
 //    private var isFiltering : Bool {
 //        return searchController.isActive && !searchBarIsEmpty
 //    }
+    static let shared = MainViewController()
+   
     var dataSource : UICollectionViewDiffableDataSource<SectionOfCrypto, Crypto>?
     var collectionView : UICollectionView!
     let CollectionViewGroup = DispatchGroup()
@@ -24,95 +26,73 @@ class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        searchController.searchResultsUpdater = self
-//        searchController.obscuresBackgroundDuringPresentation = false
-//        searchController.searchBar.placeholder = "Name or symbol of cryptocurrency"
-//        navigationItem.searchController = searchController
+
         definesPresentationContext = true
         
 //        NetworkManager.shared.deleteAllData()
         
         let queue = DispatchQueue(label: "1", qos: .userInteractive)
-//        let queue = DispatchQueue.global()
-//        let queue = DispatchQueue.global()
         
         NetworkManager.shared.getData()
-        
-        queue.async {
-            NetworkManager.shared.getFullCoinCapList()
-            NetworkManager.shared.getTopOfCrypto()
-            NetworkManager.shared.getFullListOfCoinGecko()
-            NetworkManager.shared.getFullBinanceList()
-        }
+        NetworkManager.shared.getFullCoinCapList()
+        NetworkManager.shared.getTopOfCrypto()
+        NetworkManager.shared.getFullListOfCoinGecko()
+        NetworkManager.shared.collectionViewLoad()
+            
 
-        queue.async {
-            NetworkManager.shared.coinCap2Run()
-        }
-        queue.async {
-            NetworkManager.shared.groupOne.wait()
-            NetworkManager.shared.groupTwo.wait()
-            NetworkManager.shared.collectionViewLoad()
-        }
-        
 
-        NetworkManager.shared.groupOne.wait()
-        NetworkManager.shared.groupTwo.wait()
-        NetworkManager.shared.groupThree.wait()
-        NetworkManager.shared.groupFour.wait()
+//        NetworkManager.shared.groupOne.wait()
+//        NetworkManager.shared.groupTwo.wait()
+//        NetworkManager.shared.groupThree.wait()
+//        NetworkManager.shared.groupFour.wait()
         
         setupCollectionView()
         setupDataSource()
         NetworkManager.shared.webSocket2(symbols: NetworkManager.shared.websocketArray)
         NetworkManager.shared.receiveMessage(tableView: [], collectionView: [self.collectionView])
         
-        queue.async {
-            self.CollectionViewGroup.wait()
-            NetworkManager.shared.groupOne.wait()
-            NetworkManager.shared.groupTwo.wait()
-            NetworkManager.shared.groupThree.wait()
-            NetworkManager.shared.groupFour.wait()
-            NetworkManager.shared.setupSections()
-            NetworkManager.shared.groupSetupSections.wait()
-            self.reloadData()
-            NetworkManager.shared.recoursiveUpdateUI(tableViews: [], collectionViews: [self.collectionView])
-        }
-        NotificationCenter.default.addObserver(self, selector: #selector(self.reloadCollectionView), name: NSNotification.Name(rawValue: "newImage"), object: nil)
+    
+        NetworkManager.shared.groupOne.wait()
+        NetworkManager.shared.putCoinGeckoData(array: &NetworkManager.shared.results, group: NetworkManager.shared.groupTwo)
+        NetworkManager.shared.putCoinGeckoData(array: &NetworkManager.shared.resultsF, group: NetworkManager.shared.groupTwo)
+        NetworkManager.shared.groupTwo.wait()
+        
+        NetworkManager.shared.setupSections()
+        
+        reloadData()
+        NetworkManager.shared.groupThree.wait()
+        NetworkManager.shared.putCoinGeckoData(array: &NetworkManager.shared.collectionViewArray, group: NetworkManager.shared.groupFour)
+        NetworkManager.shared.updateUI(collectionViews: [self.collectionView])
+        NetworkManager.shared.recoursiveUpdateUI(collectionViews: [self.collectionView])
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadCollectionView), name: NSNotification.Name(rawValue: "newImage"), object: nil)
        
     }
     @objc func reloadCollectionView() {
         DispatchQueue.main.async {
+//            NetworkManager.shared.groupFour.wait()
             self.collectionView.reloadData()
+            
         }
     }
     
     func setupCollectionView() {
-        
         CollectionViewGroup.enter()
-        NetworkManager.shared.groupOne.wait()
-        NetworkManager.shared.groupTwo.wait()
-        NetworkManager.shared.groupThree.wait()
-        NetworkManager.shared.groupFour.wait()
+            collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createCompositionalLayout())
+            collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            collectionView.backgroundColor = #colorLiteral(red: 0.968627451, green: 0.9725490196, blue: 0.9921568627, alpha: 1)
+            view.addSubview(collectionView)
+            collectionView.register(TableCollectionViewCell.self, forCellWithReuseIdentifier: TableCollectionViewCell.reuseId)
+            collectionView.register(CarouselCollectionViewCell.self, forCellWithReuseIdentifier: CarouselCollectionViewCell.reuseId)
+            collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SectionHeader.reuseId)
+            collectionView.delegate = self
+            //        collectionView.dataSource = self
         
-        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createCompositionalLayout())
-        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        collectionView.backgroundColor = #colorLiteral(red: 0.968627451, green: 0.9725490196, blue: 0.9921568627, alpha: 1)
-        view.addSubview(collectionView)
-        collectionView.register(TableCollectionViewCell.self, forCellWithReuseIdentifier: TableCollectionViewCell.reuseId)
-        collectionView.register(CarouselCollectionViewCell.self, forCellWithReuseIdentifier: CarouselCollectionViewCell.reuseId)
-        collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SectionHeader.reuseId)
         CollectionViewGroup.leave()
-        collectionView.delegate = self
-//        collectionView.dataSource = self
-        
     }
     
     func setupDataSource() {
         CollectionViewGroup.enter()
-        NetworkManager.shared.groupOne.wait()
-        NetworkManager.shared.groupTwo.wait()
-        NetworkManager.shared.groupThree.wait()
-        NetworkManager.shared.groupFour.wait()
-        
         dataSource = UICollectionViewDiffableDataSource<SectionOfCrypto, Crypto>(collectionView: collectionView, cellProvider: { (collectionView, indexPath, crypto) -> UICollectionViewCell? in
             let carousel = SectionOfCrypto(type: "carousel", title: "Top", items: NetworkManager.shared.collectionViewArray)
             let table = SectionOfCrypto(type: "table", title: "Hot", items: NetworkManager.shared.results)
@@ -129,6 +109,7 @@ class MainViewController: UIViewController {
                 return cell
             }
         })
+        
         dataSource?.supplementaryViewProvider = { collectionView, kind, indexPath in
             guard let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: SectionHeader.reuseId, for: indexPath) as? SectionHeader else {return nil}
             guard let item = self.dataSource?.itemIdentifier(for: indexPath) else {return nil}
@@ -136,18 +117,18 @@ class MainViewController: UIViewController {
             if section.title.isEmpty {return nil}
             sectionHeader.title.text = section.title
             
-            return sectionHeader
             
+            return sectionHeader
         }
         CollectionViewGroup.leave()
     }
     
     func reloadData() {
-        CollectionViewGroup.wait()
-        NetworkManager.shared.groupOne.wait()
-        NetworkManager.shared.groupTwo.wait()
-        NetworkManager.shared.groupThree.wait()
-        NetworkManager.shared.groupFour.wait()
+//        CollectionViewGroup.wait()
+//        NetworkManager.shared.groupOne.wait()
+//        NetworkManager.shared.groupTwo.wait()
+//        NetworkManager.shared.groupThree.wait()
+//        NetworkManager.shared.groupFour.wait()
         NetworkManager.shared.groupSetupSections.wait()
     
             var snapshot = NSDiffableDataSourceSnapshot<SectionOfCrypto, Crypto>()

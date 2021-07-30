@@ -39,7 +39,7 @@ class CarouselCollectionViewCell: UICollectionViewCell {
         nameOfCrypto.text = crypto.nameOfCrypto
         symbolOfCrypto.text = crypto.symbolOfCrypto
         price.text = crypto.price
-        percent.text = crypto.percent
+        percent.text = crypto.percentages?.priceChangePercentage24H
         friendImageView.image = UIImage()
     }
     

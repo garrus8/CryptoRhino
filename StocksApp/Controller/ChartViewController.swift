@@ -29,7 +29,7 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     var diffPriceOfCryptoText = String()
     var priceOfCryptoText = String()
     var nameOfCryptoText = String()
-    var crypto = Crypto(symbolOfCrypto: "", price: "", change: "", nameOfCrypto: "", descriptionOfCrypto: "", symbolOfTicker: "", id: "", percent: "", image: UIImage(named: "pngwing.com")!)
+    var crypto = Crypto(symbolOfCrypto: "", price: "", change: "", nameOfCrypto: "", descriptionOfCrypto: "", symbolOfTicker: "", id: "", percentages: nil, image: UIImage(named: "pngwing.com")!)
     var redditUrl = String()
     var siteUrl = String()
     
@@ -45,9 +45,11 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     }()
     let marketDataTableView = UITableView()
     let communityDataTableView = UITableView()
+    var contentViewFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 1400)
+    var detailInfoViewFrame = CGRect(x: 0, y: 500, width: UIScreen.main.bounds.size.width, height: 900)
     
     func setupScrollView(){
-        contentView.translatesAutoresizingMaskIntoConstraints = false
+//        contentView.translatesAutoresizingMaskIntoConstraints = false
         chartAndPriceView.frame = CGRect(x:0.0, y:0.0, width: view.frame.size.width, height: 500)
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
@@ -55,36 +57,39 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         
         
 
-        contentView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
-        contentView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        contentView.heightAnchor.constraint(equalToConstant: 1400).isActive = true
+//        contentView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+//        contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
+//        contentView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+//        contentView.heightAnchor.constraint(equalToConstant: 1400).isActive = true
+        
+        contentView.frame = contentViewFrame
 
-
-//        chartAndPriceView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
-//        chartAndPriceView.widthAnchor.constraint(equalTo: contentView.widthAnchor).isActive = true
-//        chartAndPriceView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
-//        chartAndPriceView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
-//        chartAndPriceView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height * 6/10).isActive = true
         
         contentView.addSubview(detailInfoView)
-        detailInfoView.translatesAutoresizingMaskIntoConstraints = false
-        detailInfoView.topAnchor.constraint(equalTo: chartAndPriceView.bottomAnchor).isActive = true
-        detailInfoView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
-        detailInfoView.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: -20).isActive = true
-        detailInfoView.heightAnchor.constraint(equalToConstant: 900).isActive = true
+//        detailInfoView.translatesAutoresizingMaskIntoConstraints = false
+//        detailInfoView.topAnchor.constraint(equalTo: chartAndPriceView.bottomAnchor).isActive = true
+//        detailInfoView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
+//        detailInfoView.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: -20).isActive = true
+//        detailInfoView.heightAnchor.constraint(equalToConstant: 900).isActive = true
         
+        detailInfoView.frame = detailInfoViewFrame
         
         scrollView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height + 50)
         scrollView.contentSize = CGSize(width: self.view.bounds.size.width, height: chartAndPriceView.frame.height + detailInfoView.frame.height)
 
         
-        
         }
+    var count = 0
     override func viewDidLayoutSubviews() {
-        
+        super.viewDidLayoutSubviews()
+        print("viewDidLayoutSubviews")
+        if count < 3 {
         setupScrollView()
+        }
+        count += 1
+        print(contentView.frame.height)
     }
+    
     
     let nameOfCrypto: UILabel = {
         let label = UILabel()
@@ -127,7 +132,12 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     }()
     @objc func dayChartButtonLoad() {
         values.removeAll()
-//        chartLoad(symbol: symbolOfCurrentCrypto, interval: "day")
+        DispatchQueue.main.async {
+            self.chartLoad(idOfCrypto: self.idOfCrypto, interval: "day")
+            self.diffPriceOfCrypto.text = self.crypto.percentages?.priceChangePercentage24H
+            
+        }
+        
     }
     let monthChartButton : UIButton = {
         let button = UIButton(setTitle: "month")
@@ -139,7 +149,10 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     }()
     @objc func monthChartButtonLoad() {
         values.removeAll()
-//        chartLoad(symbol: symbolOfCurrentCrypto, interval: "week")
+        DispatchQueue.main.async {
+            self.chartLoad(idOfCrypto: self.idOfCrypto, interval: "month")
+            self.diffPriceOfCrypto.text = self.crypto.percentages?.priceChangePercentage30D
+        }
     }
     let yearChartButton : UIButton = {
         let button = UIButton(setTitle: "year")
@@ -151,7 +164,10 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     }()
     @objc func yearChartButtonLoad() {
         values.removeAll()
-//        chartLoad(symbol: symbolOfCurrentCrypto, interval: "year")
+        DispatchQueue.main.async {
+            self.chartLoad(idOfCrypto: self.idOfCrypto, interval: "year")
+            self.diffPriceOfCrypto.text = self.crypto.percentages?.priceChangePercentage1Y
+        }
     }
 
  
@@ -262,6 +278,7 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         
         
         
+        
         let onRedditButton : UIButton = {
             let button = UIButton(type: .custom)
             button.translatesAutoresizingMaskIntoConstraints = false
@@ -309,6 +326,8 @@ class ChartViewController: UIViewController, ChartViewDelegate {
             buttonsStack.heightAnchor.constraint(equalToConstant: 0).isActive = true
             scrollView.contentInset.bottom -= 100
         }
+        
+       
 //        buttonsStack.bottomAnchor.constraint(equalTo: detailInfoView.bottomAnchor, constant: 40).isActive = true
         
 //        detailInfoView.addSubview(onRedditButton)
@@ -335,19 +354,55 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     var clickBool = true
     var constHeightOfTextLabel = CGFloat()
     @objc func loadMore() {
-        print(constHeightOfTextLabel)
         if clickBool == true {
             textView.numberOfLines = 0
             textView.lineBreakMode = .byWordWrapping
             constHeightOfTextLabel = textView.frame.height
             let height = textView.systemLayoutSizeFitting(CGSize(width: textView.frame.width, height: UIView.layoutFittingCompressedSize.height), withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel).height
             scrollView.contentInset.bottom += height - textView.frame.height
+//            contentView.heightAnchor.constraint(equalToConstant: 1400).isActive = false
+//            detailInfoView.heightAnchor.constraint(equalToConstant: 900).isActive = false
+//            contentView.heightAnchor.constraint(equalToConstant: 1400 + height).isActive = true
+//            detailInfoView.heightAnchor.constraint(equalToConstant: 900 + height).isActive = true
+//            contentView.removeConstraints([
+//                detailInfoView.heightAnchor.constraint(equalToConstant: 900)
+//            ])
+//            detailInfoView.removeConstraints([
+//                detailInfoView.heightAnchor.constraint(equalToConstant: 900)
+//            ])
+//            view.removeConstraint(contentView.heightAnchor.constraint(equalToConstant: 1400))
+//            view.removeConstraint(detailInfoView.heightAnchor.constraint(equalToConstant: 900))
+//            NSLayoutConstraint.deactivate([
+//                contentView.heightAnchor.constraint(equalToConstant: 1400),
+//                detailInfoView.heightAnchor.constraint(equalToConstant: 900)
+//
+//            ])
+//            NSLayoutConstraint.activate([
+//                contentView.heightAnchor.constraint(equalToConstant: 1400 + height),
+//                detailInfoView.heightAnchor.constraint(equalToConstant: 900 + height)
+//
+//            ])
+//
+//            contentView.updateConstraints()
+//            detailInfoView.updateConstraints()
+//            view.updateConstraints()
+//            view.updateConstraintsIfNeeded()
+//            view.layoutIfNeeded()
+//            view.setNeedsLayout()
+            contentViewFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 2000)
+            contentView.frame = contentViewFrame
+            detailInfoViewFrame = CGRect(x: 0, y: 500, width: UIScreen.main.bounds.size.width, height: 1200)
+            detailInfoView.frame = detailInfoViewFrame
+//            view.layoutIfNeeded()
+            
+            
         } else {
             textView.numberOfLines = 7
             textView.lineBreakMode = .byTruncatingTail
             scrollView.contentInset.bottom -= textView.frame.height
             scrollView.contentInset.bottom += constHeightOfTextLabel
             scrollView.contentOffset = CGPoint(x: 0, y: 500)
+          
         }
         clickBool.toggle()
         
@@ -408,7 +463,7 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         symbolOfCurrentCrypto = crypto.symbolOfCrypto
         textTest = crypto.descriptionOfCrypto?.html2String ?? ""
         nameOfCrypto.text = crypto.nameOfCrypto ?? ""
-        diffPriceOfCrypto.text = crypto.percent ?? ""
+        diffPriceOfCrypto.text = crypto.percentages?.priceChangePercentage24H ?? ""
         priceOfCrypto.text = crypto.price ?? ""
         idOfCrypto = crypto.id ?? ""
         symbolOfTicker = crypto.symbolOfTicker ?? ""
@@ -429,7 +484,8 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         setupDetailInfo()
         
 //        chartLoad(symbol: symbolOfCurrentCrypto, interval: "day")
-        chartLoad2()
+        print("ID", idOfCrypto)
+        chartLoad(idOfCrypto: idOfCrypto, interval: "day")
         
         lineChartViewSetup()
         navigationBarSetup()
@@ -445,15 +501,14 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         if textTest == "" ||  marketData.isEmpty || communityData.isEmpty || image == UIImage(named: "pngwing.com")!{
             DispatchQueue.global().async {
                 NetworkManager.shared.getCoinGeckoData(symbol: self.idOfCrypto, group: NetworkManager.shared.groupOne) { (stocks) in
-                    DispatchQueue.main.async {
                         if let stringUrl = stocks.image?.large {
-                            NetworkManager.shared.obtainImage(StringUrl: stringUrl) { image in
+                            NetworkManager.shared.obtainImage(StringUrl: stringUrl, group: DispatchGroup()) { image in
                                 self.image = image
                                 self.imageString = (stocks.image?.large)!
                                 self.navigationBarSetup()
                             }
                         }
-                        
+                    DispatchQueue.main.async {
                         self.textView.text = stocks.geckoSymbolDescription?.en?.html2String
                         self.redditUrl = (stocks.links?.subredditURL)!
                         self.siteUrl = (stocks.links?.homepage?.first)!
@@ -591,68 +646,102 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         
     }
     
+//
+//    func chartLoad(symbol : String, interval : String) {
+//
+//        DispatchQueue.global().async {
+//            NetworkManager.shared.getFinHubData(symbol: symbol, interval: interval, group: NetworkManager.shared.groupTwo) { (dict) in
+//                let stocks = dict["stocks"] as! GetData
+//                let dateFormat = dict["dateFormat"] as! String
+//
+//                guard let stocksC = stocks.c else {return}
+//                for (indexC,elemC) in stocksC.enumerated() {
+//                    let elemT = stocks.t![indexC]
+//                    let chartData = ChartDataEntry(x: Double(elemT), y: elemC)
+//                    self.values.append(chartData)
+//
+//                }
+//
+//                guard let stockLast = stocksC.last else {return}
+//                guard let stockFirst = stocksC.first else {return}
+//
+//                DispatchQueue.main.async {
+//                    self.diffPriceOfCrypto.text = {
+//                        return String((stockLast - stockFirst) / stockFirst * 100)
+//                    }()
+//                    self.priceOfCrypto.text = String(stockLast)
+//                    self.setData()
+//                    self.lineChartView.xAxis.valueFormatter = MyXAxisFormatter(dateFormat: dateFormat)
+//                    self.lineChartViewSetup()
+//                }
+//            }
+//        }
+//    }
     
-    func chartLoad(symbol : String, interval : String) {
-
+    
+    func chartLoad(idOfCrypto: String,interval: String){
+        
         DispatchQueue.global().async {
-            NetworkManager.shared.getFinHubData(symbol: symbol, interval: interval, group: NetworkManager.shared.groupTwo) { (dict) in
-                let stocks = dict["stocks"] as! GetData
-                let dateFormat = dict["dateFormat"] as! String
-
-                guard let stocksC = stocks.c else {return}
-                for (indexC,elemC) in stocksC.enumerated() {
-                    let elemT = stocks.t![indexC]
-                    let chartData = ChartDataEntry(x: Double(elemT), y: elemC)
-                    self.values.append(chartData)
-
-                }
-
-                guard let stockLast = stocksC.last else {return}
-                guard let stockFirst = stocksC.first else {return}
-
-                DispatchQueue.main.async {
-                    self.diffPriceOfCrypto.text = {
-                        return String((stockLast - stockFirst) / stockFirst * 100)
-                    }()
-                    self.priceOfCrypto.text = String(stockLast)
-                    self.setData()
-                    self.lineChartView.xAxis.valueFormatter = MyXAxisFormatter(dateFormat: dateFormat)
-                    self.lineChartViewSetup()
-                }
+            
+//            let nextMinuteUnix = Int((Calendar.current.date(byAdding: .minute, value: +1, to: Date()))!.timeIntervalSince1970)
+            let nowUnix = Int(NSDate().timeIntervalSince1970)
+           
+            
+            var prevValue = Int()
+            var dateFormat = String()
+            
+            switch interval {
+            case "day":
+                let prevDayUnix = Int((Calendar.current.date(byAdding: .hour, value: -25, to: Date()))!.timeIntervalSince1970)
+                dateFormat = "MM/dd HH:mm"
+                prevValue = prevDayUnix
+            case "month":
+                let prevMonthUnix = Int((Calendar.current.date(byAdding: .day, value: -21, to: Date()))!.timeIntervalSince1970)
+                dateFormat = "MMM d"
+                prevValue = prevMonthUnix
+            case "year":
+                let prevYearUnix = Int((Calendar.current.date(byAdding: .month, value: -12, to: Date()))!.timeIntervalSince1970)
+                dateFormat = "dd.MM.yy"
+                prevValue = prevYearUnix
+            case "week":
+                let prevWeekUnix = Int((Calendar.current.date(byAdding: .day, value: -7, to: Date()))!.timeIntervalSince1970)
+                dateFormat = "dd.MM.yy"
+                prevValue = prevWeekUnix
+            default:
+                print("ПРОБЛЕМА В СВИЧ")
             }
-        }
-    }
-    
-    
-    func chartLoad2(){
-        let request = NSMutableURLRequest(
-            url: NSURL(string: "https://api.coingecko.com/api/v3/coins/ethereum/market_chart/range?vs_currency=usd&from=1626940032&to=1627026432")! as URL,
-            cachePolicy: .useProtocolCachePolicy,
-            timeoutInterval: 10.0)
-        request.httpMethod = "GET"
-
-        URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
-            guard let stocksData = data, error == nil, response != nil else {return}
-
-            do {
-
-                guard let stocks = try CoinGeckoPrice.decode(from: stocksData) else {return}
+            let request = NSMutableURLRequest(
+                url: NSURL(string: "https://api.coingecko.com/api/v3/coins/\(idOfCrypto)/market_chart/range?vs_currency=usd&from=\(prevValue)&to=\(nowUnix)")! as URL,
+                cachePolicy: .useProtocolCachePolicy,
+                timeoutInterval: 10.0)
+            request.httpMethod = "GET"
+            
+            
+            URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
+                guard let stocksData = data, error == nil, response != nil else {return}
+                print("THREAD",Thread.current)
                 
-                for i in stocks.prices! {
-                    let chartData = ChartDataEntry(x: i[0], y: i[1])
-                    self.values.append(chartData)
+                do {
+                    
+                    guard let stocks = try CoinGeckoPrice.decode(from: stocksData) else {return}
+                    
+                    for i in stocks.prices! {
+                        let chartData = ChartDataEntry(x: i[0], y: i[1])
+                        self.values.append(chartData)
+                    }
+                    DispatchQueue.main.async {
+                        self.setData()
+                        self.lineChartView.xAxis.valueFormatter = MyXAxisFormatter(dateFormat: dateFormat)
+                        self.lineChartViewSetup()
+                    }
+                    
+                } catch let error as NSError {
+                    print(error.localizedDescription)
                 }
-                DispatchQueue.main.async {
-                self.setData()
-                self.lineChartViewSetup()
-                }
-
-            } catch let error as NSError {
-                print(error.localizedDescription)
-            }
-
-
-        }.resume()
+                
+                
+            }.resume()
+        }
     }
     
     

@@ -11,7 +11,7 @@ class TableCollectionViewCell: UICollectionViewCell {
     
     static var reuseId: String = "TableCollectionViewCell"
     
-    let friendImageView = UIImageView()
+    let friendImageView  = UIImageView()
     let nameOfCrypto = UILabel()
     let symbolOfCrypto = UILabel()
     let price = UILabel()
@@ -22,7 +22,7 @@ class TableCollectionViewCell: UICollectionViewCell {
         backgroundColor = UIColor(white: 1, alpha: 1)
         setupElements()
         setupConstraints()
-        
+        self.backgroundColor = .brown
         self.layer.cornerRadius = 4
         self.clipsToBounds = true
         
@@ -40,8 +40,10 @@ class TableCollectionViewCell: UICollectionViewCell {
         nameOfCrypto.text = crypto.nameOfCrypto
         symbolOfCrypto.text = crypto.symbolOfCrypto
         price.text = crypto.price
-        percent.text = crypto.percent
+        percent.text = crypto.percentages?.priceChangePercentage24H
         friendImageView.image = crypto.image
+        friendImageView.layer.cornerRadius = friendImageView.frame.height/2
+        friendImageView.clipsToBounds = true
     }
 //    func configureForFavorite (with crypto: Crypto) {
 //        nameOfCrypto.text = crypto.nameOfCrypto
@@ -66,10 +68,10 @@ extension TableCollectionViewCell {
         addSubview(percent)
         
         // oponentImageView constraints
-        friendImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
+        friendImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20).isActive = true
         friendImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        friendImageView.widthAnchor.constraint(equalToConstant: 78).isActive = true
-        friendImageView.heightAnchor.constraint(equalToConstant: 78).isActive = true
+        friendImageView.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        friendImageView.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         
         // oponentLabel constraints
