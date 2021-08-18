@@ -11,24 +11,33 @@ class SearchTableViewCell: UICollectionViewCell {
     
     static var reuseId: String = "SearchTableViewCell"
     
-    let nameOfCrypto = UILabel()
-    let symbolOfCrypto = UILabel()
+    let nameOfCrypto : UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "avenir", size: 15)
+        label.textColor = .white
+        return label
+    }()
+    let symbolOfCrypto : UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "avenir", size: 14)
+        label.textColor = UIColor(hexString: "#C2B6D7")
+        return label
+    }()
    
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor(white: 1, alpha: 1)
+        backgroundColor = UIColor(hexString: "#202F72")
         setupElements()
         setupConstraints()
         
-        self.layer.cornerRadius = 8
+        self.layer.cornerRadius = 10
+        self.layer.shadowPath = UIBezierPath(rect: self.layer.bounds).cgPath
+        self.layer.shadowColor = UIColor(red: 0.023, green: 0.087, blue: 0.367, alpha: 0.3).cgColor
+        self.layer.shadowOpacity = 1
+        self.layer.shadowRadius = 10
+        self.layer.shadowOffset = CGSize(width: 0, height: -4)
         self.clipsToBounds = true
-//        let shadowPath2 = UIBezierPath(rect: self.bounds)
-//        self.layer.masksToBounds = false
-//        self.layer.shadowColor = UIColor.black.cgColor
-//        self.layer.shadowOffset = CGSize(width: CGFloat(1.0), height: CGFloat(3.0))
-//        self.layer.shadowOpacity = 0.5
-//        self.layer.shadowPath = shadowPath2.cgPath
         
     }
 
@@ -39,9 +48,9 @@ class SearchTableViewCell: UICollectionViewCell {
         symbolOfCrypto.translatesAutoresizingMaskIntoConstraints = false
     }
     
-    func configure(with crypto: Crypto) {
-        nameOfCrypto.text = crypto.nameOfCrypto
-        symbolOfCrypto.text = crypto.symbolOfCrypto
+    func configure(with crypto: FullBinanceListElement) {
+        nameOfCrypto.text = crypto.displaySymbol
+        symbolOfCrypto.text = crypto.fullBinanceListDescription
     }
 
     required init?(coder: NSCoder) {
@@ -57,14 +66,14 @@ extension SearchTableViewCell {
     
         
         // oponentLabel constraints
-        nameOfCrypto.topAnchor.constraint(equalTo: topAnchor, constant: 16).isActive = true
-        nameOfCrypto.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16).isActive = true
+        nameOfCrypto.topAnchor.constraint(equalTo: topAnchor, constant: 11).isActive = true
+        nameOfCrypto.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
 //        nameOfCrypto.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 16).isActive = true
         nameOfCrypto.widthAnchor.constraint(equalToConstant: 128).isActive = true
         
         // lastMessageLabel constraints
         symbolOfCrypto.topAnchor.constraint(equalTo: nameOfCrypto.bottomAnchor).isActive = true
-        symbolOfCrypto.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16).isActive = true
+        symbolOfCrypto.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
         symbolOfCrypto.widthAnchor.constraint(equalToConstant: 128).isActive = true
         
 

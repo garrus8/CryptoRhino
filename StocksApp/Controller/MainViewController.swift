@@ -31,41 +31,34 @@ class MainViewController: UIViewController {
         
 //        NetworkManager.shared.deleteAllData()
         
-        let queue = DispatchQueue(label: "1", qos: .userInteractive)
         
         NetworkManager.shared.getData()
         NetworkManager.shared.getFullCoinCapList()
         NetworkManager.shared.getTopOfCrypto()
         NetworkManager.shared.getFullListOfCoinGecko()
-        NetworkManager.shared.collectionViewLoad()
-            
-
-
+//        NetworkManager.shared.collectionViewLoad()
+//
+//
+//        setupCollectionView()
+//        setupDataSource()
+//        NetworkManager.shared.webSocket2(symbols: NetworkManager.shared.websocketArray)
+//        NetworkManager.shared.receiveMessage(tableView: [], collectionView: [self.collectionView])
+//
+//
 //        NetworkManager.shared.groupOne.wait()
+//
+//        NetworkManager.shared.putCoinGeckoData(array: &NetworkManager.shared.results, group: NetworkManager.shared.groupTwo)
+//        NetworkManager.shared.putCoinGeckoData(array: &NetworkManager.shared.resultsF, group: NetworkManager.shared.groupTwo)
 //        NetworkManager.shared.groupTwo.wait()
+//        NetworkManager.shared.setupSections()
+//        reloadData()
+//        NetworkManager.shared.updateUI(collectionViews: [self.collectionView])
 //        NetworkManager.shared.groupThree.wait()
-//        NetworkManager.shared.groupFour.wait()
-        
-        setupCollectionView()
-        setupDataSource()
-        NetworkManager.shared.webSocket2(symbols: NetworkManager.shared.websocketArray)
-        NetworkManager.shared.receiveMessage(tableView: [], collectionView: [self.collectionView])
-        
-    
-        NetworkManager.shared.groupOne.wait()
-        NetworkManager.shared.putCoinGeckoData(array: &NetworkManager.shared.results, group: NetworkManager.shared.groupTwo)
-        NetworkManager.shared.putCoinGeckoData(array: &NetworkManager.shared.resultsF, group: NetworkManager.shared.groupTwo)
-        NetworkManager.shared.groupTwo.wait()
-        
-        NetworkManager.shared.setupSections()
-        
-        reloadData()
-        NetworkManager.shared.groupThree.wait()
-        NetworkManager.shared.putCoinGeckoData(array: &NetworkManager.shared.collectionViewArray, group: NetworkManager.shared.groupFour)
-        NetworkManager.shared.updateUI(collectionViews: [self.collectionView])
-        NetworkManager.shared.recoursiveUpdateUI(collectionViews: [self.collectionView])
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(reloadCollectionView), name: NSNotification.Name(rawValue: "newImage"), object: nil)
+//        NetworkManager.shared.putCoinGeckoData(array: &NetworkManager.shared.collectionViewArray, group: NetworkManager.shared.groupFour)
+////        NetworkManager.shared.updateUI(collectionViews: [self.collectionView])
+//        NetworkManager.shared.recoursiveUpdateUI(collectionViews: [self.collectionView])
+//
+//        NotificationCenter.default.addObserver(self, selector: #selector(reloadCollectionView), name: NSNotification.Name(rawValue: "newImage"), object: nil)
        
     }
     @objc func reloadCollectionView() {
@@ -80,7 +73,7 @@ class MainViewController: UIViewController {
         CollectionViewGroup.enter()
             collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createCompositionalLayout())
             collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            collectionView.backgroundColor = #colorLiteral(red: 0.968627451, green: 0.9725490196, blue: 0.9921568627, alpha: 1)
+            collectionView.backgroundColor = UIColor(hexString: "#4158B7")
             view.addSubview(collectionView)
             collectionView.register(TableCollectionViewCell.self, forCellWithReuseIdentifier: TableCollectionViewCell.reuseId)
             collectionView.register(CarouselCollectionViewCell.self, forCellWithReuseIdentifier: CarouselCollectionViewCell.reuseId)
@@ -116,7 +109,8 @@ class MainViewController: UIViewController {
             guard let section = self.dataSource?.snapshot().sectionIdentifier(containingItem: item) else {return nil}
             if section.title.isEmpty {return nil}
             sectionHeader.title.text = section.title
-            
+            sectionHeader.title.font = UIFont(name: "avenir", size: 22)
+            sectionHeader.title.textColor = .white
             
             return sectionHeader
         }
@@ -158,31 +152,32 @@ class MainViewController: UIViewController {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
                                               heightDimension: .fractionalHeight(1))
         let layoutItem = NSCollectionLayoutItem(layoutSize: itemSize)
-        layoutItem.contentInsets = NSDirectionalEdgeInsets.init(top: 0, leading: 8, bottom: 0, trailing: 8)
+        layoutItem.contentInsets = NSDirectionalEdgeInsets.init(top: 0, leading: 0, bottom: 0, trailing: 8)
         
         
-        let groupSize = NSCollectionLayoutSize(widthDimension: .estimated(140),
-                                                     heightDimension: .estimated(130))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .estimated(143),
+                                                     heightDimension: .estimated(143))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [layoutItem])
         
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .continuous
-        section.contentInsets = NSDirectionalEdgeInsets.init(top: 20, leading: 12, bottom: 20, trailing: 12)
+        section.contentInsets = NSDirectionalEdgeInsets.init(top: 20, leading: 15, bottom: 20, trailing: 7)
         let header = createSectionHeader()
         section.boundarySupplementaryItems = [header]
         return section
     }
     
     func createTableSection() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(86))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(60))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0)
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(86))
+        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 4, trailing: 0)
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(60))
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 20 , leading: 20, bottom: 0, trailing: 20)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 20 , leading: 15, bottom: 0, trailing: 15)
         
         let header = createSectionHeader()
+        
         section.boundarySupplementaryItems = [header]
         
         return section
@@ -192,9 +187,11 @@ class MainViewController: UIViewController {
     func createSectionHeader() -> NSCollectionLayoutBoundarySupplementaryItem {
         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(1))
         let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+        
+        
         return header
     }
-    
+
 //    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 //        let chartVC = segue.destination as! ChartViewController
 //        if segue.identifier == "TableVIewSegue" {

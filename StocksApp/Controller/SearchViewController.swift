@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SearchViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate  {
+class SearchViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout  {
     
     
     var collectionView : UICollectionView!
@@ -25,11 +25,18 @@ class SearchViewController: UIViewController, UICollectionViewDataSource, UIColl
         super.viewDidLoad()
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Name or symbol of cryptocurrency"
+        searchController.searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "Name or symbol of cryptocurrency", attributes: [NSAttributedString.Key.foregroundColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.75)])
+        searchController.searchBar.searchTextField.backgroundColor = UIColor(red: 0.124, green: 0.185, blue: 0.446, alpha: 0.5)
         setupCollectionView()
         navigationItem.searchController = searchController
         definesPresentationContext = true
         
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        searchController.searchBar.searchTextField.textColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.75)
+        searchController.searchBar.searchTextField.leftView?.tintColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.75)
+        searchController.searchBar.tintColor = .red
     }
     func setupCollectionView() {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
@@ -38,7 +45,7 @@ class SearchViewController: UIViewController, UICollectionViewDataSource, UIColl
         
         collectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        collectionView.backgroundColor = #colorLiteral(red: 0.968627451, green: 0.9725490196, blue: 0.9921568627, alpha: 1)
+        collectionView.backgroundColor = UIColor(hexString: "#4158B7")
         collectionView.register(SearchTableViewCell.self, forCellWithReuseIdentifier: SearchTableViewCell.reuseId)
         view.addSubview(collectionView)
 //        layout.itemSize = CGSize(width: collectionView.bounds.width - 20, height: 60)
@@ -78,20 +85,20 @@ class SearchViewController: UIViewController, UICollectionViewDataSource, UIColl
         if isFiltering {
             return filteredResults.count
         } else {
-            return NetworkManager.shared.fullBinanceList.count
+//            return NetworkManager.shared.fullBinanceList.count
+            return 0
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchTableViewCell.reuseId, for: indexPath) as? SearchTableViewCell else {return UICollectionViewCell()}
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchTableViewCell.reuseId, for: indexPath) as? SearchTableViewCell else {return SearchTableViewCell()}
         if isFiltering {
             let results = filteredResults[indexPath.row]
-            cell.nameOfCrypto.text = results.displaySymbol
-            cell.symbolOfCrypto.text = results.fullBinanceListDescription
+            cell.configure(with: results)
         } else {
             let results = NetworkManager.shared.fullBinanceList[indexPath.row]
-            cell.nameOfCrypto.text = results.displaySymbol
-            cell.symbolOfCrypto.text = results.fullBinanceListDescription
+            cell.configure(with: results)
+            
         }
         let margins = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
         cell.contentView.frame = cell.contentView.frame.inset(by: margins)
@@ -122,11 +129,13 @@ class SearchViewController: UIViewController, UICollectionViewDataSource, UIColl
         let ChartVC = self.storyboard?.instantiateViewController(withIdentifier: "ChartViewController") as! ChartViewController
         let crypto = Crypto(symbolOfCrypto: result.displaySymbol!, nameOfCrypto: result.fullBinanceListDescription!, symbolOfTicker: result.symbol!, id: result.id!)
         ChartVC.crypto = crypto
+        print(result.displaySymbol!, result.id!)
         self.navigationController?.pushViewController(ChartVC, animated: true)
         }
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        60
-//    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: UIScreen.main.bounds.size.width - 30, height: 60)
+    }
 
 
 }

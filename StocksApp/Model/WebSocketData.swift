@@ -142,7 +142,7 @@ class Crypto : Hashable, Equatable {
         self.descriptionOfCrypto = ""
         self.symbolOfTicker = ""
         self.id = id
-        self.percentages = nil
+        self.percentages = Persentages()
         self.image = nil
         self.marketDataArray = nil
         self.communityDataArray = nil
@@ -172,18 +172,22 @@ class Crypto : Hashable, Equatable {
 }
 
 struct Persentages {
-    var priceChangePercentage24H : String
-    var priceChangePercentage7D : String
-    var priceChangePercentage14D : String
-    var priceChangePercentage30D : String
-    var priceChangePercentage1Y : String
+    var priceChangePercentage24H : String?
+    var priceChangePercentage7D : String?
+    var priceChangePercentage30D : String?
+    var priceChangePercentage1Y : String?
     
     init() {
          priceChangePercentage24H = ""
          priceChangePercentage7D = ""
-         priceChangePercentage14D = ""
          priceChangePercentage30D = ""
          priceChangePercentage1Y = ""
+    }
+    init (priceChangePercentage24H: String, priceChangePercentage7D : String, priceChangePercentage30D : String, priceChangePercentage1Y : String) {
+        self.priceChangePercentage24H = priceChangePercentage24H
+        self.priceChangePercentage7D = priceChangePercentage7D
+        self.priceChangePercentage30D = priceChangePercentage30D
+        self.priceChangePercentage1Y = priceChangePercentage1Y
     }
 }
 
@@ -416,14 +420,14 @@ typealias GeckoList = [GeckoListElement]
 //}
 
 
-// MARK: - GeckoSymbol
+//// MARK: - GeckoSymbol
 struct GeckoSymbol: Decodable {
     let id: String?
     let symbol, name: String?
     let geckoSymbolDescription: Description?
     let links: Links?
     let image: Image?
-    let genesisDate: String?
+//    let genesisDate: String?
     let marketCapRank, coingeckoRank: Int?
     let marketData: MarketData?
     let communityData: CommunityData?
@@ -432,13 +436,14 @@ struct GeckoSymbol: Decodable {
         case id,symbol, name
         case geckoSymbolDescription = "description"
         case links, image
-        case genesisDate = "genesis_date"
+//        case genesisDate = "genesis_date"
         case marketCapRank = "market_cap_rank"
         case coingeckoRank = "coingecko_rank"
         case marketData = "market_data"
         case communityData = "community_data"
     }
 }
+
 
 // MARK: - CommunityData
 struct CommunityData: Decodable {
@@ -499,6 +504,8 @@ struct MarketData: Decodable {
      }
     
 }
+
+
 struct MarketDataArray {
     let array : [MarketDataElem]
     init(marketData : MarketData) {

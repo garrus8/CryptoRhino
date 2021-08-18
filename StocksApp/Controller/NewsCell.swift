@@ -15,12 +15,13 @@ class NewsCell: UICollectionViewCell {
     let nameOfCrypto : UILabel = {
         let label =  UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-//        textView.layer.cornerRadius = 15
+
         label.layer.masksToBounds = true
         label.numberOfLines = 3
 //        label.lineBreakMode = .byTruncatingTail
         label.lineBreakMode = .byWordWrapping
-//        label.font = UIFont.systemFont(ofSize: 16)
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = .white
         label.sizeToFit()
         return label
     }()
@@ -29,23 +30,30 @@ class NewsCell: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
 //        textView.layer.cornerRadius = 15
         label.layer.masksToBounds = true
-        label.numberOfLines = 2
+        label.numberOfLines = 3
         label.lineBreakMode = .byTruncatingTail
-        label.font = UIFont.systemFont(ofSize: 14)
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.textColor = .white
         label.sizeToFit()
         return label
     }()
-    let dateLable : UILabel = {
-        let label =  UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.layer.masksToBounds = true
-        label.lineBreakMode = .byTruncatingTail
-        label.font = UIFont.systemFont(ofSize: 10)
-        label.sizeToFit()
-        
-        return label
+//    let dateLable : UILabel = {
+//        let label =  UILabel()
+//        label.translatesAutoresizingMaskIntoConstraints = false
+//        label.layer.masksToBounds = true
+//        label.lineBreakMode = .byTruncatingTail
+//        label.font = UIFont.systemFont(ofSize: 10)
+//        label.textColor = .white
+//        label.sizeToFit()
+//
+//        return label
+//    }()
+    let imageView : UIImageView = {
+        let image = UIImageView()
+        image.layer.cornerRadius = 7
+        image.clipsToBounds = true
+        return image
     }()
-    let imageView = UIImageView()
     
     var publishedOn : UILabel = {
     let label =  UILabel()
@@ -53,6 +61,7 @@ class NewsCell: UICollectionViewCell {
     label.layer.masksToBounds = true
     label.lineBreakMode = .byTruncatingTail
     label.font = UIFont.systemFont(ofSize: 8)
+        label.textColor = .white
     label.sizeToFit()
     
     return label
@@ -60,10 +69,9 @@ class NewsCell: UICollectionViewCell {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor(white: 1, alpha: 1)
+        backgroundColor = UIColor(hexString: "#202F72")
         setupElements()
         setupConstraints()
-        
         self.layer.cornerRadius = 8
         self.clipsToBounds = true
 //        let shadowPath2 = UIBezierPath(rect: self.bounds)
@@ -86,7 +94,7 @@ class NewsCell: UICollectionViewCell {
     
     func configure(with newsData: NewsData) {
         nameOfCrypto.text = newsData.title
-        symbolOfCrypto.text = newsData.body!
+        symbolOfCrypto.text = newsData.body?.html2String
         let imageUrl = newsData.imageurl!
         NetworkManager.shared.obtainImage(StringUrl: imageUrl, group: DispatchGroup()) { image in
             DispatchQueue.main.async {
@@ -107,34 +115,51 @@ class NewsCell: UICollectionViewCell {
 // MARK: - Setup Constraints
 extension NewsCell {
     func setupConstraints() {
-        addSubview(nameOfCrypto)
-        addSubview(symbolOfCrypto)
+//        addSubview(nameOfCrypto)
+//        addSubview(symbolOfCrypto)
         addSubview(imageView)
         addSubview(publishedOn)
     
-        imageView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+        imageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -6).isActive = true
         imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        imageView.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        imageView.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        imageView.widthAnchor.constraint(equalToConstant: 133).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 120).isActive = true
         
-        // oponentLabel constraints
-        nameOfCrypto.topAnchor.constraint(equalTo: topAnchor, constant: 6).isActive = true
-        nameOfCrypto.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16).isActive = true
-        nameOfCrypto.trailingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: -20).isActive = true
-//        nameOfCrypto.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        nameOfCrypto.bottomAnchor.constraint(equalTo: symbolOfCrypto.topAnchor, constant: -6).isActive = true
-//        nameOfCrypto.widthAnchor.constraint(equalToConstant: 128).isActive = true
+        let arrangedSubviews : [UIView] = [nameOfCrypto,symbolOfCrypto]
         
-        // lastMessageLabel constraints
-//        symbolOfCrypto.topAnchor.constraint(equalTo: nameOfCrypto.bottomAnchor, constant: 2).isActive = true
-        symbolOfCrypto.trailingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: -20).isActive = true
-        symbolOfCrypto.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16).isActive = true
-//        symbolOfCrypto.widthAnchor.constraint(equalToConstant: 128).isActive = true
-        symbolOfCrypto.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        symbolOfCrypto.bottomAnchor.constraint(equalTo: publishedOn.topAnchor, constant: -6).isActive = true
+        let stack = UIStackView(arrangedSubviews: arrangedSubviews)
+        stack.axis = .vertical
+        stack.distribution = .fill
+        stack.spacing = 5
+        stack.translatesAutoresizingMaskIntoConstraints = false
+
+        addSubview(stack)
         
-        publishedOn.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -6).isActive = true
-        publishedOn.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20).isActive = true
+        stack.topAnchor.constraint(equalTo: self.topAnchor, constant: 13).isActive = true
+        stack.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 7).isActive = true
+        stack.trailingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: -9).isActive = true
+        stack.bottomAnchor.constraint(equalTo: publishedOn.topAnchor, constant: -6).isActive = true
+        
+//        // oponentLabel constraints
+//        nameOfCrypto.topAnchor.constraint(equalTo: self.topAnchor, constant: 13).isActive = true
+//        nameOfCrypto.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 7).isActive = true
+//        nameOfCrypto.trailingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: -9).isActive = true
+////        nameOfCrypto.heightAnchor.constraint(equalToConstant: 80).isActive = true
+//        nameOfCrypto.bottomAnchor.constraint(equalTo: symbolOfCrypto.topAnchor, constant: -5).isActive = true
+////        nameOfCrypto.widthAnchor.constraint(equalToConstant: 128).isActive = true
+//
+//
+//        // lastMessageLabel constraints
+////        symbolOfCrypto.topAnchor.constraint(equalTo: nameOfCrypto.bottomAnchor, constant: 2).isActive = true
+//        symbolOfCrypto.trailingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: -9).isActive = true
+//        symbolOfCrypto.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 7).isActive = true
+////        symbolOfCrypto.widthAnchor.constraint(equalToConstant: 128).isActive = true
+//        symbolOfCrypto.heightAnchor.constraint(equalToConstant: 40).isActive = true
+//        symbolOfCrypto.bottomAnchor.constraint(equalTo: publishedOn.topAnchor, constant: -6).isActive = true
+        
+        
+        publishedOn.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -6).isActive = true
+        publishedOn.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 7).isActive = true
         publishedOn.heightAnchor.constraint(equalToConstant: 10).isActive = true
         publishedOn.widthAnchor.constraint(equalToConstant: 100).isActive = true
     

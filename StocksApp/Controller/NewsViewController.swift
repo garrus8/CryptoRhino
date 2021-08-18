@@ -22,11 +22,11 @@ class NewsViewController: UIViewController, UICollectionViewDataSource, UICollec
     func setupCollectionView() {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 20, left: 10, bottom: 10, right: 10)
-        layout.itemSize = CGSize(width: self.view.frame.size.width - 20, height: self.view.frame.size.height / 6)
-        
+        layout.itemSize = CGSize(width: self.view.frame.size.width - 30, height: 132)
+//        self.view.frame.size.height / 6
         collectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        collectionView.backgroundColor = #colorLiteral(red: 0.968627451, green: 0.9725490196, blue: 0.9921568627, alpha: 1)
+        collectionView.backgroundColor = UIColor(hexString: "#4158B7")
         collectionView.register(NewsCell.self, forCellWithReuseIdentifier: NewsCell.reuseId)
         view.addSubview(collectionView)
 //        layout.itemSize = CGSize(width: collectionView.bounds.width - 20, height: 60)

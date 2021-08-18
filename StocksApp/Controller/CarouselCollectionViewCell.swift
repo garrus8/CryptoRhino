@@ -10,27 +10,50 @@ import UIKit
 class CarouselCollectionViewCell: UICollectionViewCell {
     static var reuseId: String = "CarouselCollectionViewCell"
     
-    let friendImageView = UIImageView()
-    let nameOfCrypto = UILabel()
-    let symbolOfCrypto = UILabel()
-    let price = UILabel()
-    let percent = UILabel()
+    let imageView = UIImageView()
+    let nameOfCrypto : UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "SFProText-Bold", size: 16)
+        label.textColor = .white
+        label.numberOfLines = 2
+        return label
+    }()
+    let symbolOfCrypto : UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "avenir", size: 14)
+        label.textColor = UIColor(hexString: "#C2B6D7")
+        return label
+    }()
+    let price : UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "avenir", size: 14)
+        label.textColor = UIColor(hexString: "#C2D8FF")
+        return label
+    }()
+    let percent : UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "avenir", size: 14)
+        return label
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor(white: 1, alpha: 1)
+        backgroundColor = UIColor(hexString: "#202F72")
         setupElements()
         setupConstraints()
 
-        friendImageView.frame = self.bounds
-        addSubview(friendImageView)
-        self.layer.cornerRadius = 4
+        self.layer.cornerRadius = 10
+        self.layer.shadowPath = UIBezierPath(rect: self.layer.bounds).cgPath
+        self.layer.shadowColor = UIColor(red: 0.083, green: 0.13, blue: 0.333, alpha: 0.4).cgColor
+        self.layer.shadowOpacity = 1
+        self.layer.shadowRadius = 10
+        self.layer.shadowOffset = CGSize(width: 0, height: 3)
         self.clipsToBounds = true
     }
     func setupElements() {
         nameOfCrypto.translatesAutoresizingMaskIntoConstraints = false
         symbolOfCrypto.translatesAutoresizingMaskIntoConstraints = false
-        friendImageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         price.translatesAutoresizingMaskIntoConstraints = false
         percent.translatesAutoresizingMaskIntoConstraints = false
     }
@@ -39,8 +62,39 @@ class CarouselCollectionViewCell: UICollectionViewCell {
         nameOfCrypto.text = crypto.nameOfCrypto
         symbolOfCrypto.text = crypto.symbolOfCrypto
         price.text = crypto.price
-        percent.text = crypto.percentages?.priceChangePercentage24H
-        friendImageView.image = UIImage()
+        price.text?.insert("$", at: price.text!.startIndex)
+        if crypto.percentages!.priceChangePercentage24H!.hasPrefix("-") {
+            let imageAttachment = NSTextAttachment()
+            imageAttachment.image = UIImage(systemName: "arrowtriangle.down.fill")?.withTintColor(.red)
+            
+            let fullString = NSMutableAttributedString()
+            fullString.append(NSAttributedString(attachment: imageAttachment))
+            if let percentages = crypto.percentages {
+                guard var perc24h = percentages.priceChangePercentage24H else { return }
+                perc24h.removeFirst()
+                fullString.append(NSAttributedString(string: " \(perc24h)"))
+            }
+            fullString.append(NSAttributedString(string: "%"))
+            percent.attributedText = fullString
+            percent.textColor = UIColor.red
+            percent.textColor = UIColor(hexString: "#CC2B73")
+        } else {
+            let imageAttachment = NSTextAttachment()
+            imageAttachment.image = UIImage(systemName: "arrowtriangle.up.fill")?.withTintColor(.green)
+            
+            let fullString = NSMutableAttributedString()
+            fullString.append(NSAttributedString(attachment: imageAttachment))
+            if let percentages = crypto.percentages {
+                fullString.append(NSAttributedString(string: " \(percentages.priceChangePercentage24H ?? "")"))
+            }
+            fullString.append(NSAttributedString(string: "%"))
+            percent.attributedText = fullString
+            percent.textColor = UIColor.green
+        }
+        
+        imageView.image = crypto.image
+        imageView.layer.cornerRadius = imageView.frame.height/2
+        imageView.clipsToBounds = true
     }
     
     required init?(coder: NSCoder) {
@@ -50,22 +104,38 @@ class CarouselCollectionViewCell: UICollectionViewCell {
 // MARK: - Setup Constraints
 extension CarouselCollectionViewCell {
     func setupConstraints() {
-//        addSubview(friendImageView)
-//        addSubview(nameOfCrypto)
+        addSubview(imageView)
+        addSubview(nameOfCrypto)
         addSubview(symbolOfCrypto)
         addSubview(price)
-//        addSubview(percent)
+        addSubview(percent)
         
         
-        // lastMessageLabel constraints
-        symbolOfCrypto.topAnchor.constraint(equalTo: topAnchor, constant: 16).isActive = true
-        symbolOfCrypto.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16).isActive = true
+        nameOfCrypto.topAnchor.constraint(equalTo: topAnchor, constant: 13).isActive = true
+        nameOfCrypto.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8).isActive = true
+        nameOfCrypto.trailingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: -8).isActive = true
+//        nameOfCrypto.heightAnchor.constraint(equalToConstant: 80).isActive = true
+//        nameOfCrypto.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        
+        
+        imageView.topAnchor.constraint(equalTo: topAnchor, constant: 13).isActive = true
+        imageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -8).isActive = true
+        imageView.widthAnchor.constraint(equalToConstant: 32).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 32).isActive = true
+        
+        symbolOfCrypto.topAnchor.constraint(equalTo: nameOfCrypto.bottomAnchor, constant: 5).isActive = true
+        symbolOfCrypto.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8).isActive = true
         symbolOfCrypto.widthAnchor.constraint(equalToConstant: 60).isActive = true
         
-        price.topAnchor.constraint(equalTo: symbolOfCrypto.bottomAnchor, constant: 16).isActive = true
-        price.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 36).isActive = true
-        price.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 26).isActive = true
+//        price.topAnchor.constraint(equalTo: symbolOfCrypto.bottomAnchor, constant: 16).isActive = true
+        price.bottomAnchor.constraint(equalTo: percent.topAnchor, constant: -8).isActive = true
+        price.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8).isActive = true
+        price.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -8).isActive = true
         
         
+        percent.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -17).isActive = true
+        percent.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8).isActive = true
+        percent.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -8).isActive = true
+
     }
 }

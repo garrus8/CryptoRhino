@@ -32,6 +32,7 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     var crypto = Crypto(symbolOfCrypto: "", price: "", change: "", nameOfCrypto: "", descriptionOfCrypto: "", symbolOfTicker: "", id: "", percentages: nil, image: UIImage(named: "pngwing.com")!)
     var redditUrl = String()
     var siteUrl = String()
+    var percentages = Persentages()
     
     // UI
     let scrollView = UIScrollView()
@@ -45,12 +46,12 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     }()
     let marketDataTableView = UITableView()
     let communityDataTableView = UITableView()
-    var contentViewFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 1400)
-    var detailInfoViewFrame = CGRect(x: 0, y: 500, width: UIScreen.main.bounds.size.width, height: 900)
+    var contentViewFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 1500)
+    var detailInfoViewFrame = CGRect(x: 10, y: 600, width: UIScreen.main.bounds.size.width - 20, height: 900)
     
     func setupScrollView(){
 //        contentView.translatesAutoresizingMaskIntoConstraints = false
-        chartAndPriceView.frame = CGRect(x:0.0, y:0.0, width: view.frame.size.width, height: 500)
+        chartAndPriceView.frame = CGRect(x:0.0, y:0.0, width: view.frame.size.width, height: 600)
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         contentView.addSubview(chartAndPriceView)
@@ -61,6 +62,7 @@ class ChartViewController: UIViewController, ChartViewDelegate {
 //        contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
 //        contentView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
 //        contentView.heightAnchor.constraint(equalToConstant: 1400).isActive = true
+        
         
         contentView.frame = contentViewFrame
 
@@ -82,7 +84,6 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     var count = 0
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        print("viewDidLayoutSubviews")
         if count < 3 {
         setupScrollView()
         }
@@ -134,7 +135,7 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         values.removeAll()
         DispatchQueue.main.async {
             self.chartLoad(idOfCrypto: self.idOfCrypto, interval: "day")
-            self.diffPriceOfCrypto.text = self.crypto.percentages?.priceChangePercentage24H
+            self.diffPriceOfCrypto.text = self.percentages.priceChangePercentage24H
             
         }
         
@@ -151,7 +152,7 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         values.removeAll()
         DispatchQueue.main.async {
             self.chartLoad(idOfCrypto: self.idOfCrypto, interval: "month")
-            self.diffPriceOfCrypto.text = self.crypto.percentages?.priceChangePercentage30D
+            self.diffPriceOfCrypto.text = self.percentages.priceChangePercentage30D
         }
     }
     let yearChartButton : UIButton = {
@@ -166,7 +167,7 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         values.removeAll()
         DispatchQueue.main.async {
             self.chartLoad(idOfCrypto: self.idOfCrypto, interval: "year")
-            self.diffPriceOfCrypto.text = self.crypto.percentages?.priceChangePercentage1Y
+            self.diffPriceOfCrypto.text = self.percentages.priceChangePercentage1Y
         }
     }
 
@@ -265,7 +266,7 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         textView.topAnchor.constraint(equalTo: headerStack.bottomAnchor, constant: 10).isActive = true
         textView.widthAnchor.constraint(equalTo: detailInfoView.widthAnchor).isActive = true
         textView.bottomAnchor.constraint(equalTo: communityDatatitle.topAnchor, constant: -10).isActive = true
-        
+       
         communityDatatitle.topAnchor.constraint(equalTo: textView.bottomAnchor).isActive = true
         communityDatatitle.widthAnchor.constraint(equalTo: detailInfoView.widthAnchor).isActive = true
         communityDatatitle.heightAnchor.constraint(equalToConstant: 50).isActive = true
@@ -319,12 +320,12 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         buttonsStack.widthAnchor.constraint(equalTo: detailInfoView.widthAnchor, constant: -20).isActive = true
         if buttonsStack.arrangedSubviews.count == 1 {
             buttonsStack.heightAnchor.constraint(equalToConstant: 50).isActive = true
-            scrollView.contentInset.bottom -= 50
+            scrollView.contentInset.bottom -= 100
         } else if buttonsStack.arrangedSubviews.count == 2 {
         buttonsStack.heightAnchor.constraint(equalToConstant: 120).isActive = true
         } else {
             buttonsStack.heightAnchor.constraint(equalToConstant: 0).isActive = true
-            scrollView.contentInset.bottom -= 100
+            scrollView.contentInset.bottom -= 150
         }
         
        
@@ -359,39 +360,10 @@ class ChartViewController: UIViewController, ChartViewDelegate {
             textView.lineBreakMode = .byWordWrapping
             constHeightOfTextLabel = textView.frame.height
             let height = textView.systemLayoutSizeFitting(CGSize(width: textView.frame.width, height: UIView.layoutFittingCompressedSize.height), withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel).height
-            scrollView.contentInset.bottom += height - textView.frame.height
-//            contentView.heightAnchor.constraint(equalToConstant: 1400).isActive = false
-//            detailInfoView.heightAnchor.constraint(equalToConstant: 900).isActive = false
-//            contentView.heightAnchor.constraint(equalToConstant: 1400 + height).isActive = true
-//            detailInfoView.heightAnchor.constraint(equalToConstant: 900 + height).isActive = true
-//            contentView.removeConstraints([
-//                detailInfoView.heightAnchor.constraint(equalToConstant: 900)
-//            ])
-//            detailInfoView.removeConstraints([
-//                detailInfoView.heightAnchor.constraint(equalToConstant: 900)
-//            ])
-//            view.removeConstraint(contentView.heightAnchor.constraint(equalToConstant: 1400))
-//            view.removeConstraint(detailInfoView.heightAnchor.constraint(equalToConstant: 900))
-//            NSLayoutConstraint.deactivate([
-//                contentView.heightAnchor.constraint(equalToConstant: 1400),
-//                detailInfoView.heightAnchor.constraint(equalToConstant: 900)
-//
-//            ])
-//            NSLayoutConstraint.activate([
-//                contentView.heightAnchor.constraint(equalToConstant: 1400 + height),
-//                detailInfoView.heightAnchor.constraint(equalToConstant: 900 + height)
-//
-//            ])
-//
-//            contentView.updateConstraints()
-//            detailInfoView.updateConstraints()
-//            view.updateConstraints()
-//            view.updateConstraintsIfNeeded()
-//            view.layoutIfNeeded()
-//            view.setNeedsLayout()
-            contentViewFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 2000)
+            scrollView.contentInset.bottom += (height - textView.frame.height)
+            contentViewFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: contentViewFrame.height + height - constHeightOfTextLabel)
             contentView.frame = contentViewFrame
-            detailInfoViewFrame = CGRect(x: 0, y: 500, width: UIScreen.main.bounds.size.width, height: 1200)
+            detailInfoViewFrame = CGRect(x: 10, y: 600, width: UIScreen.main.bounds.size.width - 20, height: detailInfoViewFrame.height + height - constHeightOfTextLabel)
             detailInfoView.frame = detailInfoViewFrame
 //            view.layoutIfNeeded()
             
@@ -460,19 +432,40 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 //        setupScrollView()
+        
         symbolOfCurrentCrypto = crypto.symbolOfCrypto
-        textTest = crypto.descriptionOfCrypto?.html2String ?? ""
-        nameOfCrypto.text = crypto.nameOfCrypto ?? ""
-        diffPriceOfCrypto.text = crypto.percentages?.priceChangePercentage24H ?? ""
-        priceOfCrypto.text = crypto.price ?? ""
-        idOfCrypto = crypto.id ?? ""
-        symbolOfTicker = crypto.symbolOfTicker ?? ""
+        if let textTestCheck = crypto.descriptionOfCrypto?.html2String {
+            textView.text = textTestCheck
+        }
+        
+        if let nameOfCryptoCheck = crypto.nameOfCrypto {
+        nameOfCrypto.text = nameOfCryptoCheck
+        }
+        if let percentagesCheck = crypto.percentages {
+            percentages = percentagesCheck
+        }
+//        if let diffPriceOfCryptoCheck = crypto.percentages?.priceChangePercentage24H {
+//        diffPriceOfCrypto.text = diffPriceOfCryptoCheck
+//        }
+        diffPriceOfCrypto.text = percentages.priceChangePercentage30D
+        if let priceOfCryptoCheck = crypto.price {
+        priceOfCrypto.text = priceOfCryptoCheck
+        }
+        idOfCrypto = crypto.id!
+        
+        if let symbolOfTickerCheck = crypto.symbolOfTicker {
+        symbolOfTicker = symbolOfTickerCheck
+        }
         image = crypto.image ?? UIImage(named: "pngwing.com")!
+        print("marketData1",marketData.isEmpty)
         if let marketDataChek = crypto.marketDataArray?.array {
         marketData = marketDataChek
+            print("marketData2",marketData)
         }
+        print("communityData1",communityData.isEmpty)
         if let communityDataChek = crypto.communityDataArray?.array {
         communityData = communityDataChek
+            print("communityData2",communityData)
         }
         if let redditLink = crypto.links?.subredditURL {
             redditUrl = redditLink
@@ -480,12 +473,12 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         if let siteLink = crypto.links?.homepage?.first {
             siteUrl = siteLink
         }
+        
         setupChartAndPriceView()
         setupDetailInfo()
         
-//        chartLoad(symbol: symbolOfCurrentCrypto, interval: "day")
-        print("ID", idOfCrypto)
-        chartLoad(idOfCrypto: idOfCrypto, interval: "day")
+        
+        chartLoad(idOfCrypto: idOfCrypto, interval: "month")
         
         lineChartViewSetup()
         navigationBarSetup()
@@ -496,11 +489,13 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         communityDataTableView.delegate = self
         communityDataTableView.dataSource = self
         scrollView.delegate = self
-
-
-        if textTest == "" ||  marketData.isEmpty || communityData.isEmpty || image == UIImage(named: "pngwing.com")!{
+   
+        
+        if priceOfCrypto.text == "priceOfCrypto" {
             DispatchQueue.global().async {
+                
                 NetworkManager.shared.getCoinGeckoData(symbol: self.idOfCrypto, group: NetworkManager.shared.groupOne) { (stocks) in
+                    
                         if let stringUrl = stocks.image?.large {
                             NetworkManager.shared.obtainImage(StringUrl: stringUrl, group: DispatchGroup()) { image in
                                 self.image = image
@@ -510,8 +505,37 @@ class ChartViewController: UIViewController, ChartViewDelegate {
                         }
                     DispatchQueue.main.async {
                         self.textView.text = stocks.geckoSymbolDescription?.en?.html2String
-                        self.redditUrl = (stocks.links?.subredditURL)!
-                        self.siteUrl = (stocks.links?.homepage?.first)!
+                        
+                        if self.textView.text == nil || self.textView.text == "" {
+                            self.contentViewFrame.size.height -= 50
+                            self.detailInfoViewFrame.size.height -= 50
+                            self.scrollView.contentInset.bottom -= 50
+                        } else if self.textView.text!.count / 45 < 7 {
+                            let height = CGFloat((7 - (self.textView.text!.count / 45)) * 10)
+                            print("HEIGHT", height)
+                            self.contentViewFrame.size.height -= height
+                            self.detailInfoViewFrame.size.height -= height
+                            self.scrollView.contentInset.bottom -= height
+                            
+                        }
+                        
+                        if let redditUrl = stocks.links?.subredditURL {
+                        self.redditUrl = redditUrl
+                        }
+                        if let siteUrl = stocks.links?.homepage?.first {
+                        self.siteUrl = siteUrl
+                        }
+                        self.diffPriceOfCrypto.text = String((stocks.marketData?.priceChangePercentage30D)!)
+                        self.percentages = Persentages(priceChangePercentage24H: String((stocks.marketData?.priceChangePercentage24H)!),
+                                                      priceChangePercentage7D: String((stocks.marketData?.priceChangePercentage7D)!),
+                                                      priceChangePercentage30D: String((stocks.marketData?.priceChangePercentage30D)!),
+                                                      priceChangePercentage1Y: String((stocks.marketData?.priceChangePercentage1Y)!))
+            
+                        
+                        self.priceOfCrypto.text = String((stocks.marketData?.currentPrice?["usd"])!)
+                        
+                        
+                        
                         guard let marketData = stocks.marketData else {return}
                         self.marketData = MarketDataArray(marketData: marketData).array
                         self.marketDataTableView.reloadData()
@@ -520,16 +544,24 @@ class ChartViewController: UIViewController, ChartViewDelegate {
                         self.communityDataTableView.reloadData()
                         
                         
+//
                     }
                 }
             }
         } else {
-            textView.text = textTest
+            if self.textView.text == nil || self.textView.text == "" {
+                self.contentViewFrame.size.height -= 50
+                self.detailInfoViewFrame.size.height -= 50
+                self.scrollView.contentInset.bottom -= 50
+            }
         }
+    
+        
     }
     
-  
-    
+
+
+
     private func navigationBarSetup() {
         DispatchQueue.main.async { [self] in
     
@@ -714,12 +746,12 @@ class ChartViewController: UIViewController, ChartViewDelegate {
                 url: NSURL(string: "https://api.coingecko.com/api/v3/coins/\(idOfCrypto)/market_chart/range?vs_currency=usd&from=\(prevValue)&to=\(nowUnix)")! as URL,
                 cachePolicy: .useProtocolCachePolicy,
                 timeoutInterval: 10.0)
+          
             request.httpMethod = "GET"
             
-            
+            print("https://api.coingecko.com/api/v3/coins/\(idOfCrypto)/market_chart/range?vs_currency=usd&from=\(prevValue)&to=\(nowUnix)")
             URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
                 guard let stocksData = data, error == nil, response != nil else {return}
-                print("THREAD",Thread.current)
                 
                 do {
                     
@@ -807,6 +839,10 @@ extension ChartViewController : UITableViewDelegate, UITableViewDataSource {
             cell.configure(with: communityDataElem)
         }
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     
