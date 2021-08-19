@@ -72,9 +72,8 @@ class CarouselCollectionViewCell: UICollectionViewCell {
             if let percentages = crypto.percentages {
                 guard var perc24h = percentages.priceChangePercentage24H else { return }
                 perc24h.removeFirst()
-                fullString.append(NSAttributedString(string: " \(perc24h)"))
+                fullString.append(NSAttributedString(string: " \(perc24h)%"))
             }
-            fullString.append(NSAttributedString(string: "%"))
             percent.attributedText = fullString
             percent.textColor = UIColor.red
             percent.textColor = UIColor(hexString: "#CC2B73")

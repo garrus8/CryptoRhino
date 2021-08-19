@@ -36,29 +36,29 @@ class MainViewController: UIViewController {
         NetworkManager.shared.getFullCoinCapList()
         NetworkManager.shared.getTopOfCrypto()
         NetworkManager.shared.getFullListOfCoinGecko()
-//        NetworkManager.shared.collectionViewLoad()
-//
-//
-//        setupCollectionView()
-//        setupDataSource()
-//        NetworkManager.shared.webSocket2(symbols: NetworkManager.shared.websocketArray)
-//        NetworkManager.shared.receiveMessage(tableView: [], collectionView: [self.collectionView])
-//
-//
-//        NetworkManager.shared.groupOne.wait()
-//
-//        NetworkManager.shared.putCoinGeckoData(array: &NetworkManager.shared.results, group: NetworkManager.shared.groupTwo)
-//        NetworkManager.shared.putCoinGeckoData(array: &NetworkManager.shared.resultsF, group: NetworkManager.shared.groupTwo)
-//        NetworkManager.shared.groupTwo.wait()
-//        NetworkManager.shared.setupSections()
-//        reloadData()
+        NetworkManager.shared.collectionViewLoad()
+
+
+        setupCollectionView()
+        setupDataSource()
+        NetworkManager.shared.webSocket2(symbols: NetworkManager.shared.websocketArray)
+        NetworkManager.shared.receiveMessage(tableView: [], collectionView: [self.collectionView])
+
+
+        NetworkManager.shared.groupOne.wait()
+
+        NetworkManager.shared.putCoinGeckoData(array: &NetworkManager.shared.results, group: NetworkManager.shared.groupTwo)
+        NetworkManager.shared.putCoinGeckoData(array: &NetworkManager.shared.resultsF, group: NetworkManager.shared.groupTwo)
+        NetworkManager.shared.groupTwo.wait()
+        NetworkManager.shared.setupSections()
+        reloadData()
+        NetworkManager.shared.updateUI(collectionViews: [self.collectionView])
+        NetworkManager.shared.groupThree.wait()
+        NetworkManager.shared.putCoinGeckoData(array: &NetworkManager.shared.collectionViewArray, group: NetworkManager.shared.groupFour)
 //        NetworkManager.shared.updateUI(collectionViews: [self.collectionView])
-//        NetworkManager.shared.groupThree.wait()
-//        NetworkManager.shared.putCoinGeckoData(array: &NetworkManager.shared.collectionViewArray, group: NetworkManager.shared.groupFour)
-////        NetworkManager.shared.updateUI(collectionViews: [self.collectionView])
-//        NetworkManager.shared.recoursiveUpdateUI(collectionViews: [self.collectionView])
-//
-//        NotificationCenter.default.addObserver(self, selector: #selector(reloadCollectionView), name: NSNotification.Name(rawValue: "newImage"), object: nil)
+        NetworkManager.shared.recoursiveUpdateUI(collectionViews: [self.collectionView])
+
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadCollectionView), name: NSNotification.Name(rawValue: "newImage"), object: nil)
        
     }
     @objc func reloadCollectionView() {

@@ -22,7 +22,12 @@ class MarketDataCell: UITableViewCell {
     }
     func configure (with marketData: MarketDataElem) {
         name.text = marketData.name
+        name.textColor = .white
+        name.font = UIFont(name: "avenir", size: 14)
+        
         value.text = marketData.value
+        value.textColor = .white
+        value.font = UIFont(name: "avenir", size: 14)
         
     }
     func setupConstraints() {

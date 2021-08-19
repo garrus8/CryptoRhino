@@ -86,21 +86,45 @@ class FavoritesViewController: UIViewController, UICollectionViewDataSource, UIC
     // MARK: - Table view data source
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if isFiltering {
+        if isFiltering && NetworkManager.shared.resultsF.isEmpty {
             return filteredResults.count
+        } else if isFiltering && !NetworkManager.shared.resultsF.isEmpty {
+            return filteredResultsOfFavorites.count
         }
-        
         return NetworkManager.shared.resultsF.count
+        
+        
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: UIScreen.main.bounds.size.width - 30, height: 60)
     }
 
+//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+////        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FavoritesCell.reuseId, for: indexPath) as? FavoritesCell else {return UICollectionViewCell()}
+//
+//
+//        if isFiltering {
+//
+//            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchTableViewCell.reuseId, for: indexPath) as? SearchTableViewCell else {return UICollectionViewCell()}
+//            let results = filteredResults[indexPath.row]
+//            cell.nameOfCrypto.text = results.displaySymbol
+//            cell.symbolOfCrypto.text = results.fullBinanceListDescription
+//            return cell
+//
+//
+//        } else {
+//            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TableCollectionViewCell.reuseId, for: indexPath) as? TableCollectionViewCell else {return UICollectionViewCell()}
+//            guard let results = NetworkManager.shared.resultsF[indexPath.row] as Crypto? else {return UICollectionViewCell()}
+//            cell.configure(with: results)
+//            return cell
+//
+//        }
+//
+////        return cell
+//    }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FavoritesCell.reuseId, for: indexPath) as? FavoritesCell else {return UICollectionViewCell()}
         
-
-        if isFiltering {
+        if isFiltering && NetworkManager.shared.resultsF.isEmpty {
 
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchTableViewCell.reuseId, for: indexPath) as? SearchTableViewCell else {return UICollectionViewCell()}
             let results = filteredResults[indexPath.row]
@@ -108,7 +132,12 @@ class FavoritesViewController: UIViewController, UICollectionViewDataSource, UIC
             cell.symbolOfCrypto.text = results.fullBinanceListDescription
             return cell
 
-
+        } else if isFiltering && !NetworkManager.shared.resultsF.isEmpty {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TableCollectionViewCell.reuseId, for: indexPath) as? TableCollectionViewCell else {return UICollectionViewCell()}
+            guard let results = filteredResultsOfFavorites[indexPath.row] as Crypto? else {return UICollectionViewCell()}
+            cell.configure(with: results)
+            return cell
+            
         } else {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TableCollectionViewCell.reuseId, for: indexPath) as? TableCollectionViewCell else {return UICollectionViewCell()}
             guard let results = NetworkManager.shared.resultsF[indexPath.row] as Crypto? else {return UICollectionViewCell()}
@@ -117,7 +146,6 @@ class FavoritesViewController: UIViewController, UICollectionViewDataSource, UIC
 
         }
 
-//        return cell
     }
 
 
@@ -125,10 +153,11 @@ class FavoritesViewController: UIViewController, UICollectionViewDataSource, UIC
         let result: Crypto
         
         let ChartVC = self.storyboard?.instantiateViewController(withIdentifier: "ChartViewController") as! ChartViewController
-        if isFiltering {
-//            result = NetworkManager.shared.resultsF[indexPath.row]
+        if isFiltering && NetworkManager.shared.resultsF.isEmpty {
             let elem = filteredResults[indexPath.row]
             result = Crypto(symbolOfCrypto: elem.displaySymbol!, nameOfCrypto: elem.fullBinanceListDescription!, symbolOfTicker: elem.symbol!, id: elem.id!)
+        } else if isFiltering && !NetworkManager.shared.resultsF.isEmpty {
+            result = filteredResultsOfFavorites[indexPath.row]
         } else {
             result = NetworkManager.shared.resultsF[indexPath.row]
         }

@@ -212,7 +212,6 @@ class NetworkManager  {
                         
                         
                         self.coinGecoList = stocks
-                        
                         if self.coinGecoList.isEmpty {
                             // Вывести вью с лейблом: Вы превысили количество запросов, пожалуйста попробуйте через минуту
                         }
@@ -237,7 +236,6 @@ class NetworkManager  {
                             self.fullBinanceList.append(elem)
 //                            }
                         }
-                        print("ELEMSORT")
                         self.fullBinanceList.sort{$0.rank ?? 101 < $1.rank ?? 101}
                         self.groupTwo.leave()
                     }
@@ -333,10 +331,14 @@ class NetworkManager  {
                 self.groupOne.wait()
                 group.enter()
                 let symbol = i.symbolOfCrypto
+                
                 var indexOfSymbol: Int?
                 var symbolCoinGecko = String()
                 DispatchQueue.global().sync {
-                    indexOfSymbol = self.binarySearchFoCoinGeckoList(key: symbol.lowercased(), list: self.coinGecoList)
+                    print("SYMBOL", symbol.lowercased())
+//                    indexOfSymbol = self.binarySearchFoCoinGeckoList(key: symbol.lowercased(), list: self.coinGecoList)
+                    print("COINGeckoCOUNST", self.coinGecoList.count)
+                    indexOfSymbol = self.coinGecoList.firstIndex(where: { $0.symbol?.lowercased() == symbol.lowercased() })
                     symbolCoinGecko = self.coinGecoList[indexOfSymbol!].id!
                 }
                 //                let symbolCoinGecko = self.coinGecoList[indexOfSymbol!].id!.replacingOccurrences(of: "binance-peg-", with: "")
@@ -366,6 +368,10 @@ class NetworkManager  {
                     if let priceChangePercentage30D = stocks.marketData?.priceChangePercentage30D {
                         let roundedValue = round(priceChangePercentage30D * 100) / 100.0
                         i.percentages?.priceChangePercentage30D = String(roundedValue)
+                    }
+                    if let priceChangePercentage7D = stocks.marketData?.priceChangePercentage7D {
+                        let roundedValue = round(priceChangePercentage7D * 100) / 100.0
+                        i.percentages?.priceChangePercentage7D = String(roundedValue)
                     }
                     if let priceChangePercentage1Y = stocks.marketData?.priceChangePercentage1Y {
                         let roundedValue = round(priceChangePercentage1Y * 100) / 100.0
@@ -421,6 +427,7 @@ class NetworkManager  {
                 self.groupThree.enter()
                 var elemOfCoinCap : [String : String?]!
                 DispatchQueue.global().sync {
+                    print("FUCK")
                     elemOfCoinCap = self.coinCapDict[index]
                 }
                 let symbol = elemOfCoinCap["symbol"]!!
@@ -633,23 +640,23 @@ class NetworkManager  {
         
     }
     
-    func binarySearchFoCoinGeckoList(key : String, list : [GeckoListElement]) -> Int? {
-        
-        var low = 0
-        var high = list.count - 1
-        
-        while low <= high {
-            let mid = low + (high - low) / 2
-            if key < list[mid].symbol! {
-                high = mid - 1
-            } else if key > list[mid].symbol! {
-                low = mid + 1
-            } else {
-                return mid
-            }
-        }
-        return nil
-    }
+//    func binarySearchFoCoinGeckoList(key : String, list : [GeckoListElement]) -> Int? {
+//        
+//        var low = 0
+//        var high = list.count - 1
+//        
+//        while low <= high {
+//            let mid = low + (high - low) / 2
+//            if key.lowercased() < list[mid].symbol!.lowercased() {
+//                high = mid - 1
+//            } else if key.lowercased() > list[mid].symbol!.lowercased() {
+//                low = mid + 1
+//            } else {
+//                return mid
+//            }
+//        }
+//        return nil
+//    }
     
     
 }
