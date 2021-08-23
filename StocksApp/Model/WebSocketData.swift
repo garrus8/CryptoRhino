@@ -509,24 +509,42 @@ struct MarketData: Decodable {
 struct MarketDataArray {
     let array : [MarketDataElem]
     init(marketData : MarketData) {
-        let marketCap = String(marketData.marketCap?["usd"] ?? 0)
-        let marketCapRank = String(marketData.marketCapRank ?? 0)
-        let totalVolume = String(marketData.totalVolume?["usd"] ?? 0)
-        let high24H = String(marketData.high24H?["usd"] ?? 0)
-        let low24H = String(marketData.low24H?["usd"] ?? 0)
-        let marketCapChangePercentage24H = String(marketData.marketCapChangePercentage24H ?? 0)
-        let maxSupply = String(marketData.maxSupply ?? 0)
-        let circulatingSupply = String(marketData.circulatingSupply ?? 0)
+        let marketCap = marketData.marketCap?["usd"]?.formattedWithSeparator
+        let marketCapRank = marketData.marketCapRank?.formattedWithSeparator
+        let totalVolume = marketData.totalVolume?["usd"]?.formattedWithSeparator
+        let high24H = marketData.high24H?["usd"]?.formattedWithSeparator
+        let low24H = marketData.low24H?["usd"]?.formattedWithSeparator
+        let marketCapChangePercentage24H = marketData.marketCapChangePercentage24H?.formattedWithSeparator
+        let maxSupply = marketData.maxSupply?.formattedWithSeparator
+        let circulatingSupply = marketData.circulatingSupply?.formattedWithSeparator
         let array = [
-            MarketDataElem(name: "marketCap", value: marketCap),
-            MarketDataElem(name: "marketCapRank", value: marketCapRank),
-            MarketDataElem(name: "totalVolume", value: totalVolume),
-            MarketDataElem(name: "high24H", value: high24H),
-            MarketDataElem(name: "low24H", value: low24H),
-            MarketDataElem(name: "marketCapChangePercentage24H", value: marketCapChangePercentage24H),
-            MarketDataElem(name: "maxSupply", value: maxSupply),
-            MarketDataElem(name: "circulatingSupply", value: circulatingSupply)
+            MarketDataElem(name: "marketCap", value: "$\(marketCap ?? "")"),
+            MarketDataElem(name: "marketCapRank", value: marketCapRank ?? ""),
+            MarketDataElem(name: "totalVolume", value: "$\(totalVolume ?? "")"),
+            MarketDataElem(name: "high24H", value:"$\(high24H ?? "")"),
+            MarketDataElem(name: "low24H", value: "$\(low24H ?? "")"),
+            MarketDataElem(name: "marketCapChangePercentage24H", value: "\(marketCapChangePercentage24H ?? "")%"),
+            MarketDataElem(name: "maxSupply", value: "$\(maxSupply ?? "")"),
+            MarketDataElem(name: "circulatingSupply", value: "$\(circulatingSupply ?? "")")
         ]
+//        let marketCap = String(marketData.marketCap?["usd"] ?? 0)
+//        let marketCapRank = String(marketData.marketCapRank ?? 0)
+//        let totalVolume = String(marketData.totalVolume?["usd"] ?? 0)
+//        let high24H = String(marketData.high24H?["usd"] ?? 0)
+//        let low24H = String(marketData.low24H?["usd"] ?? 0)
+//        let marketCapChangePercentage24H = String(marketData.marketCapChangePercentage24H ?? 0)
+//        let maxSupply = String(marketData.maxSupply ?? 0)
+//        let circulatingSupply = String(marketData.circulatingSupply ?? 0)
+//        let array = [
+//            MarketDataElem(name: "marketCap", value: marketCap),
+//            MarketDataElem(name: "marketCapRank", value: marketCapRank),
+//            MarketDataElem(name: "totalVolume", value: totalVolume),
+//            MarketDataElem(name: "high24H", value: high24H),
+//            MarketDataElem(name: "low24H", value: low24H),
+//            MarketDataElem(name: "marketCapChangePercentage24H", value: marketCapChangePercentage24H),
+//            MarketDataElem(name: "maxSupply", value: maxSupply),
+//            MarketDataElem(name: "circulatingSupply", value: circulatingSupply)
+//        ]
         self.array = array
     }
 }

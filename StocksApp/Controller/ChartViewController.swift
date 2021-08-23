@@ -461,25 +461,16 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         buttonsStack.widthAnchor.constraint(equalTo: detailInfoView.widthAnchor, constant: -2).isActive = true
         
         if buttonsStack.arrangedSubviews.count == 1 {
+            print("111111111111111111")
             buttonsStack.heightAnchor.constraint(equalToConstant: 56).isActive = true
             scrollView.contentInset.bottom -= 67
         } else if buttonsStack.arrangedSubviews.count == 2 {
+            print("22222222222222222")
         buttonsStack.heightAnchor.constraint(equalToConstant: 123).isActive = true
         } else {
             buttonsStack.heightAnchor.constraint(equalToConstant: 0).isActive = true
             scrollView.contentInset.bottom -= 123
         }
-        
-       
-//        buttonsStack.bottomAnchor.constraint(equalTo: detailInfoView.bottomAnchor, constant: 40).isActive = true
-        
-//        detailInfoView.addSubview(onRedditButton)
-//        onRedditButton.topAnchor.constraint(equalTo: communityDataTableView.bottomAnchor).isActive = true
-//        onRedditButton.centerXAnchor.constraint(equalTo: detailInfoView.centerXAnchor).isActive = true
-//        onRedditButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
-//        onRedditButton.widthAnchor.constraint(equalToConstant: 250).isActive = true
-        
-    
     }
     
     @objc func onReddit() {
@@ -521,18 +512,7 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         clickBool.toggle()
     }
     
-//    let textView : UITextView = {
-//        let textView = UITextView()
-//        textView.translatesAutoresizingMaskIntoConstraints = false
-////        textView.layer.cornerRadius = 15
-//        textView.layer.masksToBounds = true
-//        textView.font = UIFont.systemFont(ofSize: 15)
-//        textView.isEditable = false
-//        textView.sizeToFit()
-//        textView.backgroundColor = .systemGray
-//        textView.isScrollEnabled = false
-//        return textView
-//    }()
+
     let textView : UILabel = {
         let textView = UILabel()
         textView.translatesAutoresizingMaskIntoConstraints = false
@@ -571,6 +551,9 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 //        setupScrollView()
+        navigationController?.navigationBar.barTintColor = UIColor(hexString: "#202F72")
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.topItem?.title = "Main Page"
         
         symbolOfCurrentCrypto = crypto.symbolOfCrypto
         if let textTestCheck = crypto.descriptionOfCrypto?.html2String {
@@ -620,8 +603,7 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         setupChartAndPriceView()
         setupDetailInfo()
         
-        
-        chartLoad(idOfCrypto: idOfCrypto, interval: "month")
+        chartLoad(idOfCrypto: idOfCrypto, interval: "day")
         
         lineChartViewSetup()
         navigationBarSetup()
@@ -636,7 +618,6 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         
         if priceOfCrypto.text == "priceOfCrypto" {
             DispatchQueue.global().async {
-                
                 NetworkManager.shared.getCoinGeckoData(symbol: self.idOfCrypto, group: NetworkManager.shared.groupOne) { (stocks) in
                     
                         if let stringUrl = stocks.image?.large {
@@ -677,14 +658,16 @@ class ChartViewController: UIViewController, ChartViewDelegate {
                         
                         self.priceOfCrypto.text = String((stocks.marketData?.currentPrice?["usd"])!)
                         
-                        
-                        
-                        guard let marketData = stocks.marketData else {return}
-                        self.marketData = MarketDataArray(marketData: marketData).array
-                        self.marketDataTableView.reloadData()
-                        guard let communityData = stocks.communityData else {return}
+                        if let marketData = stocks.marketData {
+                            self.marketData = MarketDataArray(marketData: marketData).array
+                            self.marketDataTableView.reloadData()
+                        }
+                        if let communityData = stocks.communityData {
                         self.communityData = CommunityDataArray(communityData: communityData).array
                         self.communityDataTableView.reloadData()
+                        }
+                        self.setupDetailInfo()
+                        self.scrollView.contentInset.bottom += 67
                         
                     }
                 }
@@ -854,30 +837,23 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         
         DispatchQueue.global().async {
             
-//            let nextMinuteUnix = Int((Calendar.current.date(byAdding: .minute, value: +1, to: Date()))!.timeIntervalSince1970)
             let nowUnix = Int(NSDate().timeIntervalSince1970)
-           
-            
             var prevValue = Int()
             var dateFormat = String()
             
             switch interval {
             case "day":
-                let prevDayUnix = Int((Calendar.current.date(byAdding: .hour, value: -25, to: Date()))!.timeIntervalSince1970)
-                dateFormat = "MM/dd HH:mm"
-                prevValue = prevDayUnix
-            case "month":
-                let prevMonthUnix = Int((Calendar.current.date(byAdding: .day, value: -21, to: Date()))!.timeIntervalSince1970)
-                dateFormat = "MMM d"
-                prevValue = prevMonthUnix
-            case "year":
-                let prevYearUnix = Int((Calendar.current.date(byAdding: .month, value: -12, to: Date()))!.timeIntervalSince1970)
-                dateFormat = "dd.MM.yy"
-                prevValue = prevYearUnix
+                dateFormat = "HH:mm"
+                prevValue = Int((Calendar.current.date(byAdding: .day, value: -1, to: Date()))!.timeIntervalSince1970)
             case "week":
-                let prevWeekUnix = Int((Calendar.current.date(byAdding: .day, value: -7, to: Date()))!.timeIntervalSince1970)
+                dateFormat = "E HH:mm"
+                prevValue = Int((Calendar.current.date(byAdding: .day, value: -7, to: Date()))!.timeIntervalSince1970)
+            case "month":
+                dateFormat = "MMM d"
+                prevValue = Int((Calendar.current.date(byAdding: .month, value: -1, to: Date()))!.timeIntervalSince1970)
+            case "year":
                 dateFormat = "dd.MM.yy"
-                prevValue = prevWeekUnix
+                prevValue = Int((Calendar.current.date(byAdding: .year, value: -1, to: Date()))!.timeIntervalSince1970)
             default:
                 print("ПРОБЛЕМА В СВИЧ")
             }
@@ -887,15 +863,12 @@ class ChartViewController: UIViewController, ChartViewDelegate {
                 timeoutInterval: 10.0)
           
             request.httpMethod = "GET"
-            
-            print("https://api.coingecko.com/api/v3/coins/\(idOfCrypto)/market_chart/range?vs_currency=usd&from=\(prevValue)&to=\(nowUnix)")
             URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
                 guard let stocksData = data, error == nil, response != nil else {return}
-                
+                print("RESPONSE" ,response)
                 do {
-                    
                     guard let stocks = try CoinGeckoPrice.decode(from: stocksData) else {return}
-                    
+                    print("DATA", stocks)
                     for i in stocks.prices! {
                         let chartData = ChartDataEntry(x: i[0], y: i[1])
                         self.values.append(chartData)
@@ -914,8 +887,6 @@ class ChartViewController: UIViewController, ChartViewDelegate {
             }.resume()
         }
     }
-    
-    
     
     func setData() {
         let set1 = LineChartDataSet(entries: values)
@@ -942,21 +913,20 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     
 }
 
-class MyXAxisFormatter : IAxisValueFormatter {
-    var dateFormat = "MMM d"
-    
+class MyXAxisFormatter : NSObject, IAxisValueFormatter {
+    var dateFormat : String
+
     func stringForValue(_ value: Double, axis: AxisBase?) -> String {
-        let date = Date(timeIntervalSince1970: value)
+        let date = Date(timeIntervalSince1970: TimeInterval(value) / 1000)
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = dateFormat
         let dateString = dateFormatter.string(from: date)
         return dateString
-        
     }
     init(dateFormat: String) {
         self.dateFormat = dateFormat
     }
-    
+
 }
 
 extension ChartViewController : UITableViewDelegate, UITableViewDataSource {

@@ -245,9 +245,7 @@ class NetworkManager  {
                 }
                 
             }.resume()
-            
         }
-        
     }
 
     
@@ -274,7 +272,6 @@ class NetworkManager  {
                     
                     print("СПАРСИЛОСЬ getFullCoinCapLis")
                     self.coinCapDict = elems.data!
-                    
                     self.groupOne.leave()
                     
                 } catch let error as NSError {
@@ -295,7 +292,7 @@ class NetworkManager  {
             let request = NSMutableURLRequest(
                 url: NSURL(string: "https://api.coingecko.com/api/v3/coins/\(symbol)?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false")! as URL,
                 cachePolicy: .useProtocolCachePolicy,
-                timeoutInterval: 10.0)
+                timeoutInterval: 15.0)
             request.httpMethod = "GET"
             
             group.enter()

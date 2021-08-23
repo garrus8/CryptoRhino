@@ -21,7 +21,7 @@ class MarketDataCell: UITableViewCell {
         setupConstraints()
     }
     func configure (with marketData: MarketDataElem) {
-        name.text = marketData.name
+        name.text = marketData.name.camelCaseToWords()
         name.textColor = .white
         name.font = UIFont(name: "avenir", size: 14)
         

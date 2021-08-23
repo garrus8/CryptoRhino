@@ -80,3 +80,42 @@ extension Double {
     }
 }
 
+extension String {
+
+    func camelCaseToWords() -> String {
+
+        return unicodeScalars.reduce("") {
+            
+            if CharacterSet.uppercaseLetters.contains($1) && $1 != "H" && $0.count > 0  {
+                return ($0 + " " + String($1).lowercased())
+                
+            } else {
+                return $0 + String($1)
+            }
+        }
+        .capitalizingFirstLetter()
+        .replacingOccurrences(of: "2", with: " 2")
+        .replacingOccurrences(of: "48", with: " 48")
+    }
+}
+extension String {
+    func capitalizingFirstLetter() -> String {
+      return prefix(1).uppercased() + dropFirst()
+    }
+
+    mutating func capitalizeFirstLetter() {
+      self = self.capitalizingFirstLetter()
+    }
+}
+
+extension Formatter {
+    static let withSeparator: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.groupingSeparator = " "
+        return formatter
+    }()
+}
+extension Numeric {
+    var formattedWithSeparator: String { Formatter.withSeparator.string(for: self) ?? "" }
+}

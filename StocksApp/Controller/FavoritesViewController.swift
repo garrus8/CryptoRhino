@@ -31,6 +31,9 @@ class FavoritesViewController: UIViewController, UICollectionViewDataSource, UIC
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.navigationBar.barTintColor = UIColor(hexString: "#202F72")
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.topItem?.title = "Favorites"
         setupCollectionView()
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false

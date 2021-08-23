@@ -29,8 +29,13 @@ class MainViewController: UIViewController {
 
         definesPresentationContext = true
         
-//        NetworkManager.shared.deleteAllData()
+        navigationController?.navigationBar.barTintColor = UIColor(hexString: "#202F72")
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.topItem?.title = "Main Page"
+    
         
+//        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+//        self.navigationController?.navigationBar.shadowImage = UIImage()
         
         NetworkManager.shared.getData()
         NetworkManager.shared.getFullCoinCapList()
