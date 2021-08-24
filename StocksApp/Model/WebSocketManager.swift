@@ -265,9 +265,10 @@ class NetworkManager  {
                 guard let stocksData = data, error == nil, response != nil else {self.groupOne.leave(); return}
                 do {
                     guard let elems = try FullCoinCapList.decode(from: stocksData) else {
-                        self.groupOne.leave();
                         print("LEAVE");
                         print("RESP",response, "ERR", error);
+                        self.getFullCoinCapList();
+                        self.groupOne.leave()
                         return}
                     
                     print("СПАРСИЛОСЬ getFullCoinCapLis")
@@ -288,7 +289,6 @@ class NetworkManager  {
     func getCoinGeckoData(symbol: String, group: DispatchGroup, complition : @escaping (GeckoSymbol)->()) {
         
         DispatchQueue.global().async(group : group) {
-
             let request = NSMutableURLRequest(
                 url: NSURL(string: "https://api.coingecko.com/api/v3/coins/\(symbol)?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false")! as URL,
                 cachePolicy: .useProtocolCachePolicy,
@@ -309,7 +309,10 @@ class NetworkManager  {
                     
 
                 } catch let error as NSError {
+                    print("ХЫЧ ХЫЧ")
+                    self.getCoinGeckoData(symbol: symbol, group: group, complition : complition)
                     print(error.localizedDescription)
+                    
                 }
             }.resume()
 
@@ -324,6 +327,7 @@ class NetworkManager  {
 //        let countArray = array.count
 //        var countIterations = 0
         for i in array {
+            
             DispatchQueue.global().async(group: group) {
                 self.groupOne.wait()
                 group.enter()
@@ -424,7 +428,6 @@ class NetworkManager  {
                 self.groupThree.enter()
                 var elemOfCoinCap : [String : String?]!
                 DispatchQueue.global().sync {
-                    print("FUCK")
                     elemOfCoinCap = self.coinCapDict[index]
                 }
                 let symbol = elemOfCoinCap["symbol"]!!

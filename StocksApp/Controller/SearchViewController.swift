@@ -23,9 +23,7 @@ class SearchViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.navigationBar.barTintColor = UIColor(hexString: "#202F72")
-        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-        navigationController?.navigationBar.topItem?.title = "Search"
+        
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "Name or symbol of cryptocurrency", attributes: [NSAttributedString.Key.foregroundColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.75)])
@@ -129,7 +127,8 @@ class SearchViewController: UIViewController, UICollectionViewDataSource, UIColl
         } else {
             result = NetworkManager.shared.fullBinanceList[indexPath.row]
         }
-        let ChartVC = self.storyboard?.instantiateViewController(withIdentifier: "ChartViewController") as! ChartViewController
+//        let ChartVC = self.storyboard?.instantiateViewController(withIdentifier: "ChartViewController") as! ChartViewController
+        let ChartVC = ChartViewController()
         let crypto = Crypto(symbolOfCrypto: result.displaySymbol!, nameOfCrypto: result.fullBinanceListDescription!, symbolOfTicker: result.symbol!, id: result.id!)
         ChartVC.crypto = crypto
         print(result.displaySymbol!, result.id!)

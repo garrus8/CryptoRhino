@@ -20,7 +20,7 @@ class NewsCell: UICollectionViewCell {
         label.numberOfLines = 3
 //        label.lineBreakMode = .byTruncatingTail
         label.lineBreakMode = .byWordWrapping
-        label.font = UIFont.systemFont(ofSize: 14)
+        label.font = UIFont(name: "Avenir", size: 14)
         label.textColor = .white
         label.sizeToFit()
         return label
@@ -32,8 +32,9 @@ class NewsCell: UICollectionViewCell {
         label.layer.masksToBounds = true
         label.numberOfLines = 3
         label.lineBreakMode = .byTruncatingTail
-        label.font = UIFont.systemFont(ofSize: 12)
-        label.textColor = .white
+        label.font = UIFont(name: "Avenir", size: 12)
+        //SFCompactText-Regular
+        label.textColor = UIColor(red: 0.643, green: 0.766, blue: 0.996, alpha: 1)
         label.sizeToFit()
         return label
     }()

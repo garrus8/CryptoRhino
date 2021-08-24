@@ -13,13 +13,13 @@ class SearchTableViewCell: UICollectionViewCell {
     
     let nameOfCrypto : UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "avenir", size: 15)
+        label.font = UIFont(name: "SFProDisplay-Medium", size: 15)
         label.textColor = .white
         return label
     }()
     let symbolOfCrypto : UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "avenir", size: 14)
+        label.font = UIFont(name: "SFCompactText-Regular", size: 14)
         label.textColor = UIColor(hexString: "#C2B6D7")
         return label
     }()

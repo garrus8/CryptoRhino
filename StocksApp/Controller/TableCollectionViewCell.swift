@@ -14,25 +14,25 @@ class TableCollectionViewCell: UICollectionViewCell {
     let friendImageView  = UIImageView()
     let nameOfCrypto : UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "avenir", size: 15)
+        label.font = UIFont(name: "Avenir", size: 15)
         label.textColor = .white
         return label
     }()
     let symbolOfCrypto : UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "avenir", size: 14)
+        label.font = UIFont(name: "Avenir", size: 14)
         label.textColor = UIColor(hexString: "#C2B6D7")
         return label
     }()
     let price : UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "avenir", size: 16)
+        label.font = UIFont(name: "Avenir", size: 16)
         label.textColor = .white
         return label
     }()
     let percent : UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "avenir", size: 14)
+        label.font = UIFont(name: "Avenir", size: 14)
         return label
     }()
     
@@ -85,10 +85,10 @@ class TableCollectionViewCell: UICollectionViewCell {
             let fullString = NSMutableAttributedString()
             fullString.append(NSAttributedString(attachment: imageAttachment))
             if let percentages = crypto.percentages {
-                fullString.append(NSAttributedString(string: " \(percentages.priceChangePercentage24H ?? "")"))
+                fullString.append(NSAttributedString(string: " \(percentages.priceChangePercentage24H ?? "")%"))
             }
             percent.attributedText = fullString
-            percent.textColor = UIColor.green
+            percent.textColor = UIColor(red: 0.486, green: 0.863, blue: 0.475, alpha: 1)
         }
         friendImageView.image = crypto.image
         friendImageView.layer.cornerRadius = friendImageView.frame.height/2
@@ -124,13 +124,13 @@ extension TableCollectionViewCell {
         
         
         // oponentLabel constraints
-        nameOfCrypto.topAnchor.constraint(equalTo: topAnchor, constant: 11).isActive = true
+        nameOfCrypto.topAnchor.constraint(equalTo: self.topAnchor, constant: 11).isActive = true
         nameOfCrypto.leadingAnchor.constraint(equalTo: friendImageView.trailingAnchor, constant: 15).isActive = true
 //        nameOfCrypto.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 16).isActive = true
         nameOfCrypto.widthAnchor.constraint(equalToConstant: 128).isActive = true
         
         // lastMessageLabel constraints
-        symbolOfCrypto.topAnchor.constraint(equalTo: nameOfCrypto.bottomAnchor).isActive = true
+        symbolOfCrypto.topAnchor.constraint(equalTo: nameOfCrypto.bottomAnchor, constant: 2).isActive = true
         symbolOfCrypto.leadingAnchor.constraint(equalTo: friendImageView.trailingAnchor, constant: 15).isActive = true
         symbolOfCrypto.widthAnchor.constraint(equalToConstant: 128).isActive = true
         

@@ -13,26 +13,26 @@ class CarouselCollectionViewCell: UICollectionViewCell {
     let imageView = UIImageView()
     let nameOfCrypto : UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "SFProText-Bold", size: 16)
+        label.font = UIFont(name: "Avenir", size: 16)
         label.textColor = .white
         label.numberOfLines = 2
         return label
     }()
     let symbolOfCrypto : UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "avenir", size: 14)
+        label.font = UIFont(name: "Avenir", size: 14)
         label.textColor = UIColor(hexString: "#C2B6D7")
         return label
     }()
     let price : UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "avenir", size: 14)
+        label.font = UIFont(name: "Avenir", size: 14)
         label.textColor = UIColor(hexString: "#C2D8FF")
         return label
     }()
     let percent : UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "avenir", size: 14)
+        label.font = UIFont(name: "Avenir", size: 15)
         return label
     }()
     
@@ -75,7 +75,6 @@ class CarouselCollectionViewCell: UICollectionViewCell {
                 fullString.append(NSAttributedString(string: " \(perc24h)%"))
             }
             percent.attributedText = fullString
-            percent.textColor = UIColor.red
             percent.textColor = UIColor(hexString: "#CC2B73")
         } else {
             let imageAttachment = NSTextAttachment()
@@ -84,11 +83,11 @@ class CarouselCollectionViewCell: UICollectionViewCell {
             let fullString = NSMutableAttributedString()
             fullString.append(NSAttributedString(attachment: imageAttachment))
             if let percentages = crypto.percentages {
-                fullString.append(NSAttributedString(string: " \(percentages.priceChangePercentage24H ?? "")"))
+                fullString.append(NSAttributedString(string: " \(percentages.priceChangePercentage24H ?? "")%"))
             }
             fullString.append(NSAttributedString(string: "%"))
             percent.attributedText = fullString
-            percent.textColor = UIColor.green
+            percent.textColor = UIColor(red: 0.486, green: 0.863, blue: 0.475, alpha: 1)
         }
         
         imageView.image = crypto.image

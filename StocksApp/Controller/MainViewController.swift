@@ -29,13 +29,6 @@ class MainViewController: UIViewController {
 
         definesPresentationContext = true
         
-        navigationController?.navigationBar.barTintColor = UIColor(hexString: "#202F72")
-        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-        navigationController?.navigationBar.topItem?.title = "Main Page"
-    
-        
-//        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-//        self.navigationController?.navigationBar.shadowImage = UIImage()
         
         NetworkManager.shared.getData()
         NetworkManager.shared.getFullCoinCapList()
@@ -114,7 +107,7 @@ class MainViewController: UIViewController {
             guard let section = self.dataSource?.snapshot().sectionIdentifier(containingItem: item) else {return nil}
             if section.title.isEmpty {return nil}
             sectionHeader.title.text = section.title
-            sectionHeader.title.font = UIFont(name: "avenir", size: 22)
+            sectionHeader.title.font = UIFont(name: "Avenir", size: 22)
             sectionHeader.title.textColor = .white
             
             return sectionHeader
@@ -197,40 +190,14 @@ class MainViewController: UIViewController {
         return header
     }
 
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        let chartVC = segue.destination as! ChartViewController
-//        if segue.identifier == "TableVIewSegue" {
-//            let cell = sender as! TableViewCell
-//            chartVC.textTest = cell.textViewTest
-//            print(cell.textViewTest)
-//            chartVC.symbolOfCurrentCrypto = cell.symbol.text!
-//            chartVC.symbolOfTicker = cell.symbolOfTicker
-//            chartVC.idOfCrypto = cell.idOfCrypto
-//            chartVC.diffPriceOfCryptoText = cell.percent.text!
-//            chartVC.priceOfCryptoText = cell.price.text!
-//            chartVC.nameOfCryptoText = cell.name.text!
-//
-//        }
-//        if segue.identifier == "CollectionViewSegue" {
-//            let cell = sender as! CollectionViewCell
-//            chartVC.symbolOfCurrentCrypto = cell.symbolOfCrypto
-//            chartVC.textTest = cell.textViewTest
-//            chartVC.nameOfCrypto = cell.nameOfElelm
-//            chartVC.diffPriceOfCryptoText = cell.percent
-//            chartVC.priceOfCryptoText = cell.index.text!
-//            chartVC.nameOfCryptoText = cell.nameOfElelm.text!
-//            chartVC.symbolOfTicker = cell.symbolOfTicker
-//        }
-//
-//    }
 }
 extension MainViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let crypto = self.dataSource!.itemIdentifier(for: indexPath) else { return }
 //        let homeView = self.storyboard?.instantiateViewController(withIdentifier: "MainViewController") as! MainViewController
 //        let ChartVC = ChartViewController(crypto: crypto)
-//        let ChartVC = ChartViewController()
-        let ChartVC = self.storyboard?.instantiateViewController(withIdentifier: "ChartViewController") as! ChartViewController
+        let ChartVC = ChartViewController()
+//        let ChartVC = self.storyboard?.instantiateViewController(withIdentifier: "ChartViewController") as! ChartViewController
         ChartVC.crypto = crypto
         
 //        present(ChartVC, animated: true, completion: nil)
@@ -240,54 +207,5 @@ extension MainViewController: UICollectionViewDelegate {
         
     }
 }
-//extension MainViewController : UISearchResultsUpdating   {
-//    func updateSearchResults(for searchController: UISearchController) {
-//        
-//        filterContentForSearchText(searchController.searchBar.text!)
-//    }
-//    func filterContentForSearchText(_ searchText : String){
-//
-//
-//}
-//}
-//extension MainViewController : UICollectionViewDelegate, UICollectionViewDataSource {
-//
-//    func numberOfSections(in collectionView: UICollectionView) -> Int {
-//        NetworkManager.shared.sections.count
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        NetworkManager.shared.sections[section].items.count
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TableCollectionViewCell.reuseId, for: indexPath) as! TableCollectionViewCell
-//        let section = NetworkManager.shared.sections[indexPath.section]
-//        let item = section.items[indexPath.item]
-//        cell.configure(with: item)
-//        return cell
-//    }
-//
-//}
 
-// MARK: - SwiftUI
-//import SwiftUI
-//struct ViewControllerProvider: PreviewProvider {
-//    static var previews: some View {
-//        ContainerView().edgesIgnoringSafeArea(.all)
-//    }
-//
-//    struct ContainerView: UIViewControllerRepresentable {
-//
-//        let viewController = MainViewController()
-//
-//        func makeUIViewController(context: UIViewControllerRepresentableContext<ViewControllerProvider.ContainerView>) -> MainViewController {
-//            return viewController
-//        }
-//
-//        func updateUIViewController(_ uiViewController: ViewControllerProvider.ContainerView.UIViewControllerType, context: UIViewControllerRepresentableContext<ViewControllerProvider.ContainerView>) {
-//
-//        }
-//    }
-//}
 

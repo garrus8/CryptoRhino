@@ -461,11 +461,9 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         buttonsStack.widthAnchor.constraint(equalTo: detailInfoView.widthAnchor, constant: -2).isActive = true
         
         if buttonsStack.arrangedSubviews.count == 1 {
-            print("111111111111111111")
             buttonsStack.heightAnchor.constraint(equalToConstant: 56).isActive = true
             scrollView.contentInset.bottom -= 67
         } else if buttonsStack.arrangedSubviews.count == 2 {
-            print("22222222222222222")
         buttonsStack.heightAnchor.constraint(equalToConstant: 123).isActive = true
         } else {
             buttonsStack.heightAnchor.constraint(equalToConstant: 0).isActive = true
@@ -551,10 +549,6 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 //        setupScrollView()
-        navigationController?.navigationBar.barTintColor = UIColor(hexString: "#202F72")
-        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-        navigationController?.navigationBar.topItem?.title = "Main Page"
-        
         symbolOfCurrentCrypto = crypto.symbolOfCrypto
         if let textTestCheck = crypto.descriptionOfCrypto?.html2String {
             textView.text = textTestCheck
@@ -583,15 +577,12 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         symbolOfTicker = symbolOfTickerCheck
         }
         image = crypto.image ?? UIImage(named: "pngwing.com")!
-        print("marketData1",marketData.isEmpty)
         if let marketDataChek = crypto.marketDataArray?.array {
         marketData = marketDataChek
-            print("marketData2",marketData)
         }
-        print("communityData1",communityData.isEmpty)
+        
         if let communityDataChek = crypto.communityDataArray?.array {
         communityData = communityDataChek
-            print("communityData2",communityData)
         }
         if let redditLink = crypto.links?.subredditURL {
             redditUrl = redditLink
@@ -602,11 +593,10 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         
         setupChartAndPriceView()
         setupDetailInfo()
-        
+        navigationBarSetup()
         chartLoad(idOfCrypto: idOfCrypto, interval: "day")
         
         lineChartViewSetup()
-        navigationBarSetup()
         marketDataTableView.register(MarketDataCell.self, forCellReuseIdentifier: "MarketDataCell")
         marketDataTableView.delegate = self
         marketDataTableView.dataSource = self
@@ -696,17 +686,23 @@ class ChartViewController: UIViewController, ChartViewDelegate {
                 }
             }
         }
-        
-            navigationItem.title = nameOfCrypto.text
+            navigationController?.navigationBar.backItem?.title = ""
+            navigationController?.navigationBar.barTintColor = UIColor(hexString: "#202F72")
+            navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+//            navigationItem.title = nameOfCrypto.text
+//            navigationController?.navigationBar.topItem?.title = nameOfCrypto.text
             navigationController?.navigationBar.prefersLargeTitles = false
             navigationItem.rightBarButtonItem = butt
-    
-        
+            navigationItem.rightBarButtonItem?.tintColor = .white
+            navigationController!.navigationBar.tintColor = .white
+            
+            
         let logoAndTitle = UIView()
         
         let label : UILabel = {
             let label = UILabel()
             label.text = self.nameOfCrypto.text
+            label.textColor = .white
             label.sizeToFit()
             label.center = logoAndTitle.center
             label.textAlignment = NSTextAlignment.center

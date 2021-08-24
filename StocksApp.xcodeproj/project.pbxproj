@@ -28,7 +28,6 @@
 		F4D2F79A25E7D7AE009EB2C6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D2F79925E7D7AE009EB2C6 /* AppDelegate.swift */; };
 		F4D2F79C25E7D7AE009EB2C6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D2F79B25E7D7AE009EB2C6 /* SceneDelegate.swift */; };
 		F4D2F79E25E7D7AE009EB2C6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D2F79D25E7D7AE009EB2C6 /* ViewController.swift */; };
-		F4D2F7A125E7D7AE009EB2C6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4D2F79F25E7D7AE009EB2C6 /* Main.storyboard */; };
 		F4D2F7A425E7D7AE009EB2C6 /* StocksApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F4D2F7A225E7D7AE009EB2C6 /* StocksApp.xcdatamodeld */; };
 		F4D2F7A625E7D7B3009EB2C6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4D2F7A525E7D7B3009EB2C6 /* Assets.xcassets */; };
 		F4D2F7A925E7D7B3009EB2C6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4D2F7A725E7D7B3009EB2C6 /* LaunchScreen.storyboard */; };
@@ -38,6 +37,7 @@
 		F4D2F7E225E7E34A009EB2C6 /* WebSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D2F7E125E7E34A009EB2C6 /* WebSocketManager.swift */; };
 		F4D2F7E725E7EF43009EB2C6 /* WebSocketData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D2F7E625E7EF43009EB2C6 /* WebSocketData.swift */; };
 		F4DE6652261C9DC100109F0A /* ChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DE6651261C9DC100109F0A /* ChartViewController.swift */; };
+		F4E3414A26D398E0003044A7 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E3414926D398E0003044A7 /* MainTabBarController.swift */; };
 		F4E41A4526A1893F00EDF32F /* ChartAndPriceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E41A4426A1893F00EDF32F /* ChartAndPriceView.swift */; };
 		F4E7DE27268F36480032D26B /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E7DE26268F36480032D26B /* SearchTableViewCell.swift */; };
 		F4E7DE2C268F44560032D26B /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E7DE2B268F44560032D26B /* SearchViewController.swift */; };
@@ -93,7 +93,6 @@
 		F4D2F79925E7D7AE009EB2C6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F4D2F79B25E7D7AE009EB2C6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		F4D2F79D25E7D7AE009EB2C6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		F4D2F7A025E7D7AE009EB2C6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F4D2F7A325E7D7AE009EB2C6 /* StocksApp.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = StocksApp.xcdatamodel; sourceTree = "<group>"; };
 		F4D2F7A525E7D7B3009EB2C6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F4D2F7A825E7D7B3009EB2C6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -108,6 +107,7 @@
 		F4D2F7E125E7E34A009EB2C6 /* WebSocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketManager.swift; sourceTree = "<group>"; };
 		F4D2F7E625E7EF43009EB2C6 /* WebSocketData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketData.swift; sourceTree = "<group>"; };
 		F4DE6651261C9DC100109F0A /* ChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ChartViewController.swift; path = StocksApp/Controller/ChartViewController.swift; sourceTree = SOURCE_ROOT; };
+		F4E3414926D398E0003044A7 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		F4E41A4426A1893F00EDF32F /* ChartAndPriceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartAndPriceView.swift; sourceTree = "<group>"; };
 		F4E7DE26268F36480032D26B /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		F4E7DE2B268F44560032D26B /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -226,6 +226,7 @@
 			children = (
 				F4EC4FBE25EE62760085F029 /* FavoritesViewController.swift */,
 				F4DE6651261C9DC100109F0A /* ChartViewController.swift */,
+				F4E3414926D398E0003044A7 /* MainTabBarController.swift */,
 				F4ED5B3826B2A1D900A30134 /* ContentViewForChartView.swift */,
 				F4ED5B3A26B2A7DC00A30134 /* DetailViewForCharView.swift */,
 				F42913F826A1B6D400F4F0D2 /* Extensions.swift */,
@@ -253,7 +254,6 @@
 		F4D2F7D325E7E013009EB2C6 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				F4D2F79F25E7D7AE009EB2C6 /* Main.storyboard */,
 				F4D2F7A725E7D7B3009EB2C6 /* LaunchScreen.storyboard */,
 				F4B5CE012620734500B43385 /* DetailNewsViewController.swift */,
 				F4416B42264D1A6A00505F7A /* NetworkManager.swift */,
@@ -394,7 +394,6 @@
 			files = (
 				F4D2F7A925E7D7B3009EB2C6 /* LaunchScreen.storyboard in Resources */,
 				F4D2F7A625E7D7B3009EB2C6 /* Assets.xcassets in Resources */,
-				F4D2F7A125E7D7AE009EB2C6 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -532,6 +531,7 @@
 				F4C1EECF2680789C0037C9F5 /* MainViewController.swift in Sources */,
 				F449CF3C2681DEA200739830 /* CarouselCollectionViewCell.swift in Sources */,
 				F449CF452682051800739830 /* SectionHeader.swift in Sources */,
+				F4E3414A26D398E0003044A7 /* MainTabBarController.swift in Sources */,
 				F4D2F7DA25E7E1C5009EB2C6 /* Constants.swift in Sources */,
 				F4DE6652261C9DC100109F0A /* ChartViewController.swift in Sources */,
 				F4D2F79E25E7D7AE009EB2C6 /* ViewController.swift in Sources */,
@@ -588,14 +588,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		F4D2F79F25E7D7AE009EB2C6 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F4D2F7A025E7D7AE009EB2C6 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		F4D2F7A725E7D7B3009EB2C6 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
