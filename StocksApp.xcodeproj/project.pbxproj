@@ -38,6 +38,7 @@
 		F4D2F7E725E7EF43009EB2C6 /* WebSocketData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D2F7E625E7EF43009EB2C6 /* WebSocketData.swift */; };
 		F4DE6652261C9DC100109F0A /* ChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DE6651261C9DC100109F0A /* ChartViewController.swift */; };
 		F4E3414A26D398E0003044A7 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E3414926D398E0003044A7 /* MainTabBarController.swift */; };
+		F4E3414C26D63271003044A7 /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E3414B26D63271003044A7 /* NetworkMonitor.swift */; };
 		F4E41A4526A1893F00EDF32F /* ChartAndPriceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E41A4426A1893F00EDF32F /* ChartAndPriceView.swift */; };
 		F4E7DE27268F36480032D26B /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E7DE26268F36480032D26B /* SearchTableViewCell.swift */; };
 		F4E7DE2C268F44560032D26B /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E7DE2B268F44560032D26B /* SearchViewController.swift */; };
@@ -108,6 +109,7 @@
 		F4D2F7E625E7EF43009EB2C6 /* WebSocketData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketData.swift; sourceTree = "<group>"; };
 		F4DE6651261C9DC100109F0A /* ChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ChartViewController.swift; path = StocksApp/Controller/ChartViewController.swift; sourceTree = SOURCE_ROOT; };
 		F4E3414926D398E0003044A7 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
+		F4E3414B26D63271003044A7 /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
 		F4E41A4426A1893F00EDF32F /* ChartAndPriceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartAndPriceView.swift; sourceTree = "<group>"; };
 		F4E7DE26268F36480032D26B /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		F4E7DE2B268F44560032D26B /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -279,6 +281,7 @@
 			children = (
 				F4D2F7A225E7D7AE009EB2C6 /* StocksApp.xcdatamodeld */,
 				F4D2F7E125E7E34A009EB2C6 /* WebSocketManager.swift */,
+				F4E3414B26D63271003044A7 /* NetworkMonitor.swift */,
 				F4D2F7E625E7EF43009EB2C6 /* WebSocketData.swift */,
 			);
 			path = Model;
@@ -543,6 +546,7 @@
 				F431192C25F117E5002D07A0 /* WS.swift in Sources */,
 				F4D2F7E725E7EF43009EB2C6 /* WebSocketData.swift in Sources */,
 				F4ED5B3B26B2A7DC00A30134 /* DetailViewForCharView.swift in Sources */,
+				F4E3414C26D63271003044A7 /* NetworkMonitor.swift in Sources */,
 				F4CC5FF026985F4000718010 /* FavoritesCell.swift in Sources */,
 				F4D2F79A25E7D7AE009EB2C6 /* AppDelegate.swift in Sources */,
 				F4B5CDF22620378600B43385 /* NewsViewController.swift in Sources */,

@@ -400,7 +400,7 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         detailInfoView.addSubview(headerStack)
         detailInfoView.addSubview(textView)
         
-        let marketDatatitle = UILabel(); marketDatatitle.text = "marketDataTableView"; marketDatatitle.textColor = .white
+        let marketDatatitle = UILabel(); marketDatatitle.text = "Market data"; marketDatatitle.textColor = .white
         marketDatatitle.font = UIFont(name: "avenir", size: 22)
         marketDatatitle.translatesAutoresizingMaskIntoConstraints = false
         detailInfoView.addSubview(marketDatatitle)
@@ -419,7 +419,7 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         headerStack.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         
-        let communityDatatitle = UILabel(); communityDatatitle.text = "communityDatatitle"; communityDatatitle.textColor = .white
+        let communityDatatitle = UILabel(); communityDatatitle.text = "Community data"; communityDatatitle.textColor = .white
         communityDatatitle.font = UIFont(name: "avenir", size: 22)
         communityDatatitle.translatesAutoresizingMaskIntoConstraints = false
         detailInfoView.addSubview(communityDatatitle)
@@ -701,7 +701,7 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         
         let label : UILabel = {
             let label = UILabel()
-            label.text = self.nameOfCrypto.text
+            label.text = " \(self.nameOfCrypto.text ?? "")"
             label.textColor = .white
             label.sizeToFit()
             label.center = logoAndTitle.center
@@ -792,44 +792,15 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         lineChartView.xAxis.setLabelCount(5, force: false)
         lineChartView.rightAxis.setLabelCount(8, force: false)
         lineChartView.xAxis.labelPosition = .bottom
+        lineChartView.xAxis.labelTextColor = .white
+        lineChartView.rightAxis.labelTextColor = .white
         lineChartView.animate(xAxisDuration: 0.8)
         
     }
     
-//
-//    func chartLoad(symbol : String, interval : String) {
-//
-//        DispatchQueue.global().async {
-//            NetworkManager.shared.getFinHubData(symbol: symbol, interval: interval, group: NetworkManager.shared.groupTwo) { (dict) in
-//                let stocks = dict["stocks"] as! GetData
-//                let dateFormat = dict["dateFormat"] as! String
-//
-//                guard let stocksC = stocks.c else {return}
-//                for (indexC,elemC) in stocksC.enumerated() {
-//                    let elemT = stocks.t![indexC]
-//                    let chartData = ChartDataEntry(x: Double(elemT), y: elemC)
-//                    self.values.append(chartData)
-//
-//                }
-//
-//                guard let stockLast = stocksC.last else {return}
-//                guard let stockFirst = stocksC.first else {return}
-//
-//                DispatchQueue.main.async {
-//                    self.diffPriceOfCrypto.text = {
-//                        return String((stockLast - stockFirst) / stockFirst * 100)
-//                    }()
-//                    self.priceOfCrypto.text = String(stockLast)
-//                    self.setData()
-//                    self.lineChartView.xAxis.valueFormatter = MyXAxisFormatter(dateFormat: dateFormat)
-//                    self.lineChartViewSetup()
-//                }
-//            }
-//        }
-//    }
     
     
-    func chartLoad(idOfCrypto: String,interval: String){
+    func chartLoad(idOfCrypto: String, interval: String){
         
         DispatchQueue.global().async {
             
@@ -860,11 +831,14 @@ class ChartViewController: UIViewController, ChartViewDelegate {
           
             request.httpMethod = "GET"
             URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
-                guard let stocksData = data, error == nil, response != nil else {return}
-                print("RESPONSE" ,response)
+                guard let stocksData = data, error == nil, response != nil else {
+                    print("ХЫЧ ХЫЧ");
+                    self.chartLoad(idOfCrypto: idOfCrypto, interval: interval);
+                    return}
+                
                 do {
                     guard let stocks = try CoinGeckoPrice.decode(from: stocksData) else {return}
-                    print("DATA", stocks)
+                    
                     for i in stocks.prices! {
                         let chartData = ChartDataEntry(x: i[0], y: i[1])
                         self.values.append(chartData)
@@ -886,15 +860,16 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     
     func setData() {
         let set1 = LineChartDataSet(entries: values)
+        set1.label = "Price in USD"
         set1.drawCirclesEnabled = false
         set1.mode = .linear
-        set1.lineWidth = 2
-        set1.setColor(.cyan)
-        set1.fill = Fill(color: .cyan)
-        set1.fillAlpha = 0.5
+        set1.lineWidth = 1
+        set1.setColor(UIColor(hexString: "F7931A"))
+        set1.fill = Fill(color: UIColor(hexString: "#283a89"))
+        set1.fillAlpha = 0.7
         set1.drawFilledEnabled = true
         set1.drawVerticalHighlightIndicatorEnabled = false
-        set1.highlightColor = .red
+        set1.highlightColor = diffPriceOfCrypto.textColor
         let data = LineChartData(dataSet: set1)
         data.setDrawValues(false)
         lineChartView.data = data
@@ -902,9 +877,9 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     }
     
     
-    func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
-        print(entry)
-    }
+//    func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
+//        print(entry)
+//    }
     
     
 }

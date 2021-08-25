@@ -28,37 +28,45 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
 
         definesPresentationContext = true
-        
-        
-        NetworkManager.shared.getData()
-        NetworkManager.shared.getFullCoinCapList()
-        NetworkManager.shared.getTopOfCrypto()
-        NetworkManager.shared.getFullListOfCoinGecko()
-        NetworkManager.shared.collectionViewLoad()
+        if NetworkMonitor.shared.isConnected {
+            
+            NetworkManager.shared.getData()
+            NetworkManager.shared.getFullCoinCapList()
+            NetworkManager.shared.getTopOfCrypto()
+            NetworkManager.shared.getFullListOfCoinGecko()
+            NetworkManager.shared.groupOne.wait()
+            NetworkManager.shared.collectionViewLoad()
 
 
-        setupCollectionView()
-        setupDataSource()
-        NetworkManager.shared.webSocket2(symbols: NetworkManager.shared.websocketArray)
-        NetworkManager.shared.receiveMessage(tableView: [], collectionView: [self.collectionView])
+            setupCollectionView()
+            setupDataSource()
 
+//            NetworkManager.shared.groupOne.wait()
+            if NetworkManager.shared.coinCapDict.count != 0 {
+            NetworkManager.shared.putCoinGeckoData(array: &NetworkManager.shared.results, group: NetworkManager.shared.groupTwo, otherArray: NetworkManager.shared.collectionViewArray)
+            NetworkManager.shared.putCoinGeckoData(array: &NetworkManager.shared.resultsF, group: NetworkManager.shared.groupTwo, otherArray: [])
+            NetworkManager.shared.groupTwo.wait()
+            NetworkManager.shared.putCoinGeckoData(array: &NetworkManager.shared.collectionViewArray, group: NetworkManager.shared.groupThree, otherArray: NetworkManager.shared.results)
+            
+            NetworkManager.shared.webSocket2(symbols: NetworkManager.shared.websocketArray)
+            NetworkManager.shared.receiveMessage(tableView: [], collectionView: [self.collectionView])
 
-        NetworkManager.shared.groupOne.wait()
+            NetworkManager.shared.setupSections()
+                if !NetworkManager.shared.results.isEmpty {
+            reloadData()
+                }
+            NetworkManager.shared.updateUI(collectionViews: [self.collectionView])
+            NetworkManager.shared.recoursiveUpdateUI(collectionViews: [self.collectionView])
 
-        NetworkManager.shared.putCoinGeckoData(array: &NetworkManager.shared.results, group: NetworkManager.shared.groupTwo)
-        NetworkManager.shared.putCoinGeckoData(array: &NetworkManager.shared.resultsF, group: NetworkManager.shared.groupTwo)
-        NetworkManager.shared.groupTwo.wait()
-        NetworkManager.shared.setupSections()
-        reloadData()
-        NetworkManager.shared.updateUI(collectionViews: [self.collectionView])
-        NetworkManager.shared.groupThree.wait()
-        NetworkManager.shared.putCoinGeckoData(array: &NetworkManager.shared.collectionViewArray, group: NetworkManager.shared.groupFour)
-//        NetworkManager.shared.updateUI(collectionViews: [self.collectionView])
-        NetworkManager.shared.recoursiveUpdateUI(collectionViews: [self.collectionView])
-
-        NotificationCenter.default.addObserver(self, selector: #selector(reloadCollectionView), name: NSNotification.Name(rawValue: "newImage"), object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(reloadCollectionView), name: NSNotification.Name(rawValue: "newImage"), object: nil)
+            }
+        } else {
+            let alert = UIAlertController(title: "No internet connection", message: "Check your internet connection and restart the app", preferredStyle: .alert)
+            self.present(alert, animated: true)
+        }
        
     }
+    
     @objc func reloadCollectionView() {
         DispatchQueue.main.async {
 //            NetworkManager.shared.groupFour.wait()
@@ -69,15 +77,16 @@ class MainViewController: UIViewController {
     
     func setupCollectionView() {
         CollectionViewGroup.enter()
-            collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createCompositionalLayout())
-            collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            collectionView.backgroundColor = UIColor(hexString: "#4158B7")
-            view.addSubview(collectionView)
-            collectionView.register(TableCollectionViewCell.self, forCellWithReuseIdentifier: TableCollectionViewCell.reuseId)
-            collectionView.register(CarouselCollectionViewCell.self, forCellWithReuseIdentifier: CarouselCollectionViewCell.reuseId)
-            collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SectionHeader.reuseId)
-            collectionView.delegate = self
-            //        collectionView.dataSource = self
+        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createCompositionalLayout())
+        collectionView.contentInset.top += 10
+        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        collectionView.backgroundColor = UIColor(hexString: "#4158B7")
+        view.addSubview(collectionView)
+        collectionView.register(TableCollectionViewCell.self, forCellWithReuseIdentifier: TableCollectionViewCell.reuseId)
+        collectionView.register(CarouselCollectionViewCell.self, forCellWithReuseIdentifier: CarouselCollectionViewCell.reuseId)
+        collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SectionHeader.reuseId)
+        collectionView.delegate = self
+        //        collectionView.dataSource = self
         
         CollectionViewGroup.leave()
     }
@@ -85,8 +94,8 @@ class MainViewController: UIViewController {
     func setupDataSource() {
         CollectionViewGroup.enter()
         dataSource = UICollectionViewDiffableDataSource<SectionOfCrypto, Crypto>(collectionView: collectionView, cellProvider: { (collectionView, indexPath, crypto) -> UICollectionViewCell? in
-            let carousel = SectionOfCrypto(type: "carousel", title: "Top", items: NetworkManager.shared.collectionViewArray)
-            let table = SectionOfCrypto(type: "table", title: "Hot", items: NetworkManager.shared.results)
+            let carousel = SectionOfCrypto(type: "carousel", title: "Top (by Market Cap)", items: NetworkManager.shared.collectionViewArray)
+            let table = SectionOfCrypto(type: "table", title: "Hot (by 24H Volume)", items: NetworkManager.shared.results)
             self.sections = [carousel,table]
             switch NetworkManager.shared.sections[indexPath.section].type {
 //            switch self.sections[indexPath.section].type {
@@ -116,11 +125,6 @@ class MainViewController: UIViewController {
     }
     
     func reloadData() {
-//        CollectionViewGroup.wait()
-//        NetworkManager.shared.groupOne.wait()
-//        NetworkManager.shared.groupTwo.wait()
-//        NetworkManager.shared.groupThree.wait()
-//        NetworkManager.shared.groupFour.wait()
         NetworkManager.shared.groupSetupSections.wait()
     
             var snapshot = NSDiffableDataSourceSnapshot<SectionOfCrypto, Crypto>()
@@ -144,6 +148,10 @@ class MainViewController: UIViewController {
                 return self.createTableSection()
             }
         }
+//        let config = UICollectionViewCompositionalLayoutConfiguration()
+//
+//        config.interSectionSpacing = 20
+//        layout.configuration = config
         return layout
     }
     func createCarouselSection() -> NSCollectionLayoutSection  {
@@ -153,8 +161,10 @@ class MainViewController: UIViewController {
         layoutItem.contentInsets = NSDirectionalEdgeInsets.init(top: 0, leading: 0, bottom: 0, trailing: 8)
         
         
-        let groupSize = NSCollectionLayoutSize(widthDimension: .estimated(143),
-                                                     heightDimension: .estimated(143))
+//        let groupSize = NSCollectionLayoutSize(widthDimension: .estimated(143),
+//                                                     heightDimension: .estimated(143))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(143),
+                                                     heightDimension: .absolute(143))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [layoutItem])
         
         let section = NSCollectionLayoutSection(group: group)
@@ -185,7 +195,6 @@ class MainViewController: UIViewController {
     func createSectionHeader() -> NSCollectionLayoutBoundarySupplementaryItem {
         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(1))
         let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
-        
         
         return header
     }
