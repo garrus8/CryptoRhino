@@ -608,7 +608,8 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         
         if priceOfCrypto.text == "priceOfCrypto" {
             DispatchQueue.global().async {
-                NetworkManager.shared.getCoinGeckoData(symbol: self.idOfCrypto, group: NetworkManager.shared.groupOne) { (stocks) in
+                NetworkManager.shared.dict1[self.symbolOfCurrentCrypto.uppercased()] = 0
+                NetworkManager.shared.getCoinGeckoData(id: self.idOfCrypto, symbol: self.symbolOfCurrentCrypto, group: NetworkManager.shared.groupOne) { (stocks) in
                     
                         if let stringUrl = stocks.image?.large {
                             NetworkManager.shared.obtainImage(StringUrl: stringUrl, group: DispatchGroup()) { image in

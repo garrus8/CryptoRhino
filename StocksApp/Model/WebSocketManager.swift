@@ -106,6 +106,7 @@ class NetworkManager  {
                         self.symbolsF.append(i.symbol!)
                         self.resultsF.append(crypto)
                         self.websocketArray.append(symbol)
+                    self.dict1[symbol] = 0
                     }
                 }
             }
@@ -129,6 +130,7 @@ class NetworkManager  {
                         self.symbolsF.insert(object.symbol!, at: 0)
                         self.resultsF.insert(crypto, at: 0)
                         self.websocketArray.append(symbol)
+                        self.dict1[symbol] = 0
                         var sub = [self.resultsF.first!]
 //                        self.putCoinGeckoData(array: &self.resultsF, group: self.groupTwo)
                         self.putCoinGeckoData(array: &sub, group: self.groupTwo, otherArray: [])
@@ -156,6 +158,7 @@ class NetworkManager  {
                 guard let stocksData = data, error == nil, response != nil else {
                     self.countTopOfCrypto += 1;
                     self.getTopOfCrypto();
+                    print("getTopOfCrypto 1")
                     self.groupOne.leave();
                     return}
                 
@@ -163,6 +166,7 @@ class NetworkManager  {
                     guard let stocksData = try (Toplist.decode(from: stocksData))?.data else {
                         self.countTopOfCrypto += 1;
                         self.getTopOfCrypto();
+                        print("getTopOfCrypto 2")
                         self.groupOne.leave();
                         return}
                     
@@ -170,13 +174,14 @@ class NetworkManager  {
                         self.groupOne.enter()
                         let elem = stocksData[i]
                         
-                        guard let cryptoCompareName = elem.coinInfo?.name else {return}
+                        guard let cryptoCompareName = elem.coinInfo?.name else { print("getTopOfCrypto 3"); return}
                         
                         if cryptoCompareName != "USDT" && cryptoCompareName != "BNBBEAR" {
                             guard let cryptoCompareFullName = elem.coinInfo?.fullName else {return}
                             let crypto = Crypto(symbolOfCrypto: cryptoCompareName, price: "", change: "", nameOfCrypto: cryptoCompareFullName, descriptionOfCrypto: nil, symbolOfTicker: "\(cryptoCompareName)USDT", id: "", percentages: Persentages(), image: UIImage(named: "pngwing.com")!)
                             
                             self.queue.async(group : self.groupOne, flags : .barrier) {
+                                self.dict1[cryptoCompareName] = 0
                                 self.results.append(crypto)
                                 print("RESULSTS ADDED", self.results.count)
                                 self.websocketArray.append(cryptoCompareName)
@@ -188,6 +193,7 @@ class NetworkManager  {
                     self.groupOne.leave()
                     
                 } catch let error as NSError {
+                    print("getTopOfCrypto 4")
                     print(error.localizedDescription)
                 }
                 
@@ -195,6 +201,7 @@ class NetworkManager  {
             } else {
                 DispatchQueue.main.async() {
                     self.groupOne.enter()
+                    print("getTopOfCrypto 5")
                     let alert = UIAlertController(title: "We have server problems", message: "You can restart the app or try later ", preferredStyle: .alert)
                     alert.show()
                     self.groupOne.leave()
@@ -222,12 +229,14 @@ class NetworkManager  {
                 guard let stocksData = data, error == nil, response != nil else {
                     self.countOfFullListCoinGecko += 1;
                     self.getFullListOfCoinGecko();
+                    print("getFullListOfCoinGecko 1")
                     self.groupTwo.leave();
                     return}
                 do {
                     guard let stocks = try GeckoList.decode(from: stocksData) else {
                         self.countOfFullListCoinGecko += 1;
                         self.getFullListOfCoinGecko();
+                        print("getFullListOfCoinGecko 2")
                         self.groupTwo.leave();
                         return}
                     
@@ -254,16 +263,18 @@ class NetworkManager  {
                     }
                     
                 } catch let error as NSError {
+                    print("getFullListOfCoinGecko 3")
                     print(error.localizedDescription)
                 }
                 
             }.resume()
             } else {
                 DispatchQueue.main.async() {
-                    self.groupOne.enter()
+                    self.groupTwo.enter()
                     let alert = UIAlertController(title: "We have server problems", message: "You can restart the app or try later ", preferredStyle: .alert)
                     alert.show()
-                    self.groupOne.leave()
+                    print("getFullListOfCoinGecko 4")
+                    self.groupTwo.leave()
                 }
             }
         }
@@ -287,18 +298,21 @@ var countOfCoinCap = 0
                     self.countOfCoinCap += 1
                     self.getFullCoinCapList();
                     self.groupOne.leave();
+                    print("getFullCoinCapList 1")
                     return}
                 do {
                     guard let elems = try FullCoinCapList.decode(from: stocksData) else {
                         self.countOfCoinCap += 1
                         self.getFullCoinCapList();
                         self.groupOne.leave()
+                        print("getFullCoinCapList 2")
                         return}
                     
                     self.coinCapDict = elems.data!
                     self.groupOne.leave()
                     
                 } catch let error as NSError {
+                    print("getFullCoinCapList 3")
                     print(error.localizedDescription)
                 }
                 
@@ -308,18 +322,20 @@ var countOfCoinCap = 0
                     self.groupOne.enter()
                     let alert = UIAlertController(title: "We have server problems", message: "You can restart the app or try later ", preferredStyle: .alert)
                     alert.show()
+                    print("getFullCoinCapList 4")
                     self.groupOne.leave()
                 }
             }
         }
     }
-        
-    func getCoinGeckoData(symbol: String, group: DispatchGroup, complition : @escaping (GeckoSymbol)->()) {
+    var dict1 = [String : Int]()
+    func getCoinGeckoData(id: String, symbol : String, group: DispatchGroup, complition : @escaping (GeckoSymbol)->()) {
         
         DispatchQueue.global().async(group : group) {
-            
+            print(self.dict1, symbol.uppercased(), id)
+            if self.dict1[symbol.uppercased()]! < 10 {
             let request = NSMutableURLRequest(
-                url: NSURL(string: "https://api.coingecko.com/api/v3/coins/\(symbol)?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false")! as URL,
+                url: NSURL(string: "https://api.coingecko.com/api/v3/coins/\(id)?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false")! as URL,
                 cachePolicy: .useProtocolCachePolicy,
                 timeoutInterval: 1.5)
             request.httpMethod = "GET"
@@ -328,22 +344,42 @@ var countOfCoinCap = 0
             URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
                 
                 guard let stocksData = data, error == nil, response != nil else {
-                    self.getCoinGeckoData(symbol: symbol, group: group, complition : complition);
+                    print("getCoinGeckoData 1", id)
+                    self.dict1[symbol.uppercased()]! += 1
+//                    print(self.dict1)
+                    self.getCoinGeckoData(id: id, symbol: symbol, group: group, complition : complition);
                     group.leave();
                     return}
         
                 do {
                     guard let stocks = try GeckoSymbol.decode(from: stocksData) else {
-                        self.getCoinGeckoData(symbol: symbol, group: group, complition : complition);
+                        print("getCoinGeckoData 2", id)
+                        self.dict1[symbol.uppercased()]! += 1
+//                        print(self.dict1)
+                        self.getCoinGeckoData(id: id, symbol: symbol, group: group, complition : complition);
                         group.leave();
                         return}
+//                    if let stocks = try GeckoSymbol.decode(from: stocksData) {
+//                        complition(stocks)
+//
+//                    } else {
+//                    let json = try JSONSerialization.jsonObject(with: stocksData, options: []) as? [String: Any]
+//                    print(json)
+//                    self.dict1[symbol.uppercased()]! += 1
+//                    self.getCoinGeckoData(id: id, symbol: symbol, group: group, complition : complition)
+//                    }
                     complition(stocks)
                     group.leave()
 
                 } catch let error as NSError {
+                    print("getCoinGeckoData 3")
                     print(error.localizedDescription)
                 }
             }.resume()
+            } else {
+                print("To many requests for", id)
+                complition(GeckoSymbol(id: id, symbol: symbol, name: id.uppercased(), geckoSymbolDescription: nil, links: nil, image: nil, marketCapRank: nil, coingeckoRank: nil, marketData: nil, communityData: nil))
+            }
         }
     }
     
@@ -351,7 +387,9 @@ var countOfCoinCap = 0
     
     func putCoinGeckoData(array : inout [Crypto], group: DispatchGroup, otherArray : [Crypto]) {
         // GROUP 2
-//        groupOne.wait()
+        groupOne.wait()
+        groupTwo.wait()
+        print("POPOPOPOPO",self.coinGecoList.count)
         if self.coinGecoList.count != 0 {
         for elemA in array {
             DispatchQueue.global().async(group: group) {
@@ -380,17 +418,19 @@ var countOfCoinCap = 0
                         return
                     }
                 }
-                
+                print("XDXDXD", symbol)
                     var indexOfSymbol: Int?
                     var symbolCoinGecko = String()
+                    var idCoinGecko = String()
         
                     DispatchQueue.global().sync {
                         indexOfSymbol = self.coinGecoList.firstIndex(where: { $0.symbol?.lowercased() == symbol.lowercased() })
-                        symbolCoinGecko = self.coinGecoList[indexOfSymbol!].id!
-                        
+//                        indexOfSymbol = self.binarySearchFoCoinGeckoList(key: symbol, list: self.coinGecoList)
+                        idCoinGecko = self.coinGecoList[indexOfSymbol!].id!
+                        symbolCoinGecko = self.coinGecoList[indexOfSymbol!].symbol!
                     }
                     
-                    self.getCoinGeckoData(symbol: symbolCoinGecko, group: group) { (stocks) in
+                self.getCoinGeckoData(id: idCoinGecko, symbol: symbolCoinGecko, group: group) { (stocks) in
                         if let stringUrl = stocks.image?.large {
                             self.obtainImage(StringUrl: stringUrl, group: group) { image in
                                 elemA.image = image
@@ -418,7 +458,10 @@ var countOfCoinCap = 0
                             let roundedValue = round(priceChangePercentage1Y * 100) / 100.0
                             elemA.percentages?.priceChangePercentage1Y = String(roundedValue)
                         }
-                        elemA.change = String((stocks.marketData?.priceChange24H)!)
+                    if let priceChange24H = stocks.marketData?.priceChange24H {
+                        elemA.change = String(priceChange24H)
+                    }
+                       
                         elemA.descriptionOfCrypto = stocks.geckoSymbolDescription?.en
                         elemA.links = stocks.links
                         elemA.id = stocks.id
@@ -433,7 +476,7 @@ var countOfCoinCap = 0
                         group.leave()
                 }
             }
-            }
+        }
         }
     }
     
@@ -476,7 +519,7 @@ var countOfCoinCap = 0
                         let crypto = Crypto(symbolOfCrypto: symbol, id: elemOfCoinCap["id"]!!)
                         self.collectionViewArray.append(crypto)
                         self.collectionViewSymbols.append(crypto.symbolOfCrypto.uppercased())
-                        
+                        self.dict1[symbol] = 0
                         self.websocketArray.append(crypto.symbolOfCrypto.uppercased())
                         self.groupTwo.leave()
                     }
@@ -686,23 +729,23 @@ var countOfCoinCap = 0
         
     }
     
-//    func binarySearchFoCoinGeckoList(key : String, list : [GeckoListElement]) -> Int? {
-//        
-//        var low = 0
-//        var high = list.count - 1
-//        
-//        while low <= high {
-//            let mid = low + (high - low) / 2
-//            if key.lowercased() < list[mid].symbol!.lowercased() {
-//                high = mid - 1
-//            } else if key.lowercased() > list[mid].symbol!.lowercased() {
-//                low = mid + 1
-//            } else {
-//                return mid
-//            }
-//        }
-//        return nil
-//    }
+    func binarySearchFoCoinGeckoList(key : String, list : [GeckoListElement]) -> Int? {
+        
+        var low = 0
+        var high = list.count - 1
+        
+        while low <= high {
+            let mid = low + (high - low) / 2
+            if key.lowercased() < list[mid].symbol!.lowercased() {
+                high = mid - 1
+            } else if key.lowercased() > list[mid].symbol!.lowercased() {
+                low = mid + 1
+            } else {
+                return mid
+            }
+        }
+        return nil
+    }
     
     
 }

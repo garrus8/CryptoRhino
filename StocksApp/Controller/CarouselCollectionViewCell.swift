@@ -126,10 +126,9 @@ extension CarouselCollectionViewCell {
         symbolOfCrypto.widthAnchor.constraint(equalToConstant: 60).isActive = true
         
 //        price.topAnchor.constraint(equalTo: symbolOfCrypto.bottomAnchor, constant: 16).isActive = true
-        price.bottomAnchor.constraint(equalTo: percent.topAnchor, constant: -8).isActive = true
+        price.bottomAnchor.constraint(equalTo: percent.topAnchor, constant: -2).isActive = true
         price.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8).isActive = true
         price.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -8).isActive = true
-        
         
         percent.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -17).isActive = true
         percent.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8).isActive = true

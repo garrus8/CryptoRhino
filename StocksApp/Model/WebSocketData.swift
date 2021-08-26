@@ -427,7 +427,6 @@ struct GeckoSymbol: Decodable {
     let geckoSymbolDescription: Description?
     let links: Links?
     let image: Image?
-//    let genesisDate: String?
     let marketCapRank, coingeckoRank: Int?
     let marketData: MarketData?
     let communityData: CommunityData?
@@ -436,13 +435,13 @@ struct GeckoSymbol: Decodable {
         case id,symbol, name
         case geckoSymbolDescription = "description"
         case links, image
-//        case genesisDate = "genesis_date"
         case marketCapRank = "market_cap_rank"
         case coingeckoRank = "coingecko_rank"
         case marketData = "market_data"
         case communityData = "community_data"
     }
 }
+
 
 
 // MARK: - CommunityData

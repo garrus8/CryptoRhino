@@ -33,8 +33,8 @@ class MainViewController: UIViewController {
             NetworkManager.shared.getData()
             NetworkManager.shared.getFullCoinCapList()
             NetworkManager.shared.getTopOfCrypto()
-            NetworkManager.shared.getFullListOfCoinGecko()
             NetworkManager.shared.groupOne.wait()
+            NetworkManager.shared.getFullListOfCoinGecko()
             NetworkManager.shared.collectionViewLoad()
 
 
@@ -50,11 +50,11 @@ class MainViewController: UIViewController {
             
             NetworkManager.shared.webSocket2(symbols: NetworkManager.shared.websocketArray)
             NetworkManager.shared.receiveMessage(tableView: [], collectionView: [self.collectionView])
-
+            NetworkManager.shared.groupThree.wait()
             NetworkManager.shared.setupSections()
-                if !NetworkManager.shared.results.isEmpty {
-            reloadData()
-                }
+//                if !NetworkManager.shared.results.isEmpty {
+                    reloadData()
+//                }
             NetworkManager.shared.updateUI(collectionViews: [self.collectionView])
             NetworkManager.shared.recoursiveUpdateUI(collectionViews: [self.collectionView])
 
