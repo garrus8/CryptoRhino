@@ -11,7 +11,7 @@ class TableCollectionViewCell: UICollectionViewCell {
     
     static var reuseId: String = "TableCollectionViewCell"
     
-    let friendImageView  = UIImageView()
+    let friendImageView = UIImageView()
     let nameOfCrypto : UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "Avenir", size: 15)

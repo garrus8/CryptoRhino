@@ -89,29 +89,9 @@ class NewsViewController: UIViewController, UICollectionViewDataSource, UICollec
     }
     
     
-//    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return newsData.count
-//    }
-
-
-//    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "NewsCell", for: indexPath) as! NewsTableViewCell
-//        cell.title.text = newsData[indexPath.row].title
-//        cell.body = newsData[indexPath.row].body!
-//        cell.url = newsData[indexPath.row].url!
-//
-//
-//        return cell
-//    }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NewsCell.reuseId, for: indexPath) as! NewsCell
-//        cell.nameOfCrypto.text = newsData[indexPath.item].title
-//        cell.symbolOfCrypto.text = newsData[indexPath.item].body!
-////        cell.url = newsData[indexPath.item].url!
-//        let url = newsData[indexPath.item].url!
-//        NetworkManager.shared.obtainImage(StringUrl: url, group: DispatchGroup()) { image in
-//            cell.imageView.image = image
-//        }
+
         cell.configure(with: newsData[indexPath.item])
         return cell
     }
@@ -125,15 +105,5 @@ class NewsViewController: UIViewController, UICollectionViewDataSource, UICollec
         
         }
 
-//    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        tableView.deselectRow(at: indexPath, animated: true)
-//        let detailNewsVC = self.storyboard?.instantiateViewController(withIdentifier: "DetailNewsViewController") as! DetailNewsViewController
-//        let newsItem = newsData[indexPath.row]
-//        detailNewsVC.newsTitleString = newsItem.title!
-//        detailNewsVC.newsBodyString = newsItem.body!
-//        detailNewsVC.newsUrlString = newsItem.url!
-////        self.navigationController?.pushViewController(detailNewsVC, animated: true)
-//        present(detailNewsVC, animated: true, completion: nil)
-//    }
 
 }

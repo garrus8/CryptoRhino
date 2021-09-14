@@ -12,10 +12,12 @@ class SearchViewController: UIViewController, UICollectionViewDataSource, UIColl
     
     var collectionView : UICollectionView!
     let searchController = UISearchController(searchResultsController: nil)
-    private var filteredResults = [FullBinanceListElement]()
+//    private var filteredResults = [FullBinanceListElement]()
+    private var filteredResults = GeckoList()
     private var isFiltering : Bool {
         return searchController.isActive && !searchBarIsEmpty
     }
+    var headerText = "123"
     
     var searchBarIsEmpty : Bool {
         guard let text = searchController.searchBar.text else {return false}
@@ -43,100 +45,78 @@ class SearchViewController: UIViewController, UICollectionViewDataSource, UIColl
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 20, left: 10, bottom: 10, right: 10)
         layout.itemSize = CGSize(width: self.view.frame.size.width - 20, height: self.view.frame.size.height / 8)
-        
         collectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
+        view.addSubview(collectionView)
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.backgroundColor = UIColor(hexString: "#4158B7")
         collectionView.register(SearchTableViewCell.self, forCellWithReuseIdentifier: SearchTableViewCell.reuseId)
-        view.addSubview(collectionView)
+        collectionView.register(SearchTableViewCellWithImage.self, forCellWithReuseIdentifier: SearchTableViewCellWithImage.reuseId)
+        collectionView.register(HeaderCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HeaderCollectionReusableView.id)
 //        layout.itemSize = CGSize(width: collectionView.bounds.width - 20, height: 60)
-        
         collectionView.delegate = self
         collectionView.dataSource = self
         
     }
     
 
-
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        if isFiltering {
-//            return filteredResults.count
-//        } else {
-//            return NetworkManager.shared.fullBinanceList.count
-//        }
-//    }
-//
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.reuseId) as? SearchTableViewCell else {return UITableViewCell()}
-//        if isFiltering {
-//            let results = filteredResults[indexPath.row]
-//            cell.nameOfCrypto.text = results.displaySymbol
-//            cell.symbolOfCrypto.text = results.fullBinanceListDescription
-//        } else {
-//            let results = NetworkManager.shared.fullBinanceList[indexPath.row]
-//            cell.nameOfCrypto.text = results.displaySymbol
-//            cell.symbolOfCrypto.text = results.fullBinanceListDescription
-//        }
-//        let margins = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
-//        cell.contentView.frame = cell.contentView.frame.inset(by: margins)
-//        return cell
-//    }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if isFiltering {
             return filteredResults.count
         } else {
-//            return NetworkManager.shared.fullBinanceList.count
-            return 0
+            return NetworkManager.shared.topList.count
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchTableViewCell.reuseId, for: indexPath) as? SearchTableViewCell else {return SearchTableViewCell()}
+        
+        let margins = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
         if isFiltering {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchTableViewCell.reuseId, for: indexPath) as? SearchTableViewCell else {return SearchTableViewCell()}
             let results = filteredResults[indexPath.row]
             cell.configure(with: results)
+            cell.contentView.frame = cell.contentView.frame.inset(by: margins)
+            return cell
         } else {
-            let results = NetworkManager.shared.fullBinanceList[indexPath.row]
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchTableViewCellWithImage.reuseId, for: indexPath) as? SearchTableViewCellWithImage else {return SearchTableViewCellWithImage()}
+            let results = NetworkManager.shared.topList[indexPath.row]
             cell.configure(with: results)
-            
+            cell.contentView.frame = cell.contentView.frame.inset(by: margins)
+            return cell
         }
-        let margins = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
-        cell.contentView.frame = cell.contentView.frame.inset(by: margins)
-        return cell
     }
     
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        tableView.deselectRow(at: indexPath, animated: true)
-//        let result: FullBinanceListElement
-//        if isFiltering {
-//            result = filteredResults[indexPath.row]
-//        } else {
-//            result = NetworkManager.shared.fullBinanceList[indexPath.row]
-//        }
-//        let ChartVC = self.storyboard?.instantiateViewController(withIdentifier: "ChartViewController") as! ChartViewController
-//        let crypto = Crypto(symbolOfCrypto: result.displaySymbol!, nameOfCrypto: result.fullBinanceListDescription!, symbolOfTicker: result.symbol!, id: result.id!)
-//        ChartVC.crypto = crypto
-//        self.navigationController?.pushViewController(ChartVC, animated: true)
-//
-//    }
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let result: FullBinanceListElement
+        let crypto : Crypto
         if isFiltering {
-            result = filteredResults[indexPath.row]
+            let result = filteredResults[indexPath.row]
+            crypto = Crypto(symbolOfCrypto: result.symbol!, nameOfCrypto: result.name, id: result.id)
         } else {
-            result = NetworkManager.shared.fullBinanceList[indexPath.row]
+            let result = NetworkManager.shared.topList[indexPath.row]
+            crypto = Crypto(symbolOfCrypto: result.symbol, nameOfCrypto: result.name, id: result.id)
         }
-//        let ChartVC = self.storyboard?.instantiateViewController(withIdentifier: "ChartViewController") as! ChartViewController
         let ChartVC = ChartViewController()
-        let crypto = Crypto(symbolOfCrypto: result.displaySymbol!, nameOfCrypto: result.fullBinanceListDescription!, symbolOfTicker: result.symbol!, id: result.id!)
         ChartVC.crypto = crypto
-        print(result.displaySymbol!, result.id!)
         self.navigationController?.pushViewController(ChartVC, animated: true)
         }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: UIScreen.main.bounds.size.width - 30, height: 60)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HeaderCollectionReusableView.id, for: indexPath) as! HeaderCollectionReusableView
+        if isFiltering {
+            header.changeText(str: "Search Results: ")
+        } else {
+            header.changeText(str: "Trending search")
+        }
+        return header
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: view.frame.size.width, height: 40)
     }
 
 
@@ -147,13 +127,19 @@ extension SearchViewController : UISearchResultsUpdating   {
     }
     func filterContentForSearchText(_ searchText : String){
 
-        filteredResults = NetworkManager.shared.fullBinanceList.filter({ (searchElem : FullBinanceListElement) -> Bool in
+//        filteredResults = NetworkManager.shared.fullBinanceList.filter({ (searchElem : FullBinanceListElement) -> Bool in
+//
+//            return searchElem.fullBinanceListDescription!.lowercased().hasPrefix(searchText.lowercased()) ||
+//                searchElem.displaySymbol!.split(separator: "/").first!.lowercased().hasPrefix(searchText.lowercased())
+//
+//        })
+        filteredResults = NetworkManager.shared.fullBinanceList.filter({ (searchElem : GeckoListElement) -> Bool in
 
-            return searchElem.fullBinanceListDescription!.lowercased().hasPrefix(searchText.lowercased()) ||
-                searchElem.displaySymbol!.split(separator: "/").first!.lowercased().hasPrefix(searchText.lowercased())
-
+            return searchElem.symbol!.lowercased().hasPrefix(searchText.lowercased()) ||
+                searchElem.name!.split(separator: "/").first!.lowercased().hasPrefix(searchText.lowercased())
 
         })
+        
 
         DispatchQueue.main.async {
             self.collectionView.reloadData()

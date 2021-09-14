@@ -35,7 +35,9 @@ class NetworkManager  {
     var favorites = [Favorites]()
     var resultsF = [Crypto]()
     var symbolsF = [String]()
-    var fullBinanceList = [FullBinanceListElement]()
+//    var fullBinanceList = [FullBinanceListElement]()
+    var fullBinanceList = GeckoList()
+    var topList = [TopSearchItem]()
     //    var fullBinanceList = [Crypto]()
     //    var coinCapDict = FullCoinCapList(data: [["":""]])
     var coinCapDict = [[String: String?]]()
@@ -100,7 +102,7 @@ class NetworkManager  {
             DispatchQueue.global().async(flags: .barrier) {
             for i in self.favorites {
                 if let symbol = i.symbol{
-                    let crypto = Crypto(symbolOfCrypto: symbol, nameOfCrypto: i.name!, descriptionOfCrypto: i.descrtiption!, symbolOfTicker: i.symbolOfTicker!, image: UIImage(named: "pngwing.com")!, percentages: Persentages())
+                    let crypto = Crypto(symbolOfCrypto: symbol, nameOfCrypto: i.name!, descriptionOfCrypto: i.descrtiption!, image: UIImage(named: "pngwing.com")!, percentages: Persentages())
 //                    DispatchQueue.global().async(flags: .barrier) {
                         print("self.resultsF",self.resultsF.count)
                         self.symbolsF.append(i.symbol!)
@@ -116,7 +118,7 @@ class NetworkManager  {
     func addData(object : Favorites) {
         
             if let symbol = object.symbol {
-                let crypto = Crypto(symbolOfCrypto: symbol, nameOfCrypto: object.name!, descriptionOfCrypto: object.descrtiption!, symbolOfTicker: object.symbolOfTicker!, image: UIImage(named: "pngwing.com")!, percentages: Persentages())
+                let crypto = Crypto(symbolOfCrypto: symbol, nameOfCrypto: object.name!, descriptionOfCrypto: object.descrtiption!, image: UIImage(named: "pngwing.com")!, percentages: Persentages())
 //                for j in coinCapDict {
 //                    if symbol == j["symbol"] {
 //                        DispatchQueue.global().async(flags: .barrier) {
@@ -178,7 +180,7 @@ class NetworkManager  {
                         
                         if cryptoCompareName != "USDT" && cryptoCompareName != "BNBBEAR" {
                             guard let cryptoCompareFullName = elem.coinInfo?.fullName else {return}
-                            let crypto = Crypto(symbolOfCrypto: cryptoCompareName, price: "", change: "", nameOfCrypto: cryptoCompareFullName, descriptionOfCrypto: nil, symbolOfTicker: "\(cryptoCompareName)USDT", id: "", percentages: Persentages(), image: UIImage(named: "pngwing.com")!)
+                            let crypto = Crypto(symbolOfCrypto: cryptoCompareName, price: "", change: "", nameOfCrypto: cryptoCompareFullName, descriptionOfCrypto: nil, id: "", percentages: Persentages(), image: UIImage(named: "pngwing.com")!)
                             
                             self.queue.async(group : self.groupOne, flags : .barrier) {
                                 self.dict1[cryptoCompareName] = 0
@@ -209,6 +211,58 @@ class NetworkManager  {
             }
         }
     }
+    
+    func getTopSearch() {
+        
+        // GROUP 1
+        
+        DispatchQueue.global().async(group: groupOne) {
+            if self.countTopOfCrypto < 10 {
+            let request = NSMutableURLRequest(
+                url: NSURL(string: "https://api.coingecko.com/api/v3/search/trending")! as URL,
+                cachePolicy: .useProtocolCachePolicy,
+                timeoutInterval: 10.0)
+            request.httpMethod = "GET"
+            self.groupOne.enter()
+            URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
+//                DispatchQueue.global().async(group: self.groupOne) {
+                guard let stocksData = data, error == nil, response != nil else {
+                    self.countTopOfCrypto += 1;
+                    self.getTopSearch();
+                    self.groupOne.leave();
+                    return}
+                
+                do {
+                    guard let data = try (TopSearch.decode(from: stocksData)) else {
+                        self.countTopOfCrypto += 1;
+                        self.getTopSearch();
+                        self.groupOne.leave();
+                        return}
+                    
+                    for elem in data.coins {
+                        let item = elem.item
+                        self.groupOne.enter()
+                        self.obtainImage(StringUrl: item.large, group: self.groupTwo) { image in
+                            let crypto = TopSearchItem(id: item.id, name: item.name, symbol: item.symbol, large: image)
+                            self.topList.append(crypto)
+                            self.groupOne.leave()
+                        }
+                        
+                    }
+                    self.groupOne.leave()
+                    
+                } catch let error as NSError {
+                    print("getTopOfCrypto 4")
+                    print(error.localizedDescription)
+                }
+                
+            }.resume()
+            } else {
+                
+            }
+        }
+    }
+    
     var countOfFullListCoinGecko = 0
     
     func getFullListOfCoinGecko() {
@@ -248,13 +302,15 @@ class NetworkManager  {
 
                         self.groupOne.wait()
                         for (index,i) in self.coinGecoList.enumerated() {
-                            var elem = FullBinanceListElement(fullBinanceListDescription: i.name, displaySymbol: i.symbol?.uppercased(), symbol: i.symbol, id : i.id, rank: 101)
+//                            var elem = FullBinanceListElement(fullBinanceListDescription: i.name, displaySymbol: i.symbol?.uppercased(), symbol: i.symbol, id : i.id, rank: 101)
+                            var elem = GeckoListElement(id: i.id, symbol: i.symbol?.uppercased(), name: i.name, rank: 101)
                             for j in self.coinCapDict {
                                 if j["symbol"]!! == i.symbol?.uppercased() {
                                     elem.rank = Int(j["rank"]!!)!
                                     self.coinGecoList[index].rank = Int(j["rank"]!!)!
                                 }
                             }
+                            
                             self.fullBinanceList.append(elem)
 
                         }
@@ -729,23 +785,23 @@ var countOfCoinCap = 0
         
     }
     
-    func binarySearchFoCoinGeckoList(key : String, list : [GeckoListElement]) -> Int? {
-        
-        var low = 0
-        var high = list.count - 1
-        
-        while low <= high {
-            let mid = low + (high - low) / 2
-            if key.lowercased() < list[mid].symbol!.lowercased() {
-                high = mid - 1
-            } else if key.lowercased() > list[mid].symbol!.lowercased() {
-                low = mid + 1
-            } else {
-                return mid
-            }
-        }
-        return nil
-    }
+//    func binarySearchFoCoinGeckoList(key : String, list : [GeckoListElement]) -> Int? {
+//
+//        var low = 0
+//        var high = list.count - 1
+//
+//        while low <= high {
+//            let mid = low + (high - low) / 2
+//            if key.lowercased() < list[mid].symbol!.lowercased() {
+//                high = mid - 1
+//            } else if key.lowercased() > list[mid].symbol!.lowercased() {
+//                low = mid + 1
+//            } else {
+//                return mid
+//            }
+//        }
+//        return nil
+//    }
     
     
 }

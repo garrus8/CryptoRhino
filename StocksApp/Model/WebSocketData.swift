@@ -9,36 +9,6 @@ import Foundation
 import UIKit
 
 
-//class Crypto {
-//    var symbolOfCrypto : String
-//    var index : Double
-//    var closePrice : Double
-//    var nameOfCrypto : String?
-//    var descriptionOfCrypto : String?
-//    var symbolOfTicker : String?
-//    var id : String?
-//    var percentString : String?
-//
-//    var diffPrice : Double {
-//        return index - closePrice
-//    }
-//    var percent : Double {
-//        return (index - closePrice) / closePrice * 100
-//    }
-//
-//
-//    init(symbolOfCrypto : String, index : Double, closePrice: Double, nameOfCrypto: String?, descriptionOfCrypto: String?, symbolOfTicker : String?, id : String?, percentString : String?) {
-//        self.symbolOfCrypto = symbolOfCrypto
-//        self.index = index
-//        self.closePrice = closePrice
-//        self.nameOfCrypto = nameOfCrypto
-//        self.descriptionOfCrypto = descriptionOfCrypto
-//        self.symbolOfTicker = symbolOfTicker
-//        self.id = id
-//        self.percentString = percentString
-//
-//    }
-//}
 struct CoinGeckoPrice: Codable {
     let prices, marketCaps, totalVolumes: [[Double]]?
 
@@ -82,9 +52,9 @@ class SearchSectionOfCrypto : Hashable, Equatable {
     }
         
     var type: String
-    var items : FullBinanceList
+    var items : GeckoListElement
     
-    init(type : String, title : String, items : FullBinanceList) {
+    init(type : String, title : String, items : GeckoListElement) {
         self.type = type
         self.items = items
     }
@@ -117,14 +87,13 @@ class Crypto : Hashable, Equatable {
     var links : Links?
 
 // Main init
-    init(symbolOfCrypto : String, price : String, change: String, nameOfCrypto: String?, descriptionOfCrypto: String?, symbolOfTicker : String?, id : String?, percentages : Persentages?, image : UIImage) {
+    init(symbolOfCrypto : String, price : String, change: String, nameOfCrypto: String?, descriptionOfCrypto: String?, id : String?, percentages : Persentages?, image : UIImage) {
         
         self.symbolOfCrypto = symbolOfCrypto
         self.price = price
         self.change = change
         self.nameOfCrypto = nameOfCrypto
         self.descriptionOfCrypto = descriptionOfCrypto
-        self.symbolOfTicker = symbolOfTicker
         self.id = id
         self.percentages = percentages
         self.image = image
@@ -140,7 +109,6 @@ class Crypto : Hashable, Equatable {
         self.change = ""
         self.nameOfCrypto = ""
         self.descriptionOfCrypto = ""
-        self.symbolOfTicker = ""
         self.id = id
         self.percentages = Persentages()
         self.image = nil
@@ -150,21 +118,19 @@ class Crypto : Hashable, Equatable {
 
     }
     
-    init(symbolOfCrypto: String, nameOfCrypto: String, descriptionOfCrypto: String, symbolOfTicker: String, image : UIImage, percentages : Persentages?) {
+    init(symbolOfCrypto: String, nameOfCrypto: String, descriptionOfCrypto: String, image : UIImage, percentages : Persentages?) {
         self.symbolOfCrypto = symbolOfCrypto
         self.nameOfCrypto = nameOfCrypto
         self.descriptionOfCrypto = descriptionOfCrypto
-        self.symbolOfTicker = symbolOfTicker
         self.image = image
         self.percentages = percentages
         
     }
-    init(symbolOfCrypto : String, nameOfCrypto: String?,symbolOfTicker: String, id : String?, rank : Int = 101) {
+    init(symbolOfCrypto : String, nameOfCrypto: String?, id : String?, rank : Int = 101) {
         self.symbolOfCrypto = symbolOfCrypto
         self.nameOfCrypto = nameOfCrypto
         self.id = id
         self.rank = rank
-        self.symbolOfTicker = symbolOfTicker
     }
     deinit {
         print("DEINIT CRYPTO")
@@ -281,17 +247,17 @@ struct Weiss: Codable {
 // MARK: - FullBinanceListElement
 
 
-struct FullBinanceListElement: Codable, Hashable {
-    var fullBinanceListDescription, displaySymbol, symbol, id: String?
-    var rank : Int?
+//struct FullBinanceListElement: Codable, Hashable {
+//    var fullBinanceListDescription, displaySymbol, symbol, id: String?
+//    var rank : Int?
+//
+//    enum CodingKeys: String, CodingKey {
+//        case fullBinanceListDescription = "description"
+//        case displaySymbol, symbol
+//    }
+//}
 
-    enum CodingKeys: String, CodingKey {
-        case fullBinanceListDescription = "description"
-        case displaySymbol, symbol
-    }
-}
-
-typealias FullBinanceList = [FullBinanceListElement]
+//typealias FullBinanceList = [FullBinanceListElement]
 
 //NEWS
 struct News: Codable {
@@ -577,10 +543,34 @@ struct Links: Codable {
     }
 }
 
-//struct SearchElement {
-//    var name : String?
-//    var symbol : String?
-//}
+// MARK: - TopSearch
+struct TopSearch: Decodable {
+    let coins: [Coin]
+}
+
+// MARK: - Coin
+struct Coin: Decodable {
+    let item: Item
+}
+
+// MARK: - Item
+struct Item: Decodable {
+    let id: String
+    let name, symbol: String
+    let large: String
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name, symbol
+        case large
+    }
+}
+
+struct TopSearchItem {
+    let id: String
+    let name, symbol: String
+    let large: UIImage
+}
 
 
 

@@ -29,7 +29,7 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     var diffPriceOfCryptoText = String()
     var priceOfCryptoText = String()
     var nameOfCryptoText = String()
-    var crypto = Crypto(symbolOfCrypto: "", price: "", change: "", nameOfCrypto: "", descriptionOfCrypto: "", symbolOfTicker: "", id: "", percentages: nil, image: UIImage(named: "pngwing.com")!)
+    var crypto = Crypto(symbolOfCrypto: "", price: "", change: "", nameOfCrypto: "", descriptionOfCrypto: "", id: "", percentages: nil, image: UIImage(named: "pngwing.com")!)
     var redditUrl = String()
     var siteUrl = String()
     var percentages = Persentages()

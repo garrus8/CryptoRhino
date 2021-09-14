@@ -33,6 +33,7 @@ class MainViewController: UIViewController {
             NetworkManager.shared.getData()
             NetworkManager.shared.getFullCoinCapList()
             NetworkManager.shared.getTopOfCrypto()
+            NetworkManager.shared.getTopSearch()
             NetworkManager.shared.groupOne.wait()
             NetworkManager.shared.getFullListOfCoinGecko()
             NetworkManager.shared.collectionViewLoad()

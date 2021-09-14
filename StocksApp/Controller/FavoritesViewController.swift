@@ -17,7 +17,7 @@ class FavoritesViewController: UIViewController, UICollectionViewDataSource, UIC
     var symbols = [String]()
     var coinGecoList = [GeckoListElement]()
 //    private var filteredResults = [Crypto]()
-    private var filteredResults = [FullBinanceListElement]()
+    private var filteredResults = GeckoList()
     private var filteredResultsOfFavorites = [Crypto]()
     let searchController = UISearchController(searchResultsController: nil)
     var searchBarIsEmpty : Bool {
@@ -129,8 +129,10 @@ class FavoritesViewController: UIViewController, UICollectionViewDataSource, UIC
 
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchTableViewCell.reuseId, for: indexPath) as? SearchTableViewCell else {return UICollectionViewCell()}
             let results = filteredResults[indexPath.row]
-            cell.nameOfCrypto.text = results.displaySymbol
-            cell.symbolOfCrypto.text = results.fullBinanceListDescription
+//            cell.nameOfCrypto.text = results.displaySymbol
+//            cell.symbolOfCrypto.text = results.fullBinanceListDescription
+            cell.nameOfCrypto.text = results.name
+            cell.symbolOfCrypto.text = results.symbol
             return cell
 
         } else if isFiltering && !NetworkManager.shared.resultsF.isEmpty {
@@ -157,7 +159,8 @@ class FavoritesViewController: UIViewController, UICollectionViewDataSource, UIC
         let ChartVC = ChartViewController()
         if isFiltering && NetworkManager.shared.resultsF.isEmpty {
             let elem = filteredResults[indexPath.row]
-            result = Crypto(symbolOfCrypto: elem.displaySymbol!, nameOfCrypto: elem.fullBinanceListDescription!, symbolOfTicker: elem.symbol!, id: elem.id!)
+//            result = Crypto(symbolOfCrypto: elem.displaySymbol!, nameOfCrypto: elem.fullBinanceListDescription!, symbolOfTicker: elem.symbol!, id: elem.id!)
+            result = Crypto(symbolOfCrypto: elem.symbol!, nameOfCrypto: elem.name, id: elem.id)
         } else if isFiltering && !NetworkManager.shared.resultsF.isEmpty {
             result = filteredResultsOfFavorites[indexPath.row]
         } else {
@@ -178,10 +181,10 @@ extension FavoritesViewController : UISearchResultsUpdating   {
     func filterContentForSearchText(_ searchText : String){
         
         if NetworkManager.shared.resultsF.isEmpty {
-            filteredResults = NetworkManager.shared.fullBinanceList.filter({ (searchElem : FullBinanceListElement) -> Bool in
+            filteredResults = NetworkManager.shared.fullBinanceList.filter({ (searchElem : GeckoListElement) -> Bool in
                 
-                return searchElem.fullBinanceListDescription!.lowercased().hasPrefix(searchText.lowercased()) ||
-                    searchElem.displaySymbol!.split(separator: "/").first!.lowercased().hasPrefix(searchText.lowercased())
+                return searchElem.symbol!.lowercased().hasPrefix(searchText.lowercased()) ||
+                    searchElem.name!.split(separator: "/").first!.lowercased().hasPrefix(searchText.lowercased())
             })
         } else {
             filteredResultsOfFavorites = NetworkManager.shared.resultsF.filter({ (searchElem : Crypto) -> Bool in

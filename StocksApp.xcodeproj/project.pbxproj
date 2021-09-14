@@ -42,6 +42,8 @@
 		F4E41A4526A1893F00EDF32F /* ChartAndPriceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E41A4426A1893F00EDF32F /* ChartAndPriceView.swift */; };
 		F4E7DE27268F36480032D26B /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E7DE26268F36480032D26B /* SearchTableViewCell.swift */; };
 		F4E7DE2C268F44560032D26B /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E7DE2B268F44560032D26B /* SearchViewController.swift */; };
+		F4EAC24526DCF545002ABDDE /* SearchTableViewCellWithImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EAC24426DCF545002ABDDE /* SearchTableViewCellWithImage.swift */; };
+		F4EAC24726DD1CD8002ABDDE /* HeaderCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EAC24626DD1CD8002ABDDE /* HeaderCollectionReusableView.swift */; };
 		F4EC4FBF25EE62760085F029 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC4FBE25EE62760085F029 /* FavoritesViewController.swift */; };
 		F4EC4FC725EE64150085F029 /* FavoritesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC4FC625EE64150085F029 /* FavoritesTableViewCell.swift */; };
 		F4ED5B3726B1411A00A30134 /* NewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4ED5B3626B1411A00A30134 /* NewsCell.swift */; };
@@ -113,6 +115,8 @@
 		F4E41A4426A1893F00EDF32F /* ChartAndPriceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartAndPriceView.swift; sourceTree = "<group>"; };
 		F4E7DE26268F36480032D26B /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		F4E7DE2B268F44560032D26B /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		F4EAC24426DCF545002ABDDE /* SearchTableViewCellWithImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCellWithImage.swift; sourceTree = "<group>"; };
+		F4EAC24626DD1CD8002ABDDE /* HeaderCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCollectionReusableView.swift; sourceTree = "<group>"; };
 		F4EC4FBE25EE62760085F029 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		F4EC4FC625EE64150085F029 /* FavoritesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesTableViewCell.swift; sourceTree = "<group>"; };
 		F4ED5B3626B1411A00A30134 /* NewsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCell.swift; sourceTree = "<group>"; };
@@ -235,12 +239,14 @@
 				F4E41A4426A1893F00EDF32F /* ChartAndPriceView.swift */,
 				F4D2F79D25E7D7AE009EB2C6 /* ViewController.swift */,
 				F4E7DE2B268F44560032D26B /* SearchViewController.swift */,
+				F4EAC24626DD1CD8002ABDDE /* HeaderCollectionReusableView.swift */,
 				F4C1EECE2680789C0037C9F5 /* MainViewController.swift */,
 				F449CF3B2681DEA200739830 /* CarouselCollectionViewCell.swift */,
 				F449CF442682051800739830 /* SectionHeader.swift */,
 				F4C1EED326809F7B0037C9F5 /* TableCollectionViewCell.swift */,
 				F456AC1326A83CA4003664B3 /* MarketDataCell.swift */,
 				F4E7DE26268F36480032D26B /* SearchTableViewCell.swift */,
+				F4EAC24426DCF545002ABDDE /* SearchTableViewCellWithImage.swift */,
 				F4B5CDF12620378600B43385 /* NewsViewController.swift */,
 				F4ED5B3626B1411A00A30134 /* NewsCell.swift */,
 				F44B372A25FA57AB001D99A1 /* File.swift */,
@@ -552,7 +558,9 @@
 				F4B5CDF22620378600B43385 /* NewsViewController.swift in Sources */,
 				F456AC1426A83CA4003664B3 /* MarketDataCell.swift in Sources */,
 				F4D2F7A425E7D7AE009EB2C6 /* StocksApp.xcdatamodeld in Sources */,
+				F4EAC24726DD1CD8002ABDDE /* HeaderCollectionReusableView.swift in Sources */,
 				F4E41A4526A1893F00EDF32F /* ChartAndPriceView.swift in Sources */,
+				F4EAC24526DCF545002ABDDE /* SearchTableViewCellWithImage.swift in Sources */,
 				F4E7DE27268F36480032D26B /* SearchTableViewCell.swift in Sources */,
 				F4D2F79C25E7D7AE009EB2C6 /* SceneDelegate.swift in Sources */,
 				F497B0912684CD6D00F9DDA7 /* i.swift in Sources */,

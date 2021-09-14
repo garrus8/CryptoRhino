@@ -1,15 +1,15 @@
 //
-//  SearchTableViewCell.swift
+//  SearchTableViewCellWithImage.swift
 //  StocksApp
 //
-//  Created by Григорий Толкачев on 02.07.2021.
+//  Created by Григорий Толкачев on 30.08.2021.
 //
 
 import UIKit
 
-class SearchTableViewCell: UICollectionViewCell {
+class SearchTableViewCellWithImage: UICollectionViewCell {
     
-    static var reuseId: String = "SearchTableViewCell"
+    static var reuseId: String = "SearchTableViewCellWithImage"
     
     let nameOfCrypto : UILabel = {
         let label = UILabel()
@@ -24,6 +24,7 @@ class SearchTableViewCell: UICollectionViewCell {
         return label
     }()
     
+    let imageView = UIImageView()
    
 
     override init(frame: CGRect) {
@@ -47,16 +48,19 @@ class SearchTableViewCell: UICollectionViewCell {
     func setupElements() {
         nameOfCrypto.translatesAutoresizingMaskIntoConstraints = false
         symbolOfCrypto.translatesAutoresizingMaskIntoConstraints = false
+        imageView.translatesAutoresizingMaskIntoConstraints = false
     }
     
 //    func configure(with crypto: FullBinanceListElement) {
 //        nameOfCrypto.text = crypto.displaySymbol
 //        symbolOfCrypto.text = crypto.fullBinanceListDescription
 //    }
-    func configure(with crypto: GeckoListElement) {
+    func configure(with crypto: TopSearchItem) {
         nameOfCrypto.text = crypto.name
         symbolOfCrypto.text = crypto.symbol
-        
+        imageView.image = crypto.large
+        imageView.layer.cornerRadius = imageView.frame.height/2
+        imageView.clipsToBounds = true
     }
 
     required init?(coder: NSCoder) {
@@ -65,21 +69,25 @@ class SearchTableViewCell: UICollectionViewCell {
 }
 
 // MARK: - Setup Constraints
-extension SearchTableViewCell {
+extension SearchTableViewCellWithImage {
     func setupConstraints() {
         addSubview(nameOfCrypto)
         addSubview(symbolOfCrypto)
+        addSubview(imageView)
     
-        
+        imageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15).isActive = true
+        imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        imageView.widthAnchor.constraint(equalToConstant: 35).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 35).isActive = true
         // oponentLabel constraints
         nameOfCrypto.topAnchor.constraint(equalTo: topAnchor, constant: 11).isActive = true
-        nameOfCrypto.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
+        nameOfCrypto.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 15).isActive = true
 //        nameOfCrypto.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 16).isActive = true
         nameOfCrypto.widthAnchor.constraint(equalToConstant: 128).isActive = true
         
         // lastMessageLabel constraints
         symbolOfCrypto.topAnchor.constraint(equalTo: nameOfCrypto.bottomAnchor).isActive = true
-        symbolOfCrypto.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
+        symbolOfCrypto.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 15).isActive = true
         symbolOfCrypto.widthAnchor.constraint(equalToConstant: 128).isActive = true
         
 
