@@ -44,7 +44,7 @@ class MainTabBarController : UITabBarController {
         navfavVC.tabBarItem.title = "Favorites"
         
         
-        let newsVC = NewsViewController()
+        let newsVC = builder.createNewsViewModule()
         let navNewsVC = UINavigationController(rootViewController: newsVC)
         navNewsVC.navigationBar.topItem?.title = "News"
         navNewsVC.tabBarItem.image = UIImage(named: "Icon_news")

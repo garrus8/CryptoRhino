@@ -63,23 +63,12 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         scrollView.addSubview(contentView)
         contentView.addSubview(chartAndPriceView)
         contentView.backgroundColor = UIColor(hexString: "#4158B7")
-        
-
-//        contentView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-//        contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
-//        contentView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-//        contentView.heightAnchor.constraint(equalToConstant: 1400).isActive = true
-        
+ 
         
         contentView.frame = contentViewFrame
 
         
         contentView.addSubview(detailInfoView)
-//        detailInfoView.translatesAutoresizingMaskIntoConstraints = false
-//        detailInfoView.topAnchor.constraint(equalTo: chartAndPriceView.bottomAnchor).isActive = true
-//        detailInfoView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
-//        detailInfoView.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: -20).isActive = true
-//        detailInfoView.heightAnchor.constraint(equalToConstant: 900).isActive = true
         
         detailInfoView.frame = detailInfoViewFrame
         
@@ -182,7 +171,6 @@ class ChartViewController: UIViewController, ChartViewDelegate {
             self.monthChartButton.backgroundColor = UIColor(red: 0.146, green: 0.197, blue: 0.421, alpha: 1)
             self.yearChartButton.backgroundColor = UIColor(red: 0.146, green: 0.197, blue: 0.421, alpha: 1)
             self.chartLoad(idOfCrypto: self.idOfCrypto, interval: "day")
-//            self.diffPriceOfCrypto.text = self.percentages.priceChangePercentage24H
             if let percent = self.percentages.priceChangePercentage24H {
             self.computedDiffPrice = percent
             }
@@ -210,7 +198,6 @@ class ChartViewController: UIViewController, ChartViewDelegate {
             self.monthChartButton.backgroundColor = UIColor(red: 0.146, green: 0.197, blue: 0.421, alpha: 1)
             self.yearChartButton.backgroundColor = UIColor(red: 0.146, green: 0.197, blue: 0.421, alpha: 1)
             self.chartLoad(idOfCrypto: self.idOfCrypto, interval: "week")
-//            self.diffPriceOfCrypto.text = self.percentages.priceChangePercentage24H
             if let percent = self.percentages.priceChangePercentage7D {
             self.computedDiffPrice = percent
             }
@@ -237,7 +224,6 @@ class ChartViewController: UIViewController, ChartViewDelegate {
             self.monthChartButton.backgroundColor = UIColor(red: 0.324, green: 0.424, blue: 0.854, alpha: 1)
             self.yearChartButton.backgroundColor = UIColor(red: 0.146, green: 0.197, blue: 0.421, alpha: 1)
             self.chartLoad(idOfCrypto: self.idOfCrypto, interval: "month")
-//            self.diffPriceOfCrypto.text = self.percentages.priceChangePercentage30D
             if let percent = self.percentages.priceChangePercentage30D {
             self.computedDiffPrice = percent
             }
@@ -263,7 +249,6 @@ class ChartViewController: UIViewController, ChartViewDelegate {
             self.monthChartButton.backgroundColor = UIColor(red: 0.146, green: 0.197, blue: 0.421, alpha: 1)
             self.yearChartButton.backgroundColor = UIColor(red: 0.324, green: 0.424, blue: 0.854, alpha: 1)
             self.chartLoad(idOfCrypto: self.idOfCrypto, interval: "year")
-//            self.diffPriceOfCrypto.text = self.percentages.priceChangePercentage1Y
             if let percent = self.percentages.priceChangePercentage1Y {
             self.computedDiffPrice = percent
             }
@@ -303,16 +288,11 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         
         priceOfCrypto.centerXAnchor.constraint(equalTo: chartAndPriceView.centerXAnchor).isActive = true
         priceOfCrypto.topAnchor.constraint(equalTo: chartAndPriceView.topAnchor).isActive = true
-//        nameOfCrypto.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5).isActive = true
-//        nameOfCrypto.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 1/3).isActive = true
+
         
         chartAndPriceView.addSubview(diffPriceOfCrypto)
         diffPriceOfCrypto.centerXAnchor.constraint(equalTo: chartAndPriceView.centerXAnchor).isActive = true
         diffPriceOfCrypto.topAnchor.constraint(equalTo: priceOfCrypto.bottomAnchor, constant: 5).isActive = true
-//        nameOfCrypto.leadingAnchor.constraint(equalTo: nameOfCrypto.trailingAnchor, constant: 5).isActive = true
-//        priceOfCrypto.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 1/3).isActive = true
-//        diffPriceOfCrypto.bottomAnchor.constraint(equalTo: chartAndPriceView.bottomAnchor).isActive = true
-        
 
         
         let buttonsView = UIView()
@@ -351,12 +331,6 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         yearChartButton.heightAnchor.constraint(equalToConstant: 26).isActive = true
         
         
-//        chartAndPriceView.addSubview(ButtonsStackView)
-//        ButtonsStackView.centerXAnchor.constraint(equalTo: chartAndPriceView.centerXAnchor).isActive = true
-//        ButtonsStackView.bottomAnchor.constraint(equalTo: chartAndPriceView.bottomAnchor).isActive = true
-//        ButtonsStackView.heightAnchor.constraint(equalToConstant: 50).isActive = true
-//        ButtonsStackView.widthAnchor.constraint(equalTo: chartAndPriceView.widthAnchor, constant: -20).isActive = true
-        
         chartAndPriceView.addSubview(lineChartView)
         lineChartView.centerXAnchor.constraint(equalTo: chartAndPriceView.centerXAnchor).isActive = true
         lineChartView.topAnchor.constraint(equalTo: diffPriceOfCrypto.bottomAnchor, constant: 10).isActive = true
@@ -378,17 +352,14 @@ class ChartViewController: UIViewController, ChartViewDelegate {
             button.imageView?.tintColor = .white
             button.setImage(image, for: .normal)
             
-//            button.setBackgroundImage(image, for: .normal)
             button.addTarget(self,
                              action: #selector(loadMore),
                              for: .touchUpInside)
-//            button.imageView?.contentMode = .scaleAspectFill
             return button
         }()
 
         let headerStack = UIStackView(arrangedSubviews: [title,button])
         headerStack.axis = .horizontal
-//        headerStack.distribution = .equalSpacing
         headerStack.setCustomSpacing(10, after: title)
         headerStack.alignment = .fill
         headerStack.translatesAutoresizingMaskIntoConstraints = false
@@ -496,7 +467,6 @@ class ChartViewController: UIViewController, ChartViewDelegate {
             contentView.frame = contentViewFrame
             detailInfoViewFrame = CGRect(x: 15, y: 600, width: UIScreen.main.bounds.size.width - 30, height: detailInfoViewFrame.height + height - constHeightOfTextLabel)
             detailInfoView.frame = detailInfoViewFrame
-//            view.layoutIfNeeded()
             
             
         } else {
@@ -514,7 +484,6 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     let textView : UILabel = {
         let textView = UILabel()
         textView.translatesAutoresizingMaskIntoConstraints = false
-//        textView.layer.cornerRadius = 15
         textView.layer.masksToBounds = true
         textView.numberOfLines = 7
         textView.lineBreakMode = .byTruncatingTail
@@ -548,7 +517,6 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        setupScrollView()
         symbolOfCurrentCrypto = crypto.symbolOfCrypto
         if let textTestCheck = crypto.descriptionOfCrypto?.html2String {
             textView.text = textTestCheck
@@ -561,7 +529,6 @@ class ChartViewController: UIViewController, ChartViewDelegate {
             percentages = percentagesCheck
         }
 
-//        diffPriceOfCrypto.text = percentages.priceChangePercentage24H
         if let percent = self.percentages.priceChangePercentage24H {
         self.computedDiffPrice = percent
         }
@@ -610,14 +577,13 @@ class ChartViewController: UIViewController, ChartViewDelegate {
             DispatchQueue.global().async {
                 NetworkManager.shared.dict1[self.symbolOfCurrentCrypto.uppercased()] = 0
                 NetworkManager.shared.getCoinGeckoData(id: self.idOfCrypto, symbol: self.symbolOfCurrentCrypto, group: NetworkManager.shared.groupOne) { (stocks) in
-                    
-                        if let stringUrl = stocks.image?.large {
-                            NetworkManager.shared.obtainImage(StringUrl: stringUrl, group: DispatchGroup()) { image in
-                                self.image = image
-                                self.imageString = (stocks.image?.large)!
-                                self.navigationBarSetup()
-                            }
+                    if let stringUrl = stocks.image?.large {
+                        NetworkManager.shared.obtainImage(StringUrl: stringUrl, group: DispatchGroup()) { image in
+                            self.image = image
+                            self.imageString = (stocks.image?.large)!
+                            self.navigationBarSetup()
                         }
+                    }
                     DispatchQueue.main.async {
                         self.textView.text = stocks.geckoSymbolDescription?.en?.html2String
                         
@@ -635,17 +601,17 @@ class ChartViewController: UIViewController, ChartViewDelegate {
                         }
                         
                         if let redditUrl = stocks.links?.subredditURL {
-                        self.redditUrl = redditUrl
+                            self.redditUrl = redditUrl
                         }
                         if let siteUrl = stocks.links?.homepage?.first {
-                        self.siteUrl = siteUrl
+                            self.siteUrl = siteUrl
                         }
                         self.diffPriceOfCrypto.text = String((stocks.marketData?.priceChangePercentage30D)!)
                         self.percentages = Persentages(priceChangePercentage24H: String((stocks.marketData?.priceChangePercentage24H)!),
-                                                      priceChangePercentage7D: String((stocks.marketData?.priceChangePercentage7D)!),
-                                                      priceChangePercentage30D: String((stocks.marketData?.priceChangePercentage30D)!),
-                                                      priceChangePercentage1Y: String((stocks.marketData?.priceChangePercentage1Y)!))
-            
+                                                       priceChangePercentage7D: String((stocks.marketData?.priceChangePercentage7D)!),
+                                                       priceChangePercentage30D: String((stocks.marketData?.priceChangePercentage30D)!),
+                                                       priceChangePercentage1Y: String((stocks.marketData?.priceChangePercentage1Y)!))
+                        
                         
                         self.priceOfCrypto.text = String((stocks.marketData?.currentPrice?["usd"])!)
                         
@@ -654,8 +620,8 @@ class ChartViewController: UIViewController, ChartViewDelegate {
                             self.marketDataTableView.reloadData()
                         }
                         if let communityData = stocks.communityData {
-                        self.communityData = CommunityDataArray(communityData: communityData).array
-                        self.communityDataTableView.reloadData()
+                            self.communityData = CommunityDataArray(communityData: communityData).array
+                            self.communityDataTableView.reloadData()
                         }
                         self.setupDetailInfo()
                         self.scrollView.contentInset.bottom += 67
@@ -690,8 +656,6 @@ class ChartViewController: UIViewController, ChartViewDelegate {
             navigationController?.navigationBar.backItem?.title = ""
             navigationController?.navigationBar.barTintColor = UIColor(hexString: "#202F72")
             navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-//            navigationItem.title = nameOfCrypto.text
-//            navigationController?.navigationBar.topItem?.title = nameOfCrypto.text
             navigationController?.navigationBar.prefersLargeTitles = false
             navigationItem.rightBarButtonItem = butt
             navigationItem.rightBarButtonItem?.tintColor = .white
@@ -722,12 +686,6 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         logoAndTitle.addSubview(label)
         logoAndTitle.addSubview(logo)
         navigationItem.titleView = logoAndTitle
-        
-        
-        
-//        navigationItem.rightBarButtonItem?.tintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-//        navigationItem.backBarButtonItem?.tintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-//        navigationController?.navigationBar.tintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         }
     }
     
@@ -777,7 +735,6 @@ class ChartViewController: UIViewController, ChartViewDelegate {
             
             NetworkManager.shared.favorites.insert(object, at: 0)
             NetworkManager.shared.addData(object: object)
-//            NetworkManager.shared.coinCap2(arrayOfResults: NetworkManager.shared.resultsF, elems: NetworkManager.shared.coinCapDict)
             NetworkManager.shared.webSocket(symbols: NetworkManager.shared.symbols, symbolsF: NetworkManager.shared.symbolsF)
 
         }
@@ -876,13 +833,6 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         lineChartView.data = data
         
     }
-    
-    
-//    func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
-//        print(entry)
-//    }
-    
-    
 }
 
 class MyXAxisFormatter : NSObject, IAxisValueFormatter {
@@ -926,28 +876,5 @@ extension ChartViewController : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
-    
-    
 }
 
-
-//// MARK: - SwiftUI
-//import SwiftUI
-//struct ViewControllerProvider: PreviewProvider {
-//    static var previews: some View {
-//        ContainerView().edgesIgnoringSafeArea(.all)
-//    }
-//
-//    struct ContainerView: UIViewControllerRepresentable {
-//
-//        let viewController = ChartViewController()
-//
-//        func makeUIViewController(context: UIViewControllerRepresentableContext<ViewControllerProvider.ContainerView>) -> ChartViewController {
-//            return viewController
-//        }
-//
-//        func updateUIViewController(_ uiViewController: ViewControllerProvider.ContainerView.UIViewControllerType, context: UIViewControllerRepresentableContext<ViewControllerProvider.ContainerView>) {
-//
-//        }
-//    }
-//}
