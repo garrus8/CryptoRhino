@@ -8,23 +8,36 @@
 import UIKit
 
 class MainTabBarController : UITabBarController {
+    
+    var builder : Builder!
+    
+    init(builder : Builder) {
+        self.builder = builder
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let mainVC = MainViewController()
+        let mainVC = builder.createMainViewModule()
         let navMainVC = UINavigationController(rootViewController: mainVC)
         navMainVC.navigationBar.topItem?.title = "Main Page"
-//        navMainVC.tabBarItem.image = UIImage(systemName: "house")
         navMainVC.tabBarItem.image = UIImage(named: "Icon_home")
         navMainVC.tabBarItem.title = "Home"
         
-        let searchVC = SearchViewController()
+//        let searchVC = SearchViewController()
+        let searchVC = builder.createSearchViewModule()
         let navSearchVC = UINavigationController(rootViewController: searchVC)
         navSearchVC.navigationBar.topItem?.title = "Search"
         navSearchVC.tabBarItem.image = UIImage(named: "Icon_search")
         navSearchVC.tabBarItem.title = "Search"
         
-        let favVC = FavoritesViewController()
+        let favVC = builder.createFavoritesViewModule()
         let navfavVC = UINavigationController(rootViewController: favVC)
         navfavVC.navigationBar.topItem?.title = "Favorites"
         navfavVC.tabBarItem.image = UIImage(named: "icon_Heart")
@@ -55,4 +68,6 @@ class MainTabBarController : UITabBarController {
         tabBar.unselectedItemTintColor = .white
       
     }
+    
+    
 }

@@ -12,7 +12,6 @@ import SafariServices
 
 class ChartViewController: UIViewController, ChartViewDelegate {
     
-    
     let finHubToken = Constants.finHubToken
     var values: [ChartDataEntry] = []
     var textTest = String()
@@ -33,6 +32,7 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     var redditUrl = String()
     var siteUrl = String()
     var percentages = Persentages()
+    
     
     // UI
     let scrollView = UIScrollView()

@@ -7,14 +7,20 @@
 
 import UIKit
 
-class SearchViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout  {
+protocol SearchViewControllerProtocol : UIViewController {
+    var searchController : UISearchController { get set }
+    var isFiltering: Bool { get }
     
+}
+
+class SearchViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, SearchViewControllerProtocol  {
     
     var collectionView : UICollectionView!
-    let searchController = UISearchController(searchResultsController: nil)
-//    private var filteredResults = [FullBinanceListElement]()
-    private var filteredResults = GeckoList()
-    private var isFiltering : Bool {
+    var searchController = UISearchController(searchResultsController: nil)
+    //MARK: - Presenter
+    var presenter : SearchViewPresenterProtocol!
+//    private var filteredResults = GeckoList()
+    var isFiltering : Bool {
         return searchController.isActive && !searchBarIsEmpty
     }
     var headerText = "123"
@@ -58,48 +64,64 @@ class SearchViewController: UIViewController, UICollectionViewDataSource, UIColl
         
     }
     
-
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if isFiltering {
-            return filteredResults.count
-        } else {
-            return NetworkManager.shared.topList.count
-        }
+        //MARK: - Presenter
+//        if isFiltering {
+//            return filteredResults.count
+//        } else {
+//            return NetworkManager.shared.topList.count
+//        }
+        presenter.returNnumberOfItems()
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
+        //MARK: - Presenter
         let margins = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
+//        if presenter.isFiltering {
+//            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchTableViewCell.reuseId, for: indexPath) as? SearchTableViewCell else {return SearchTableViewCell()}
+//            let result = presenter.filteredResults[indexPath.row]
+//            cell.configure(with: result)
+//            cell.contentView.frame = cell.contentView.frame.inset(by: margins)
+//            return cell
+//        } else {
+//            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchTableViewCellWithImage.reuseId, for: indexPath) as? SearchTableViewCellWithImage else {return SearchTableViewCellWithImage()}
+//            let result = NetworkManager.shared.topList[indexPath.row]
+//            cell.configure(with: result)
+//            cell.contentView.frame = cell.contentView.frame.inset(by: margins)
+//            return cell
+//        }
         if isFiltering {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchTableViewCell.reuseId, for: indexPath) as? SearchTableViewCell else {return SearchTableViewCell()}
-            let results = filteredResults[indexPath.row]
-            cell.configure(with: results)
+            let result = presenter.getFilteredResult(indexPath: indexPath)
+            cell.configure(with: result)
             cell.contentView.frame = cell.contentView.frame.inset(by: margins)
             return cell
         } else {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchTableViewCellWithImage.reuseId, for: indexPath) as? SearchTableViewCellWithImage else {return SearchTableViewCellWithImage()}
-            let results = NetworkManager.shared.topList[indexPath.row]
-            cell.configure(with: results)
+            let result = presenter.getTopListElem(indexPath: indexPath)
+            cell.configure(with: result)
             cell.contentView.frame = cell.contentView.frame.inset(by: margins)
             return cell
         }
+    
     }
     
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let crypto : Crypto
-        if isFiltering {
-            let result = filteredResults[indexPath.row]
-            crypto = Crypto(symbolOfCrypto: result.symbol!, nameOfCrypto: result.name, id: result.id)
-        } else {
-            let result = NetworkManager.shared.topList[indexPath.row]
-            crypto = Crypto(symbolOfCrypto: result.symbol, nameOfCrypto: result.name, id: result.id)
-        }
-        let ChartVC = ChartViewController()
-        ChartVC.crypto = crypto
-        self.navigationController?.pushViewController(ChartVC, animated: true)
-        }
+        //MARK: - Presenter
+//        let crypto : Crypto
+//        if presenter.isFiltering {
+//            let result = presenter.filteredResults[indexPath.row]
+//            crypto = Crypto(symbolOfCrypto: result.symbol!, nameOfCrypto: result.name, id: result.id)
+//        } else {
+//            let result = NetworkManager.shared.topList[indexPath.row]
+//            crypto = Crypto(symbolOfCrypto: result.symbol, nameOfCrypto: result.name, id: result.id)
+//        }
+//        let ChartVC = ChartViewController()
+//        ChartVC.crypto = crypto
+//        self.navigationController?.pushViewController(ChartVC, animated: true)
+        presenter.showChartView(indexPath : indexPath)
+    }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: UIScreen.main.bounds.size.width - 30, height: 60)
@@ -121,31 +143,24 @@ class SearchViewController: UIViewController, UICollectionViewDataSource, UIColl
 
 
 }
+//MARK: - Presenter
 extension SearchViewController : UISearchResultsUpdating   {
     func updateSearchResults(for searchController: UISearchController) {
         filterContentForSearchText(searchController.searchBar.text!)
     }
     func filterContentForSearchText(_ searchText : String){
 
-//        filteredResults = NetworkManager.shared.fullBinanceList.filter({ (searchElem : FullBinanceListElement) -> Bool in
+//        filteredResults = NetworkManager.shared.fullBinanceList.filter({ (searchElem : GeckoListElement) -> Bool in
 //
-//            return searchElem.fullBinanceListDescription!.lowercased().hasPrefix(searchText.lowercased()) ||
-//                searchElem.displaySymbol!.split(separator: "/").first!.lowercased().hasPrefix(searchText.lowercased())
+//            return searchElem.symbol!.lowercased().hasPrefix(searchText.lowercased()) ||
+//                searchElem.name!.split(separator: "/").first!.lowercased().hasPrefix(searchText.lowercased())
 //
 //        })
-        filteredResults = NetworkManager.shared.fullBinanceList.filter({ (searchElem : GeckoListElement) -> Bool in
-
-            return searchElem.symbol!.lowercased().hasPrefix(searchText.lowercased()) ||
-                searchElem.name!.split(separator: "/").first!.lowercased().hasPrefix(searchText.lowercased())
-
-        })
+        presenter.filter(searchText: searchText)
         
-
         DispatchQueue.main.async {
             self.collectionView.reloadData()
         }
 
     }
-
-    
 }

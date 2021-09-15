@@ -20,26 +20,26 @@ struct CoinGeckoPrice: Codable {
 }
 
 
-class SectionOfCrypto : Hashable, Equatable {
-    
-    static func == (lhs: SectionOfCrypto, rhs: SectionOfCrypto) -> Bool {
-        lhs.type == rhs.type
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(type)
-    }
-        
-    var type: String
-    var title : String
-    var items : [Crypto]
-    
-    init(type : String, title : String, items : [Crypto]) {
-        self.type = type
-        self.title = title
-        self.items = items
-    }
-}
+//class SectionOfCrypto : Hashable, Equatable {
+//    
+//    static func == (lhs: SectionOfCrypto, rhs: SectionOfCrypto) -> Bool {
+//        lhs.type == rhs.type
+//    }
+//
+//    func hash(into hasher: inout Hasher) {
+//        hasher.combine(type)
+//    }
+//        
+//    var type: String
+//    var title : String
+//    var items : [Crypto]
+//    
+//    init(type : String, title : String, items : [Crypto]) {
+//        self.type = type
+//        self.title = title
+//        self.items = items
+//    }
+//}
 
 class SearchSectionOfCrypto : Hashable, Equatable {
     
@@ -244,20 +244,6 @@ struct Weiss: Codable {
     }
 }
 
-// MARK: - FullBinanceListElement
-
-
-//struct FullBinanceListElement: Codable, Hashable {
-//    var fullBinanceListDescription, displaySymbol, symbol, id: String?
-//    var rank : Int?
-//
-//    enum CodingKeys: String, CodingKey {
-//        case fullBinanceListDescription = "description"
-//        case displaySymbol, symbol
-//    }
-//}
-
-//typealias FullBinanceList = [FullBinanceListElement]
 
 //NEWS
 struct News: Codable {
@@ -298,92 +284,13 @@ struct SourceInfo: Codable {
     let img: String?
 }
 
-// CoinGecko
-struct GeckoListElement: Codable {
-    var id, symbol, name : String?
-    var rank : Int?
-}
-
-typealias GeckoList = [GeckoListElement]
-
-//// MARK: - GeckoSymbol
-//struct GeckoSymbol: Codable {
-//    let name: String?
-//    let blockTimeInMinutes: Int?
-//    let links: Links?
-//    let image: Image?
-//    let genesisDate: String?
-//    let sentimentVotesUpPercentage, sentimentVotesDownPercentage: Double?
-//    let icoData: IcoData?
-//    let marketCapRank, coingeckoRank: Int?
-//    let coingeckoScore, developerScore, communityScore, liquidityScore: Double?
-//    let publicInterestScore: Double?
-//    let communityData: CommunityData?
-//
-//    enum CodingKeys: String, CodingKey {
-//        case name
-//        case blockTimeInMinutes = "block_time_in_minutes"
-//        case links, image
-//        case genesisDate = "genesis_date"
-//        case sentimentVotesUpPercentage = "sentiment_votes_up_percentage"
-//        case sentimentVotesDownPercentage = "sentiment_votes_down_percentage"
-//        case icoData = "ico_data"
-//        case marketCapRank = "market_cap_rank"
-//        case coingeckoRank = "coingecko_rank"
-//        case coingeckoScore = "coingecko_score"
-//        case developerScore = "developer_score"
-//        case communityScore = "community_score"
-//        case liquidityScore = "liquidity_score"
-//        case publicInterestScore = "public_interest_score"
-//        case communityData = "community_data"
-//    }
+//// CoinGecko
+//struct GeckoListElement: Codable {
+//    var id, symbol, name : String?
+//    var rank : Int?
 //}
 //
-//// MARK: - CommunityData
-//struct CommunityData: Codable {
-//    let twitterFollowers: Int?
-//    let redditAveragePosts48H, redditAverageComments48H: Double?
-//    let redditSubscribers, telegramChannelUserCount: Int?
-//
-//    enum CodingKeys: String, CodingKey {
-//        case twitterFollowers = "twitter_followers"
-//        case redditAveragePosts48H = "reddit_average_posts_48h"
-//        case redditAverageComments48H = "reddit_average_comments_48h"
-//        case redditSubscribers = "reddit_subscribers"
-//        case telegramChannelUserCount = "telegram_channel_user_count"
-//    }
-//}
-//
-//// MARK: - IcoData
-//struct IcoData: Codable {
-//    let icoStartDate, icoEndDate, totalRaisedCurrency, totalRaised: String?
-//
-//    enum CodingKeys: String, CodingKey {
-//        case icoStartDate = "ico_start_date"
-//        case icoEndDate = "ico_end_date"
-//        case totalRaisedCurrency = "total_raised_currency"
-//        case totalRaised = "total_raised"
-//    }
-//}
-//
-//// MARK: - Image
-//struct Image: Codable {
-//    let thumb, small, large: String?
-//}
-//
-//// MARK: - Links
-//struct Links: Codable {
-//    let homepage, blockchainSite: [String]?
-//    let telegramChannelIdentifier: String?
-//    let subredditURL: String?
-//
-//    enum CodingKeys: String, CodingKey {
-//        case homepage
-//        case blockchainSite = "blockchain_site"
-//        case telegramChannelIdentifier = "telegram_channel_identifier"
-//        case subredditURL = "subreddit_url"
-//    }
-//}
+//typealias GeckoList = [GeckoListElement]
 
 
 //// MARK: - GeckoSymbol
@@ -492,24 +399,7 @@ struct MarketDataArray {
             MarketDataElem(name: "maxSupply", value: "$\(maxSupply ?? "")"),
             MarketDataElem(name: "circulatingSupply", value: "$\(circulatingSupply ?? "")")
         ]
-//        let marketCap = String(marketData.marketCap?["usd"] ?? 0)
-//        let marketCapRank = String(marketData.marketCapRank ?? 0)
-//        let totalVolume = String(marketData.totalVolume?["usd"] ?? 0)
-//        let high24H = String(marketData.high24H?["usd"] ?? 0)
-//        let low24H = String(marketData.low24H?["usd"] ?? 0)
-//        let marketCapChangePercentage24H = String(marketData.marketCapChangePercentage24H ?? 0)
-//        let maxSupply = String(marketData.maxSupply ?? 0)
-//        let circulatingSupply = String(marketData.circulatingSupply ?? 0)
-//        let array = [
-//            MarketDataElem(name: "marketCap", value: marketCap),
-//            MarketDataElem(name: "marketCapRank", value: marketCapRank),
-//            MarketDataElem(name: "totalVolume", value: totalVolume),
-//            MarketDataElem(name: "high24H", value: high24H),
-//            MarketDataElem(name: "low24H", value: low24H),
-//            MarketDataElem(name: "marketCapChangePercentage24H", value: marketCapChangePercentage24H),
-//            MarketDataElem(name: "maxSupply", value: maxSupply),
-//            MarketDataElem(name: "circulatingSupply", value: circulatingSupply)
-//        ]
+
         self.array = array
     }
 }
@@ -566,12 +456,11 @@ struct Item: Decodable {
     }
 }
 
-struct TopSearchItem {
-    let id: String
-    let name, symbol: String
-    let large: UIImage
-}
-
+//struct TopSearchItem {
+//    let id: String
+//    let name, symbol: String
+//    let large: UIImage
+//}
 
 
 extension Decodable {

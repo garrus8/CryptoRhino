@@ -8,23 +8,32 @@
 import UIKit
 import CoreData
 
-class FavoritesViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout  {
+protocol FavoritesViewControllerProtocol : UIViewController {
+    var isFiltering: Bool { get }
+}
+
+class FavoritesViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, FavoritesViewControllerProtocol  {
     
     var collectionView : UICollectionView!
     let finHubToken = Constants.finHubToken
-    var favorites = [Favorites]()
-    var results = [Crypto]()
-    var symbols = [String]()
-    var coinGecoList = [GeckoListElement]()
+    //MARK: - PRESENTER
+    var presenter : FavoritesViewPresenterProtocol!
+//    var favorites = [Favorites]()
+//    var results = [Crypto]()
+//    var symbols = [String]()
+//    var coinGecoList = [GeckoListElement]()
 //    private var filteredResults = [Crypto]()
-    private var filteredResults = GeckoList()
-    private var filteredResultsOfFavorites = [Crypto]()
+    
+//    private var filteredResults = GeckoList()
+//    private var filteredResultsOfFavorites = [Crypto]()
+    //MARK: - PRESENTER
     let searchController = UISearchController(searchResultsController: nil)
+    
     var searchBarIsEmpty : Bool {
         guard let text = searchController.searchBar.text else {return false}
         return text.isEmpty
     }
-    private var isFiltering : Bool {
+    var isFiltering : Bool {
         return searchController.isActive && !searchBarIsEmpty
     }
 
@@ -87,13 +96,14 @@ class FavoritesViewController: UIViewController, UICollectionViewDataSource, UIC
     // MARK: - Table view data source
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if isFiltering && NetworkManager.shared.resultsF.isEmpty {
-            return filteredResults.count
-        } else if isFiltering && !NetworkManager.shared.resultsF.isEmpty {
-            return filteredResultsOfFavorites.count
-        }
-        return NetworkManager.shared.resultsF.count
-        
+        //MARK: - PRESENTER
+//        if isFiltering && NetworkManager.shared.resultsF.isEmpty {
+//            return filteredResults.count
+//        } else if isFiltering && !NetworkManager.shared.resultsF.isEmpty {
+//            return filteredResultsOfFavorites.count
+//        }
+//        return NetworkManager.shared.resultsF.count
+        presenter.returnNumberOfItems()
         
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -124,51 +134,49 @@ class FavoritesViewController: UIViewController, UICollectionViewDataSource, UIC
 ////        return cell
 //    }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        if isFiltering && NetworkManager.shared.resultsF.isEmpty {
+        //MARK: - PRESENTER
+        if isFiltering && presenter.isFavoritesEmpty {
 
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchTableViewCell.reuseId, for: indexPath) as? SearchTableViewCell else {return UICollectionViewCell()}
-            let results = filteredResults[indexPath.row]
-//            cell.nameOfCrypto.text = results.displaySymbol
-//            cell.symbolOfCrypto.text = results.fullBinanceListDescription
+            let results = presenter.getResultForFilteredAndEmpty(indexPath: indexPath)
             cell.nameOfCrypto.text = results.name
             cell.symbolOfCrypto.text = results.symbol
             return cell
 
-        } else if isFiltering && !NetworkManager.shared.resultsF.isEmpty {
+        } else if isFiltering && !presenter.isFavoritesEmpty {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TableCollectionViewCell.reuseId, for: indexPath) as? TableCollectionViewCell else {return UICollectionViewCell()}
-            guard let results = filteredResultsOfFavorites[indexPath.row] as Crypto? else {return UICollectionViewCell()}
+            let results = presenter.getResultForFilteredAndFilled(indexPath: indexPath)
             cell.configure(with: results)
             return cell
             
         } else {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TableCollectionViewCell.reuseId, for: indexPath) as? TableCollectionViewCell else {return UICollectionViewCell()}
-            guard let results = NetworkManager.shared.resultsF[indexPath.row] as Crypto? else {return UICollectionViewCell()}
+            let results = presenter.getResultForNotFiltered(indexPath: indexPath)
             cell.configure(with: results)
             return cell
-
         }
 
     }
 
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let result: Crypto
+        //MARK: - PRESENTER
+//        let result: Crypto
+//        
+////        let ChartVC = ChartViewController()
+//        if isFiltering && presenter.isFavoritesEmpty {
+//            let elem = filteredResults[indexPath.row]
+//            result = Crypto(symbolOfCrypto: elem.symbol!, nameOfCrypto: elem.name, id: elem.id)
+//        } else if isFiltering && !presenter.isFavoritesEmpty {
+//            result = filteredResultsOfFavorites[indexPath.row]
+//        } else {
+//            result = NetworkManager.shared.resultsF[indexPath.row]
+//        }
+//        let ChartVC = ChartViewController()
+//        ChartVC.crypto = result
+//        self.navigationController?.pushViewController(ChartVC, animated: true)
+        presenter.showChartView(indexPath: indexPath)
         
-//        let ChartVC = self.storyboard?.instantiateViewController(withIdentifier: "ChartViewController") as! ChartViewController
-        let ChartVC = ChartViewController()
-        if isFiltering && NetworkManager.shared.resultsF.isEmpty {
-            let elem = filteredResults[indexPath.row]
-//            result = Crypto(symbolOfCrypto: elem.displaySymbol!, nameOfCrypto: elem.fullBinanceListDescription!, symbolOfTicker: elem.symbol!, id: elem.id!)
-            result = Crypto(symbolOfCrypto: elem.symbol!, nameOfCrypto: elem.name, id: elem.id)
-        } else if isFiltering && !NetworkManager.shared.resultsF.isEmpty {
-            result = filteredResultsOfFavorites[indexPath.row]
-        } else {
-            result = NetworkManager.shared.resultsF[indexPath.row]
-        }
-        
-        ChartVC.crypto = result
-        self.navigationController?.pushViewController(ChartVC, animated: true)
         }
     
 }
@@ -179,20 +187,21 @@ extension FavoritesViewController : UISearchResultsUpdating   {
         filterContentForSearchText(searchController.searchBar.text!)
     }
     func filterContentForSearchText(_ searchText : String){
-        
-        if NetworkManager.shared.resultsF.isEmpty {
-            filteredResults = NetworkManager.shared.fullBinanceList.filter({ (searchElem : GeckoListElement) -> Bool in
-                
-                return searchElem.symbol!.lowercased().hasPrefix(searchText.lowercased()) ||
-                    searchElem.name!.split(separator: "/").first!.lowercased().hasPrefix(searchText.lowercased())
-            })
-        } else {
-            filteredResultsOfFavorites = NetworkManager.shared.resultsF.filter({ (searchElem : Crypto) -> Bool in
-                
-                return searchElem.nameOfCrypto!.lowercased().hasPrefix(searchText.lowercased()) ||
-                    searchElem.symbolOfCrypto.split(separator: "/").first!.lowercased().hasPrefix(searchText.lowercased())
-            })
-        }
+        //MARK: - PRESENTER
+//        if NetworkManager.shared.resultsF.isEmpty {
+//            filteredResults = NetworkManager.shared.fullBinanceList.filter({ (searchElem : GeckoListElement) -> Bool in
+//                
+//                return searchElem.symbol!.lowercased().hasPrefix(searchText.lowercased()) ||
+//                    searchElem.name!.split(separator: "/").first!.lowercased().hasPrefix(searchText.lowercased())
+//            })
+//        } else {
+//            filteredResultsOfFavorites = NetworkManager.shared.resultsF.filter({ (searchElem : Crypto) -> Bool in
+//                
+//                return searchElem.nameOfCrypto!.lowercased().hasPrefix(searchText.lowercased()) ||
+//                    searchElem.symbolOfCrypto.split(separator: "/").first!.lowercased().hasPrefix(searchText.lowercased())
+//            })
+//        }
+        presenter.filter(searchText: searchText)
             
        
         DispatchQueue.main.async {

@@ -119,14 +119,6 @@ class NetworkManager  {
         
             if let symbol = object.symbol {
                 let crypto = Crypto(symbolOfCrypto: symbol, nameOfCrypto: object.name!, descriptionOfCrypto: object.descrtiption!, image: UIImage(named: "pngwing.com")!, percentages: Persentages())
-//                for j in coinCapDict {
-//                    if symbol == j["symbol"] {
-//                        DispatchQueue.global().async(flags: .barrier) {
-//                            crypto.price = j["priceUsd"]!!
-//                            crypto.percent = j["changePercent24Hr"]!
-//                        }
-//                    }
-//                }
 
                     DispatchQueue.global().async(flags: .barrier) {
                         self.symbolsF.insert(object.symbol!, at: 0)
@@ -579,18 +571,6 @@ var countOfCoinCap = 0
                         self.websocketArray.append(crypto.symbolOfCrypto.uppercased())
                         self.groupTwo.leave()
                     }
-//                }
-//                let symbol = elemOfCoinCap["symbol"]!!
-//
-//                if symbol == "USDT" || symbol == "USDC" ||  symbol == "WBTC" {self.groupTwo.leave(); continue }
-//
-//                let crypto = Crypto(symbolOfCrypto: symbol, id: elemOfCoinCap["id"]!!)
-//                self.collectionViewArray.append(crypto)
-//                self.collectionViewSymbols.append(crypto.symbolOfCrypto.uppercased())
-//
-//                self.websocketArray.append(crypto.symbolOfCrypto.uppercased())
-//                self.groupTwo.leave()
-                
             }
         }
     }
