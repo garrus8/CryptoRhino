@@ -139,16 +139,18 @@ class NetworkManager  {
         
         // GROUP 1
         
+
         DispatchQueue.global().async(group: groupOne) {
             if self.countTopOfCrypto < 10 {
-            let request = NSMutableURLRequest(
-                url: NSURL(string: "https://min-api.cryptocompare.com/data/top/totalvolfull?limit=20&tsym=USD")! as URL,
-                cachePolicy: .useProtocolCachePolicy,
-                timeoutInterval: 10.0)
-            request.httpMethod = "GET"
+                
+//            let request = NSMutableURLRequest(
+//                url: NSURL(string: "https://min-api.cryptocompare.com/data/top/totalvolfull?limit=20&tsym=USD")! as URL,
+//                cachePolicy: .useProtocolCachePolicy,
+//                timeoutInterval: 10.0)
+//            request.httpMethod = "GET"
             self.groupOne.enter()
-            URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
-//                DispatchQueue.global().async(group: self.groupOne) {
+//            URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
+                NetworkRequestManager.request(url: Urls.topOfCrypto.rawValue) { data, response, error in
                 guard let stocksData = data, error == nil, response != nil else {
                     self.countTopOfCrypto += 1;
                     self.getTopOfCrypto();
@@ -191,7 +193,7 @@ class NetworkManager  {
                     print(error.localizedDescription)
                 }
                 
-            }.resume()
+            }
             } else {
                 DispatchQueue.main.async() {
                     self.groupOne.enter()
@@ -210,49 +212,48 @@ class NetworkManager  {
         
         DispatchQueue.global().async(group: groupOne) {
             if self.countTopOfCrypto < 10 {
-            let request = NSMutableURLRequest(
-                url: NSURL(string: "https://api.coingecko.com/api/v3/search/trending")! as URL,
-                cachePolicy: .useProtocolCachePolicy,
-                timeoutInterval: 10.0)
-            request.httpMethod = "GET"
+//            let request = NSMutableURLRequest(
+//                url: NSURL(string: "https://api.coingecko.com/api/v3/search/trending")! as URL,
+//                cachePolicy: .useProtocolCachePolicy,
+//                timeoutInterval: 10.0)
+//            request.httpMethod = "GET"
+//
             self.groupOne.enter()
-            URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
-//                DispatchQueue.global().async(group: self.groupOne) {
-                guard let stocksData = data, error == nil, response != nil else {
-                    self.countTopOfCrypto += 1;
-                    self.getTopSearch();
-                    self.groupOne.leave();
-                    return}
-                
-                do {
-                    guard let data = try (TopSearch.decode(from: stocksData)) else {
+//            URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
+                NetworkRequestManager.request(url: Urls.topSearch.rawValue) { data, response, error in
+                    guard let stocksData = data, error == nil, response != nil else {
                         self.countTopOfCrypto += 1;
                         self.getTopSearch();
                         self.groupOne.leave();
                         return}
                     
-                    for elem in data.coins {
-                        let item = elem.item
-                        self.groupOne.enter()
-                        self.obtainImage(StringUrl: item.large, group: self.groupTwo) { image in
-                            let crypto = TopSearchItem(id: item.id, name: item.name, symbol: item.symbol, large: image)
-                            self.topList.append(crypto)
-                            self.groupOne.leave()
-                        }
+                    do {
+                        guard let data = try (TopSearch.decode(from: stocksData)) else {
+                            self.countTopOfCrypto += 1;
+                            self.getTopSearch();
+                            self.groupOne.leave();
+                            return}
                         
+                        for elem in data.coins {
+                            let item = elem.item
+                            self.groupOne.enter()
+                            self.obtainImage(StringUrl: item.large, group: self.groupTwo) { image in
+                                let crypto = TopSearchItem(id: item.id, name: item.name, symbol: item.symbol, large: image)
+                                self.topList.append(crypto)
+                                self.groupOne.leave()
+                            }
+                            
+                        }
+                        self.groupOne.leave()
+                        
+                    } catch let error as NSError {
+                        print("getTopOfCrypto 4")
+                        print(error.localizedDescription)
                     }
-                    self.groupOne.leave()
                     
-                } catch let error as NSError {
-                    print("getTopOfCrypto 4")
-                    print(error.localizedDescription)
                 }
-                
-            }.resume()
-            } else {
-                
             }
-        }
+                }
     }
     
     var countOfFullListCoinGecko = 0
@@ -264,14 +265,15 @@ class NetworkManager  {
         DispatchQueue.global().async(group: groupTwo) {
             if self.countOfFullListCoinGecko < 10 {
                 
-            let request = NSMutableURLRequest(
-                url: NSURL(string: "https://api.coingecko.com/api/v3/coins/list")! as URL,
-                cachePolicy: .useProtocolCachePolicy,
-                timeoutInterval: 10.0)
-            request.httpMethod = "GET"
-            
+//            let request = NSMutableURLRequest(
+//                url: NSURL(string: "https://api.coingecko.com/api/v3/coins/list")! as URL,
+//                cachePolicy: .useProtocolCachePolicy,
+//                timeoutInterval: 10.0)
+//            request.httpMethod = "GET"
+//
             self.groupTwo.enter()
-            URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
+//            URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
+                NetworkRequestManager.request(url: Urls.fullListOfCoinGecko.rawValue) { data, response, error in
                 guard let stocksData = data, error == nil, response != nil else {
                     self.countOfFullListCoinGecko += 1;
                     self.getFullListOfCoinGecko();
@@ -315,7 +317,7 @@ class NetworkManager  {
                     print(error.localizedDescription)
                 }
                 
-            }.resume()
+            }
             } else {
                 DispatchQueue.main.async() {
                     self.groupTwo.enter()
@@ -334,14 +336,14 @@ var countOfCoinCap = 0
         // GROUP 1
         DispatchQueue.global().async(group: groupOne) {
             if self.countOfCoinCap < 10 {
-            let request = NSMutableURLRequest(
-                url: NSURL(string: "https://api.coincap.io/v2/assets?limit=400")! as URL,
-                cachePolicy: .useProtocolCachePolicy,
-                timeoutInterval: 3)
-            request.httpMethod = "GET"
+//            let request = NSMutableURLRequest(
+//                url: NSURL(string: "https://api.coincap.io/v2/assets?limit=400")! as URL,
+//                cachePolicy: .useProtocolCachePolicy,
+//                timeoutInterval: 3)
+//            request.httpMethod = "GET"
             self.groupOne.enter()
-            URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
-
+//            URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
+                NetworkRequestManager.request(url: Urls.fullCoinCapList.rawValue) { data, response, error in
                 guard let stocksData = data, error == nil, response != nil else {
                     self.countOfCoinCap += 1
                     self.getFullCoinCapList();
@@ -364,7 +366,7 @@ var countOfCoinCap = 0
                     print(error.localizedDescription)
                 }
                 
-            }.resume()
+            }
             } else {
                 DispatchQueue.main.async() {
                     self.groupOne.enter()
@@ -376,21 +378,21 @@ var countOfCoinCap = 0
             }
         }
     }
+    
     var dict1 = [String : Int]()
     func getCoinGeckoData(id: String, symbol : String, group: DispatchGroup, complition : @escaping (GeckoSymbol)->()) {
-        
         DispatchQueue.global().async(group : group) {
             print(self.dict1, symbol.uppercased(), id)
             if self.dict1[symbol.uppercased()]! < 10 {
-            let request = NSMutableURLRequest(
-                url: NSURL(string: "https://api.coingecko.com/api/v3/coins/\(id)?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false")! as URL,
-                cachePolicy: .useProtocolCachePolicy,
-                timeoutInterval: 1.5)
-            request.httpMethod = "GET"
-            
+//            let request = NSMutableURLRequest(
+//                url: NSURL(string: "https://api.coingecko.com/api/v3/coins/\(id)?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false")! as URL,
+//                cachePolicy: .useProtocolCachePolicy,
+//                timeoutInterval: 1.5)
+//            request.httpMethod = "GET"
+//
             group.enter()
-            URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
-                
+//            URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
+                NetworkRequestManager.request(url: "https://api.coingecko.com/api/v3/coins/\(id)?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false") { data, response, error in
                 guard let stocksData = data, error == nil, response != nil else {
                     print("getCoinGeckoData 1", id)
                     self.dict1[symbol.uppercased()]! += 1
@@ -423,7 +425,7 @@ var countOfCoinCap = 0
                     print("getCoinGeckoData 3")
                     print(error.localizedDescription)
                 }
-            }.resume()
+            }
             } else {
                 print("To many requests for", id)
                 complition(GeckoSymbol(id: id, symbol: symbol, name: id.uppercased(), geckoSymbolDescription: nil, links: nil, image: nil, marketCapRank: nil, coingeckoRank: nil, marketData: nil, communityData: nil))

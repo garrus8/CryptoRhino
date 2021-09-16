@@ -12,7 +12,6 @@ import SafariServices
 
 class ChartViewController: UIViewController, ChartViewDelegate {
     
-    let finHubToken = Constants.finHubToken
     var values: [ChartDataEntry] = []
     var textTest = String()
     var image = UIImage()
@@ -28,7 +27,7 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     var diffPriceOfCryptoText = String()
     var priceOfCryptoText = String()
     var nameOfCryptoText = String()
-    var crypto = Crypto(symbolOfCrypto: "", price: "", change: "", nameOfCrypto: "", descriptionOfCrypto: "", id: "", percentages: nil, image: UIImage(named: "pngwing.com")!)
+//    var crypto = Crypto(symbolOfCrypto: "", price: "", change: "", nameOfCrypto: "", descriptionOfCrypto: "", id: "", percentages: nil, image: UIImage(named: "pngwing.com")!)
     var redditUrl = String()
     var siteUrl = String()
     var percentages = Persentages()
@@ -57,7 +56,6 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     var detailInfoViewFrame = CGRect(x: 15, y: 600, width: UIScreen.main.bounds.size.width - 30, height: 940)
     
     func setupScrollView(){
-//        contentView.translatesAutoresizingMaskIntoConstraints = false
         chartAndPriceView.frame = CGRect(x:0.0, y:0.0, width: view.frame.size.width, height: 600)
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
@@ -75,7 +73,6 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         scrollView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height + 50)
         scrollView.backgroundColor = UIColor(hexString: "#4158B7")
         scrollView.contentSize = CGSize(width: self.view.bounds.size.width, height: chartAndPriceView.frame.height + detailInfoView.frame.height)
-
         
         }
     var count = 0
@@ -498,6 +495,7 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         return appDelegate.persistentContainer.viewContext
     }
+    
     @IBAction func favoritesButton(_ sender: Any) {
         let context = self.getContext()
         let favoriteSymbol = symbolOfCurrentCrypto
@@ -517,46 +515,47 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        symbolOfCurrentCrypto = crypto.symbolOfCrypto
-        if let textTestCheck = crypto.descriptionOfCrypto?.html2String {
-            textView.text = textTestCheck
-        }
-        
-        if let nameOfCryptoCheck = crypto.nameOfCrypto {
-        nameOfCrypto.text = nameOfCryptoCheck
-        }
-        if let percentagesCheck = crypto.percentages {
-            percentages = percentagesCheck
-        }
-
-        if let percent = self.percentages.priceChangePercentage24H {
-        self.computedDiffPrice = percent
-        }
-        
-        if let priceOfCryptoCheck = crypto.price {
-        priceOfCrypto.text?.removeAll()
-        priceOfCrypto.text?.append("$")
-        priceOfCrypto.text?.append(priceOfCryptoCheck)
-        }
-        idOfCrypto = crypto.id!
-        
-        if let symbolOfTickerCheck = crypto.symbolOfTicker {
-        symbolOfTicker = symbolOfTickerCheck
-        }
-        image = crypto.image ?? UIImage(named: "pngwing.com")!
-        if let marketDataChek = crypto.marketDataArray?.array {
-        marketData = marketDataChek
-        }
-        
-        if let communityDataChek = crypto.communityDataArray?.array {
-        communityData = communityDataChek
-        }
-        if let redditLink = crypto.links?.subredditURL {
-            redditUrl = redditLink
-        }
-        if let siteLink = crypto.links?.homepage?.first {
-            siteUrl = siteLink
-        }
+        //MARK:- PRESENTER
+//        symbolOfCurrentCrypto = crypto.symbolOfCrypto
+//        if let textTestCheck = crypto.descriptionOfCrypto?.html2String {
+//            textView.text = textTestCheck
+//        }
+//        
+//        if let nameOfCryptoCheck = crypto.nameOfCrypto {
+//        nameOfCrypto.text = nameOfCryptoCheck
+//        }
+//        if let percentagesCheck = crypto.percentages {
+//            percentages = percentagesCheck
+//        }
+//
+//        if let percent = self.percentages.priceChangePercentage24H {
+//        self.computedDiffPrice = percent
+//        }
+//        
+//        if let priceOfCryptoCheck = crypto.price {
+//        priceOfCrypto.text?.removeAll()
+//        priceOfCrypto.text?.append("$")
+//        priceOfCrypto.text?.append(priceOfCryptoCheck)
+//        }
+//        idOfCrypto = crypto.id!
+//        
+//        if let symbolOfTickerCheck = crypto.symbolOfTicker {
+//        symbolOfTicker = symbolOfTickerCheck
+//        }
+//        image = crypto.image ?? UIImage(named: "pngwing.com")!
+//        if let marketDataChek = crypto.marketDataArray?.array {
+//        marketData = marketDataChek
+//        }
+//        
+//        if let communityDataChek = crypto.communityDataArray?.array {
+//        communityData = communityDataChek
+//        }
+//        if let redditLink = crypto.links?.subredditURL {
+//            redditUrl = redditLink
+//        }
+//        if let siteLink = crypto.links?.homepage?.first {
+//            siteUrl = siteLink
+//        }
         
         setupChartAndPriceView()
         setupDetailInfo()
@@ -572,7 +571,7 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         communityDataTableView.dataSource = self
         scrollView.delegate = self
    
-        
+        //MARK:- PRESENTER
         if priceOfCrypto.text == "priceOfCrypto" {
             DispatchQueue.global().async {
                 NetworkManager.shared.dict1[self.symbolOfCurrentCrypto.uppercased()] = 0
@@ -688,7 +687,7 @@ class ChartViewController: UIViewController, ChartViewDelegate {
         navigationItem.titleView = logoAndTitle
         }
     }
-    
+    //MARK:- PRESENTER
     @objc func saveTapped() {
         if bool == true {
             navigationItem.rightBarButtonItem?.image = imageOfHeart
@@ -757,7 +756,7 @@ class ChartViewController: UIViewController, ChartViewDelegate {
     }
     
     
-    
+    //MARK:- PRESENTER
     func chartLoad(idOfCrypto: String, interval: String){
         
         DispatchQueue.global().async {
@@ -782,13 +781,8 @@ class ChartViewController: UIViewController, ChartViewDelegate {
             default:
                 print("ПРОБЛЕМА В СВИЧ")
             }
-            let request = NSMutableURLRequest(
-                url: NSURL(string: "https://api.coingecko.com/api/v3/coins/\(idOfCrypto)/market_chart/range?vs_currency=usd&from=\(prevValue)&to=\(nowUnix)")! as URL,
-                cachePolicy: .useProtocolCachePolicy,
-                timeoutInterval: 10.0)
-          
-            request.httpMethod = "GET"
-            URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
+
+            NetworkRequestManager.request(url: "https://api.coingecko.com/api/v3/coins/\(idOfCrypto)/market_chart/range?vs_currency=usd&from=\(prevValue)&to=\(nowUnix)") { data, response, error in
                 guard let stocksData = data, error == nil, response != nil else {
                     print("ХЫЧ ХЫЧ");
                     self.chartLoad(idOfCrypto: idOfCrypto, interval: interval);
@@ -810,9 +804,7 @@ class ChartViewController: UIViewController, ChartViewDelegate {
                 } catch let error as NSError {
                     print(error.localizedDescription)
                 }
-                
-                
-            }.resume()
+            }
         }
     }
     
