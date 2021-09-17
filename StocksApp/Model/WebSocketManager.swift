@@ -35,14 +35,10 @@ class NetworkManager  {
     var favorites = [Favorites]()
     var resultsF = [Crypto]()
     var symbolsF = [String]()
-//    var fullBinanceList = [FullBinanceListElement]()
     var fullBinanceList = GeckoList()
     var topList = [TopSearchItem]()
-    //    var fullBinanceList = [Crypto]()
-    //    var coinCapDict = FullCoinCapList(data: [["":""]])
     var coinCapDict = [[String: String?]]()
     var dict = [String : [Crypto]]()
-//    let favoriteVC = FavoritesViewController()
     var collectionViewSymbols = [String]()
     var collectionViewArray = [Crypto]()
     var websocketArray = [String]()
@@ -139,7 +135,6 @@ class NetworkManager  {
         
         // GROUP 1
         
-
         DispatchQueue.global().async(group: groupOne) {
             if self.countTopOfCrypto < 10 {
                 
@@ -253,7 +248,7 @@ class NetworkManager  {
                     
                 }
             }
-                }
+        }
     }
     
     var countOfFullListCoinGecko = 0

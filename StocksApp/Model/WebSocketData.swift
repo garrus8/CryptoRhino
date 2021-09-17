@@ -41,24 +41,24 @@ struct CoinGeckoPrice: Codable {
 //    }
 //}
 
-class SearchSectionOfCrypto : Hashable, Equatable {
-    
-    static func == (lhs: SearchSectionOfCrypto, rhs: SearchSectionOfCrypto) -> Bool {
-        lhs.type == rhs.type
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(type)
-    }
-        
-    var type: String
-    var items : GeckoListElement
-    
-    init(type : String, title : String, items : GeckoListElement) {
-        self.type = type
-        self.items = items
-    }
-}
+//class SearchSectionOfCrypto : Hashable, Equatable {
+//    
+//    static func == (lhs: SearchSectionOfCrypto, rhs: SearchSectionOfCrypto) -> Bool {
+//        lhs.type == rhs.type
+//    }
+//
+//    func hash(into hasher: inout Hasher) {
+//        hasher.combine(type)
+//    }
+//        
+//    var type: String
+//    var items : GeckoListElement
+//    
+//    init(type : String, title : String, items : GeckoListElement) {
+//        self.type = type
+//        self.items = items
+//    }
+//}
 
 class Crypto : Hashable, Equatable {
     
@@ -137,25 +137,25 @@ class Crypto : Hashable, Equatable {
     }
 }
 
-struct Persentages {
-    var priceChangePercentage24H : String?
-    var priceChangePercentage7D : String?
-    var priceChangePercentage30D : String?
-    var priceChangePercentage1Y : String?
-    
-    init() {
-         priceChangePercentage24H = ""
-         priceChangePercentage7D = ""
-         priceChangePercentage30D = ""
-         priceChangePercentage1Y = ""
-    }
-    init (priceChangePercentage24H: String, priceChangePercentage7D : String, priceChangePercentage30D : String, priceChangePercentage1Y : String) {
-        self.priceChangePercentage24H = priceChangePercentage24H
-        self.priceChangePercentage7D = priceChangePercentage7D
-        self.priceChangePercentage30D = priceChangePercentage30D
-        self.priceChangePercentage1Y = priceChangePercentage1Y
-    }
-}
+//struct Persentages {
+//    var priceChangePercentage24H : String?
+//    var priceChangePercentage7D : String?
+//    var priceChangePercentage30D : String?
+//    var priceChangePercentage1Y : String?
+//    
+//    init() {
+//         priceChangePercentage24H = ""
+//         priceChangePercentage7D = ""
+//         priceChangePercentage30D = ""
+//         priceChangePercentage1Y = ""
+//    }
+//    init (priceChangePercentage24H: String, priceChangePercentage7D : String, priceChangePercentage30D : String, priceChangePercentage1Y : String) {
+//        self.priceChangePercentage24H = priceChangePercentage24H
+//        self.priceChangePercentage7D = priceChangePercentage7D
+//        self.priceChangePercentage30D = priceChangePercentage30D
+//        self.priceChangePercentage1Y = priceChangePercentage1Y
+//    }
+//}
 
 struct FullCoinCapList: Codable {
     let data: [[String: String?]]?
@@ -254,35 +254,35 @@ struct News: Codable {
 
     }
 }
-struct NewsData: Codable {
-    let id: String?
-    let guid: String?
-    let publishedOn: Int?
-    let imageurl: String?
-    let title: String?
-    let url: String?
-    let source, body, tags, categories: String?
-    let upvotes, downvotes: String?
-    let lang: Lang?
-    let sourceInfo: SourceInfo?
-
-    enum CodingKeys: String, CodingKey {
-        case id, guid
-        case publishedOn = "published_on"
-        case imageurl, title, url, source, body, tags, categories, upvotes, downvotes, lang
-        case sourceInfo = "source_info"
-    }
-}
-
-enum Lang: String, Codable {
-    case en = "EN"
-}
-
-struct SourceInfo: Codable {
-    let name: String?
-    let lang: Lang?
-    let img: String?
-}
+//struct NewsData: Codable {
+//    let id: String?
+//    let guid: String?
+//    let publishedOn: Int?
+//    let imageurl: String?
+//    let title: String?
+//    let url: String?
+//    let source, body, tags, categories: String?
+//    let upvotes, downvotes: String?
+//    let lang: Lang?
+//    let sourceInfo: SourceInfo?
+//
+//    enum CodingKeys: String, CodingKey {
+//        case id, guid
+//        case publishedOn = "published_on"
+//        case imageurl, title, url, source, body, tags, categories, upvotes, downvotes, lang
+//        case sourceInfo = "source_info"
+//    }
+//}
+//
+//enum Lang: String, Codable {
+//    case en = "EN"
+//}
+//
+//struct SourceInfo: Codable {
+//    let name: String?
+//    let lang: Lang?
+//    let img: String?
+//}
 
 //// CoinGecko
 //struct GeckoListElement: Codable {
@@ -317,97 +317,97 @@ struct GeckoSymbol: Decodable {
 
 
 
-// MARK: - CommunityData
-struct CommunityData: Decodable {
-    let twitterFollowers: Int?
-    let redditAveragePosts48H, redditAverageComments48H: Double?
-    let redditSubscribers : Int?
+//// MARK: - CommunityData
+//struct CommunityData: Decodable {
+//    let twitterFollowers: Int?
+//    let redditAveragePosts48H, redditAverageComments48H: Double?
+//    let redditSubscribers : Int?
+//
+//    enum CodingKeys: String, CodingKey {
+//        case twitterFollowers = "twitter_followers"
+//        case redditAveragePosts48H = "reddit_average_posts_48h"
+//        case redditAverageComments48H = "reddit_average_comments_48h"
+//        case redditSubscribers = "reddit_subscribers"
+//    }
+//}
+//struct CommunityDataArray {
+//    let array : [MarketDataElem]
+//    init(communityData : CommunityData) {
+//        let twitterFollowers = String(communityData.twitterFollowers ?? 0)
+//        let redditAveragePosts48H = String(communityData.redditAveragePosts48H ?? 0)
+//        let redditAverageComments48H = String(communityData.redditAverageComments48H ?? 0)
+//        let redditSubscribers = String(communityData.redditSubscribers ?? 0)
+//        let array = [
+//            MarketDataElem(name: "twitterFollowers", value: twitterFollowers),
+//            MarketDataElem(name: "redditAveragePosts48H", value: redditAveragePosts48H),
+//            MarketDataElem(name: "redditAverageComments48H", value: redditAverageComments48H),
+//            MarketDataElem(name: "redditSubscribers", value: redditSubscribers)
+//        ]
+//        self.array = array
+//    }
+//}
+//
+//
+//struct MarketData: Decodable {
+//    let currentPrice: [String: Double]?
+//    let priceChange24H, priceChangePercentage24H, priceChangePercentage7D, priceChangePercentage30D, priceChangePercentage1Y : Double?
+//    let marketCap: [String: Double]?
+//    let marketCapRank: Int?
+//    let totalVolume, high24H, low24H: [String: Double]?
+//    let marketCapChangePercentage24H: Double?
+//    let maxSupply, circulatingSupply: Double?
+//
+//     enum CodingKeys: String, CodingKey {
+//        case currentPrice = "current_price"
+//        case priceChange24H = "price_change_24h"
+//        case priceChangePercentage24H = "price_change_percentage_24h"
+//        case priceChangePercentage7D = "price_change_percentage_7d"
+//        case priceChangePercentage30D = "price_change_percentage_30d"
+//        case priceChangePercentage1Y = "price_change_percentage_1y"
+//        case marketCap = "market_cap"
+//        case marketCapRank = "market_cap_rank"
+//        case totalVolume = "total_volume"
+//        case high24H = "high_24h"
+//        case low24H = "low_24h"
+//        case marketCapChangePercentage24H = "market_cap_change_percentage_24h"
+//        case maxSupply = "max_supply"
+//        case circulatingSupply = "circulating_supply"
+//
+//     }
+//    
+//}
+//
+//
+//struct MarketDataArray {
+//    let array : [MarketDataElem]
+//    init(marketData : MarketData) {
+//        let marketCap = marketData.marketCap?["usd"]?.formattedWithSeparator
+//        let marketCapRank = marketData.marketCapRank?.formattedWithSeparator
+//        let totalVolume = marketData.totalVolume?["usd"]?.formattedWithSeparator
+//        let high24H = marketData.high24H?["usd"]?.formattedWithSeparator
+//        let low24H = marketData.low24H?["usd"]?.formattedWithSeparator
+//        let marketCapChangePercentage24H = marketData.marketCapChangePercentage24H?.formattedWithSeparator
+//        let maxSupply = marketData.maxSupply?.formattedWithSeparator
+//        let circulatingSupply = marketData.circulatingSupply?.formattedWithSeparator
+//        let array = [
+//            MarketDataElem(name: "marketCap", value: "$\(marketCap ?? "")"),
+//            MarketDataElem(name: "marketCapRank", value: marketCapRank ?? ""),
+//            MarketDataElem(name: "totalVolume", value: "$\(totalVolume ?? "")"),
+//            MarketDataElem(name: "high24H", value:"$\(high24H ?? "")"),
+//            MarketDataElem(name: "low24H", value: "$\(low24H ?? "")"),
+//            MarketDataElem(name: "marketCapChangePercentage24H", value: "\(marketCapChangePercentage24H ?? "")%"),
+//            MarketDataElem(name: "maxSupply", value: "$\(maxSupply ?? "")"),
+//            MarketDataElem(name: "circulatingSupply", value: "$\(circulatingSupply ?? "")")
+//        ]
+//
+//        self.array = array
+//    }
+//}
 
-    enum CodingKeys: String, CodingKey {
-        case twitterFollowers = "twitter_followers"
-        case redditAveragePosts48H = "reddit_average_posts_48h"
-        case redditAverageComments48H = "reddit_average_comments_48h"
-        case redditSubscribers = "reddit_subscribers"
-    }
-}
-struct CommunityDataArray {
-    let array : [MarketDataElem]
-    init(communityData : CommunityData) {
-        let twitterFollowers = String(communityData.twitterFollowers ?? 0)
-        let redditAveragePosts48H = String(communityData.redditAveragePosts48H ?? 0)
-        let redditAverageComments48H = String(communityData.redditAverageComments48H ?? 0)
-        let redditSubscribers = String(communityData.redditSubscribers ?? 0)
-        let array = [
-            MarketDataElem(name: "twitterFollowers", value: twitterFollowers),
-            MarketDataElem(name: "redditAveragePosts48H", value: redditAveragePosts48H),
-            MarketDataElem(name: "redditAverageComments48H", value: redditAverageComments48H),
-            MarketDataElem(name: "redditSubscribers", value: redditSubscribers)
-        ]
-        self.array = array
-    }
-}
-
-
-struct MarketData: Decodable {
-    let currentPrice: [String: Double]?
-    let priceChange24H, priceChangePercentage24H, priceChangePercentage7D, priceChangePercentage30D, priceChangePercentage1Y : Double?
-    let marketCap: [String: Double]?
-    let marketCapRank: Int?
-    let totalVolume, high24H, low24H: [String: Double]?
-    let marketCapChangePercentage24H: Double?
-    let maxSupply, circulatingSupply: Double?
-
-     enum CodingKeys: String, CodingKey {
-        case currentPrice = "current_price"
-        case priceChange24H = "price_change_24h"
-        case priceChangePercentage24H = "price_change_percentage_24h"
-        case priceChangePercentage7D = "price_change_percentage_7d"
-        case priceChangePercentage30D = "price_change_percentage_30d"
-        case priceChangePercentage1Y = "price_change_percentage_1y"
-        case marketCap = "market_cap"
-        case marketCapRank = "market_cap_rank"
-        case totalVolume = "total_volume"
-        case high24H = "high_24h"
-        case low24H = "low_24h"
-        case marketCapChangePercentage24H = "market_cap_change_percentage_24h"
-        case maxSupply = "max_supply"
-        case circulatingSupply = "circulating_supply"
-
-     }
-    
-}
-
-
-struct MarketDataArray {
-    let array : [MarketDataElem]
-    init(marketData : MarketData) {
-        let marketCap = marketData.marketCap?["usd"]?.formattedWithSeparator
-        let marketCapRank = marketData.marketCapRank?.formattedWithSeparator
-        let totalVolume = marketData.totalVolume?["usd"]?.formattedWithSeparator
-        let high24H = marketData.high24H?["usd"]?.formattedWithSeparator
-        let low24H = marketData.low24H?["usd"]?.formattedWithSeparator
-        let marketCapChangePercentage24H = marketData.marketCapChangePercentage24H?.formattedWithSeparator
-        let maxSupply = marketData.maxSupply?.formattedWithSeparator
-        let circulatingSupply = marketData.circulatingSupply?.formattedWithSeparator
-        let array = [
-            MarketDataElem(name: "marketCap", value: "$\(marketCap ?? "")"),
-            MarketDataElem(name: "marketCapRank", value: marketCapRank ?? ""),
-            MarketDataElem(name: "totalVolume", value: "$\(totalVolume ?? "")"),
-            MarketDataElem(name: "high24H", value:"$\(high24H ?? "")"),
-            MarketDataElem(name: "low24H", value: "$\(low24H ?? "")"),
-            MarketDataElem(name: "marketCapChangePercentage24H", value: "\(marketCapChangePercentage24H ?? "")%"),
-            MarketDataElem(name: "maxSupply", value: "$\(maxSupply ?? "")"),
-            MarketDataElem(name: "circulatingSupply", value: "$\(circulatingSupply ?? "")")
-        ]
-
-        self.array = array
-    }
-}
-
-struct MarketDataElem {
-    let name : String
-    let value : String
-}
+//struct MarketDataElem {
+//    let name : String
+//    let value : String
+//}
 
 
 // MARK: - Description

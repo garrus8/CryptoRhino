@@ -12,6 +12,9 @@
 		E7AB39C5283235AE05A555D2 /* Pods_StocksAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76591ECDC68B1C118D507B7E /* Pods_StocksAppTests.framework */; };
 		F42913F926A1B6D500F4F0D2 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42913F826A1B6D400F4F0D2 /* Extensions.swift */; };
 		F4416B43264D1A6A00505F7A /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4416B42264D1A6A00505F7A /* NetworkManager.swift */; };
+		F446FD7726F48E960062BD3D /* ChartModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F446FD7626F48E960062BD3D /* ChartModel.swift */; };
+		F446FD7926F490470062BD3D /* NewsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F446FD7826F490470062BD3D /* NewsModel.swift */; };
+		F446FD7B26F4AE690062BD3D /* Copy.swift in Sources */ = {isa = PBXBuildFile; fileRef = F446FD7A26F4AE690062BD3D /* Copy.swift */; };
 		F449CF3C2681DEA200739830 /* CarouselCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F449CF3B2681DEA200739830 /* CarouselCollectionViewCell.swift */; };
 		F449CF452682051800739830 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F449CF442682051800739830 /* SectionHeader.swift */; };
 		F456AC1426A83CA4003664B3 /* MarketDataCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F456AC1326A83CA4003664B3 /* MarketDataCell.swift */; };
@@ -20,16 +23,17 @@
 		F4C1EECF2680789C0037C9F5 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1EECE2680789C0037C9F5 /* MainViewController.swift */; };
 		F4C1EED426809F7B0037C9F5 /* TableCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1EED326809F7B0037C9F5 /* TableCollectionViewCell.swift */; };
 		F4CC5FF026985F4000718010 /* FavoritesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CC5FEF26985F4000718010 /* FavoritesCell.swift */; };
-		F4D01DE326F08E80003F344F /* MainViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D01DE226F08E7F003F344F /* MainViewPresenter.swift */; };
-		F4D01DE526F090B7003F344F /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D01DE426F090B7003F344F /* MainViewModel.swift */; };
+		F4D01DE326F08E80003F344F /* MainPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D01DE226F08E7F003F344F /* MainPresenter.swift */; };
+		F4D01DE526F090B7003F344F /* MainModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D01DE426F090B7003F344F /* MainModel.swift */; };
 		F4D01DE726F09324003F344F /* ModuleBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D01DE626F09324003F344F /* ModuleBuilder.swift */; };
-		F4D01DEC26F1DCA3003F344F /* SearchViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D01DEB26F1DCA3003F344F /* SearchViewPresenter.swift */; };
-		F4D01DEE26F1F646003F344F /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D01DED26F1F646003F344F /* SearchViewModel.swift */; };
-		F4D01DF126F1FA22003F344F /* FavoritesViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D01DF026F1FA22003F344F /* FavoritesViewPresenter.swift */; };
-		F4D01DF426F21B3D003F344F /* ChartViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D01DF326F21B3D003F344F /* ChartViewPresenter.swift */; };
+		F4D01DEC26F1DCA3003F344F /* SearchPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D01DEB26F1DCA3003F344F /* SearchPresenter.swift */; };
+		F4D01DEE26F1F646003F344F /* SearchModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D01DED26F1F646003F344F /* SearchModel.swift */; };
+		F4D01DF126F1FA22003F344F /* FavoritesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D01DF026F1FA22003F344F /* FavoritesPresenter.swift */; };
+		F4D01DF426F21B3D003F344F /* ChartPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D01DF326F21B3D003F344F /* ChartPresenter.swift */; };
 		F4D01DF626F21B53003F344F /* ChartViewNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D01DF526F21B53003F344F /* ChartViewNetworkManager.swift */; };
-		F4D01DF926F22BB6003F344F /* NewsViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D01DF826F22BB6003F344F /* NewsViewPresenter.swift */; };
+		F4D01DF926F22BB6003F344F /* NewsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D01DF826F22BB6003F344F /* NewsPresenter.swift */; };
 		F4D01DFB26F2435F003F344F /* EnumOfURLs.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D01DFA26F2435E003F344F /* EnumOfURLs.swift */; };
+		F4D01DFD26F348D6003F344F /* Philipok.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D01DFC26F348D6003F344F /* Philipok.swift */; };
 		F4D2F79A25E7D7AE009EB2C6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D2F79925E7D7AE009EB2C6 /* AppDelegate.swift */; };
 		F4D2F79C25E7D7AE009EB2C6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D2F79B25E7D7AE009EB2C6 /* SceneDelegate.swift */; };
 		F4D2F7A425E7D7AE009EB2C6 /* StocksApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F4D2F7A225E7D7AE009EB2C6 /* StocksApp.xcdatamodeld */; };
@@ -79,6 +83,9 @@
 		D9F5920A1F207904AA5B2B5B /* Pods-StocksApp-StocksAppUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StocksApp-StocksAppUITests.release.xcconfig"; path = "Target Support Files/Pods-StocksApp-StocksAppUITests/Pods-StocksApp-StocksAppUITests.release.xcconfig"; sourceTree = "<group>"; };
 		F42913F826A1B6D400F4F0D2 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		F4416B42264D1A6A00505F7A /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		F446FD7626F48E960062BD3D /* ChartModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartModel.swift; sourceTree = "<group>"; };
+		F446FD7826F490470062BD3D /* NewsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsModel.swift; sourceTree = "<group>"; };
+		F446FD7A26F4AE690062BD3D /* Copy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Copy.swift; sourceTree = "<group>"; };
 		F449CF3B2681DEA200739830 /* CarouselCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselCollectionViewCell.swift; sourceTree = "<group>"; };
 		F449CF442682051800739830 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
 		F456AC1326A83CA4003664B3 /* MarketDataCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketDataCell.swift; sourceTree = "<group>"; };
@@ -87,16 +94,17 @@
 		F4C1EECE2680789C0037C9F5 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		F4C1EED326809F7B0037C9F5 /* TableCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableCollectionViewCell.swift; sourceTree = "<group>"; };
 		F4CC5FEF26985F4000718010 /* FavoritesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesCell.swift; sourceTree = "<group>"; };
-		F4D01DE226F08E7F003F344F /* MainViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewPresenter.swift; sourceTree = "<group>"; };
-		F4D01DE426F090B7003F344F /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		F4D01DE226F08E7F003F344F /* MainPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPresenter.swift; sourceTree = "<group>"; };
+		F4D01DE426F090B7003F344F /* MainModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainModel.swift; sourceTree = "<group>"; };
 		F4D01DE626F09324003F344F /* ModuleBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleBuilder.swift; sourceTree = "<group>"; };
-		F4D01DEB26F1DCA3003F344F /* SearchViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewPresenter.swift; sourceTree = "<group>"; };
-		F4D01DED26F1F646003F344F /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
-		F4D01DF026F1FA22003F344F /* FavoritesViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewPresenter.swift; sourceTree = "<group>"; };
-		F4D01DF326F21B3D003F344F /* ChartViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewPresenter.swift; sourceTree = "<group>"; };
+		F4D01DEB26F1DCA3003F344F /* SearchPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPresenter.swift; sourceTree = "<group>"; };
+		F4D01DED26F1F646003F344F /* SearchModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchModel.swift; sourceTree = "<group>"; };
+		F4D01DF026F1FA22003F344F /* FavoritesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesPresenter.swift; sourceTree = "<group>"; };
+		F4D01DF326F21B3D003F344F /* ChartPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartPresenter.swift; sourceTree = "<group>"; };
 		F4D01DF526F21B53003F344F /* ChartViewNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewNetworkManager.swift; sourceTree = "<group>"; };
-		F4D01DF826F22BB6003F344F /* NewsViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsViewPresenter.swift; sourceTree = "<group>"; };
+		F4D01DF826F22BB6003F344F /* NewsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsPresenter.swift; sourceTree = "<group>"; };
 		F4D01DFA26F2435E003F344F /* EnumOfURLs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnumOfURLs.swift; sourceTree = "<group>"; };
+		F4D01DFC26F348D6003F344F /* Philipok.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Philipok.swift; sourceTree = "<group>"; };
 		F4D2F79625E7D7AE009EB2C6 /* StocksApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StocksApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4D2F79925E7D7AE009EB2C6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F4D2F79B25E7D7AE009EB2C6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -180,8 +188,8 @@
 			isa = PBXGroup;
 			children = (
 				F4C1EECE2680789C0037C9F5 /* MainViewController.swift */,
-				F4D01DE226F08E7F003F344F /* MainViewPresenter.swift */,
-				F4D01DE426F090B7003F344F /* MainViewModel.swift */,
+				F4D01DE226F08E7F003F344F /* MainPresenter.swift */,
+				F4D01DE426F090B7003F344F /* MainModel.swift */,
 			);
 			path = MainVIewModule;
 			sourceTree = "<group>";
@@ -190,8 +198,8 @@
 			isa = PBXGroup;
 			children = (
 				F4E7DE2B268F44560032D26B /* SearchViewController.swift */,
-				F4D01DEB26F1DCA3003F344F /* SearchViewPresenter.swift */,
-				F4D01DED26F1F646003F344F /* SearchViewModel.swift */,
+				F4D01DEB26F1DCA3003F344F /* SearchPresenter.swift */,
+				F4D01DED26F1F646003F344F /* SearchModel.swift */,
 				F4E7DE26268F36480032D26B /* SearchTableViewCell.swift */,
 				F4EAC24426DCF545002ABDDE /* SearchTableViewCellWithImage.swift */,
 			);
@@ -202,7 +210,7 @@
 			isa = PBXGroup;
 			children = (
 				F4EC4FBE25EE62760085F029 /* FavoritesViewController.swift */,
-				F4D01DF026F1FA22003F344F /* FavoritesViewPresenter.swift */,
+				F4D01DF026F1FA22003F344F /* FavoritesPresenter.swift */,
 				F4CC5FEF26985F4000718010 /* FavoritesCell.swift */,
 			);
 			path = FavoritesViewModule;
@@ -212,7 +220,9 @@
 			isa = PBXGroup;
 			children = (
 				F4DE6651261C9DC100109F0A /* ChartViewController.swift */,
-				F4D01DF326F21B3D003F344F /* ChartViewPresenter.swift */,
+				F4D01DFC26F348D6003F344F /* Philipok.swift */,
+				F4D01DF326F21B3D003F344F /* ChartPresenter.swift */,
+				F446FD7626F48E960062BD3D /* ChartModel.swift */,
 				F4D01DF526F21B53003F344F /* ChartViewNetworkManager.swift */,
 			);
 			path = ChartViewModule;
@@ -222,8 +232,9 @@
 			isa = PBXGroup;
 			children = (
 				F4B5CDF12620378600B43385 /* NewsViewController.swift */,
-				F4D01DF826F22BB6003F344F /* NewsViewPresenter.swift */,
+				F4D01DF826F22BB6003F344F /* NewsPresenter.swift */,
 				F4ED5B3626B1411A00A30134 /* NewsCell.swift */,
+				F446FD7826F490470062BD3D /* NewsModel.swift */,
 			);
 			path = NewsViewModule;
 			sourceTree = "<group>";
@@ -322,6 +333,7 @@
 			children = (
 				F4D2F7A225E7D7AE009EB2C6 /* StocksApp.xcdatamodeld */,
 				F4D2F7E125E7E34A009EB2C6 /* WebSocketManager.swift */,
+				F446FD7A26F4AE690062BD3D /* Copy.swift */,
 				F4E3414B26D63271003044A7 /* NetworkMonitor.swift */,
 				F4D2F7E625E7EF43009EB2C6 /* WebSocketData.swift */,
 				F4D01DE626F09324003F344F /* ModuleBuilder.swift */,
@@ -571,36 +583,40 @@
 			buildActionMask = 2147483647;
 			files = (
 				F4C1EED426809F7B0037C9F5 /* TableCollectionViewCell.swift in Sources */,
-				F4D01DEC26F1DCA3003F344F /* SearchViewPresenter.swift in Sources */,
+				F4D01DEC26F1DCA3003F344F /* SearchPresenter.swift in Sources */,
 				F4ED5B3726B1411A00A30134 /* NewsCell.swift in Sources */,
 				F4D2F7E225E7E34A009EB2C6 /* WebSocketManager.swift in Sources */,
 				F4C1EECF2680789C0037C9F5 /* MainViewController.swift in Sources */,
 				F449CF3C2681DEA200739830 /* CarouselCollectionViewCell.swift in Sources */,
 				F4D01DF626F21B53003F344F /* ChartViewNetworkManager.swift in Sources */,
 				F449CF452682051800739830 /* SectionHeader.swift in Sources */,
-				F4D01DEE26F1F646003F344F /* SearchViewModel.swift in Sources */,
+				F4D01DEE26F1F646003F344F /* SearchModel.swift in Sources */,
+				F446FD7926F490470062BD3D /* NewsModel.swift in Sources */,
 				F4E3414A26D398E0003044A7 /* MainTabBarController.swift in Sources */,
 				F4D2F7DA25E7E1C5009EB2C6 /* Constants.swift in Sources */,
-				F4D01DF926F22BB6003F344F /* NewsViewPresenter.swift in Sources */,
+				F4D01DF926F22BB6003F344F /* NewsPresenter.swift in Sources */,
 				F4DE6652261C9DC100109F0A /* ChartViewController.swift in Sources */,
 				F4EC4FBF25EE62760085F029 /* FavoritesViewController.swift in Sources */,
 				F4E7DE2C268F44560032D26B /* SearchViewController.swift in Sources */,
 				F4416B43264D1A6A00505F7A /* NetworkManager.swift in Sources */,
-				F4D01DE526F090B7003F344F /* MainViewModel.swift in Sources */,
+				F4D01DE526F090B7003F344F /* MainModel.swift in Sources */,
 				F4D2F7E725E7EF43009EB2C6 /* WebSocketData.swift in Sources */,
 				F4E3414C26D63271003044A7 /* NetworkMonitor.swift in Sources */,
+				F446FD7726F48E960062BD3D /* ChartModel.swift in Sources */,
 				F4CC5FF026985F4000718010 /* FavoritesCell.swift in Sources */,
 				F4D2F79A25E7D7AE009EB2C6 /* AppDelegate.swift in Sources */,
-				F4D01DF126F1FA22003F344F /* FavoritesViewPresenter.swift in Sources */,
+				F4D01DFD26F348D6003F344F /* Philipok.swift in Sources */,
+				F4D01DF126F1FA22003F344F /* FavoritesPresenter.swift in Sources */,
 				F4D01DFB26F2435F003F344F /* EnumOfURLs.swift in Sources */,
 				F4B5CDF22620378600B43385 /* NewsViewController.swift in Sources */,
-				F4D01DE326F08E80003F344F /* MainViewPresenter.swift in Sources */,
+				F4D01DE326F08E80003F344F /* MainPresenter.swift in Sources */,
 				F456AC1426A83CA4003664B3 /* MarketDataCell.swift in Sources */,
 				F4D01DE726F09324003F344F /* ModuleBuilder.swift in Sources */,
 				F4D2F7A425E7D7AE009EB2C6 /* StocksApp.xcdatamodeld in Sources */,
 				F4EAC24726DD1CD8002ABDDE /* HeaderCollectionReusableView.swift in Sources */,
 				F4EAC24526DCF545002ABDDE /* SearchTableViewCellWithImage.swift in Sources */,
-				F4D01DF426F21B3D003F344F /* ChartViewPresenter.swift in Sources */,
+				F446FD7B26F4AE690062BD3D /* Copy.swift in Sources */,
+				F4D01DF426F21B3D003F344F /* ChartPresenter.swift in Sources */,
 				F4E7DE27268F36480032D26B /* SearchTableViewCell.swift in Sources */,
 				F4D2F79C25E7D7AE009EB2C6 /* SceneDelegate.swift in Sources */,
 				F497B0912684CD6D00F9DDA7 /* i.swift in Sources */,

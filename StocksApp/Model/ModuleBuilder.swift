@@ -45,9 +45,9 @@ class ModuleBuilder : Builder {
     
     func createChartViewModule(crypto: Crypto) -> UIViewController {
         let view = ChartViewController()
-        view.crypto = crypto
-//        let presenter = MainViewPresenter(view: view)
-//        view.presenter = presenter
+        let presenter = ChartViewPresenter(crypto : crypto, view: view)
+//        view.crypto = crypto
+        view.presenter = presenter
         return view
     }
 }
