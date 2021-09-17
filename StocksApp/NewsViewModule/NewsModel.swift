@@ -36,3 +36,13 @@ struct SourceInfo: Codable {
     let lang: Lang?
     let img: String?
 }
+
+//NEWS
+struct News: Codable {
+    let data: [NewsData]?
+
+    enum CodingKeys: String, CodingKey {
+        case data = "Data"
+
+    }
+}

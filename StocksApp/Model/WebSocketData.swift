@@ -97,9 +97,9 @@ class Crypto : Hashable, Equatable {
         self.id = id
         self.percentages = percentages
         self.image = image
-        self.marketDataArray = nil
-        self.communityDataArray = nil
-        self.links = nil
+//        self.marketDataArray = nil
+//        self.communityDataArray = nil
+//        self.links = nil
 
     }
     init(symbolOfCrypto : String, id : String) {
@@ -111,10 +111,10 @@ class Crypto : Hashable, Equatable {
         self.descriptionOfCrypto = ""
         self.id = id
         self.percentages = Persentages()
-        self.image = nil
-        self.marketDataArray = nil
-        self.communityDataArray = nil
-        self.links = nil
+//        self.image = nil
+//        self.marketDataArray = nil
+//        self.communityDataArray = nil
+//        self.links = nil
 
     }
     
@@ -245,15 +245,15 @@ struct Weiss: Codable {
 }
 
 
-//NEWS
-struct News: Codable {
-    let data: [NewsData]?
-
-    enum CodingKeys: String, CodingKey {
-        case data = "Data"
-
-    }
-}
+////NEWS
+//struct News: Codable {
+//    let data: [NewsData]?
+//
+//    enum CodingKeys: String, CodingKey {
+//        case data = "Data"
+//
+//    }
+//}
 //struct NewsData: Codable {
 //    let id: String?
 //    let guid: String?

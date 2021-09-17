@@ -49,21 +49,25 @@ class MainViewPresenter : MainViewPresenterProtocol {
             DispatchGroups.shared.groupOne.wait()
             networkManager.getFullListOfCoinGecko(group : DispatchGroups.shared.groupTwo, waitingGroup : DispatchGroups.shared.groupOne)
             networkManager.collectionViewLoad(group : DispatchGroups.shared.groupTwo)
-
+            
             view.setupCollectionView()
             setupDataSource()
-
+            
             if DataSingleton.shared.coinCapDict.count != 0 {
-                networkManager.putCoinGeckoData(array: &DataSingleton.shared.results, group: DispatchGroups.shared.groupTwo, otherArray: DataSingleton.shared.collectionViewArray)
-                networkManager.putCoinGeckoData(array: &DataSingleton.shared.resultsF, group: DispatchGroups.shared.groupTwo, otherArray: [])
+                networkManager.putCoinGeckoData(array: &DataSingleton.shared.results,
+                                                group: DispatchGroups.shared.groupTwo,
+                                                otherArray: DataSingleton.shared.collectionViewArray)
+                networkManager.putCoinGeckoData(array: &DataSingleton.shared.resultsF,
+                                                group: DispatchGroups.shared.groupTwo,
+                                                otherArray: [])
                 DispatchGroups.shared.groupTwo.wait()
                 networkManager.putCoinGeckoData(array: &DataSingleton.shared.collectionViewArray, group: DispatchGroups.shared.groupThree, otherArray: DataSingleton.shared.results)
-            
+                
                 webSocketManager.webSocket2(symbols: DataSingleton.shared.websocketArray)
                 webSocketManager.receiveMessage(tableView: [], collectionView: [view.returnCollectionView()])
                 DispatchGroups.shared.groupThree.wait()
                 networkManager.setupSections()
-            reloadData()
+                reloadData()
                 networkManager.updateUI(collectionViews: [view.returnCollectionView()])
                 networkManager.recoursiveUpdateUI(collectionViews: [view.returnCollectionView()])
 

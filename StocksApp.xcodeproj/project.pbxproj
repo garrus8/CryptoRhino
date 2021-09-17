@@ -19,6 +19,7 @@
 		F446FD7F26F4B3510062BD3D /* WebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = F446FD7E26F4B3510062BD3D /* WebSocket.swift */; };
 		F446FD8126F4B7DC0062BD3D /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F446FD8026F4B7DC0062BD3D /* CoreDataManager.swift */; };
 		F446FD8326F4BADB0062BD3D /* DiaspatchGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = F446FD8226F4BADB0062BD3D /* DiaspatchGroups.swift */; };
+		F446FD8926F4D2B90062BD3D /* nope.swift in Sources */ = {isa = PBXBuildFile; fileRef = F446FD8826F4D2B90062BD3D /* nope.swift */; };
 		F449CF3C2681DEA200739830 /* CarouselCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F449CF3B2681DEA200739830 /* CarouselCollectionViewCell.swift */; };
 		F449CF452682051800739830 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F449CF442682051800739830 /* SectionHeader.swift */; };
 		F456AC1426A83CA4003664B3 /* MarketDataCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F456AC1326A83CA4003664B3 /* MarketDataCell.swift */; };
@@ -94,6 +95,7 @@
 		F446FD7E26F4B3510062BD3D /* WebSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocket.swift; sourceTree = "<group>"; };
 		F446FD8026F4B7DC0062BD3D /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		F446FD8226F4BADB0062BD3D /* DiaspatchGroups.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaspatchGroups.swift; sourceTree = "<group>"; };
+		F446FD8826F4D2B90062BD3D /* nope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = nope.swift; sourceTree = "<group>"; };
 		F449CF3B2681DEA200739830 /* CarouselCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselCollectionViewCell.swift; sourceTree = "<group>"; };
 		F449CF442682051800739830 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
 		F456AC1326A83CA4003664B3 /* MarketDataCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketDataCell.swift; sourceTree = "<group>"; };
@@ -345,6 +347,7 @@
 				F446FD8026F4B7DC0062BD3D /* CoreDataManager.swift */,
 				F446FD7C26F4AF770062BD3D /* Singleton.swift */,
 				F446FD7A26F4AE690062BD3D /* Copy.swift */,
+				F446FD8826F4D2B90062BD3D /* nope.swift */,
 				F4E3414B26D63271003044A7 /* NetworkMonitor.swift */,
 				F4D2F7E625E7EF43009EB2C6 /* WebSocketData.swift */,
 				F4D01DE626F09324003F344F /* ModuleBuilder.swift */,
@@ -601,6 +604,7 @@
 				F4C1EECF2680789C0037C9F5 /* MainViewController.swift in Sources */,
 				F449CF3C2681DEA200739830 /* CarouselCollectionViewCell.swift in Sources */,
 				F4D01DF626F21B53003F344F /* ChartViewNetworkManager.swift in Sources */,
+				F446FD8926F4D2B90062BD3D /* nope.swift in Sources */,
 				F449CF452682051800739830 /* SectionHeader.swift in Sources */,
 				F4D01DEE26F1F646003F344F /* SearchModel.swift in Sources */,
 				F446FD7926F490470062BD3D /* NewsModel.swift in Sources */,
