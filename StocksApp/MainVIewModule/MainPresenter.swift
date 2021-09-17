@@ -8,7 +8,7 @@
 import UIKit
 
 protocol MainViewPresenterProtocol : AnyObject {
-    init(view: MainViewControllerProtocol, builder : Builder)
+    init(view: MainViewControllerProtocol, builder : Builder, networkManager : NetworkManager, webSocketManager : WebSocketManager, coreDataManager : CoreDataManager)
     func launchMethods()
     func setupDataSource()
     func createCompositionalLayout() -> UICollectionViewLayout
@@ -23,40 +23,49 @@ class MainViewPresenter : MainViewPresenterProtocol {
     var dataSource : UICollectionViewDiffableDataSource<SectionOfCrypto, Crypto>?
     var sections = [SectionOfCrypto]()
     var builder : Builder
+    var networkManager : NetworkManager!
+    var webSocketManager : WebSocketManager!
+    var coreDataManager : CoreDataManager!
     
-    required init(view: MainViewControllerProtocol, builder : Builder) {
+    required init(view: MainViewControllerProtocol, builder : Builder,
+                  networkManager : NetworkManager,
+                  webSocketManager : WebSocketManager,
+                  coreDataManager : CoreDataManager) {
         self.view = view
         self.builder = builder
+        self.networkManager = networkManager
+        self.coreDataManager = coreDataManager
+        self.webSocketManager = webSocketManager
     }
     
     func launchMethods() {
+        
         if NetworkMonitor.shared.isConnected {
             
-            NetworkManager.shared.getData()
-            NetworkManager.shared.getFullCoinCapList()
-            NetworkManager.shared.getTopOfCrypto()
-            NetworkManager.shared.getTopSearch()
-            NetworkManager.shared.groupOne.wait()
-            NetworkManager.shared.getFullListOfCoinGecko()
-            NetworkManager.shared.collectionViewLoad()
-
+            coreDataManager.getData()
+            networkManager.getFullCoinCapList(group : DispatchGroups.shared.groupOne)
+            networkManager.getTopOfCrypto(group : DispatchGroups.shared.groupOne)
+            networkManager.getTopSearch(group : DispatchGroups.shared.groupOne)
+            DispatchGroups.shared.groupOne.wait()
+            networkManager.getFullListOfCoinGecko(group : DispatchGroups.shared.groupTwo, waitingGroup : DispatchGroups.shared.groupOne)
+            networkManager.collectionViewLoad(group : DispatchGroups.shared.groupTwo)
 
             view.setupCollectionView()
             setupDataSource()
 
-            if NetworkManager.shared.coinCapDict.count != 0 {
-            NetworkManager.shared.putCoinGeckoData(array: &NetworkManager.shared.results, group: NetworkManager.shared.groupTwo, otherArray: NetworkManager.shared.collectionViewArray)
-            NetworkManager.shared.putCoinGeckoData(array: &NetworkManager.shared.resultsF, group: NetworkManager.shared.groupTwo, otherArray: [])
-            NetworkManager.shared.groupTwo.wait()
-            NetworkManager.shared.putCoinGeckoData(array: &NetworkManager.shared.collectionViewArray, group: NetworkManager.shared.groupThree, otherArray: NetworkManager.shared.results)
+            if DataSingleton.shared.coinCapDict.count != 0 {
+                networkManager.putCoinGeckoData(array: &DataSingleton.shared.results, group: DispatchGroups.shared.groupTwo, otherArray: DataSingleton.shared.collectionViewArray)
+                networkManager.putCoinGeckoData(array: &DataSingleton.shared.resultsF, group: DispatchGroups.shared.groupTwo, otherArray: [])
+                DispatchGroups.shared.groupTwo.wait()
+                networkManager.putCoinGeckoData(array: &DataSingleton.shared.collectionViewArray, group: DispatchGroups.shared.groupThree, otherArray: DataSingleton.shared.results)
             
-            NetworkManager.shared.webSocket2(symbols: NetworkManager.shared.websocketArray)
-            NetworkManager.shared.receiveMessage(tableView: [], collectionView: [view.returnCollectionView()])
-            NetworkManager.shared.groupThree.wait()
-            NetworkManager.shared.setupSections()
+                webSocketManager.webSocket2(symbols: DataSingleton.shared.websocketArray)
+                webSocketManager.receiveMessage(tableView: [], collectionView: [view.returnCollectionView()])
+                DispatchGroups.shared.groupThree.wait()
+                networkManager.setupSections()
             reloadData()
-            NetworkManager.shared.updateUI(collectionViews: [view.returnCollectionView()])
-            NetworkManager.shared.recoursiveUpdateUI(collectionViews: [view.returnCollectionView()])
+                networkManager.updateUI(collectionViews: [view.returnCollectionView()])
+                networkManager.recoursiveUpdateUI(collectionViews: [view.returnCollectionView()])
 
 //                NotificationCenter.default.addObserver(view, selector: #selector(view.reloadCollectionView), name: NSNotification.Name(rawValue: "newImage"), object: nil)
             }
@@ -69,10 +78,10 @@ class MainViewPresenter : MainViewPresenterProtocol {
     func setupDataSource() {
         //            CollectionViewGroup.enter()
         dataSource = UICollectionViewDiffableDataSource<SectionOfCrypto, Crypto>(collectionView: view.returnCollectionView(), cellProvider: { (collectionView, indexPath, crypto) -> UICollectionViewCell? in
-            let carousel = SectionOfCrypto(type: "carousel", title: "Top (by Market Cap)", items: NetworkManager.shared.collectionViewArray)
-            let table = SectionOfCrypto(type: "table", title: "Hot (by 24H Volume)", items: NetworkManager.shared.results)
+            let carousel = SectionOfCrypto(type: "carousel", title: "Top (by Market Cap)", items: DataSingleton.shared.collectionViewArray)
+            let table = SectionOfCrypto(type: "table", title: "Hot (by 24H Volume)", items: DataSingleton.shared.results)
             self.sections = [carousel,table]
-            switch NetworkManager.shared.sections[indexPath.section].type {
+            switch DataSingleton.shared.sections[indexPath.section].type {
             case "carousel" :
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CarouselCollectionViewCell.reuseId, for: indexPath) as! CarouselCollectionViewCell
                 cell.configure(with: crypto)
@@ -100,7 +109,7 @@ class MainViewPresenter : MainViewPresenterProtocol {
     
     func createCompositionalLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
-            let section = NetworkManager.shared.sections[sectionIndex]
+            let section = DataSingleton.shared.sections[sectionIndex]
             switch section.type {
             case "carousel" :
                 return self.view.createCarouselSection()
@@ -113,12 +122,12 @@ class MainViewPresenter : MainViewPresenterProtocol {
     }
     
     func reloadData() {
-        NetworkManager.shared.groupSetupSections.wait()
+        DispatchGroups.shared.groupSetupSections.wait()
         
         var snapshot = NSDiffableDataSourceSnapshot<SectionOfCrypto, Crypto>()
-        snapshot.appendSections(NetworkManager.shared.sections)
+        snapshot.appendSections(DataSingleton.shared.sections)
         
-        for section in NetworkManager.shared.sections {
+        for section in DataSingleton.shared.sections {
             snapshot.appendItems(section.items, toSection: section)
         }
         dataSource?.apply(snapshot)

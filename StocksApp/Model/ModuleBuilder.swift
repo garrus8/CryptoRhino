@@ -17,9 +17,13 @@ protocol Builder {
 
 class ModuleBuilder : Builder {
     //MARK: - УБРАТЬ STATIC
+    
     func createMainViewModule() -> UIViewController {
         let view = MainViewController()
-        let presenter = MainViewPresenter(view: view, builder: self)
+        let networkManager = NetworkManager()
+        let webSocketManager = WebSocketManager()
+        let coreDataManager = CoreDataManager(networkManager: networkManager)
+        let presenter = MainViewPresenter(view: view, builder: self, networkManager: networkManager,webSocketManager: webSocketManager, coreDataManager: coreDataManager)
         view.presenter = presenter
         return view
     }
@@ -38,14 +42,18 @@ class ModuleBuilder : Builder {
     }
     func createNewsViewModule() -> UIViewController {
         let view = NewsViewController()
-        let presenter = NewsViewPresenter(view: view)
+        let networkManager = NetworkManager()
+        let presenter = NewsViewPresenter(view: view, networkManager : networkManager)
         view.presenter = presenter
         return view
     }
     
     func createChartViewModule(crypto: Crypto) -> UIViewController {
         let view = ChartViewController()
-        let presenter = ChartViewPresenter(crypto : crypto, view: view)
+        let networkManager = NetworkManager()
+        let webSocketManager = WebSocketManager()
+        let coreDataManager = CoreDataManager(networkManager: networkManager)
+        let presenter = ChartViewPresenter(crypto : crypto, view: view, networkManager: networkManager, coreDataManager: coreDataManager, websocketManager: webSocketManager)
 //        view.crypto = crypto
         view.presenter = presenter
         return view

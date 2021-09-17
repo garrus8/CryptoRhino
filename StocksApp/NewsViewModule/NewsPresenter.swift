@@ -18,9 +18,11 @@ protocol NewsViewPresenterProtocol : AnyObject {
 class NewsViewPresenter : NewsViewPresenterProtocol {
     var newsData = [NewsData]()
     var view : NewsViewControllerProtocol!
+    var networkManager : NetworkManager!
     
-    init(view : NewsViewControllerProtocol) {
+    init(view : NewsViewControllerProtocol, networkManager : NetworkManager) {
         self.view = view
+        self.networkManager = networkManager
         DispatchQueue.main.async {
             self.view.activityIndicator.startAnimating()
             self.view.activityIndicator.isHidden = false
@@ -62,7 +64,7 @@ class NewsViewPresenter : NewsViewPresenterProtocol {
         }
     }
     func obtainImage (stringUrl: String, complition : @escaping (UIImage)->()) {
-        NetworkManager.shared.obtainImage(StringUrl: stringUrl, group: DispatchGroup()) { image in
+        networkManager.obtainImage(StringUrl: stringUrl, group: DispatchGroup()) { image in
             complition(image)
         }
     }

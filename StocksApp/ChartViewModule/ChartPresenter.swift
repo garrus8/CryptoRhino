@@ -38,12 +38,20 @@ class ChartViewPresenter : ChartViewPresenterProtocol {
     var image = UIImage()
     let imageOfHeart = UIImage(systemName: "heart")
     let imageOfHeartFill = UIImage(systemName: "heart.fill")
-
+    var networkManager : NetworkManager!
+    var coreDataManager : CoreDataManager!
+    var websocketManager : WebSocketManager!
     var labels = [String:String]()
     
-    init(crypto : Crypto, view : ChartViewControllerProtocol) {
+    init(crypto : Crypto, view : ChartViewControllerProtocol,
+         networkManager : NetworkManager,
+         coreDataManager : CoreDataManager,
+         websocketManager : WebSocketManager ) {
         self.view = view
         self.crypto = crypto
+        self.networkManager = networkManager
+        self.coreDataManager = coreDataManager
+        self.websocketManager = websocketManager
         load()
         checkAndLoad()
         isFavorite()
@@ -113,14 +121,14 @@ class ChartViewPresenter : ChartViewPresenterProtocol {
     func checkAndLoad() {
     if labels[KeysOfLabels.priceOfCrypto.rawValue] == "Price of crypto" {
         DispatchQueue.global().async {
-            NetworkManager.shared.dict1[(self.labels[KeysOfLabels.symbolOfCurrentCrypto.rawValue]?.uppercased())!] = 0
+            DataSingleton.shared.dict1[(self.labels[KeysOfLabels.symbolOfCurrentCrypto.rawValue]?.uppercased())!] = 0
             
-            NetworkManager.shared.getCoinGeckoData(id: self.labels[KeysOfLabels.idOfCrypto.rawValue]!,
+            self.networkManager.getCoinGeckoData(id: self.labels[KeysOfLabels.idOfCrypto.rawValue]!,
                                                    symbol: self.labels[KeysOfLabels.symbolOfCurrentCrypto.rawValue]!,
-                                                   group: NetworkManager.shared.groupOne) { (stocks) in
+                                                   group: DispatchGroups.shared.groupOne) { (stocks) in
                 
                 if let stringUrl = stocks.image?.large {
-                    NetworkManager.shared.obtainImage(StringUrl: stringUrl, group: DispatchGroup()) { image in
+                    self.networkManager.obtainImage(StringUrl: stringUrl, group: DispatchGroup()) { image in
                         self.image = image
                         self.labels[KeysOfLabels.imageString.rawValue] = (stocks.image?.large)!
                         self.view.navigationBarSetup()
@@ -182,7 +190,7 @@ class ChartViewPresenter : ChartViewPresenterProtocol {
     }
 }
     func isFavorite() {
-        for i in NetworkManager.shared.favorites {
+        for i in DataSingleton.shared.favorites {
             if let symbol = i.symbol {
                 if labels[KeysOfLabels.symbolOfCurrentCrypto.rawValue] == symbol {
                     bool = true
@@ -200,15 +208,15 @@ class ChartViewPresenter : ChartViewPresenterProtocol {
             let context = self.getContext()
             let favoriteSymbol = labels[KeysOfLabels.symbolOfCurrentCrypto.rawValue]
             
-            for i in NetworkManager.shared.favorites {
+            for i in DataSingleton.shared.favorites {
                 if i.symbol == favoriteSymbol {
                     context.delete(i)
                     
                 }
             }
-            for (index,j) in NetworkManager.shared.resultsF.enumerated() {
+            for (index,j) in DataSingleton.shared.resultsF.enumerated() {
                 if j.symbolOfCrypto == favoriteSymbol {
-                    NetworkManager.shared.resultsF.remove(at: index)
+                    DataSingleton.shared.resultsF.remove(at: index)
                 }
             }
             
@@ -238,9 +246,9 @@ class ChartViewPresenter : ChartViewPresenterProtocol {
                 print(error.localizedDescription)
             }
             
-            NetworkManager.shared.favorites.insert(object, at: 0)
-            NetworkManager.shared.addData(object: object)
-            NetworkManager.shared.webSocket(symbols: NetworkManager.shared.symbols, symbolsF: NetworkManager.shared.symbolsF)
+            DataSingleton.shared.favorites.insert(object, at: 0)
+            coreDataManager.addData(object: object)
+            websocketManager.webSocket(symbols: DataSingleton.shared.symbols, symbolsF: DataSingleton.shared.symbolsF)
 
         }
         bool.toggle()

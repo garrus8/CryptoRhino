@@ -25,7 +25,7 @@ class FavoritesViewPresenter : FavoritesViewPresenterProtocol {
     var filteredResults = GeckoList()
     var filteredResultsOfFavorites = [Crypto]()
     var isFavoritesEmpty : Bool {
-        NetworkManager.shared.resultsF.isEmpty
+        DataSingleton.shared.resultsF.isEmpty
     }
     var builder : Builder
     init(view: FavoritesViewControllerProtocol, builder : Builder) {
@@ -34,12 +34,12 @@ class FavoritesViewPresenter : FavoritesViewPresenterProtocol {
     }
     
     func returnNumberOfItems() -> Int {
-        if view.isFiltering && NetworkManager.shared.resultsF.isEmpty {
+        if view.isFiltering && DataSingleton.shared.resultsF.isEmpty {
             return filteredResults.count
-        } else if view.isFiltering && !NetworkManager.shared.resultsF.isEmpty {
+        } else if view.isFiltering && !DataSingleton.shared.resultsF.isEmpty {
             return filteredResultsOfFavorites.count
         }
-        return NetworkManager.shared.resultsF.count
+        return DataSingleton.shared.resultsF.count
     }
     
     func getResultForFilteredAndEmpty (indexPath : IndexPath) -> GeckoListElement {
@@ -49,7 +49,7 @@ class FavoritesViewPresenter : FavoritesViewPresenterProtocol {
         filteredResultsOfFavorites[indexPath.row]
     }
     func getResultForNotFiltered (indexPath : IndexPath) -> Crypto {
-        NetworkManager.shared.resultsF[indexPath.row]
+        DataSingleton.shared.resultsF[indexPath.row]
     }
     func showChartView (indexPath : IndexPath) {
         let result: Crypto
@@ -59,20 +59,20 @@ class FavoritesViewPresenter : FavoritesViewPresenterProtocol {
         } else if view.isFiltering && !isFavoritesEmpty {
             result = filteredResultsOfFavorites[indexPath.row]
         } else {
-            result = NetworkManager.shared.resultsF[indexPath.row]
+            result = DataSingleton.shared.resultsF[indexPath.row]
         }
         let chartVC = builder.createChartViewModule(crypto: result)
         view.navigationController?.pushViewController(chartVC, animated: true)
     }
     func filter(searchText : String) {
         if isFavoritesEmpty {
-            filteredResults = NetworkManager.shared.fullBinanceList.filter({ (searchElem : GeckoListElement) -> Bool in
+            filteredResults = DataSingleton.shared.fullBinanceList.filter({ (searchElem : GeckoListElement) -> Bool in
                 
                 return searchElem.symbol!.lowercased().hasPrefix(searchText.lowercased()) ||
                     searchElem.name!.split(separator: "/").first!.lowercased().hasPrefix(searchText.lowercased())
             })
         } else {
-            filteredResultsOfFavorites = NetworkManager.shared.resultsF.filter({ (searchElem : Crypto) -> Bool in
+            filteredResultsOfFavorites = DataSingleton.shared.resultsF.filter({ (searchElem : Crypto) -> Bool in
                 
                 return searchElem.nameOfCrypto!.lowercased().hasPrefix(searchText.lowercased()) ||
                     searchElem.symbolOfCrypto.split(separator: "/").first!.lowercased().hasPrefix(searchText.lowercased())

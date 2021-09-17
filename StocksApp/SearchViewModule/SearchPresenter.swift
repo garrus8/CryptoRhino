@@ -34,7 +34,7 @@ class SearchViewPresenter : SearchViewPresenterProtocol {
         if view.isFiltering {
             return filteredResults.count
         } else {
-            return NetworkManager.shared.topList.count
+            return DataSingleton.shared.topList.count
         }
     }
     
@@ -44,7 +44,7 @@ class SearchViewPresenter : SearchViewPresenterProtocol {
             let result = filteredResults[indexPath.row]
             crypto = Crypto(symbolOfCrypto: result.symbol!, nameOfCrypto: result.name, id: result.id)
         } else {
-            let result = NetworkManager.shared.topList[indexPath.row]
+            let result = DataSingleton.shared.topList[indexPath.row]
             crypto = Crypto(symbolOfCrypto: result.symbol, nameOfCrypto: result.name, id: result.id)
         }
         let chartVC = builder.createChartViewModule(crypto: crypto)
@@ -52,7 +52,7 @@ class SearchViewPresenter : SearchViewPresenterProtocol {
     }
     
     func filter(searchText : String) {
-        filteredResults = NetworkManager.shared.fullBinanceList.filter({ (searchElem : GeckoListElement) -> Bool in
+        filteredResults = DataSingleton.shared.fullBinanceList.filter({ (searchElem : GeckoListElement) -> Bool in
 
             return searchElem.symbol!.lowercased().hasPrefix(searchText.lowercased()) ||
                 searchElem.name!.split(separator: "/").first!.lowercased().hasPrefix(searchText.lowercased())
@@ -64,7 +64,7 @@ class SearchViewPresenter : SearchViewPresenterProtocol {
             return result
     }
     func getTopListElem(indexPath : IndexPath) -> TopSearchItem {
-            let result = NetworkManager.shared.topList[indexPath.row]
+            let result = DataSingleton.shared.topList[indexPath.row]
             return result
     }
   
