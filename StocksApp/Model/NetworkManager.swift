@@ -20,6 +20,10 @@ import UIKit
  Сделать обработку ответа от сервера, при запросе графика, если request.statusCode == error => в  контроллере ячейка с графиком пустая и его вообще нет.
  */
 
+protocol NetworkManagerProtocol {
+    
+}
+
 
 class NetworkManager  {
     // DELEGATE
@@ -163,7 +167,7 @@ class NetworkManager  {
                             if cryptoCompareName != "USDT" && cryptoCompareName != "BNBBEAR" {
                                 guard let cryptoCompareFullName = elem.coinInfo?.fullName else {return}
                                 let crypto = Crypto(symbolOfCrypto: cryptoCompareName, price: "", change: "", nameOfCrypto: cryptoCompareFullName, descriptionOfCrypto: nil, id: "", percentages: Persentages(), image: UIImage(named: "pngwing.com")!)
-                                
+//                                let crypto = CryptoFactory.getTopOfCrypto(symbolOfCrypto: cryptoCompareName, price: "", change: "", nameOfCrypto: cryptoCompareFullName, descriptionOfCrypto: "", id: "", percentages: Persentages(), image: UIImage(named: "pngwing.com")!)
                                 self.queue.async(group : group, flags : .barrier) {
                                     DataSingleton.shared.dict1[cryptoCompareName] = 0
                                     DataSingleton.shared.results.append(crypto)
@@ -500,7 +504,7 @@ class NetworkManager  {
         }
     }
     
-    func collectionViewLoad(group : DispatchGroup) {
+    func carouselDataLoad(group : DispatchGroup) {
         
         // GROUP 3
         DispatchGroups.shared.groupOne.wait()

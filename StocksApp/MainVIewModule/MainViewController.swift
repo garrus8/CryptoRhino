@@ -204,9 +204,12 @@ extension MainViewController: UICollectionViewDelegate {
 //        ChartVC.crypto = crypto
 //
 //        self.navigationController?.pushViewController(ChartVC, animated: true)
-        guard let crypto = presenter.returnDataSource()?.itemIdentifier(for: indexPath) else { return }
         
-        presenter.showChartView(crypto: crypto)
+        
+//        guard let crypto = presenter.returnDataSource()?.itemIdentifier(for: indexPath) else { return }
+        
+        presenter.showChartView(indexPath : indexPath)
+        
 
     }
 }

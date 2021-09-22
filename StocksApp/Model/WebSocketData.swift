@@ -70,7 +70,6 @@ class Crypto : Hashable, Equatable {
         hasher.combine(symbolOfCrypto)
     }
     
-    
     var symbolOfCrypto : String
     var price : String?
     var change : String?
@@ -88,7 +87,7 @@ class Crypto : Hashable, Equatable {
 
 // Main init
     init(symbolOfCrypto : String, price : String, change: String, nameOfCrypto: String?, descriptionOfCrypto: String?, id : String?, percentages : Persentages?, image : UIImage) {
-        
+
         self.symbolOfCrypto = symbolOfCrypto
         self.price = price
         self.change = change
@@ -101,6 +100,9 @@ class Crypto : Hashable, Equatable {
 //        self.communityDataArray = nil
 //        self.links = nil
 
+    }
+    init(symbolOfCrypto : String) {
+        self.symbolOfCrypto = symbolOfCrypto
     }
     init(symbolOfCrypto : String, id : String) {
         

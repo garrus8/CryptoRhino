@@ -8,7 +8,7 @@
 import UIKit
 
 protocol SearchViewControllerProtocol : UIViewController {
-    var searchController : UISearchController { get set }
+//    var searchController : UISearchController { get set }
     var isFiltering: Bool { get }
     
 }

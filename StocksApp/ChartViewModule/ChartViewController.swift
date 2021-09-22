@@ -692,7 +692,7 @@ class ChartViewController: UIViewController, ChartViewDelegate , ChartViewContro
             navigationController?.navigationBar.prefersLargeTitles = false
             navigationItem.rightBarButtonItem = butt
             navigationItem.rightBarButtonItem?.tintColor = .white
-            navigationController!.navigationBar.tintColor = .white
+            navigationController?.navigationBar.tintColor = .white
             
             
             let logoAndTitle = UIView()

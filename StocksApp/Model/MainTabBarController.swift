@@ -58,7 +58,8 @@ class MainTabBarController : UITabBarController {
             navNewsVC
         ]
         for i in arrayOfNVC {
-            i.navigationBar.barTintColor = UIColor(red: 0.058, green: 0.109, blue: 0.329, alpha: 1)
+//            i.navigationBar.barTintColor = UIColor(red: 0.058, green: 0.109, blue: 0.329, alpha: 1)
+            i.navigationBar.barTintColor = UIColor(hexString: "#4158B7")
             i.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         }
         viewControllers = arrayOfNVC

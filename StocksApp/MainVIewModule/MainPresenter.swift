@@ -13,13 +13,13 @@ protocol MainViewPresenterProtocol : AnyObject {
     func setupDataSource()
     func createCompositionalLayout() -> UICollectionViewLayout
     func reloadData()
-    func showChartView(crypto : Crypto)
-    func returnDataSource() -> UICollectionViewDiffableDataSource<SectionOfCrypto, Crypto>?
+    func showChartView(indexPath : IndexPath)
+//    func returnDataSource() -> UICollectionViewDiffableDataSource<SectionOfCrypto, Crypto>?
 }
 
 class MainViewPresenter : MainViewPresenterProtocol {
     
-    let view : MainViewControllerProtocol
+    weak var view : MainViewControllerProtocol!
     var dataSource : UICollectionViewDiffableDataSource<SectionOfCrypto, Crypto>?
     var sections = [SectionOfCrypto]()
     var builder : Builder
@@ -48,7 +48,7 @@ class MainViewPresenter : MainViewPresenterProtocol {
             networkManager.getTopSearch(group : DispatchGroups.shared.groupOne)
             DispatchGroups.shared.groupOne.wait()
             networkManager.getFullListOfCoinGecko(group : DispatchGroups.shared.groupTwo, waitingGroup : DispatchGroups.shared.groupOne)
-            networkManager.collectionViewLoad(group : DispatchGroups.shared.groupTwo)
+            networkManager.carouselDataLoad(group : DispatchGroups.shared.groupTwo)
             
             view.setupCollectionView()
             setupDataSource()
@@ -82,8 +82,8 @@ class MainViewPresenter : MainViewPresenterProtocol {
     func setupDataSource() {
         //            CollectionViewGroup.enter()
         dataSource = UICollectionViewDiffableDataSource<SectionOfCrypto, Crypto>(collectionView: view.returnCollectionView(), cellProvider: { (collectionView, indexPath, crypto) -> UICollectionViewCell? in
-            let carousel = SectionOfCrypto(type: "carousel", title: "Top (by Market Cap)", items: DataSingleton.shared.collectionViewArray)
-            let table = SectionOfCrypto(type: "table", title: "Hot (by 24H Volume)", items: DataSingleton.shared.results)
+            let carousel = SectionOfCrypto(type: "carousel", title: "Top by Market Cap", items: DataSingleton.shared.collectionViewArray)
+            let table = SectionOfCrypto(type: "table", title: "Hot by 24H Volume", items: DataSingleton.shared.results)
             self.sections = [carousel,table]
             switch DataSingleton.shared.sections[indexPath.section].type {
             case "carousel" :
@@ -138,11 +138,16 @@ class MainViewPresenter : MainViewPresenterProtocol {
         
     }
     
-    func returnDataSource() -> UICollectionViewDiffableDataSource<SectionOfCrypto, Crypto>? {
-        return dataSource
-    }
+//    func returnDataSource() -> UICollectionViewDiffableDataSource<SectionOfCrypto, Crypto>? {
+//        return dataSource
+//    }
     
-    func showChartView(crypto : Crypto) {
+//    func showChartView(crypto : Crypto) {
+//        let chartVC = builder.createChartViewModule(crypto: crypto)
+//        view.navigationController?.pushViewController(chartVC, animated: true)
+//    }
+    func showChartView(indexPath : IndexPath) {
+        guard let crypto = dataSource?.itemIdentifier(for: indexPath) else { return }
         let chartVC = builder.createChartViewModule(crypto: crypto)
         view.navigationController?.pushViewController(chartVC, animated: true)
     }

@@ -7,6 +7,9 @@
 import CoreData
 import UIKit
 
+protocol CoreDataManagerProtocol {
+    
+}
 
 class CoreDataManager {
     

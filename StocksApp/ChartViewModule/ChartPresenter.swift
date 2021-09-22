@@ -28,7 +28,7 @@ protocol ChartViewPresenterProtocol : AnyObject {
 //}
 
 class ChartViewPresenter : ChartViewPresenterProtocol {
-    var view : ChartViewControllerProtocol!
+    weak var view : ChartViewControllerProtocol!
     var crypto = Crypto(symbolOfCrypto: "", price: "", change: "", nameOfCrypto: "", descriptionOfCrypto: "", id: "", percentages: nil, image: UIImage(named: "pngwing.com")!)
     var percentages = Persentages()
     var bool = false

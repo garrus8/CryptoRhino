@@ -16,7 +16,6 @@ protocol Builder {
 }
 
 class ModuleBuilder : Builder {
-    //MARK: - УБРАТЬ STATIC
     
     func createMainViewModule() -> UIViewController {
         let view = MainViewController()

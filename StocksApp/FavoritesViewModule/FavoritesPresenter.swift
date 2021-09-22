@@ -21,7 +21,7 @@ protocol FavoritesViewPresenterProtocol : AnyObject {
 }
     
 class FavoritesViewPresenter : FavoritesViewPresenterProtocol {
-    let view : FavoritesViewControllerProtocol
+    weak var view : FavoritesViewControllerProtocol!
     var filteredResults = GeckoList()
     var filteredResultsOfFavorites = [Crypto]()
     var isFavoritesEmpty : Bool {

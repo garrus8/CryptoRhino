@@ -20,7 +20,7 @@ protocol SearchViewPresenterProtocol : AnyObject {
 
 
 class SearchViewPresenter : SearchViewPresenterProtocol {
-    let view : SearchViewControllerProtocol!
+    weak var view : SearchViewControllerProtocol!
     var filteredResults = GeckoList()
     var builder : Builder
 
