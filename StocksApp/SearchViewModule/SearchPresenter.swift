@@ -22,7 +22,7 @@ protocol SearchViewPresenterProtocol : AnyObject {
 class SearchViewPresenter : SearchViewPresenterProtocol {
     weak var view : SearchViewControllerProtocol!
     var filteredResults = GeckoList()
-    var builder : Builder
+    var builder : Builder!
 
     
     init(view : SearchViewControllerProtocol, builder: Builder) {
@@ -42,7 +42,7 @@ class SearchViewPresenter : SearchViewPresenterProtocol {
         let crypto : Crypto
         if view.isFiltering {
             let result = filteredResults[indexPath.row]
-            crypto = Crypto(symbolOfCrypto: result.symbol!, nameOfCrypto: result.name, id: result.id)
+            crypto = Crypto(symbolOfCrypto: result.symbol ?? "", nameOfCrypto: result.name, id: result.id)
         } else {
             let result = DataSingleton.shared.topList[indexPath.row]
             crypto = Crypto(symbolOfCrypto: result.symbol, nameOfCrypto: result.name, id: result.id)
@@ -53,9 +53,11 @@ class SearchViewPresenter : SearchViewPresenterProtocol {
     
     func filter(searchText : String) {
         filteredResults = DataSingleton.shared.fullBinanceList.filter({ (searchElem : GeckoListElement) -> Bool in
-
-            return searchElem.symbol!.lowercased().hasPrefix(searchText.lowercased()) ||
-                searchElem.name!.split(separator: "/").first!.lowercased().hasPrefix(searchText.lowercased())
+            
+            guard let name = searchElem.name else {return false}
+            return searchElem.symbol?.lowercased().hasPrefix(searchText.lowercased()) ?? false ||
+//                name.split(separator: "/").first!.lowercased().hasPrefix(searchText.lowercased())
+                name.lowercased().hasPrefix(searchText.lowercased())
 
         })
     }

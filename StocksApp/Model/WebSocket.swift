@@ -10,6 +10,7 @@ import UIKit
 
 // WEBSOCKET
 class WebSocketManager {
+    
 let webSocketTask = URLSession(configuration: .default).webSocketTask(with: URL(string: "wss://ws.finnhub.io?token=c12ev3748v6oi252n1fg")!)
 
 func webSocket(symbols : [String], symbolsF : [String]) {
@@ -46,14 +47,12 @@ func webSocket(symbols : [String], symbolsF : [String]) {
             let symbolForFinHub = "BINANCE:\(symbol)USDT"
             let message = URLSessionWebSocketTask.Message.string("{\"type\":\"subscribe\",\"symbol\":\"\(symbolForFinHub)\"}")
             
-            
             self.webSocketTask.send(message) { error in
                 if let error = error {
                     print("WebSocket couldn’t send message because: \(error)")
                 }
             }
         }
-        
         self.webSocketTask.resume()
         self.ping()
     }

@@ -20,6 +20,7 @@ protocol MainViewPresenterProtocol : AnyObject {
 class MainViewPresenter : MainViewPresenterProtocol {
     
     weak var view : MainViewControllerProtocol!
+    
     var dataSource : UICollectionViewDiffableDataSource<SectionOfCrypto, Crypto>?
     var sections = [SectionOfCrypto]()
     var builder : Builder
@@ -149,6 +150,9 @@ class MainViewPresenter : MainViewPresenterProtocol {
     func showChartView(indexPath : IndexPath) {
         guard let crypto = dataSource?.itemIdentifier(for: indexPath) else { return }
         let chartVC = builder.createChartViewModule(crypto: crypto)
+//        view.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         view.navigationController?.pushViewController(chartVC, animated: true)
+//        view.present(chartVC, animated:true, completion:nil)
+        
     }
 }

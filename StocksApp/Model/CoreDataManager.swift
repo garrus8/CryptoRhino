@@ -17,6 +17,7 @@ class CoreDataManager {
     
     init(networkManager : NetworkManager) {
         self.networkManager = networkManager
+        
     }
     
     private func getContext () -> NSManagedObjectContext {

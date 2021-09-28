@@ -62,20 +62,22 @@ class FavoritesViewPresenter : FavoritesViewPresenterProtocol {
             result = DataSingleton.shared.resultsF[indexPath.row]
         }
         let chartVC = builder.createChartViewModule(crypto: result)
+//        view.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         view.navigationController?.pushViewController(chartVC, animated: true)
+//        view.present(chartVC, animated:true, completion:nil)
     }
     func filter(searchText : String) {
         if isFavoritesEmpty {
             filteredResults = DataSingleton.shared.fullBinanceList.filter({ (searchElem : GeckoListElement) -> Bool in
-                
-                return searchElem.symbol!.lowercased().hasPrefix(searchText.lowercased()) ||
-                    searchElem.name!.split(separator: "/").first!.lowercased().hasPrefix(searchText.lowercased())
+                guard let name = searchElem.name else {return false}
+                return searchElem.symbol?.lowercased().hasPrefix(searchText.lowercased()) ?? false ||
+                    name.lowercased().hasPrefix(searchText.lowercased())
             })
         } else {
             filteredResultsOfFavorites = DataSingleton.shared.resultsF.filter({ (searchElem : Crypto) -> Bool in
                 
-                return searchElem.nameOfCrypto!.lowercased().hasPrefix(searchText.lowercased()) ||
-                    searchElem.symbolOfCrypto.split(separator: "/").first!.lowercased().hasPrefix(searchText.lowercased())
+                return searchElem.nameOfCrypto?.lowercased().hasPrefix(searchText.lowercased()) ?? false ||
+                    searchElem.symbolOfCrypto.lowercased().hasPrefix(searchText.lowercased())
             })
         }
     }

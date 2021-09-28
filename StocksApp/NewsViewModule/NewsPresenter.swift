@@ -17,7 +17,7 @@ protocol NewsViewPresenterProtocol : AnyObject {
 
 class NewsViewPresenter : NewsViewPresenterProtocol {
     var newsData = [NewsData]()
-    var view : NewsViewControllerProtocol!
+    weak var view : NewsViewControllerProtocol!
     var networkManager : NetworkManager!
     
     init(view : NewsViewControllerProtocol, networkManager : NetworkManager) {
@@ -44,10 +44,11 @@ class NewsViewPresenter : NewsViewPresenterProtocol {
                 guard let stocksData = data, error == nil, response != nil else {return}
                 
                 do {
-                    let newsData = try News.decode(from: stocksData)
-                    for i in 0..<(newsData?.data?.count)! {
-                        let news = newsData?.data![i]
-                        self.newsData.append(news!)
+                    guard let newsData = try News.decode(from: stocksData) else {return}
+                    guard let data = newsData.data else {return}
+                    for i in 0..<data.count {
+                        let news = data[i]
+                        self.newsData.append(news)
                         
                     }
                     

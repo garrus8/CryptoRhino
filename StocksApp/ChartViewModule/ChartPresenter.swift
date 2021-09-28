@@ -29,7 +29,8 @@ protocol ChartViewPresenterProtocol : AnyObject {
 
 class ChartViewPresenter : ChartViewPresenterProtocol {
     weak var view : ChartViewControllerProtocol!
-    var crypto = Crypto(symbolOfCrypto: "", price: "", change: "", nameOfCrypto: "", descriptionOfCrypto: "", id: "", percentages: nil, image: UIImage(named: "pngwing.com")!)
+    var crypto = Crypto(symbolOfCrypto: "", price: "", change: "", nameOfCrypto: "", descriptionOfCrypto: "", id: "", percentages: Persentages(), image: UIImage(named: "pngwing.com") ?? UIImage())
+    
     var percentages = Persentages()
     var bool = false
     var marketData = [MarketDataElem]()
@@ -40,21 +41,24 @@ class ChartViewPresenter : ChartViewPresenterProtocol {
     let imageOfHeartFill = UIImage(systemName: "heart.fill")
     var networkManager : NetworkManager!
     var coreDataManager : CoreDataManager!
-    var websocketManager : WebSocketManager!
+//    weak var websocketManager : WebSocketManager!
     var labels = [String:String]()
     
     init(crypto : Crypto, view : ChartViewControllerProtocol,
          networkManager : NetworkManager,
-         coreDataManager : CoreDataManager,
-         websocketManager : WebSocketManager ) {
+         coreDataManager : CoreDataManager) {
+        print("INIT")
         self.view = view
         self.crypto = crypto
         self.networkManager = networkManager
         self.coreDataManager = coreDataManager
-        self.websocketManager = websocketManager
+//        self.websocketManager = websocketManager
         load()
-        checkAndLoad()
         isFavorite()
+        checkAndLoad()
+    }
+    deinit {
+        print("DEINIT")
     }
     
     func removeValues() {
@@ -62,7 +66,9 @@ class ChartViewPresenter : ChartViewPresenterProtocol {
     }
 
     func load() {
+        
         labels[KeysOfLabels.symbolOfCurrentCrypto.rawValue] = crypto.symbolOfCrypto
+        
         if let descriptionCheck = crypto.descriptionOfCrypto?.html2String {
             labels[KeysOfLabels.descriptionLabel.rawValue] = descriptionCheck
         } else {
@@ -89,14 +95,15 @@ class ChartViewPresenter : ChartViewPresenterProtocol {
         } else {
             labels[KeysOfLabels.priceOfCrypto.rawValue] = "Price of crypto"
         }
-        labels[KeysOfLabels.idOfCrypto.rawValue] = crypto.id!
-        
+        if let cryptoId = crypto.id {
+            labels[KeysOfLabels.idOfCrypto.rawValue] = cryptoId
+        }
         if let symbolOfTickerCheck = crypto.symbolOfTicker {
             labels[KeysOfLabels.symbolOfTicker.rawValue] = symbolOfTickerCheck
         } else {
             labels[KeysOfLabels.symbolOfTicker.rawValue] = ""
         }
-        image = crypto.image ?? UIImage(named: "pngwing.com")!
+        image = crypto.image ?? UIImage(named: "pngwing.com") ?? UIImage()
         
         if let marketDataChek = crypto.marketDataArray?.array {
             marketData = marketDataChek
@@ -123,14 +130,17 @@ class ChartViewPresenter : ChartViewPresenterProtocol {
         DispatchQueue.global().async {
             DataSingleton.shared.dict1[(self.labels[KeysOfLabels.symbolOfCurrentCrypto.rawValue]?.uppercased())!] = 0
             
-            self.networkManager.getCoinGeckoData(id: self.labels[KeysOfLabels.idOfCrypto.rawValue]!,
-                                                   symbol: self.labels[KeysOfLabels.symbolOfCurrentCrypto.rawValue]!,
+            guard let id = self.labels[KeysOfLabels.idOfCrypto.rawValue], let symbol = self.labels[KeysOfLabels.symbolOfCurrentCrypto.rawValue]
+            else {return}
+            
+            self.networkManager.getCoinGeckoData(id: id,
+                                                   symbol: symbol,
                                                    group: DispatchGroups.shared.groupOne) { (stocks) in
                 
                 if let stringUrl = stocks.image?.large {
                     self.networkManager.obtainImage(StringUrl: stringUrl, group: DispatchGroup()) { image in
                         self.image = image
-                        self.labels[KeysOfLabels.imageString.rawValue] = (stocks.image?.large)!
+                        self.labels[KeysOfLabels.imageString.rawValue] = stocks.image?.large
                         self.view.navigationBarSetup()
                     }
                 }
@@ -155,17 +165,21 @@ class ChartViewPresenter : ChartViewPresenterProtocol {
                         self.labels[KeysOfLabels.siteUrl.rawValue] = siteUrl
                     }
                     
-//                    self.diffPriceOfCrypto.text = String((stocks.marketData?.priceChangePercentage30D)!)
-                    self.labels[KeysOfLabels.computedDiffPrice.rawValue] = String((stocks.marketData?.priceChangePercentage30D)!)
                     
-                    self.percentages = Persentages(priceChangePercentage24H: String((stocks.marketData?.priceChangePercentage24H)!),
-                                                   priceChangePercentage7D: String((stocks.marketData?.priceChangePercentage7D)!),
-                                                   priceChangePercentage30D: String((stocks.marketData?.priceChangePercentage30D)!),
-                                                   priceChangePercentage1Y: String((stocks.marketData?.priceChangePercentage1Y)!))
-                    
-                    
-                    self.labels[KeysOfLabels.priceOfCrypto.rawValue] = String((stocks.marketData?.currentPrice?["usd"])!)
-                    
+                    if let marketData = stocks.marketData {
+                        if let percent30D = marketData.priceChangePercentage30D {
+                            self.labels[KeysOfLabels.computedDiffPrice.rawValue] = String(percent30D)
+                        }
+                        
+                        self.percentages = Persentages(priceChangePercentage24H: String(marketData.priceChangePercentage24H ?? 0),
+                                                       priceChangePercentage7D: String(marketData.priceChangePercentage7D ?? 0),
+                                                       priceChangePercentage30D: String(marketData.priceChangePercentage30D ?? 0),
+                                                       priceChangePercentage1Y: String(marketData.priceChangePercentage1Y ?? 0))
+                        
+                        if let currentPriceInUSD = marketData.currentPrice?["usd"] {
+                            self.labels[KeysOfLabels.priceOfCrypto.rawValue] = String(currentPriceInUSD)
+                        }
+                    }
                     if let marketData = stocks.marketData {
                         self.marketData = MarketDataArray(marketData: marketData).array
                         self.view.marketDataTableView.reloadData()
@@ -186,6 +200,11 @@ class ChartViewPresenter : ChartViewPresenterProtocol {
             self.view.updateContentViewFrame(contentViewFrameChange: 50,
                                         detailInfoViewFrameChange: 50,
                                         scrollViewChange: 50)
+        }  else if self.labels[KeysOfLabels.descriptionLabel.rawValue]!.count / 45 < 7 {
+            let height = CGFloat((7 - (self.labels[KeysOfLabels.descriptionLabel.rawValue]!.count / 45)) * 10)
+            self.view.updateContentViewFrame(contentViewFrameChange: height,
+                                        detailInfoViewFrameChange: height,
+                                        scrollViewChange: height)
         }
     }
 }
@@ -248,7 +267,7 @@ class ChartViewPresenter : ChartViewPresenterProtocol {
             
             DataSingleton.shared.favorites.insert(object, at: 0)
             coreDataManager.addData(object: object)
-            websocketManager.webSocket(symbols: DataSingleton.shared.symbols, symbolsF: DataSingleton.shared.symbolsF)
+//            websocketManager.webSocket(symbols: DataSingleton.shared.symbols, symbolsF: DataSingleton.shared.symbolsF)
 
         }
         bool.toggle()
@@ -286,8 +305,8 @@ class ChartViewPresenter : ChartViewPresenterProtocol {
                 
                 do {
                     guard let stocks = try CoinGeckoPrice.decode(from: stocksData) else {return}
-                    
-                    for i in stocks.prices! {
+                    guard let prices = stocks.prices else {return}
+                    for i in prices {
                         let chartData = ChartDataEntry(x: i[0], y: i[1])
                         self.values.append(chartData)
                     }

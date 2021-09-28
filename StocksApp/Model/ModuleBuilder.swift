@@ -15,6 +15,7 @@ protocol Builder {
     func createChartViewModule(crypto: Crypto) -> UIViewController
 }
 
+
 class ModuleBuilder : Builder {
     
     func createMainViewModule() -> UIViewController {
@@ -50,10 +51,8 @@ class ModuleBuilder : Builder {
     func createChartViewModule(crypto: Crypto) -> UIViewController {
         let view = ChartViewController()
         let networkManager = NetworkManager()
-        let webSocketManager = WebSocketManager()
         let coreDataManager = CoreDataManager(networkManager: networkManager)
-        let presenter = ChartViewPresenter(crypto : crypto, view: view, networkManager: networkManager, coreDataManager: coreDataManager, websocketManager: webSocketManager)
-//        view.crypto = crypto
+        let presenter = ChartViewPresenter(crypto : crypto, view: view, networkManager: networkManager, coreDataManager: coreDataManager)
         view.presenter = presenter
         return view
     }

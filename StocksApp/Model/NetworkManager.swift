@@ -24,122 +24,16 @@ protocol NetworkManagerProtocol {
     
 }
 
-
 class NetworkManager  {
-    // DELEGATE
-    //    weak var delegate : NetworkManagerDelegate?
-    
-    //    var sections = [SectionOfCrypto]()
-    //    var searchSections = [SectionOfCrypto]()
-    //    var imageCache = NSCache<NSString,UIImage>()
-    //    let finHubToken = Constants.finHubToken
-    //    var results = [Crypto]()
-    //    var symbols = [String]()
-    //    var coinGecoList = [GeckoListElement]()
-    //    var favorites = [Favorites]()
-    //    var resultsF = [Crypto]()
-    //    var symbolsF = [String]()
-    //    var fullBinanceList = GeckoList()
-    //    var topList = [TopSearchItem]()
-    //    var coinCapDict = [[String: String?]]()
-    //    var dict = [String : [Crypto]]()
-    //    var collectionViewSymbols = [String]()
-    //    var collectionViewArray = [Crypto]()
-    //    var websocketArray = [String]()
     
     let queue = DispatchQueue(label: "123", qos: .userInitiated)
     
-//    let groupOne = DispatchGroup()
-//    let groupTwo = DispatchGroup()
-//    let groupThree = DispatchGroup()
-//    let groupFour = DispatchGroup()
-    
-//    static let shared = NetworkManager()
-//    private init() {}
-    
-//    private func getContext () -> NSManagedObjectContext {
-//        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-//        return appDelegate.persistentContainer.viewContext
-//    }
-    
-//    func deleteAllData() {
-//        let context = getContext()
-//        let fetchRequest : NSFetchRequest<Favorites> = Favorites.fetchRequest()
-//        if let objects = try? context.fetch(fetchRequest) {
-//            for object in objects {
-//                context.delete(object)
-//            }
-//        }
-//
-//        do {
-//            try context.save()
-//        } catch let error as NSError {
-//            print(error.localizedDescription)
-//        }
-//    }
-    
-//    func getData() {
-//        // GROUP 1
-//        
-//        let context = self.getContext()
-//        let fetchRequest : NSFetchRequest<Favorites> = Favorites.fetchRequest()
-//        let sortDescriptor = NSSortDescriptor(key: "date", ascending: false)
-//        fetchRequest.sortDescriptors = [sortDescriptor]
-//        
-//        do {
-//            DataSingleton.shared.favorites = try context.fetch(fetchRequest)
-//            self.setData()
-//            
-//        } catch let error as NSError {
-//            print(error.localizedDescription)
-//        }
-//    }
-//    
-//    
-//    func setData() {
-//        DispatchQueue.global().async(group: groupOne) {
-//            DataSingleton.shared.resultsF.removeAll()
-//            DispatchQueue.global().async(flags: .barrier) {
-//                for i in DataSingleton.shared.favorites {
-//                    if let symbol = i.symbol{
-//                        let crypto = Crypto(symbolOfCrypto: symbol, nameOfCrypto: i.name!, descriptionOfCrypto: i.descrtiption!, image: UIImage(named: "pngwing.com")!, percentages: Persentages())
-//                        //                    DispatchQueue.global().async(flags: .barrier) {
-//                        print("self.resultsF",DataSingleton.shared.resultsF.count)
-//                        DataSingleton.shared.symbolsF.append(i.symbol!)
-//                        DataSingleton.shared.resultsF.append(crypto)
-//                        DataSingleton.shared.websocketArray.append(symbol)
-//                        self.dict1[symbol] = 0
-//                    }
-//                }
-//            }
-//        }
-//    }
-//    
-//    func addData(object : Favorites) {
-//        
-//        if let symbol = object.symbol {
-//            let crypto = Crypto(symbolOfCrypto: symbol, nameOfCrypto: object.name!, descriptionOfCrypto: object.descrtiption!, image: UIImage(named: "pngwing.com")!, percentages: Persentages())
-//            
-//            DispatchQueue.global().async(flags: .barrier) {
-//                DataSingleton.shared.symbolsF.insert(object.symbol!, at: 0)
-//                DataSingleton.shared.resultsF.insert(crypto, at: 0)
-//                DataSingleton.shared.websocketArray.append(symbol)
-//                self.dict1[symbol] = 0
-//                var sub = [DataSingleton.shared.resultsF.first!]
-//                //                        self.putCoinGeckoData(array: &self.resultsF, group: self.groupTwo)
-//                self.putCoinGeckoData(array: &sub, group: self.groupTwo, otherArray: [])
-//                DataSingleton.shared.resultsF[0] = sub.first!
-//            }
-//        }
-//    }
-    
-    
     var countTopOfCrypto = 0
     func getTopOfCrypto(group : DispatchGroup) {
-        
         // GROUP 1
         
         DispatchQueue.global().async(group: group) {
+            
             if self.countTopOfCrypto < 10 {
                 group.enter()
                 NetworkRequestManager.request(url: Urls.topOfCrypto.rawValue) { data, response, error in
@@ -167,7 +61,6 @@ class NetworkManager  {
                             if cryptoCompareName != "USDT" && cryptoCompareName != "BNBBEAR" {
                                 guard let cryptoCompareFullName = elem.coinInfo?.fullName else {return}
                                 let crypto = Crypto(symbolOfCrypto: cryptoCompareName, price: "", change: "", nameOfCrypto: cryptoCompareFullName, descriptionOfCrypto: nil, id: "", percentages: Persentages(), image: UIImage(named: "pngwing.com")!)
-//                                let crypto = CryptoFactory.getTopOfCrypto(symbolOfCrypto: cryptoCompareName, price: "", change: "", nameOfCrypto: cryptoCompareFullName, descriptionOfCrypto: "", id: "", percentages: Persentages(), image: UIImage(named: "pngwing.com")!)
                                 self.queue.async(group : group, flags : .barrier) {
                                     DataSingleton.shared.dict1[cryptoCompareName] = 0
                                     DataSingleton.shared.results.append(crypto)
@@ -272,13 +165,18 @@ class NetworkManager  {
                             DataSingleton.shared.coinGecoList.removeAll{ $0.id!.contains("binance-peg")}
                             
                             waitingGroup.wait()
-                            for (index,i) in DataSingleton.shared.coinGecoList.enumerated() {
-                                //                            var elem = FullBinanceListElement(fullBinanceListDescription: i.name, displaySymbol: i.symbol?.uppercased(), symbol: i.symbol, id : i.id, rank: 101)
-                                var elem = GeckoListElement(id: i.id, symbol: i.symbol?.uppercased(), name: i.name, rank: 101)
-                                for j in DataSingleton.shared.coinCapDict {
-                                    if j["symbol"]!! == i.symbol?.uppercased() {
-                                        elem.rank = Int(j["rank"]!!)!
-                                        DataSingleton.shared.coinGecoList[index].rank = Int(j["rank"]!!)!
+                            for (index,geckoElem) in DataSingleton.shared.coinGecoList.enumerated() {
+                                var elem = GeckoListElement(id: geckoElem.id, symbol: geckoElem.symbol?.uppercased(), name: geckoElem.name, rank: 101)
+                                for capElem in DataSingleton.shared.coinCapDict {
+                                    if let symbolOfCapElem = capElem["symbol"] {
+                                        if symbolOfCapElem == geckoElem.symbol?.uppercased() {
+                                            if let rankOfCapElem = capElem["rank"] {
+                                                if let rankOfCapElem = rankOfCapElem {
+                                                    elem.rank = Int(rankOfCapElem)
+                                                    DataSingleton.shared.coinGecoList[index].rank = Int(rankOfCapElem)
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                                 
@@ -328,8 +226,9 @@ class NetworkManager  {
                             group.leave()
                             print("getFullCoinCapList 2")
                             return}
-                        
-                        DataSingleton.shared.coinCapDict = elems.data!
+                        if let data = elems.data {
+                            DataSingleton.shared.coinCapDict = data
+                        }
                         group.leave()
                         
                     } catch let error as NSError {
@@ -350,7 +249,6 @@ class NetworkManager  {
         }
     }
     
-//    var dict1 = [String : Int]()
     func getCoinGeckoData(id: String, symbol : String, group: DispatchGroup, complition : @escaping (GeckoSymbol)->()) {
         DispatchQueue.global().async(group : group) {
             print(DataSingleton.shared.dict1, symbol.uppercased(), id)
@@ -429,16 +327,21 @@ class NetworkManager  {
                     
                     DispatchQueue.global().sync {
                         indexOfSymbol = DataSingleton.shared.coinGecoList.firstIndex(where: { $0.symbol?.lowercased() == symbol.lowercased() })
-                        //                        indexOfSymbol = self.binarySearchFoCoinGeckoList(key: symbol, list: self.coinGecoList)
-                        idCoinGecko = DataSingleton.shared.coinGecoList[indexOfSymbol!].id!
-                        symbolCoinGecko = DataSingleton.shared.coinGecoList[indexOfSymbol!].symbol!
+                        if let indexOfSymbol = indexOfSymbol {
+                            if let id = DataSingleton.shared.coinGecoList[indexOfSymbol].id {
+                                idCoinGecko = id
+                            }
+                            if let symbol = DataSingleton.shared.coinGecoList[indexOfSymbol].symbol {
+                                symbolCoinGecko = symbol
+                            }
+                        }
                     }
                     
                     self.getCoinGeckoData(id: idCoinGecko, symbol: symbolCoinGecko, group: group) { (stocks) in
                         if let stringUrl = stocks.image?.large {
                             self.obtainImage(StringUrl: stringUrl, group: group) { image in
                                 elemA.image = image
-                                elemA.imageString = (stocks.image?.large)!
+                                elemA.imageString = stocks.image?.large
                                 
                             }
                         }
@@ -512,15 +415,16 @@ class NetworkManager  {
             print("POPAL BLYAT")
             for index in 0..<20 {
                 group.enter()
-                var elemOfCoinCap : [String : String?]!
-                //                DispatchQueue.global().sync {
+                var elemOfCoinCap : [String : String?]
+                
                 if DataSingleton.shared.coinCapDict.count != 0 {
                     elemOfCoinCap = DataSingleton.shared.coinCapDict[index]
-                    let symbol = elemOfCoinCap["symbol"]!!
+                    guard let symbol = elemOfCoinCap["symbol"] else {return}
+                    guard let symbol = symbol else {return}
                     
                     if symbol == "USDT" || symbol == "USDC" ||  symbol == "WBTC" {group.leave(); continue }
                     
-                    let crypto = Crypto(symbolOfCrypto: symbol, id: elemOfCoinCap["id"]!!)
+                    let crypto = Crypto(symbolOfCrypto: symbol, id: (elemOfCoinCap["id"] ?? "") ?? "")
                     DataSingleton.shared.collectionViewArray.append(crypto)
                     DataSingleton.shared.collectionViewSymbols.append(crypto.symbolOfCrypto.uppercased())
                     DataSingleton.shared.dict1[symbol] = 0
@@ -557,126 +461,13 @@ class NetworkManager  {
         
         DispatchQueue.global().async(group : DispatchGroups.shared.groupSetupSections, flags: .barrier) {
             
-            let carousel = SectionOfCrypto(type: "carousel", title: "Top (by Market Cap)", items: DataSingleton.shared.collectionViewArray)
-            let table = SectionOfCrypto(type: "table", title: "Hot (by 24H Volume)", items: DataSingleton.shared.results)
+            let carousel = SectionOfCrypto(type: "carousel", title: "Top by Market Cap", items: DataSingleton.shared.collectionViewArray)
+            let table = SectionOfCrypto(type: "table", title: "Hot by 24H Volume", items: DataSingleton.shared.results)
             DataSingleton.shared.sections = [carousel,table]
             
         }
         
     }
-    
-//    // WEBSOCKET
-//    
-//    let webSocketTask = URLSession(configuration: .default).webSocketTask(with: URL(string: "wss://ws.finnhub.io?token=c12ev3748v6oi252n1fg")!)
-//    
-//    func webSocket(symbols : [String], symbolsF : [String]) {
-//        DispatchQueue.global().async {
-//            
-//            let set = Set(symbols).union(Set(symbolsF))
-//            
-//            for symbol in set {
-//                let symbolForFinHub = "BINANCE:\(symbol)USDT"
-//                let message = URLSessionWebSocketTask.Message.string("{\"type\":\"subscribe\",\"symbol\":\"\(symbolForFinHub)\"}")
-//                
-//                
-//                self.webSocketTask.send(message) { error in
-//                    if let error = error {
-//                        print("WebSocket couldn’t send message because: \(error)")
-//                    }
-//                }
-//            }
-//            
-//            self.webSocketTask.resume()
-//            self.ping()
-//            
-//        }
-//    }
-//    func webSocket2(symbols: [String]) {
-//        self.groupOne.wait()
-//        self.groupTwo.wait()
-//        DispatchQueue.global().async {
-//            let set = Set(symbols)
-//            for symbol in set {
-//                let symbolForFinHub = "BINANCE:\(symbol)USDT"
-//                let message = URLSessionWebSocketTask.Message.string("{\"type\":\"subscribe\",\"symbol\":\"\(symbolForFinHub)\"}")
-//                
-//                
-//                self.webSocketTask.send(message) { error in
-//                    if let error = error {
-//                        print("WebSocket couldn’t send message because: \(error)")
-//                    }
-//                }
-//            }
-//            
-//            self.webSocketTask.resume()
-//            self.ping()
-//        }
-//    }
-//    
-//    
-//    func ping() {
-//        DispatchQueue.global().async(qos: .utility) {
-//            self.webSocketTask.sendPing { error in
-//                if let error = error {
-//                    print("Error when sending PING \(error)")
-//                } else {
-//                    print("Web Socket connection is alive")
-//                    DispatchQueue.global().asyncAfter(deadline: .now() + 5) {
-//                        self.ping()
-//                    }
-//                }
-//            }
-//        }
-//    }
-//    
-//    
-//    func receiveMessage(tableView : [UITableView], collectionView : [UICollectionView]) {
-//        self.groupOne.wait()
-//        self.groupTwo.wait()
-//        DispatchQueue.global().async {
-//            self.webSocketTask.receive { [weak self] result in
-//                guard let self = self else {return}
-//                switch result {
-//                case .failure(let error):
-//                    print("Error in receiving message: \(error)")
-//                case .success(let message):
-//                    switch message {
-//                    case .string(let text):
-//                        if let data: Data = text.data(using: .utf8) {
-//                            if let tickData = try? WebSocketData.decode(from: data)?.data {
-//                                self.putDataFromWebSocket(tickData: tickData, array: DataSingleton.shared.collectionViewArray)
-//                                self.putDataFromWebSocket(tickData: tickData, array: DataSingleton.shared.results)
-//                                self.putDataFromWebSocket(tickData: tickData, array: DataSingleton.shared.resultsF, isFavorite: true)
-//                            }
-//                        }
-//                        
-//                    case .data(let data):
-//                        print("Received data: \(data)")
-//                    @unknown default:
-//                        fatalError()
-//                    }
-//                    self.receiveMessage(tableView: tableView, collectionView: collectionView)
-//                    
-//                }
-//            }
-//        }
-//    }
-//    
-//    
-//    func putDataFromWebSocket (tickData : [Datum], array : [Crypto], isFavorite : Bool = false) {
-//        for itemA in tickData {
-//            for (indexB,itemB) in array.enumerated() {
-//                let itemBForFinHub = "BINANCE:\(itemB.symbolOfCrypto.uppercased())USDT"
-//                if itemA.s == itemBForFinHub {
-//                    DispatchQueue.global().async(flags: .barrier) {
-//                        array[indexB].price = itemA.p.toString()
-//                    }
-//                }
-//            }
-//        }
-//    }
-    
-    
     
     func quickSortForCoinGecko (_ list : inout [GeckoListElement], start : Int, end : Int) {
         

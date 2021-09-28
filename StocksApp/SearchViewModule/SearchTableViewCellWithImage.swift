@@ -29,7 +29,7 @@ class SearchTableViewCellWithImage: UICollectionViewCell {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor(hexString: "#202F72")
+        backgroundColor = UIColor(red: 0.062, green: 0.139, blue: 0.467, alpha: 1)
         setupElements()
         setupConstraints()
 
@@ -39,7 +39,7 @@ class SearchTableViewCellWithImage: UICollectionViewCell {
         self.layer.shadowOpacity = 1
         self.layer.shadowRadius = 10
         self.layer.shadowOffset = CGSize(width: 0, height: -4)
-        self.clipsToBounds = true
+//        self.clipsToBounds = true
 
 
     }

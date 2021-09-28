@@ -31,11 +31,10 @@ class SearchViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "Name or symbol of cryptocurrency", attributes: [NSAttributedString.Key.foregroundColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.75)])
-        searchController.searchBar.searchTextField.backgroundColor = UIColor(red: 0.124, green: 0.185, blue: 0.446, alpha: 0.5)
+//        searchController.searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "Name or symbol of cryptocurrency", attributes: [NSAttributedString.Key.foregroundColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.75)])
+//        searchController.searchBar.searchTextField.backgroundColor = UIColor(red: 0.124, green: 0.185, blue: 0.446, alpha: 0.5)
         setupCollectionView()
         navigationItem.searchController = searchController
         definesPresentationContext = true
@@ -43,9 +42,11 @@ class SearchViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        searchController.searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "Name or symbol of cryptocurrency", attributes: [NSAttributedString.Key.foregroundColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.75)])
+        searchController.searchBar.searchTextField.backgroundColor = UIColor(red: 0.124, green: 0.185, blue: 0.446, alpha: 0.5)
         searchController.searchBar.searchTextField.textColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.75)
         searchController.searchBar.searchTextField.leftView?.tintColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.75)
-        searchController.searchBar.tintColor = .red
+        searchController.searchBar.tintColor = .white
     }
     func setupCollectionView() {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
@@ -77,19 +78,7 @@ class SearchViewController: UIViewController, UICollectionViewDataSource, UIColl
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         //MARK: - Presenter
         let margins = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
-//        if presenter.isFiltering {
-//            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchTableViewCell.reuseId, for: indexPath) as? SearchTableViewCell else {return SearchTableViewCell()}
-//            let result = presenter.filteredResults[indexPath.row]
-//            cell.configure(with: result)
-//            cell.contentView.frame = cell.contentView.frame.inset(by: margins)
-//            return cell
-//        } else {
-//            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchTableViewCellWithImage.reuseId, for: indexPath) as? SearchTableViewCellWithImage else {return SearchTableViewCellWithImage()}
-//            let result = NetworkManager.shared.topList[indexPath.row]
-//            cell.configure(with: result)
-//            cell.contentView.frame = cell.contentView.frame.inset(by: margins)
-//            return cell
-//        }
+
         if isFiltering {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchTableViewCell.reuseId, for: indexPath) as? SearchTableViewCell else {return SearchTableViewCell()}
             let result = presenter.getFilteredResult(indexPath: indexPath)
@@ -120,11 +109,12 @@ class SearchViewController: UIViewController, UICollectionViewDataSource, UIColl
 //        let ChartVC = ChartViewController()
 //        ChartVC.crypto = crypto
 //        self.navigationController?.pushViewController(ChartVC, animated: true)
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         presenter.showChartView(indexPath : indexPath)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.size.width - 30, height: 60)
+        return CGSize(width: UIScreen.main.bounds.size.width - 30, height: 63)
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -140,9 +130,15 @@ class SearchViewController: UIViewController, UICollectionViewDataSource, UIColl
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: view.frame.size.width, height: 40)
     }
+    
+//    override func viewDidLayoutSubviews() {
+//        super.viewDidLayoutSubviews()
+////        navigationController?.navigationBar.isTranslucent = true
+//    }
 
 
 }
+
 //MARK: - Presenter
 extension SearchViewController : UISearchResultsUpdating   {
     func updateSearchResults(for searchController: UISearchController) {
@@ -159,6 +155,7 @@ extension SearchViewController : UISearchResultsUpdating   {
         presenter.filter(searchText: searchText)
         
         DispatchQueue.main.async {
+//            self.navigationController?.navigationBar.isTranslucent = false
             self.collectionView.reloadData()
         }
 

@@ -26,11 +26,11 @@ class MainTabBarController : UITabBarController {
         
         let mainVC = builder.createMainViewModule()
         let navMainVC = UINavigationController(rootViewController: mainVC)
-        navMainVC.navigationBar.topItem?.title = "Main Page"
+        navMainVC.navigationBar.topItem?.title = "Main"
         navMainVC.tabBarItem.image = UIImage(named: "Icon_home")
         navMainVC.tabBarItem.title = "Home"
+//        navMainVC.navigationBar.isTranslucent = false
         
-//        let searchVC = SearchViewController()
         let searchVC = builder.createSearchViewModule()
         let navSearchVC = UINavigationController(rootViewController: searchVC)
         navSearchVC.navigationBar.topItem?.title = "Search"
@@ -49,6 +49,7 @@ class MainTabBarController : UITabBarController {
         navNewsVC.navigationBar.topItem?.title = "News"
         navNewsVC.tabBarItem.image = UIImage(named: "Icon_news")
         navNewsVC.tabBarItem.title = "News"
+//        navNewsVC.navigationBar.isTranslucent = false
         
         
         let arrayOfNVC = [
@@ -57,18 +58,32 @@ class MainTabBarController : UITabBarController {
             navfavVC,
             navNewsVC
         ]
+   
         for i in arrayOfNVC {
-//            i.navigationBar.barTintColor = UIColor(red: 0.058, green: 0.109, blue: 0.329, alpha: 1)
-            i.navigationBar.barTintColor = UIColor(hexString: "#4158B7")
-            i.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+
+            let appearance = UINavigationBarAppearance()
+            appearance.backgroundColor = UIColor(hexString: "#4158B7")
+            appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+            appearance.shadowImage = UIImage()
+//            appearance.backgroundImage = UIImage()
+            i.navigationBar.standardAppearance = appearance
+            
+            
+//            i.navigationController?.view.backgroundColor = UIColor(hexString: "#4158B7")
+////            i.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+//            i.navigationBar.shadowImage = UIImage()
+//            i.navigationBar.barTintColor = UIColor(hexString: "#4158B7")
+////            i.navigationBar.barStyle = .black
+//            i.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         }
+        
         viewControllers = arrayOfNVC
         
         tabBar.barTintColor = UIColor(red: 0.058, green: 0.109, blue: 0.329, alpha: 1)
+        tabBar.isTranslucent = false
         tabBar.tintColor = UIColor(red: 0.467, green: 0.557, blue: 0.95, alpha: 1)
         tabBar.unselectedItemTintColor = .white
       
     }
-    
     
 }

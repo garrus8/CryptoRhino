@@ -105,23 +105,23 @@ extension FavoritesCell {
         
         
         // oponentLabel constraints
-        nameOfCrypto.topAnchor.constraint(equalTo: topAnchor, constant: 16).isActive = true
-        nameOfCrypto.leadingAnchor.constraint(equalTo: friendImageView.trailingAnchor, constant: 16).isActive = true
+        nameOfCrypto.topAnchor.constraint(equalTo: topAnchor, constant: 12).isActive = true
+        nameOfCrypto.leadingAnchor.constraint(equalTo: friendImageView.trailingAnchor, constant: 12).isActive = true
 //        nameOfCrypto.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 16).isActive = true
         nameOfCrypto.widthAnchor.constraint(equalToConstant: 128).isActive = true
         
         // lastMessageLabel constraints
         symbolOfCrypto.topAnchor.constraint(equalTo: nameOfCrypto.bottomAnchor).isActive = true
-        symbolOfCrypto.leadingAnchor.constraint(equalTo: friendImageView.trailingAnchor, constant: 16).isActive = true
+        symbolOfCrypto.leadingAnchor.constraint(equalTo: friendImageView.trailingAnchor, constant: 12).isActive = true
         symbolOfCrypto.widthAnchor.constraint(equalToConstant: 128).isActive = true
         
-        price.topAnchor.constraint(equalTo: topAnchor, constant: 16).isActive = true
+        price.topAnchor.constraint(equalTo: topAnchor, constant: 12).isActive = true
         price.leadingAnchor.constraint(equalTo: nameOfCrypto.trailingAnchor, constant: 36).isActive = true
-        price.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 26).isActive = true
+        price.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 12).isActive = true
         
         percent.topAnchor.constraint(equalTo: price.bottomAnchor).isActive = true
         percent.leadingAnchor.constraint(equalTo: symbolOfCrypto.trailingAnchor, constant: 36).isActive = true
-        percent.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 26).isActive = true
+        percent.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 12).isActive = true
         
     }
 }

@@ -61,11 +61,17 @@ class NewsCell: UICollectionViewCell {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor(hexString: "#202F72")
+        backgroundColor = UIColor(red: 0.062, green: 0.139, blue: 0.467, alpha: 1)
         setupElements()
         setupConstraints()
-        self.layer.cornerRadius = 8
-        self.clipsToBounds = true
+        self.layer.cornerRadius = 15
+//        self.clipsToBounds = true
+        layer.shadowPath = UIBezierPath(roundedRect: self.bounds, cornerRadius: 0).cgPath
+        layer.shadowColor = UIColor(red: 0.024, green: 0.086, blue: 0.369, alpha: 0.3).cgColor
+        layer.shadowOpacity = 1
+        layer.shadowRadius = 10
+        layer.shadowOffset = CGSize(width: 0, height: -4)
+
         
     }
 

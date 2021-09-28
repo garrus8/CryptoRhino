@@ -38,7 +38,7 @@ class TableCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor(hexString: "#202F72")
+        backgroundColor = UIColor(red: 0.062, green: 0.139, blue: 0.467, alpha: 1)
         setupElements()
         setupConstraints()
         self.layer.cornerRadius = 10
@@ -47,7 +47,7 @@ class TableCollectionViewCell: UICollectionViewCell {
         self.layer.shadowOpacity = 1
         self.layer.shadowRadius = 10
         self.layer.shadowOffset = CGSize(width: 0, height: -4)
-        self.clipsToBounds = true
+//        self.clipsToBounds = true
         
     }
     
@@ -77,7 +77,7 @@ class TableCollectionViewCell: UICollectionViewCell {
                 fullString.append(NSAttributedString(string: " \(perc24h)%"))
             }
             percent.attributedText = fullString
-            percent.textColor = UIColor(hexString: "#CC2B73")
+            percent.textColor = UIColor(red: 0.8, green: 0.169, blue: 0.451, alpha: 1)
         } else {
             let imageAttachment = NSTextAttachment()
             imageAttachment.image = UIImage(systemName: "arrowtriangle.up.fill")?.withTintColor(.green)
@@ -117,7 +117,7 @@ extension TableCollectionViewCell {
         addSubview(percent)
         
         // oponentImageView constraints
-        friendImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15).isActive = true
+        friendImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 12).isActive = true
         friendImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         friendImageView.widthAnchor.constraint(equalToConstant: 35).isActive = true
         friendImageView.heightAnchor.constraint(equalToConstant: 35).isActive = true
@@ -125,22 +125,22 @@ extension TableCollectionViewCell {
         
         // oponentLabel constraints
         nameOfCrypto.topAnchor.constraint(equalTo: self.topAnchor, constant: 11).isActive = true
-        nameOfCrypto.leadingAnchor.constraint(equalTo: friendImageView.trailingAnchor, constant: 15).isActive = true
+        nameOfCrypto.leadingAnchor.constraint(equalTo: friendImageView.trailingAnchor, constant: 8).isActive = true
 //        nameOfCrypto.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 16).isActive = true
         nameOfCrypto.widthAnchor.constraint(equalToConstant: 128).isActive = true
         
         // lastMessageLabel constraints
-        symbolOfCrypto.topAnchor.constraint(equalTo: nameOfCrypto.bottomAnchor, constant: 2).isActive = true
-        symbolOfCrypto.leadingAnchor.constraint(equalTo: friendImageView.trailingAnchor, constant: 15).isActive = true
+        symbolOfCrypto.topAnchor.constraint(equalTo: nameOfCrypto.bottomAnchor, constant: 4).isActive = true
+        symbolOfCrypto.leadingAnchor.constraint(equalTo: friendImageView.trailingAnchor, constant: 8).isActive = true
         symbolOfCrypto.widthAnchor.constraint(equalToConstant: 128).isActive = true
         
-        price.topAnchor.constraint(equalTo: topAnchor, constant: 10).isActive = true
+        price.topAnchor.constraint(equalTo: topAnchor, constant: 12).isActive = true
         price.leadingAnchor.constraint(equalTo: nameOfCrypto.trailingAnchor, constant: 65).isActive = true
-        price.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -5).isActive = true
+        price.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -12).isActive = true
         
         percent.topAnchor.constraint(equalTo: price.bottomAnchor).isActive = true
         percent.leadingAnchor.constraint(equalTo: symbolOfCrypto.trailingAnchor, constant: 65).isActive = true
-        percent.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -5).isActive = true
+        percent.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -12).isActive = true
         
     }
 }
