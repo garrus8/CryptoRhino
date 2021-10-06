@@ -7,15 +7,19 @@
 import CoreData
 import UIKit
 
-protocol CoreDataManagerProtocol {
-    
+protocol CoreDataManagerForMainProtocol {
+    func getData()
+}
+
+protocol CoreDataManagerForChartProtocol {
+    func addData(object : Favorites)
 }
 
 class CoreDataManager {
     
-    var networkManager : NetworkManager!
+    private var networkManager : NetworkManagerForCoreDataProtocol!
     
-    init(networkManager : NetworkManager) {
+    init(networkManager : NetworkManagerForCoreDataProtocol) {
         self.networkManager = networkManager
         
     }
@@ -42,7 +46,7 @@ class CoreDataManager {
     }
     
     
-    func setData(group : DispatchGroup) {
+    private func setData(group : DispatchGroup) {
         DispatchQueue.global().async(group: group) {
             DataSingleton.shared.resultsF.removeAll()
             DispatchQueue.global().async(flags: .barrier) {
@@ -79,3 +83,5 @@ class CoreDataManager {
         }
     }
 }
+
+extension CoreDataManager : CoreDataManagerForMainProtocol, CoreDataManagerForChartProtocol {}

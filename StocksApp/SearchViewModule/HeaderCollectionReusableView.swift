@@ -8,7 +8,7 @@
 import UIKit
 
 class HeaderCollectionReusableView: UICollectionReusableView {
-        static let id = "HeaderCollectionReusableView"
+    static let id = "HeaderCollectionReusableView"
     
     private let label : UILabel = {
         let label = UILabel()

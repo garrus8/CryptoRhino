@@ -34,6 +34,7 @@ class FavoritesCell: UICollectionViewCell {
         
         self.layer.cornerRadius = 8
         self.clipsToBounds = true
+        friendImageView.layer.cornerRadius = friendImageView.frame.height/2
         
 //        let shadowPath2 = UIBezierPath(rect: self.bounds)
 //        self.layer.masksToBounds = false
@@ -102,7 +103,6 @@ extension FavoritesCell {
         friendImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         friendImageView.widthAnchor.constraint(equalToConstant: 78).isActive = true
         friendImageView.heightAnchor.constraint(equalToConstant: 78).isActive = true
-        
         
         // oponentLabel constraints
         nameOfCrypto.topAnchor.constraint(equalTo: topAnchor, constant: 12).isActive = true

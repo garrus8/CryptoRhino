@@ -475,14 +475,16 @@ extension Decodable {
             return nil
         }
     }
-    static func decodeArray(with decoder: JSONDecoder = JSONDecoder(), from data: Data) throws -> [Self]{
-        do {
-            let newdata = try decoder.decode([Self].self, from: data)
-            return newdata
-        } catch {
-            print("decodable model error", error.localizedDescription)
-            return []
-        }
-    }
+//    static func decodeArray(with decoder: JSONDecoder = JSONDecoder(), from data: Data) throws -> [Self]{
+//        do {
+//            let newdata = try decoder.decode([Self].self, from: data)
+//            return newdata
+//        } catch {
+//            print("decodable model error", error.localizedDescription)
+//            return []
+//        }
+//    }
 }
+
+
 

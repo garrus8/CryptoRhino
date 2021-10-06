@@ -44,19 +44,14 @@ class SearchTableViewCell: UICollectionViewCell {
     }
 
     
-    func setupElements() {
+    private func setupElements() {
         nameOfCrypto.translatesAutoresizingMaskIntoConstraints = false
         symbolOfCrypto.translatesAutoresizingMaskIntoConstraints = false
     }
     
-//    func configure(with crypto: FullBinanceListElement) {
-//        nameOfCrypto.text = crypto.displaySymbol
-//        symbolOfCrypto.text = crypto.fullBinanceListDescription
-//    }
     func configure(with crypto: GeckoListElement) {
         nameOfCrypto.text = crypto.name
         symbolOfCrypto.text = crypto.symbol
-        
     }
 
     required init?(coder: NSCoder) {
@@ -66,16 +61,13 @@ class SearchTableViewCell: UICollectionViewCell {
 
 // MARK: - Setup Constraints
 extension SearchTableViewCell {
-    func setupConstraints() {
+    private func setupConstraints() {
         addSubview(nameOfCrypto)
         addSubview(symbolOfCrypto)
     
-        
-        // oponentLabel constraints
         nameOfCrypto.topAnchor.constraint(equalTo: topAnchor, constant: 11).isActive = true
         nameOfCrypto.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
-//        nameOfCrypto.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 16).isActive = true
-        nameOfCrypto.widthAnchor.constraint(equalToConstant: 128).isActive = true
+        nameOfCrypto.widthAnchor.constraint(equalToConstant: 250).isActive = true
         
         // lastMessageLabel constraints
         symbolOfCrypto.topAnchor.constraint(equalTo: nameOfCrypto.bottomAnchor).isActive = true

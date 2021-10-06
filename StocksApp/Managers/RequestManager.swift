@@ -12,7 +12,7 @@ protocol NetworkRequest {
     static func request(url : String, complition : @escaping (Data?, URLResponse?, Error?) -> ())
 }
 
-class NetworkRequestManager : NetworkRequest {
+final class NetworkRequestManager : NetworkRequest {
     
     static func request (url : String, complition : @escaping (Data?, URLResponse?, Error?) -> ()) {
         let request = NSMutableURLRequest(
@@ -20,7 +20,6 @@ class NetworkRequestManager : NetworkRequest {
             cachePolicy: .useProtocolCachePolicy,
             timeoutInterval: 10.0)
         request.httpMethod = "GET"
-//        group.enter()
         URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
             guard let stocksData = data, error == nil, response != nil else {return}
             complition(stocksData,response,error)

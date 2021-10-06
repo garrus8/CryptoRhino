@@ -74,8 +74,6 @@ class NewsCell: UICollectionViewCell {
 
         
     }
-
- 
     
     func setupElements() {
         nameOfCrypto.translatesAutoresizingMaskIntoConstraints = false
@@ -88,17 +86,12 @@ class NewsCell: UICollectionViewCell {
         nameOfCrypto.text = newsData.title
         symbolOfCrypto.text = newsData.body?.html2String
         let imageUrl = newsData.imageurl!
-//        NetworkManager.shared.obtainImage(StringUrl: imageUrl, group: DispatchGroup()) { image in
-//            DispatchQueue.main.async {
-//                self.imageView.image = image
-//            }
-//        }
+
         presenter.obtainImage(stringUrl: imageUrl) { image in
             DispatchQueue.main.async {
                 self.imageView.image = image
             }
         }
-        
         
         let publishedOnDate = Double(newsData.publishedOn!)
         let date = NSDate(timeIntervalSince1970: publishedOnDate) as Date
@@ -138,7 +131,6 @@ extension NewsCell {
         stack.trailingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: -9).isActive = true
         stack.bottomAnchor.constraint(equalTo: publishedOn.topAnchor, constant: -6).isActive = true
         
-
         publishedOn.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -6).isActive = true
         publishedOn.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 7).isActive = true
         publishedOn.heightAnchor.constraint(equalToConstant: 10).isActive = true

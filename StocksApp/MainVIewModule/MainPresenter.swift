@@ -8,7 +8,7 @@
 import UIKit
 
 protocol MainViewPresenterProtocol : AnyObject {
-    init(view: MainViewControllerProtocol, builder : Builder, networkManager : NetworkManager, webSocketManager : WebSocketManager, coreDataManager : CoreDataManager)
+    init(view: MainViewControllerProtocol, builder : Builder, networkManager : NetworkManagerMainProtocol, webSocketManager : WebSocketProtocol, coreDataManager : CoreDataManagerForMainProtocol)
     func launchMethods()
     func setupDataSource()
     func createCompositionalLayout() -> UICollectionViewLayout
@@ -18,20 +18,20 @@ protocol MainViewPresenterProtocol : AnyObject {
 }
 
 class MainViewPresenter : MainViewPresenterProtocol {
-    
-    weak var view : MainViewControllerProtocol!
+ 
+    private weak var view : MainViewControllerProtocol!
     
     var dataSource : UICollectionViewDiffableDataSource<SectionOfCrypto, Crypto>?
     var sections = [SectionOfCrypto]()
     var builder : Builder
-    var networkManager : NetworkManager!
-    var webSocketManager : WebSocketManager!
-    var coreDataManager : CoreDataManager!
+    var networkManager : NetworkManagerMainProtocol!
+    var webSocketManager : WebSocketProtocol!
+    var coreDataManager : CoreDataManagerForMainProtocol!
     
     required init(view: MainViewControllerProtocol, builder : Builder,
-                  networkManager : NetworkManager,
-                  webSocketManager : WebSocketManager,
-                  coreDataManager : CoreDataManager) {
+                  networkManager : NetworkManagerMainProtocol,
+                  webSocketManager : WebSocketProtocol,
+                  coreDataManager : CoreDataManagerForMainProtocol) {
         self.view = view
         self.builder = builder
         self.networkManager = networkManager
@@ -64,13 +64,13 @@ class MainViewPresenter : MainViewPresenterProtocol {
                 DispatchGroups.shared.groupTwo.wait()
                 networkManager.putCoinGeckoData(array: &DataSingleton.shared.collectionViewArray, group: DispatchGroups.shared.groupThree, otherArray: DataSingleton.shared.results)
                 
-                webSocketManager.webSocket2(symbols: DataSingleton.shared.websocketArray)
-                webSocketManager.receiveMessage(tableView: [], collectionView: [view.returnCollectionView()])
+                webSocketManager.webSocket(symbols: DataSingleton.shared.websocketArray)
+                webSocketManager.receiveMessage()
                 DispatchGroups.shared.groupThree.wait()
                 networkManager.setupSections()
                 reloadData()
-                networkManager.updateUI(collectionViews: [view.returnCollectionView()])
-                networkManager.recoursiveUpdateUI(collectionViews: [view.returnCollectionView()])
+                updateUI(collectionViews: [view.returnCollectionView()])
+                recoursiveUpdateUI(collectionViews: [view.returnCollectionView()])
 
 //                NotificationCenter.default.addObserver(view, selector: #selector(view.reloadCollectionView), name: NSNotification.Name(rawValue: "newImage"), object: nil)
             }
@@ -139,20 +139,27 @@ class MainViewPresenter : MainViewPresenterProtocol {
         
     }
     
-//    func returnDataSource() -> UICollectionViewDiffableDataSource<SectionOfCrypto, Crypto>? {
-//        return dataSource
-//    }
-    
-//    func showChartView(crypto : Crypto) {
-//        let chartVC = builder.createChartViewModule(crypto: crypto)
-//        view.navigationController?.pushViewController(chartVC, animated: true)
-//    }
     func showChartView(indexPath : IndexPath) {
         guard let crypto = dataSource?.itemIdentifier(for: indexPath) else { return }
         let chartVC = builder.createChartViewModule(crypto: crypto)
-//        view.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         view.navigationController?.pushViewController(chartVC, animated: true)
-//        view.present(chartVC, animated:true, completion:nil)
-        
+    }
+    
+    func updateUI(collectionViews: [UICollectionView]){
+        DispatchGroups.shared.groupOne.wait()
+        DispatchGroups.shared.groupTwo.wait()
+        //        groupThree.wait()
+        DispatchQueue.main.async {
+            self.view.reloadCollectionView()
+//            for i in collectionViews {
+//                i.reloadData()
+//            }
+        }
+    }
+    func recoursiveUpdateUI(collectionViews: [UICollectionView]){
+        updateUI(collectionViews: collectionViews)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            self.recoursiveUpdateUI(collectionViews: collectionViews)
+        }
     }
 }

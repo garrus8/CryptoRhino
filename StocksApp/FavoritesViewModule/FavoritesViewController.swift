@@ -15,7 +15,7 @@ protocol FavoritesViewControllerProtocol : UIViewController {
 class FavoritesViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, FavoritesViewControllerProtocol  {
     
     var collectionView : UICollectionView!
-    let finHubToken = Constants.finHubToken
+//    let finHubToken = Constants.finHubToken
     //MARK: - PRESENTER
     var presenter : FavoritesViewPresenterProtocol!
 //    var favorites = [Favorites]()
@@ -94,14 +94,13 @@ class FavoritesViewController: UIViewController, UICollectionViewDataSource, UIC
         
         
         definesPresentationContext = true
-        collectionView.delegate = self
-        collectionView.dataSource = self
+//        collectionView.delegate = self
 
         // DELEGATE
 //        networkManager.delegate = self
         refresh()
 //        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: NSNotification.Name(rawValue: "WebsocketDataUpdate"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.reloadData), name: NSNotification.Name(rawValue: "newDataNotif"), object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(self.reloadData), name: NSNotification.Name(rawValue: "newDataNotif"), object: nil)
  
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -116,16 +115,13 @@ class FavoritesViewController: UIViewController, UICollectionViewDataSource, UIC
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 20, left: 12, bottom: 10, right: 12)
         layout.itemSize = CGSize(width: self.view.frame.size.width - 24, height: self.view.frame.size.height / 8)
-        
+
         collectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.backgroundColor = UIColor(hexString: "#4158B7")
+        
         collectionView.register(TableCollectionViewCell.self, forCellWithReuseIdentifier: TableCollectionViewCell.reuseId)
         collectionView.register(SearchTableViewCell.self, forCellWithReuseIdentifier: SearchTableViewCell.reuseId)
-        view.addSubview(collectionView)
-        
-//        layout.itemSize = CGSize(width: collectionView.bounds.width - 20, height: 60)
-        
         collectionView.delegate = self
         collectionView.dataSource = self
         
@@ -136,9 +132,9 @@ class FavoritesViewController: UIViewController, UICollectionViewDataSource, UIC
             self.refresh()
         }
    }
-    @objc func reloadData() {
-        collectionView.reloadData()
-    }
+//    @objc func reloadData() {
+//        collectionView.reloadData()
+//    }
     
     
     // MARK: - Table view data source
@@ -262,7 +258,5 @@ extension FavoritesViewController : UISearchResultsUpdating   {
         DispatchQueue.main.async {
             self.collectionView.reloadData()
         }
-        
     }
-    
 }

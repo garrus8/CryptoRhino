@@ -47,25 +47,37 @@ class TableCollectionViewCell: UICollectionViewCell {
         self.layer.shadowOpacity = 1
         self.layer.shadowRadius = 10
         self.layer.shadowOffset = CGSize(width: 0, height: -4)
-//        self.clipsToBounds = true
-        
+//        friendImageView.layer.cornerRadius = friendImageView.frame.height/2
+    }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
-    func setupElements() {
+    private func setupElements() {
         nameOfCrypto.translatesAutoresizingMaskIntoConstraints = false
         symbolOfCrypto.translatesAutoresizingMaskIntoConstraints = false
         friendImageView.translatesAutoresizingMaskIntoConstraints = false
         price.translatesAutoresizingMaskIntoConstraints = false
         percent.translatesAutoresizingMaskIntoConstraints = false
     }
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        friendImageView.layer.cornerRadius = friendImageView.frame.height/2
+        friendImageView.clipsToBounds = true
+    }
     
     func configure (with crypto: Crypto) {
         nameOfCrypto.text = crypto.nameOfCrypto
         symbolOfCrypto.text = crypto.symbolOfCrypto
-        price.text = crypto.price
-        price.text?.insert("$", at: price.text!.startIndex)
-//        percent.text = crypto.percentages?.priceChangePercentage24H
-        if crypto.percentages!.priceChangePercentage24H!.hasPrefix("-") {
+        friendImageView.image = crypto.image
+        
+        if let priceOfCrypto = crypto.price {
+        price.text = "$" + priceOfCrypto
+//        price.text?.insert("$", at: price.text!.startIndex)
+        }
+        guard let percentages = crypto.percentages?.priceChangePercentage24H else {return}
+        
+        if percentages.hasPrefix("-") {
             let imageAttachment = NSTextAttachment()
             imageAttachment.image = UIImage(systemName: "arrowtriangle.down.fill")?.withTintColor(.red)
             
@@ -90,26 +102,12 @@ class TableCollectionViewCell: UICollectionViewCell {
             percent.attributedText = fullString
             percent.textColor = UIColor(red: 0.486, green: 0.863, blue: 0.475, alpha: 1)
         }
-        friendImageView.image = crypto.image
-        friendImageView.layer.cornerRadius = friendImageView.frame.height/2
-        friendImageView.clipsToBounds = true
-    }
-//    func configureForFavorite (with crypto: Crypto) {
-//        nameOfCrypto.text = crypto.nameOfCrypto
-//        symbolOfCrypto.text = crypto.symbolOfCrypto
-//        price.text = crypto.price
-//        percent.text = crypto.percent
-//        friendImageView.image = UIImage(data: crypto.imageData!)
-//    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }
 
 // MARK: - Setup Constraints
 extension TableCollectionViewCell {
-    func setupConstraints() {
+    private func setupConstraints() {
         addSubview(friendImageView)
         addSubview(nameOfCrypto)
         addSubview(symbolOfCrypto)

@@ -10,27 +10,27 @@ import UIKit
 class CarouselCollectionViewCell: UICollectionViewCell {
     static var reuseId: String = "CarouselCollectionViewCell"
     
-    let imageView = UIImageView()
-    let nameOfCrypto : UILabel = {
+    private let imageView = UIImageView()
+    private let nameOfCrypto : UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "Avenir", size: 16)
         label.textColor = .white
         label.numberOfLines = 2
         return label
     }()
-    let symbolOfCrypto : UILabel = {
+    private let symbolOfCrypto : UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "Avenir", size: 14)
         label.textColor = UIColor(red: 0.717, green: 0.807, blue: 1, alpha: 1)
         return label
     }()
-    let price : UILabel = {
+    private let price : UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "Avenir", size: 14)
         label.textColor = UIColor(red: 0.913, green: 0.943, blue: 1, alpha: 1)
         return label
     }()
-    let percent : UILabel = {
+    private let percent : UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "Avenir", size: 15)
         return label
@@ -45,14 +45,17 @@ class CarouselCollectionViewCell: UICollectionViewCell {
         layer.cornerRadius = 10
         layer.shadowPath = UIBezierPath(rect: self.layer.bounds).cgPath
         layer.shadowColor = UIColor(red: 0.083, green: 0.13, blue: 0.333, alpha: 0.4).cgColor
-//        layer.shadowColor = UIColor.red.cgColor
+
         layer.shadowOpacity = 1
         layer.shadowRadius = 10
         layer.shadowOffset = CGSize(width: 0, height: 3)
 //        layer.masksToBounds = false
 //        clipsToBounds = true
     }
-    func setupElements() {
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    private func setupElements() {
         nameOfCrypto.translatesAutoresizingMaskIntoConstraints = false
         symbolOfCrypto.translatesAutoresizingMaskIntoConstraints = false
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -61,11 +64,24 @@ class CarouselCollectionViewCell: UICollectionViewCell {
     }
     
     func configure(with crypto: Crypto) {
+        
         nameOfCrypto.text = crypto.nameOfCrypto
         symbolOfCrypto.text = crypto.symbolOfCrypto
-        price.text = crypto.price
-        price.text?.insert("$", at: price.text!.startIndex)
-        if crypto.percentages!.priceChangePercentage24H!.hasPrefix("-") {
+        imageView.image = crypto.image
+        imageView.layer.cornerRadius = imageView.frame.height/2
+        imageView.clipsToBounds = true
+        
+//        if let priceofCrypto = crypto.price {
+//            price.text = priceofCrypto
+//            price.text?.insert("$", at: priceofCrypto.startIndex)
+//        }
+        if let priceOfCrypto = crypto.price {
+        price.text = "$" + priceOfCrypto
+//        price.text?.insert("$", at: price.text!.startIndex)
+        }
+        guard let percentages = crypto.percentages?.priceChangePercentage24H else {return}
+        
+        if percentages.hasPrefix("-") {
             let imageAttachment = NSTextAttachment()
             imageAttachment.image = UIImage(systemName: "arrowtriangle.down.fill")?.withTintColor(.red)
             
@@ -91,14 +107,6 @@ class CarouselCollectionViewCell: UICollectionViewCell {
             percent.attributedText = fullString
             percent.textColor = UIColor(red: 0.486, green: 0.863, blue: 0.475, alpha: 1)
         }
-        
-        imageView.image = crypto.image
-        imageView.layer.cornerRadius = imageView.frame.height/2
-        imageView.clipsToBounds = true
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }
 // MARK: - Setup Constraints
@@ -114,9 +122,6 @@ extension CarouselCollectionViewCell {
         nameOfCrypto.topAnchor.constraint(equalTo: topAnchor, constant: 12).isActive = true
         nameOfCrypto.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 12).isActive = true
         nameOfCrypto.trailingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: -8).isActive = true
-//        nameOfCrypto.heightAnchor.constraint(equalToConstant: 80).isActive = true
-//        nameOfCrypto.widthAnchor.constraint(equalToConstant: 60).isActive = true
-        
         
         imageView.topAnchor.constraint(equalTo: topAnchor, constant: 12).isActive = true
         imageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -12).isActive = true
@@ -127,7 +132,6 @@ extension CarouselCollectionViewCell {
         symbolOfCrypto.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 12).isActive = true
         symbolOfCrypto.widthAnchor.constraint(equalToConstant: 60).isActive = true
         
-//        price.topAnchor.constraint(equalTo: symbolOfCrypto.bottomAnchor, constant: 16).isActive = true
         price.bottomAnchor.constraint(equalTo: percent.topAnchor, constant: -4).isActive = true
         price.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 12).isActive = true
         price.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -12).isActive = true

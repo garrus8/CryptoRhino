@@ -20,12 +20,15 @@ class NewsViewController: UIViewController, UICollectionViewDataSource, UICollec
     var collectionView : UICollectionView!
     var activityIndicator = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//        setupCollectionView()
+////        getNews()
+//        
+//    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         setupCollectionView()
-//        getNews()
-        
     }
   
     func setupCollectionView() {
@@ -90,7 +93,6 @@ class NewsViewController: UIViewController, UICollectionViewDataSource, UICollec
         presenter.newsData.count
         
     }
-    
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NewsCell.reuseId, for: indexPath) as! NewsCell

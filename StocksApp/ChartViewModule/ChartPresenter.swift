@@ -39,15 +39,14 @@ class ChartViewPresenter : ChartViewPresenterProtocol {
     var image = UIImage()
     let imageOfHeart = UIImage(systemName: "heart")
     let imageOfHeartFill = UIImage(systemName: "heart.fill")
-    var networkManager : NetworkManager!
-    var coreDataManager : CoreDataManager!
+    var networkManager : NetworkManagerForChartProtocol!
+    var coreDataManager : CoreDataManagerForChartProtocol!
 //    weak var websocketManager : WebSocketManager!
     var labels = [String:String]()
     
     init(crypto : Crypto, view : ChartViewControllerProtocol,
-         networkManager : NetworkManager,
-         coreDataManager : CoreDataManager) {
-        print("INIT")
+         networkManager : NetworkManagerForChartProtocol,
+         coreDataManager : CoreDataManagerForChartProtocol) {
         self.view = view
         self.crypto = crypto
         self.networkManager = networkManager
@@ -182,15 +181,18 @@ class ChartViewPresenter : ChartViewPresenterProtocol {
                     }
                     if let marketData = stocks.marketData {
                         self.marketData = MarketDataArray(marketData: marketData).array
-                        self.view.marketDataTableView.reloadData()
+                        self.view.reloadMarketDataTableView()
+//                        self.view.marketDataTableView.reloadData()
                     }
                     if let communityData = stocks.communityData {
                         self.communityData = CommunityDataArray(communityData: communityData).array
-                        self.view.communityDataTableView.reloadData()
+                        self.view.reloadCommunityDataTableView()
+//                        self.view.communityDataTableView.reloadData()
                     }
                     self.view.updateData()
-                    self.view.setupDetailInfo()
-                    self.view.scrollView.contentInset.bottom += 67
+//                    self.view.setupDetailInfo()
+//                    self.view.increaseScrollViewBottom(for: 67)
+//                    self.view.scrollView.contentInset.bottom += 67
                     
                 }
             }

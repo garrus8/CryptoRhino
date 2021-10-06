@@ -10,7 +10,6 @@ import Foundation
 
 protocol SearchViewPresenterProtocol : AnyObject {
     var filteredResults : GeckoList {get}
-//    var isFiltering : Bool {get}
     func returNnumberOfItems() -> Int
     func showChartView(indexPath : IndexPath)
     func filter(searchText : String)
@@ -20,11 +19,10 @@ protocol SearchViewPresenterProtocol : AnyObject {
 
 
 class SearchViewPresenter : SearchViewPresenterProtocol {
-    weak var view : SearchViewControllerProtocol!
+    private weak var view : SearchViewControllerProtocol!
     var filteredResults = GeckoList()
-    var builder : Builder!
+    private var builder : Builder!
 
-    
     init(view : SearchViewControllerProtocol, builder: Builder) {
         self.view = view
         self.builder = builder

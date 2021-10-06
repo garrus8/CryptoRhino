@@ -16,7 +16,7 @@ protocol Builder {
 }
 
 
-class ModuleBuilder : Builder {
+final class ModuleBuilder : Builder {
     
     func createMainViewModule() -> UIViewController {
         let view = MainViewController()

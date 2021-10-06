@@ -45,7 +45,7 @@ class SearchTableViewCellWithImage: UICollectionViewCell {
     }
 
 
-    func setupElements() {
+    private func setupElements() {
         nameOfCrypto.translatesAutoresizingMaskIntoConstraints = false
         symbolOfCrypto.translatesAutoresizingMaskIntoConstraints = false
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -66,7 +66,7 @@ class SearchTableViewCellWithImage: UICollectionViewCell {
 
 // MARK: - Setup Constraints
 extension SearchTableViewCellWithImage {
-    func setupConstraints() {
+    private func setupConstraints() {
         addSubview(nameOfCrypto)
         addSubview(symbolOfCrypto)
         addSubview(imageView)

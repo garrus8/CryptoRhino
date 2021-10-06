@@ -18,9 +18,9 @@ protocol NewsViewPresenterProtocol : AnyObject {
 class NewsViewPresenter : NewsViewPresenterProtocol {
     var newsData = [NewsData]()
     weak var view : NewsViewControllerProtocol!
-    var networkManager : NetworkManager!
+    var networkManager : NetworkManagerForNewsProtocol!
     
-    init(view : NewsViewControllerProtocol, networkManager : NetworkManager) {
+    init(view : NewsViewControllerProtocol, networkManager : NetworkManagerForNewsProtocol) {
         self.view = view
         self.networkManager = networkManager
         DispatchQueue.main.async {
@@ -55,7 +55,6 @@ class NewsViewPresenter : NewsViewPresenterProtocol {
                     DispatchQueue.main.async {
                         self.view.activityIndicator.stopAnimating()
                         self.view.activityIndicator.isHidden = true
-//                        self.view.collectionView.reloadData()
                     }
                     
                 } catch let error as NSError {

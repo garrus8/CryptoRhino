@@ -19,6 +19,10 @@ extension UIButton {
         self.backgroundColor = .red
         
     }
+    convenience init(cornerRadius : CGFloat) {
+        self.init(type : .system)
+        self.layer.cornerRadius = cornerRadius
+    }
 }
 extension Data {
     var html2AttributedString: NSAttributedString? {

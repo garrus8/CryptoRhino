@@ -18,21 +18,19 @@ protocol MainViewControllerProtocol : UIViewController {
 class MainViewController: UIViewController, MainViewControllerProtocol {
         
     var presenter : MainViewPresenterProtocol!
-    
     static let shared = MainViewController()
    
-//    var dataSource : UICollectionViewDiffableDataSource<SectionOfCrypto, Crypto>?
-    var collectionView : UICollectionView!
-    let CollectionViewGroup = DispatchGroup()
-//    var sections = [SectionOfCrypto]()
-    
+    private var collectionView : UICollectionView!
+    private let CollectionViewGroup = DispatchGroup()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         definesPresentationContext = true
         presenter.launchMethods()
     }
     
-    @objc func reloadCollectionView() {
+//    @objc
+    func reloadCollectionView() {
         DispatchQueue.main.async {
             self.collectionView.reloadData()
         }
@@ -91,7 +89,7 @@ class MainViewController: UIViewController, MainViewControllerProtocol {
         
     }
     
-    func createSectionHeader() -> NSCollectionLayoutBoundarySupplementaryItem {
+    private func createSectionHeader() -> NSCollectionLayoutBoundarySupplementaryItem {
         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(1))
         let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
         
@@ -100,9 +98,9 @@ class MainViewController: UIViewController, MainViewControllerProtocol {
     
 
 }
-// MARK: - Нужно сделать роутер и вернуть дид селект!
 
 extension MainViewController: UICollectionViewDelegate {
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         presenter.showChartView(indexPath : indexPath)

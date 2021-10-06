@@ -7,9 +7,9 @@
 
 import UIKit
 
-class MainTabBarController : UITabBarController {
+final class MainTabBarController : UITabBarController {
     
-    var builder : Builder!
+    private var builder : Builder!
     
     init(builder : Builder) {
         self.builder = builder

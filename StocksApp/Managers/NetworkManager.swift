@@ -6,29 +6,35 @@
 //
 import Foundation
 import UIKit
-//import CoreData
-// DELEGATE
-//protocol NetworkManagerDelegate : class {
-//    func updateData (results : [Crypto])
-//}
 
-/*
- СДЕЛАТЬ ВСЕ МЕТОДЫ ЭТОГО КЛАССА static, чтобы не создавать экземпляр класса
- TABLEVIEW ПЕРЕДАВАТЬ В ЗАМЫКАНИЕ, А НЕ В ПАРАМЕТР МЕТОДА, И УЖЕ ТАМ ВЫЗЫВАТЬ МЕТОД И ПЕРЕДАВАТЬ ТУДА АКТУАЛЬНЫЙ ТЭЙБЛВЬЮ
- Вынести ячейки в ксиб
- В избранных хранить не только символ но и название, чтобы потом его не запрашивать с коингеко
- Сделать обработку ответа от сервера, при запросе графика, если request.statusCode == error => в  контроллере ячейка с графиком пустая и его вообще нет.
- */
-
-protocol NetworkManagerProtocol {
+protocol NetworkManagerMainProtocol {
+    func getTopOfCrypto(group : DispatchGroup)
+    func getTopSearch(group : DispatchGroup)
+    func getFullListOfCoinGecko(group : DispatchGroup, waitingGroup : DispatchGroup)
+    func getFullCoinCapList(group : DispatchGroup)
+    func getCoinGeckoData(id: String, symbol : String, group: DispatchGroup, complition : @escaping (GeckoSymbol)->())
+    func putCoinGeckoData(array : inout [Crypto], group: DispatchGroup, otherArray : [Crypto])
+    func obtainImage(StringUrl : String, group : DispatchGroup, complition : @escaping ((UIImage) -> Void))
+    func carouselDataLoad(group : DispatchGroup)
+    func setupSections()
     
 }
+protocol NetworkManagerForChartProtocol {
+    func getCoinGeckoData(id: String, symbol : String, group: DispatchGroup, complition : @escaping (GeckoSymbol)->())
+    func obtainImage(StringUrl : String, group : DispatchGroup, complition : @escaping ((UIImage) -> Void))
+}
+protocol NetworkManagerForNewsProtocol {
+    func obtainImage(StringUrl : String, group : DispatchGroup, complition : @escaping ((UIImage) -> Void))
+}
+protocol NetworkManagerForCoreDataProtocol {
+    func putCoinGeckoData(array : inout [Crypto], group: DispatchGroup, otherArray : [Crypto])
+}
 
-class NetworkManager  {
+class NetworkManager {
     
-    let queue = DispatchQueue(label: "123", qos: .userInitiated)
+    private let queue = DispatchQueue(label: "123", qos: .userInitiated)
+    private var countTopOfCrypto = 0
     
-    var countTopOfCrypto = 0
     func getTopOfCrypto(group : DispatchGroup) {
         // GROUP 1
         
@@ -83,7 +89,7 @@ class NetworkManager  {
                 DispatchQueue.main.async() {
                     group.enter()
                     print("getTopOfCrypto 5")
-                    let alert = UIAlertController(title: "We have server problems", message: "You can restart the app or try later ", preferredStyle: .alert)
+                    let alert = UIAlertController(title: "Sorry, you have exceeded our API request limit", message: "Try in one minute", preferredStyle: .alert)
                     alert.show()
                     group.leave()
                 }
@@ -134,8 +140,7 @@ class NetworkManager  {
         }
     }
     
-    var countOfFullListCoinGecko = 0
-    
+    private var countOfFullListCoinGecko = 0
     func getFullListOfCoinGecko(group : DispatchGroup, waitingGroup : DispatchGroup) {
         
         // GROUP 1
@@ -196,7 +201,7 @@ class NetworkManager  {
             } else {
                 DispatchQueue.main.async() {
                     group.enter()
-                    let alert = UIAlertController(title: "We have server problems", message: "You can restart the app or try later ", preferredStyle: .alert)
+                    let alert = UIAlertController(title: "Sorry, you have exceeded our API request limit", message: "Try in one minute", preferredStyle: .alert)
                     alert.show()
                     print("getFullListOfCoinGecko 4")
                     group.leave()
@@ -205,7 +210,7 @@ class NetworkManager  {
         }
     }
     
-    var countOfCoinCap = 0
+    private var countOfCoinCap = 0
     func getFullCoinCapList(group : DispatchGroup) {
         
         // GROUP 1
@@ -240,7 +245,7 @@ class NetworkManager  {
             } else {
                 DispatchQueue.main.async() {
                     group.enter()
-                    let alert = UIAlertController(title: "We have server problems", message: "You can restart the app or try later ", preferredStyle: .alert)
+                    let alert = UIAlertController(title: "Sorry, you have exceeded our API request limit", message: "Try in one minute", preferredStyle: .alert)
                     alert.show()
                     print("getFullCoinCapList 4")
                     group.leave()
@@ -269,7 +274,8 @@ class NetworkManager  {
                             self.getCoinGeckoData(id: id, symbol: symbol, group: group, complition : complition);
                             group.leave();
                             return}
-                    
+                
+                        
                         complition(stocks)
                         group.leave()
                         
@@ -343,6 +349,8 @@ class NetworkManager  {
                                 elemA.image = image
                                 elemA.imageString = stocks.image?.large
                                 
+//                                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newDataNotif"), object: nil)
+                                
                             }
                         }
                         elemA.nameOfCrypto = stocks.name
@@ -387,7 +395,7 @@ class NetworkManager  {
         }
     }
     
-    func obtainImage(StringUrl : String, group : DispatchGroup, complition : @escaping ((UIImage) -> Void) ) {
+    func obtainImage(StringUrl : String, group : DispatchGroup, complition : @escaping ((UIImage) -> Void)) {
         
         DispatchQueue.global().async(group : group) {
             if let cachedImage = DataSingleton.shared.imageCache.object(forKey: StringUrl as NSString) {
@@ -436,23 +444,22 @@ class NetworkManager  {
     }
     
     
-    func updateUI(collectionViews: [UICollectionView]){
-        DispatchGroups.shared.groupOne.wait()
-        DispatchGroups.shared.groupTwo.wait()
-        //        groupThree.wait()
-        DispatchQueue.main.async {
-            for i in collectionViews {
-                i.reloadData()
-            }
-        }
-    }
-    func recoursiveUpdateUI(collectionViews: [UICollectionView]){
-        updateUI(collectionViews: collectionViews)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            self.recoursiveUpdateUI(collectionViews: collectionViews)
-        }
-    }
-//    let groupSetupSections = DispatchGroup()
+//    func updateUI(collectionViews: [UICollectionView]){
+//        DispatchGroups.shared.groupOne.wait()
+//        DispatchGroups.shared.groupTwo.wait()
+//        //        groupThree.wait()
+//        DispatchQueue.main.async {
+//            for i in collectionViews {
+//                i.reloadData()
+//            }
+//        }
+//    }
+//    func recoursiveUpdateUI(collectionViews: [UICollectionView]){
+//        updateUI(collectionViews: collectionViews)
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+//            self.recoursiveUpdateUI(collectionViews: collectionViews)
+//        }
+//    }
     
     func setupSections() {
         DispatchGroups.shared.groupOne.wait()
@@ -470,15 +477,15 @@ class NetworkManager  {
     }
     
     func quickSortForCoinGecko (_ list : inout [GeckoListElement], start : Int, end : Int) {
-        
+
         if end - start < 2 {
             return
         }
         let pivot = list[start + (end - start) / 2]
         var low = start
         var high = end - 1
-        
-        
+
+
         while (low <= high) {
             if list[low].symbol! < pivot.symbol! {
                 low += 1
@@ -488,17 +495,17 @@ class NetworkManager  {
                 high -= 1
                 continue
             }
-            
+
             let temp = list[low]
             list[low] = list[high]
             list[high] = temp
-            
+
             low += 1
             high -= 1
         }
         quickSortForCoinGecko(&list, start: start, end: high + 1)
         quickSortForCoinGecko(&list, start: high + 1, end: end)
-        
+
     }
     
     //    func binarySearchFoCoinGeckoList(key : String, list : [GeckoListElement]) -> Int? {
@@ -521,3 +528,5 @@ class NetworkManager  {
     
     
 }
+
+extension NetworkManager : NetworkManagerMainProtocol, NetworkManagerForChartProtocol, NetworkManagerForNewsProtocol, NetworkManagerForCoreDataProtocol {}

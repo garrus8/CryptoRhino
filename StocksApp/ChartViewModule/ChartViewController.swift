@@ -7,14 +7,15 @@
 
 import UIKit
 import Charts
-import CoreData
+//import CoreData
 import SafariServices
 
 protocol ChartViewControllerProtocol : UIViewController {
-    var marketDataTableView: UITableView { get }
-    var communityDataTableView : UITableView { get }
-    var scrollView: UIScrollView { get }
-    func setupDetailInfo()
+    
+    func reloadCommunityDataTableView()
+    func reloadMarketDataTableView()
+//    func increaseScrollViewBottom (for number : CGFloat)
+//    func setupDetailInfo()
     func updateContentViewFrame(contentViewFrameChange : CGFloat, detailInfoViewFrameChange : CGFloat, scrollViewChange : CGFloat)
     func navigationBarSetup()
     func setData(dataSet: LineChartDataSet, xAxisValueFormatter: ChartViewPresenter.MyXAxisFormatter)
@@ -22,35 +23,13 @@ protocol ChartViewControllerProtocol : UIViewController {
     func updateData()
 }
 
-class ChartViewController: UIViewController, ChartViewDelegate , ChartViewControllerProtocol {
+class ChartViewController: UIViewController {
     
     var presenter : ChartViewPresenterProtocol!
-    //    var values: [ChartDataEntry] = []
-//    var textTest = String()
-    //    var image = UIImage()
-    //    x
-    //    var symbolOfCurrentCrypto = String()
-    //    var symbolOfTicker = String()
-    //    var marketData = [MarketDataElem]()
-    //    var communityData = [MarketDataElem]()
-    //    var idOfCrypto = String()
-    //    let imageOfHeart = UIImage(systemName: "heart")
-    //    let imageOfHeartFill = UIImage(systemName: "heart.fill")
-    //    var bool = false
     
-//    var diffPriceOfCryptoText = String()
-//    var priceOfCryptoText = String()
-//    var nameOfCryptoText = String()
-    
-    //    var crypto = Crypto(symbolOfCrypto: "", price: "", change: "", nameOfCrypto: "", descriptionOfCrypto: "", id: "", percentages: nil, image: UIImage(named: "pngwing.com")!)
-    //    var redditUrl = String()
-    //    var siteUrl = String()
-    //    var percentages = Persentages()
-    
-    
-    // UI
     var scrollView = UIScrollView()
-    let contentView = UIView()
+    private let contentView = UIView()
+    
     let chartAndPriceView : UIView = {
         let chart = UIView()
         chart.backgroundColor = UIColor(hexString: "#4158B7")
@@ -67,8 +46,8 @@ class ChartViewController: UIViewController, ChartViewDelegate , ChartViewContro
     }()
     var marketDataTableView = UITableView()
     var communityDataTableView = UITableView()
-    var contentViewFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 1470)
-    var detailInfoViewFrame = CGRect(x: 15, y: 600, width: UIScreen.main.bounds.size.width - 30, height: 870)
+    private var contentViewFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 1470)
+    private var detailInfoViewFrame = CGRect(x: 15, y: 600, width: UIScreen.main.bounds.size.width - 30, height: 870)
     
     func setupScrollView(){
         
@@ -78,7 +57,6 @@ class ChartViewController: UIViewController, ChartViewDelegate , ChartViewContro
         contentView.addSubview(detailInfoView)
         contentView.backgroundColor = UIColor(hexString: "#4158B7")
         detailInfoView.frame = detailInfoViewFrame
-//        navigationController?.view.frame.size.height = 1700
         
         chartAndPriceView.frame = CGRect(x:0.0, y: 0.0, width: view.frame.size.width, height: 600)
         contentView.frame = contentViewFrame
@@ -86,16 +64,6 @@ class ChartViewController: UIViewController, ChartViewDelegate , ChartViewContro
         scrollView.backgroundColor = UIColor(hexString: "#4158B7")
         scrollView.contentSize = CGSize(width: self.view.bounds.size.width, height: chartAndPriceView.frame.height + detailInfoView.frame.height)
     }
-    
-    var count = 0
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        if count < 3 {
-            setupScrollView()
-        }
-        count += 1
-    }
-    
     
     let nameOfCrypto: UILabel = {
         let label = UILabel()
@@ -127,7 +95,19 @@ class ChartViewController: UIViewController, ChartViewDelegate , ChartViewContro
         return label
     }()
     
-    var computedDiffPrice : String {
+    let descriptionLabel : UILabel = {
+        let textView = UILabel()
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.layer.masksToBounds = true
+        textView.numberOfLines = 7
+        textView.lineBreakMode = .byTruncatingTail
+        textView.font = UIFont.systemFont(ofSize: 14)
+        textView.textColor = .white
+        textView.sizeToFit()
+        return textView
+    }()
+    
+    private var computedDiffPrice : String {
         get {
             return diffPriceOfCrypto.text ?? ""
         }
@@ -171,7 +151,9 @@ class ChartViewController: UIViewController, ChartViewDelegate , ChartViewContro
         return button
         
     }()
-    @objc func dayChartButtonLoad() {
+    
+    @objc
+    private func dayChartButtonLoad() {
         presenter.removeValues()
         DispatchQueue.main.async {
             self.dayChartButton.backgroundColor = UIColor(red: 0.324, green: 0.424, blue: 0.854, alpha: 1)
@@ -179,7 +161,7 @@ class ChartViewController: UIViewController, ChartViewDelegate , ChartViewContro
             self.monthChartButton.backgroundColor = UIColor(red: 0.146, green: 0.197, blue: 0.421, alpha: 1)
             self.yearChartButton.backgroundColor = UIColor(red: 0.146, green: 0.197, blue: 0.421, alpha: 1)
             if let idOfCrypto = self.presenter.labels[KeysOfLabels.idOfCrypto.rawValue] {
-            self.presenter.chartLoad(idOfCrypto: idOfCrypto, interval: Interval.day)
+                self.presenter.chartLoad(idOfCrypto: idOfCrypto, interval: Interval.day)
             }
             if let percent = self.presenter.percentages.priceChangePercentage24H {
                 self.computedDiffPrice = percent
@@ -198,7 +180,9 @@ class ChartViewController: UIViewController, ChartViewDelegate , ChartViewContro
         return button
         
     }()
-    @objc func weekChartButtonLoad() {
+
+    @objc
+    private func weekChartButtonLoad() {
         presenter.removeValues()
         DispatchQueue.main.async {
             self.dayChartButton.backgroundColor = UIColor(red: 0.146, green: 0.197, blue: 0.421, alpha: 1)
@@ -206,7 +190,7 @@ class ChartViewController: UIViewController, ChartViewDelegate , ChartViewContro
             self.monthChartButton.backgroundColor = UIColor(red: 0.146, green: 0.197, blue: 0.421, alpha: 1)
             self.yearChartButton.backgroundColor = UIColor(red: 0.146, green: 0.197, blue: 0.421, alpha: 1)
             if let idOfCrypto = self.presenter.labels[KeysOfLabels.idOfCrypto.rawValue] {
-            self.presenter.chartLoad(idOfCrypto: idOfCrypto, interval: Interval.week)
+                self.presenter.chartLoad(idOfCrypto: idOfCrypto, interval: Interval.week)
             }
             if let percent = self.presenter.percentages.priceChangePercentage7D {
                 self.computedDiffPrice = percent
@@ -225,7 +209,9 @@ class ChartViewController: UIViewController, ChartViewDelegate , ChartViewContro
         return button
         
     }()
-    @objc func monthChartButtonLoad() {
+    
+    @objc
+    private func monthChartButtonLoad() {
         presenter.removeValues()
         DispatchQueue.main.async {
             self.dayChartButton.backgroundColor = UIColor(red: 0.146, green: 0.197, blue: 0.421, alpha: 1)
@@ -233,7 +219,7 @@ class ChartViewController: UIViewController, ChartViewDelegate , ChartViewContro
             self.monthChartButton.backgroundColor = UIColor(red: 0.324, green: 0.424, blue: 0.854, alpha: 1)
             self.yearChartButton.backgroundColor = UIColor(red: 0.146, green: 0.197, blue: 0.421, alpha: 1)
             if let idOfCrypto = self.presenter.labels[KeysOfLabels.idOfCrypto.rawValue] {
-            self.presenter.chartLoad(idOfCrypto: idOfCrypto, interval: Interval.month)
+                self.presenter.chartLoad(idOfCrypto: idOfCrypto, interval: Interval.month)
             }
             if let percent = self.presenter.percentages.priceChangePercentage30D {
                 self.computedDiffPrice = percent
@@ -252,7 +238,9 @@ class ChartViewController: UIViewController, ChartViewDelegate , ChartViewContro
         return button
         
     }()
-    @objc func yearChartButtonLoad() {
+    
+    @objc
+    private func yearChartButtonLoad() {
         presenter.removeValues()
         DispatchQueue.main.async {
             self.dayChartButton.backgroundColor = UIColor(red: 0.146, green: 0.197, blue: 0.421, alpha: 1)
@@ -260,7 +248,7 @@ class ChartViewController: UIViewController, ChartViewDelegate , ChartViewContro
             self.monthChartButton.backgroundColor = UIColor(red: 0.146, green: 0.197, blue: 0.421, alpha: 1)
             self.yearChartButton.backgroundColor = UIColor(red: 0.324, green: 0.424, blue: 0.854, alpha: 1)
             if let idOfCrypto = self.presenter.labels[KeysOfLabels.idOfCrypto.rawValue] {
-            self.presenter.chartLoad(idOfCrypto: idOfCrypto, interval: Interval.year)
+                self.presenter.chartLoad(idOfCrypto: idOfCrypto, interval: Interval.year)
             }
             if let percent = self.presenter.percentages.priceChangePercentage1Y {
                 self.computedDiffPrice = percent
@@ -280,6 +268,7 @@ class ChartViewController: UIViewController, ChartViewDelegate , ChartViewContro
                          for: .touchUpInside)
         return button
     }()
+    
     let onSiteButton : UIButton = {
         let button = UIButton(type: .custom)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -296,168 +285,210 @@ class ChartViewController: UIViewController, ChartViewDelegate , ChartViewContro
     }()
     
     
-    func setupChartAndPriceView(){
-        chartAndPriceView.addSubview(priceOfCrypto)
-        
-        priceOfCrypto.centerXAnchor.constraint(equalTo: chartAndPriceView.centerXAnchor).isActive = true
-        priceOfCrypto.topAnchor.constraint(equalTo: chartAndPriceView.topAnchor, constant: 20).isActive = true
-        
-        chartAndPriceView.addSubview(diffPriceOfCrypto)
-        diffPriceOfCrypto.centerXAnchor.constraint(equalTo: chartAndPriceView.centerXAnchor).isActive = true
-        diffPriceOfCrypto.topAnchor.constraint(equalTo: priceOfCrypto.bottomAnchor, constant: 5).isActive = true
-        
-        let buttonsView = UIView()
-        buttonsView.layer.cornerRadius = 7
-        buttonsView.layer.backgroundColor = UIColor(red: 0.146, green: 0.197, blue: 0.421, alpha: 1).cgColor
-        buttonsView.translatesAutoresizingMaskIntoConstraints = false
-        
-        chartAndPriceView.addSubview(buttonsView)
-        buttonsView.centerXAnchor.constraint(equalTo: chartAndPriceView.centerXAnchor).isActive = true
-        buttonsView.bottomAnchor.constraint(equalTo: chartAndPriceView.bottomAnchor).isActive = true
-        buttonsView.heightAnchor.constraint(equalToConstant: 32).isActive = true
-        buttonsView.widthAnchor.constraint(equalTo: chartAndPriceView.widthAnchor, constant: -20).isActive = true
-        
-        buttonsView.addSubview(dayChartButton)
-        dayChartButton.leadingAnchor.constraint(equalTo: buttonsView.leadingAnchor, constant: 3).isActive = true
-        dayChartButton.topAnchor.constraint(equalTo: buttonsView.topAnchor, constant: 3).isActive = true
-        dayChartButton.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.size.width - 46) / 4).isActive = true
-        dayChartButton.heightAnchor.constraint(equalToConstant: 26).isActive = true
-        
-        buttonsView.addSubview(weekChartButton)
-        weekChartButton.leadingAnchor.constraint(equalTo: dayChartButton.trailingAnchor, constant: 5).isActive = true
-        weekChartButton.topAnchor.constraint(equalTo: buttonsView.topAnchor, constant: 3).isActive = true
-        weekChartButton.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.size.width - 46) / 4).isActive = true
-        weekChartButton.heightAnchor.constraint(equalToConstant: 26).isActive = true
-        
-        buttonsView.addSubview(monthChartButton)
-        monthChartButton.leadingAnchor.constraint(equalTo: weekChartButton.trailingAnchor, constant: 5).isActive = true
-        monthChartButton.topAnchor.constraint(equalTo: buttonsView.topAnchor, constant: 3).isActive = true
-        monthChartButton.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.size.width - 46) / 4).isActive = true
-        monthChartButton.heightAnchor.constraint(equalToConstant: 26).isActive = true
-        
-        buttonsView.addSubview(yearChartButton)
-        yearChartButton.leadingAnchor.constraint(equalTo: monthChartButton.trailingAnchor, constant: 5).isActive = true
-        yearChartButton.topAnchor.constraint(equalTo: buttonsView.topAnchor, constant: 3).isActive = true
-        yearChartButton.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.size.width - 46) / 4).isActive = true
-        yearChartButton.heightAnchor.constraint(equalToConstant: 26).isActive = true
-        
-        
-        chartAndPriceView.addSubview(lineChartView)
-        lineChartView.centerXAnchor.constraint(equalTo: chartAndPriceView.centerXAnchor).isActive = true
-        lineChartView.topAnchor.constraint(equalTo: diffPriceOfCrypto.bottomAnchor, constant: 10).isActive = true
-        lineChartView.widthAnchor.constraint(equalTo: chartAndPriceView.widthAnchor, constant: -20).isActive = true
-        lineChartView.bottomAnchor.constraint(equalTo: buttonsView.topAnchor, constant: -5).isActive = true
+    private var count = 0
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if count < 3 {
+            setupScrollView()
+        }
+        count += 1
     }
     
-    
-    func setupDetailInfo() {
-        let title = UILabel(); title.text = "Description"; title.textColor = .white; title.font = UIFont(name: "avenir", size: 22)
-        let imageConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .regular, scale: .large)
-        let image = UIImage(systemName: "chevron.down", withConfiguration: imageConfig)
-        let button : UIButton = {
-            let button = UIButton(type: .custom)
-            button.translatesAutoresizingMaskIntoConstraints = false
-            button.widthAnchor.constraint(equalToConstant: 60).isActive = true
-            button.heightAnchor.constraint(equalToConstant: 60).isActive = true
-            button.imageView?.contentMode = .scaleAspectFit
-            button.imageView?.tintColor = .white
-            button.setImage(image, for: .normal)
-            
-            button.addTarget(self,
-                             action: #selector(loadMore),
-                             for: .touchUpInside)
-            return button
-        }()
-        
-        let headerStack = UIStackView(arrangedSubviews: [title,button])
-        headerStack.axis = .horizontal
-        headerStack.setCustomSpacing(10, after: title)
-        headerStack.alignment = .fill
-        headerStack.translatesAutoresizingMaskIntoConstraints = false
-        
-        marketDataTableView.backgroundColor = UIColor(hexString: "#4158B7")
-        communityDataTableView.backgroundColor = UIColor(hexString: "#4158B7")
-        detailInfoView.addSubview(marketDataTableView)
-        detailInfoView.addSubview(communityDataTableView)
-        detailInfoView.addSubview(headerStack)
-        detailInfoView.addSubview(descriptionLabel)
-        
-        
-        let marketDatatitle = UILabel(); marketDatatitle.text = "Market data"; marketDatatitle.textColor = .white
-        marketDatatitle.font = UIFont(name: "avenir", size: 22)
-        marketDatatitle.translatesAutoresizingMaskIntoConstraints = false
-        detailInfoView.addSubview(marketDatatitle)
-        
-        marketDatatitle.topAnchor.constraint(equalTo: detailInfoView.topAnchor, constant: 29).isActive = true
-        marketDatatitle.widthAnchor.constraint(equalTo: detailInfoView.widthAnchor).isActive = true
-        
-        marketDataTableView.translatesAutoresizingMaskIntoConstraints = false
-        marketDataTableView.topAnchor.constraint(equalTo: marketDatatitle.bottomAnchor, constant: 10).isActive = true
-        marketDataTableView.widthAnchor.constraint(equalTo: detailInfoView.widthAnchor).isActive = true
-        marketDataTableView.heightAnchor.constraint(equalToConstant: 250).isActive = true
-        
-        headerStack.topAnchor.constraint(equalTo: marketDataTableView.bottomAnchor, constant: 18).isActive = true
-        headerStack.widthAnchor.constraint(equalTo: detailInfoView.widthAnchor).isActive = true
-        headerStack.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        let communityDatatitle = UILabel(); communityDatatitle.text = "Community data"; communityDatatitle.textColor = .white
-        communityDatatitle.font = UIFont(name: "avenir", size: 22)
-        communityDatatitle.translatesAutoresizingMaskIntoConstraints = false
-        detailInfoView.addSubview(communityDatatitle)
-        
-        descriptionLabel.topAnchor.constraint(equalTo: headerStack.bottomAnchor, constant: 14).isActive = true
-        descriptionLabel.widthAnchor.constraint(equalTo: detailInfoView.widthAnchor).isActive = true
-        descriptionLabel.bottomAnchor.constraint(equalTo: communityDatatitle.topAnchor, constant: -18).isActive = true
-        
-        communityDatatitle.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor).isActive = true
-        communityDatatitle.widthAnchor.constraint(equalTo: detailInfoView.widthAnchor).isActive = true
-        communityDatatitle.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        communityDatatitle.bottomAnchor.constraint(equalTo: communityDataTableView.topAnchor).isActive = true
-        
-        communityDataTableView.translatesAutoresizingMaskIntoConstraints = false
-        communityDataTableView.topAnchor.constraint(equalTo: communityDatatitle.bottomAnchor).isActive = true
-        communityDataTableView.widthAnchor.constraint(equalTo: detailInfoView.widthAnchor).isActive = true
-        communityDataTableView.heightAnchor.constraint(equalToConstant: 130).isActive = true
-        
-        var arrangedSubviews : [UIView] = []
-        if presenter.labels[KeysOfLabels.redditUrl.rawValue] == "" || presenter.labels[KeysOfLabels.redditUrl.rawValue]!.isEmpty || presenter.labels[KeysOfLabels.redditUrl.rawValue] == "https://reddit.com" {
-            arrangedSubviews = [onSiteButton]
-        } else if presenter.labels[KeysOfLabels.siteUrl.rawValue] == "" || presenter.labels[KeysOfLabels.siteUrl.rawValue]!.isEmpty {
-            arrangedSubviews = [onRedditButton]
-        } else {
-            arrangedSubviews = [onRedditButton, onSiteButton]
-        }
-        
-        let buttonsStack = UIStackView(arrangedSubviews: arrangedSubviews)
-        buttonsStack.axis = .vertical
-        buttonsStack.distribution = .fillEqually
-        buttonsStack.spacing = 11
-        buttonsStack.translatesAutoresizingMaskIntoConstraints = false
-        
-        detailInfoView.addSubview(buttonsStack)
-        buttonsStack.topAnchor.constraint(equalTo: communityDataTableView.bottomAnchor, constant: 10).isActive = true
-        buttonsStack.centerXAnchor.constraint(equalTo: detailInfoView.centerXAnchor).isActive = true
-        buttonsStack.widthAnchor.constraint(equalTo: detailInfoView.widthAnchor, constant: -2).isActive = true
-        
-        if buttonsStack.arrangedSubviews.count == 1 {
-            buttonsStack.heightAnchor.constraint(equalToConstant: 56).isActive = true
-            scrollView.contentInset.bottom -= 67
-        } else if buttonsStack.arrangedSubviews.count == 2 {
-            buttonsStack.heightAnchor.constraint(equalToConstant: 123).isActive = true
-//            scrollView.contentInset.bottom += 123
-        } else {
-            buttonsStack.heightAnchor.constraint(equalToConstant: 0).isActive = true
-            scrollView.contentInset.bottom -= 123
-        }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateData()
+        setupChartAndPriceView()
+        setupDetailInfo()
+        navigationBarSetup()
+        lineChartViewSetup()
     }
     
-    @objc func onReddit() {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+//        updateData()
+//        setupChartAndPriceView()
+//        setupDetailInfo()
+//        navigationBarSetup()
+        presenter.chartLoad(idOfCrypto: presenter.labels[KeysOfLabels.idOfCrypto.rawValue]!, interval: Interval.day)
+        
+//        lineChartViewSetup()
+        
+        marketDataTableView.register(MarketDataCell.self, forCellReuseIdentifier: "MarketDataCell")
+        marketDataTableView.delegate = self
+        marketDataTableView.dataSource = self
+        communityDataTableView.register(MarketDataCell.self, forCellReuseIdentifier: "MarketDataCell")
+        communityDataTableView.delegate = self
+        communityDataTableView.dataSource = self
+        scrollView.delegate = self
+        
+    }
+    
+//    private func setupChartAndPriceView(){
+//        chartAndPriceView.addSubview(priceOfCrypto)
+//        
+//        priceOfCrypto.centerXAnchor.constraint(equalTo: chartAndPriceView.centerXAnchor).isActive = true
+//        priceOfCrypto.topAnchor.constraint(equalTo: chartAndPriceView.topAnchor, constant: 20).isActive = true
+//        
+//        chartAndPriceView.addSubview(diffPriceOfCrypto)
+//        diffPriceOfCrypto.centerXAnchor.constraint(equalTo: chartAndPriceView.centerXAnchor).isActive = true
+//        diffPriceOfCrypto.topAnchor.constraint(equalTo: priceOfCrypto.bottomAnchor, constant: 5).isActive = true
+//        
+//        let buttonsView = UIView()
+//        buttonsView.layer.cornerRadius = 7
+//        buttonsView.layer.backgroundColor = UIColor(red: 0.146, green: 0.197, blue: 0.421, alpha: 1).cgColor
+//        buttonsView.translatesAutoresizingMaskIntoConstraints = false
+//        
+//        chartAndPriceView.addSubview(buttonsView)
+//        buttonsView.centerXAnchor.constraint(equalTo: chartAndPriceView.centerXAnchor).isActive = true
+//        buttonsView.bottomAnchor.constraint(equalTo: chartAndPriceView.bottomAnchor).isActive = true
+//        buttonsView.heightAnchor.constraint(equalToConstant: 32).isActive = true
+//        buttonsView.widthAnchor.constraint(equalTo: chartAndPriceView.widthAnchor, constant: -20).isActive = true
+//        
+//        buttonsView.addSubview(dayChartButton)
+//        dayChartButton.leadingAnchor.constraint(equalTo: buttonsView.leadingAnchor, constant: 3).isActive = true
+//        dayChartButton.topAnchor.constraint(equalTo: buttonsView.topAnchor, constant: 3).isActive = true
+//        dayChartButton.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.size.width - 46) / 4).isActive = true
+//        dayChartButton.heightAnchor.constraint(equalToConstant: 26).isActive = true
+//        
+//        buttonsView.addSubview(weekChartButton)
+//        weekChartButton.leadingAnchor.constraint(equalTo: dayChartButton.trailingAnchor, constant: 5).isActive = true
+//        weekChartButton.topAnchor.constraint(equalTo: buttonsView.topAnchor, constant: 3).isActive = true
+//        weekChartButton.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.size.width - 46) / 4).isActive = true
+//        weekChartButton.heightAnchor.constraint(equalToConstant: 26).isActive = true
+//        
+//        buttonsView.addSubview(monthChartButton)
+//        monthChartButton.leadingAnchor.constraint(equalTo: weekChartButton.trailingAnchor, constant: 5).isActive = true
+//        monthChartButton.topAnchor.constraint(equalTo: buttonsView.topAnchor, constant: 3).isActive = true
+//        monthChartButton.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.size.width - 46) / 4).isActive = true
+//        monthChartButton.heightAnchor.constraint(equalToConstant: 26).isActive = true
+//        
+//        buttonsView.addSubview(yearChartButton)
+//        yearChartButton.leadingAnchor.constraint(equalTo: monthChartButton.trailingAnchor, constant: 5).isActive = true
+//        yearChartButton.topAnchor.constraint(equalTo: buttonsView.topAnchor, constant: 3).isActive = true
+//        yearChartButton.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.size.width - 46) / 4).isActive = true
+//        yearChartButton.heightAnchor.constraint(equalToConstant: 26).isActive = true
+//        
+//        
+//        chartAndPriceView.addSubview(lineChartView)
+//        lineChartView.centerXAnchor.constraint(equalTo: chartAndPriceView.centerXAnchor).isActive = true
+//        lineChartView.topAnchor.constraint(equalTo: diffPriceOfCrypto.bottomAnchor, constant: 10).isActive = true
+//        lineChartView.widthAnchor.constraint(equalTo: chartAndPriceView.widthAnchor, constant: -20).isActive = true
+//        lineChartView.bottomAnchor.constraint(equalTo: buttonsView.topAnchor, constant: -5).isActive = true
+//    }
+    
+    
+//    func setupDetailInfo() {
+//        let title = UILabel(); title.text = "Description"; title.textColor = .white; title.font = UIFont(name: "avenir", size: 22)
+//        let imageConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .regular, scale: .large)
+//        let image = UIImage(systemName: "chevron.down", withConfiguration: imageConfig)
+//        
+//        let button : UIButton = {
+//            let button = UIButton(type: .custom)
+//            button.translatesAutoresizingMaskIntoConstraints = false
+//            button.widthAnchor.constraint(equalToConstant: 60).isActive = true
+//            button.heightAnchor.constraint(equalToConstant: 60).isActive = true
+//            button.imageView?.contentMode = .scaleAspectFit
+//            button.imageView?.tintColor = .white
+//            button.setImage(image, for: .normal)
+//            
+//            button.addTarget(self,
+//                             action: #selector(loadMore),
+//                             for: .touchUpInside)
+//            return button
+//        }()
+//        
+//        let headerStack = UIStackView(arrangedSubviews: [title,button])
+//        headerStack.axis = .horizontal
+//        headerStack.setCustomSpacing(10, after: title)
+//        headerStack.alignment = .fill
+//        headerStack.translatesAutoresizingMaskIntoConstraints = false
+//        
+//        marketDataTableView.backgroundColor = UIColor(hexString: "#4158B7")
+//        communityDataTableView.backgroundColor = UIColor(hexString: "#4158B7")
+//        detailInfoView.addSubview(marketDataTableView)
+//        detailInfoView.addSubview(communityDataTableView)
+//        detailInfoView.addSubview(headerStack)
+//        detailInfoView.addSubview(descriptionLabel)
+//        
+//        
+//        let marketDatatitle = UILabel(); marketDatatitle.text = "Market data"; marketDatatitle.textColor = .white
+//        marketDatatitle.font = UIFont(name: "avenir", size: 22)
+//        marketDatatitle.translatesAutoresizingMaskIntoConstraints = false
+//        detailInfoView.addSubview(marketDatatitle)
+//        
+//        marketDatatitle.topAnchor.constraint(equalTo: detailInfoView.topAnchor, constant: 29).isActive = true
+//        marketDatatitle.widthAnchor.constraint(equalTo: detailInfoView.widthAnchor).isActive = true
+//        
+//        marketDataTableView.translatesAutoresizingMaskIntoConstraints = false
+//        marketDataTableView.topAnchor.constraint(equalTo: marketDatatitle.bottomAnchor, constant: 10).isActive = true
+//        marketDataTableView.widthAnchor.constraint(equalTo: detailInfoView.widthAnchor).isActive = true
+//        marketDataTableView.heightAnchor.constraint(equalToConstant: 250).isActive = true
+//        
+//        headerStack.topAnchor.constraint(equalTo: marketDataTableView.bottomAnchor, constant: 18).isActive = true
+//        headerStack.widthAnchor.constraint(equalTo: detailInfoView.widthAnchor).isActive = true
+//        headerStack.heightAnchor.constraint(equalToConstant: 40).isActive = true
+//        
+//        let communityDatatitle = UILabel(); communityDatatitle.text = "Community data"; communityDatatitle.textColor = .white
+//        communityDatatitle.font = UIFont(name: "avenir", size: 22)
+//        communityDatatitle.translatesAutoresizingMaskIntoConstraints = false
+//        detailInfoView.addSubview(communityDatatitle)
+//        
+//        descriptionLabel.topAnchor.constraint(equalTo: headerStack.bottomAnchor, constant: 14).isActive = true
+//        descriptionLabel.widthAnchor.constraint(equalTo: detailInfoView.widthAnchor).isActive = true
+//        descriptionLabel.bottomAnchor.constraint(equalTo: communityDatatitle.topAnchor, constant: -18).isActive = true
+//        
+//        communityDatatitle.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor).isActive = true
+//        communityDatatitle.widthAnchor.constraint(equalTo: detailInfoView.widthAnchor).isActive = true
+//        communityDatatitle.heightAnchor.constraint(equalToConstant: 50).isActive = true
+//        communityDatatitle.bottomAnchor.constraint(equalTo: communityDataTableView.topAnchor).isActive = true
+//        
+//        communityDataTableView.translatesAutoresizingMaskIntoConstraints = false
+//        communityDataTableView.topAnchor.constraint(equalTo: communityDatatitle.bottomAnchor).isActive = true
+//        communityDataTableView.widthAnchor.constraint(equalTo: detailInfoView.widthAnchor).isActive = true
+//        communityDataTableView.heightAnchor.constraint(equalToConstant: 130).isActive = true
+//        
+//        var arrangedSubviews : [UIView] = []
+//        if presenter.labels[KeysOfLabels.redditUrl.rawValue] == "" || presenter.labels[KeysOfLabels.redditUrl.rawValue]!.isEmpty || presenter.labels[KeysOfLabels.redditUrl.rawValue] == "https://reddit.com" {
+//            arrangedSubviews = [onSiteButton]
+//        } else if presenter.labels[KeysOfLabels.siteUrl.rawValue] == "" || presenter.labels[KeysOfLabels.siteUrl.rawValue]!.isEmpty {
+//            arrangedSubviews = [onRedditButton]
+//        } else {
+//            arrangedSubviews = [onRedditButton, onSiteButton]
+//        }
+//        
+//        let buttonsStack = UIStackView(arrangedSubviews: arrangedSubviews)
+//        buttonsStack.axis = .vertical
+//        buttonsStack.distribution = .fillEqually
+//        buttonsStack.spacing = 11
+//        buttonsStack.translatesAutoresizingMaskIntoConstraints = false
+//        
+//        detailInfoView.addSubview(buttonsStack)
+//        buttonsStack.topAnchor.constraint(equalTo: communityDataTableView.bottomAnchor, constant: 10).isActive = true
+//        buttonsStack.centerXAnchor.constraint(equalTo: detailInfoView.centerXAnchor).isActive = true
+//        buttonsStack.widthAnchor.constraint(equalTo: detailInfoView.widthAnchor, constant: -2).isActive = true
+//        
+//        if buttonsStack.arrangedSubviews.count == 1 {
+//            buttonsStack.heightAnchor.constraint(equalToConstant: 56).isActive = true
+//            scrollView.contentInset.bottom -= 67
+//        } else if buttonsStack.arrangedSubviews.count == 2 {
+//            buttonsStack.heightAnchor.constraint(equalToConstant: 123).isActive = true
+//            //            scrollView.contentInset.bottom += 123
+//        } else {
+//            buttonsStack.heightAnchor.constraint(equalToConstant: 0).isActive = true
+//            scrollView.contentInset.bottom -= 123
+//        }
+//    }
+    
+    @objc
+    private func onReddit() {
         guard let redditUrl = presenter.labels[KeysOfLabels.redditUrl.rawValue] else {return}
         guard let url = URL(string: redditUrl) else {return}
         let vc = SFSafariViewController(url: url)
         present(vc, animated: true, completion: nil)
     }
-    @objc func onSite() {
+    @objc
+    private func onSite() {
         guard let siteUrl = presenter.labels[KeysOfLabels.siteUrl.rawValue] else {return}
         guard let url = URL(string: siteUrl) else {return}
         let vc = SFSafariViewController(url: url)
@@ -465,9 +496,11 @@ class ChartViewController: UIViewController, ChartViewDelegate , ChartViewContro
     }
     
     
-    var clickBool = true
-    var constHeightOfTextLabel = CGFloat()
-    @objc func loadMore() {
+    private var clickBool = true
+    private var constHeightOfTextLabel = CGFloat()
+    
+    @objc
+    func loadMore() {
         
         if clickBool == true {
             descriptionLabel.numberOfLines = 0
@@ -479,7 +512,7 @@ class ChartViewController: UIViewController, ChartViewDelegate , ChartViewContro
             contentView.frame = contentViewFrame
             detailInfoViewFrame = CGRect(x: 15, y: 600, width: UIScreen.main.bounds.size.width - 30, height: detailInfoViewFrame.height + height - constHeightOfTextLabel)
             detailInfoView.frame = detailInfoViewFrame
-    
+            
             for elem in detailInfoView.subviews {
                 if let stack = elem as? UIStackView {
                     for button in stack.arrangedSubviews {
@@ -501,16 +534,7 @@ class ChartViewController: UIViewController, ChartViewDelegate , ChartViewContro
             scrollView.contentInset.bottom -= descriptionLabel.frame.height
             scrollView.contentInset.bottom += constHeightOfTextLabel
             scrollView.contentOffset = CGPoint(x: 0, y: 500)
-//            for elem in detailInfoView.subviews {
-//                if let stack = elem as? UIStackView {
-//                    for button in stack.arrangedSubviews {
-//                        if let button = button as? UIButton {
-//                            let imageConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .regular, scale: .large)
-//                            button.setImage(UIImage(systemName: "chevron.up", withConfiguration: imageConfig), for: .normal)
-//                        }
-//                    }
-//                }
-//            }
+            
             for elem in detailInfoView.subviews {
                 if let stack = elem as? UIStackView {
                     for button in stack.arrangedSubviews {
@@ -529,111 +553,19 @@ class ChartViewController: UIViewController, ChartViewDelegate , ChartViewContro
         clickBool.toggle()
     }
     
-    
-    let descriptionLabel : UILabel = {
-        let textView = UILabel()
-        textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.layer.masksToBounds = true
-        textView.numberOfLines = 7
-        textView.lineBreakMode = .byTruncatingTail
-        textView.font = UIFont.systemFont(ofSize: 14)
-        textView.textColor = .white
-        textView.sizeToFit()
-        return textView
-    }()
-    
-    
-    //    private func getContext () -> NSManagedObjectContext {
-    //        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    //        return appDelegate.persistentContainer.viewContext
-    //    }
-    
-//    @IBAction func favoritesButton(_ sender: Any) {
-//        //MARK:-PRESENTER
-//        let context = self.getContext()
-//        let favoriteSymbol = symbolOfCurrentCrypto
-//        let favoriteTicker = symbolOfTicker
-//        let object = Favorites(context: context)
-//        object.symbol = favoriteSymbol
-//        object.symbolOfTicker = favoriteTicker
-//        
-//        
-//        do {
-//            try context.save()
-//        } catch let error as NSError {
-//            print(error.localizedDescription)
-//        }
-//    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        //MARK:- PRESENTER
-        //        symbolOfCurrentCrypto = crypto.symbolOfCrypto
-        //        if let textTestCheck = crypto.descriptionOfCrypto?.html2String {
-        //            textView.text = textTestCheck
-        //        }
-        //
-        //        if let nameOfCryptoCheck = crypto.nameOfCrypto {
-        //        nameOfCrypto.text = nameOfCryptoCheck
-        //        }
-        //        if let percentagesCheck = crypto.percentages {
-        //            percentages = percentagesCheck
-        //        }
-        //
-        //        if let percent = self.percentages.priceChangePercentage24H {
-        //        self.computedDiffPrice = percent
-        //        }
-        //
-        //        if let priceOfCryptoCheck = crypto.price {
-        //        priceOfCrypto.text?.removeAll()
-        //        priceOfCrypto.text?.append("$")
-        //        priceOfCrypto.text?.append(priceOfCryptoCheck)
-        //        }
-        //        idOfCrypto = crypto.id!
-        //
-        //        if let symbolOfTickerCheck = crypto.symbolOfTicker {
-        //        symbolOfTicker = symbolOfTickerCheck
-        //        }
-        //        image = crypto.image ?? UIImage(named: "pngwing.com")!
-        //        if let marketDataChek = crypto.marketDataArray?.array {
-        //        marketData = marketDataChek
-        //        }
-        //
-        //        if let communityDataChek = crypto.communityDataArray?.array {
-        //        communityData = communityDataChek
-        //        }
-        //        if let redditLink = crypto.links?.subredditURL {
-        //            redditUrl = redditLink
-        //        }
-        //        if let siteLink = crypto.links?.homepage?.first {
-        //            siteUrl = siteLink
-        //        }
-        updateData()
-        
-        setupChartAndPriceView()
-        setupDetailInfo()
-        navigationBarSetup()
-        presenter.chartLoad(idOfCrypto: presenter.labels[KeysOfLabels.idOfCrypto.rawValue]!, interval: Interval.day)
-        
-        lineChartViewSetup()
-        
-        marketDataTableView.register(MarketDataCell.self, forCellReuseIdentifier: "MarketDataCell")
-        marketDataTableView.delegate = self
-        marketDataTableView.dataSource = self
-        communityDataTableView.register(MarketDataCell.self, forCellReuseIdentifier: "MarketDataCell")
-        communityDataTableView.delegate = self
-        communityDataTableView.dataSource = self
-        scrollView.delegate = self
-        
-//        navigationController?.navigationBar.isTranslucent = false
-    }
-//    override func viewWillDisappear(_ animated: Bool) {
-//        super.viewWillDisappear(animated)
-//        navigationController?.navigationBar.isTranslucent = true
-//    }
 
-    
+}
+
+extension ChartViewController : ChartViewControllerProtocol {
+//    func increaseScrollViewBottom (for number : CGFloat) {
+//        scrollView.contentInset.bottom += number
+//    }
+    func reloadMarketDataTableView() {
+        marketDataTableView.reloadData()
+    }
+    func reloadCommunityDataTableView() {
+        communityDataTableView.reloadData()
+    }
     func updateData() {
         DispatchQueue.main.async { [self] in
             nameOfCrypto.text = presenter.labels[KeysOfLabels.symbolOfCurrentCrypto.rawValue]
@@ -646,14 +578,9 @@ class ChartViewController: UIViewController, ChartViewDelegate , ChartViewContro
     }
     
     func updateContentViewFrame(contentViewFrameChange : CGFloat, detailInfoViewFrameChange : CGFloat, scrollViewChange : CGFloat) {
-        print("%%%%%%%%%%%%%%%%%%%%%%%%", contentViewFrameChange)
         self.contentViewFrame.size.height -= contentViewFrameChange
         self.detailInfoViewFrame.size.height -= detailInfoViewFrameChange
         self.scrollView.contentInset.bottom -= scrollViewChange
-    }
-    
-    @objc func saveTapped() {
-        presenter.saveTapped()
     }
     
     func navigationBarSetup() {
@@ -665,23 +592,7 @@ class ChartViewController: UIViewController, ChartViewDelegate , ChartViewContro
                 image = UIImage(systemName: "heart") ?? UIImage()
             }
             let butt = UIBarButtonItem(image: image, style: .done, target: self, action: #selector(saveTapped))
-            //MARK:-PRESENTER
-//            for i in NetworkManager.shared.favorites {
-//                if let symbol = i.symbol {
-//                    if symbolOfCurrentCrypto == symbol {
-//                        bool = true
-//                        butt.image = imageOfHeartFill
-//                    }
-//                }
-//            }
-//            navigationController?.navigationBar.backItem?.title = ""
-////            navigationController?.navigationBar.barTintColor = UIColor(hexString: "#202F72")
-//            navigationController?.navigationBar.barTintColor = UIColor(hexString: "#4158B7")
-//            navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
-//            navigationController?.navigationBar.shadowImage = UIImage()
-////            navigationController?.navigationBar.isTranslucent = false
-//            navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-//            navigationController?.navigationBar.prefersLargeTitles = false
+            
             navigationItem.rightBarButtonItem = butt
             navigationItem.rightBarButtonItem?.tintColor = UIColor(red: 0.969, green: 0.576, blue: 0.102, alpha: 1)
             navigationController?.navigationBar.tintColor = .white
@@ -705,6 +616,8 @@ class ChartViewController: UIViewController, ChartViewDelegate , ChartViewContro
                 let imageAspect = logo.image!.size.width/logo.image!.size.height
                 logo.frame = CGRect(x: label.frame.origin.x-label.frame.size.height*imageAspect, y: label.frame.origin.y, width: label.frame.size.height*imageAspect, height: label.frame.size.height)
                 logo.contentMode = UIView.ContentMode.scaleAspectFit
+                logo.layer.cornerRadius = logo.frame.height/2
+                logo.clipsToBounds = true
                 return logo
             }()
             
@@ -713,61 +626,13 @@ class ChartViewController: UIViewController, ChartViewDelegate , ChartViewContro
             navigationItem.titleView = logoAndTitle
         }
     }
-    //MARK:- PRESENTER
-    //    @objc func saveTapped() {
-    //        if bool == true {
-    //            navigationItem.rightBarButtonItem?.image = imageOfHeart
-    //            let context = self.getContext()
-    //            let favoriteSymbol = symbolOfCurrentCrypto
-    //
-    //            for i in NetworkManager.shared.favorites {
-    //                if i.symbol == favoriteSymbol {
-    //                    context.delete(i)
-    //
-    //                }
-    //            }
-    //            for (index,j) in NetworkManager.shared.resultsF.enumerated() {
-    //                if j.symbolOfCrypto == favoriteSymbol {
-    //                    NetworkManager.shared.resultsF.remove(at: index)
-    //                }
-    //            }
-    //
-    //            do {
-    //                try context.save()
-    //            } catch let error as NSError {
-    //                print(error.localizedDescription)
-    //            }
-    //
-    //        } else {
-    //            navigationItem.rightBarButtonItem?.image = imageOfHeartFill
-    //
-    //            let context = self.getContext()
-    //            let favoriteSymbol = symbolOfCurrentCrypto
-    //            let favoriteTicker = symbolOfTicker
-    //            let object = Favorites(context: context)
-    //            object.symbol = favoriteSymbol
-    //            object.symbolOfTicker = favoriteTicker
-    //            object.name = nameOfCrypto.text
-    //            object.descrtiption = descriptionLabel.text
-    //            object.date = Date()
-    //
-    //
-    //            do {
-    //                try context.save()
-    //            } catch let error as NSError {
-    //                print(error.localizedDescription)
-    //            }
-    //
-    //            NetworkManager.shared.favorites.insert(object, at: 0)
-    //            NetworkManager.shared.addData(object: object)
-    //            NetworkManager.shared.webSocket(symbols: NetworkManager.shared.symbols, symbolsF: NetworkManager.shared.symbolsF)
-    //
-    //        }
-    //        bool.toggle()
-    //        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newDataNotif"), object: nil)
-    //
-    //    }
-    
+    @objc
+    private func saveTapped() {
+        presenter.saveTapped()
+    }
+}
+
+extension ChartViewController : ChartViewDelegate {
     
     func lineChartViewSetup() {
         lineChartView.backgroundColor = UIColor(hexString: "#4158B7")
@@ -782,76 +647,6 @@ class ChartViewController: UIViewController, ChartViewDelegate , ChartViewContro
     }
     
     
-    //MARK:- PRESENTER
-    //    func chartLoad(idOfCrypto: String, interval: String){
-    //
-    //        DispatchQueue.global().async {
-    //
-    //            let nowUnix = Int(NSDate().timeIntervalSince1970)
-    //            var prevValue = Int()
-    //            var dateFormat = String()
-    //
-    //            switch interval {
-    //            case "day":
-    //                dateFormat = "HH:mm"
-    //                prevValue = Int((Calendar.current.date(byAdding: .day, value: -1, to: Date()))!.timeIntervalSince1970)
-    //            case "week":
-    //                dateFormat = "E HH:mm"
-    //                prevValue = Int((Calendar.current.date(byAdding: .day, value: -7, to: Date()))!.timeIntervalSince1970)
-    //            case "month":
-    //                dateFormat = "MMM d"
-    //                prevValue = Int((Calendar.current.date(byAdding: .month, value: -1, to: Date()))!.timeIntervalSince1970)
-    //            case "year":
-    //                dateFormat = "dd.MM.yy"
-    //                prevValue = Int((Calendar.current.date(byAdding: .year, value: -1, to: Date()))!.timeIntervalSince1970)
-    //            default:
-    //                print("ПРОБЛЕМА В СВИЧ")
-    //            }
-    //
-    //            NetworkRequestManager.request(url: "https://api.coingecko.com/api/v3/coins/\(idOfCrypto)/market_chart/range?vs_currency=usd&from=\(prevValue)&to=\(nowUnix)") { data, response, error in
-    //                guard let stocksData = data, error == nil, response != nil else {
-    //                    print("ХЫЧ ХЫЧ");
-    //                    self.chartLoad(idOfCrypto: idOfCrypto, interval: interval);
-    //                    return}
-    //
-    //                do {
-    //                    guard let stocks = try CoinGeckoPrice.decode(from: stocksData) else {return}
-    //
-    //                    for i in stocks.prices! {
-    //                        let chartData = ChartDataEntry(x: i[0], y: i[1])
-    //                        self.values.append(chartData)
-    //                    }
-    //                    DispatchQueue.main.async {
-    //                        self.setData()
-    //                        self.lineChartView.xAxis.valueFormatter = MyXAxisFormatter(dateFormat: dateFormat)
-    //                        self.lineChartViewSetup()
-    //                    }
-    //
-    //                } catch let error as NSError {
-    //                    print(error.localizedDescription)
-    //                }
-    //            }
-    //        }
-    //    }
-    
-//    func setData(values: [ChartDataEntry], xAxisValueFormatter: ChartViewPresenter.MyXAxisFormatter) {
-//        let set1 = LineChartDataSet(entries: values)
-//    func setData(dataSet: LineChartDataSet, xAxisValueFormatter: ChartViewPresenter.MyXAxisFormatter) {
-//        let set1 = LineChartDataSet(entries: values)
-//        set1.label = "Price in USD"
-//        set1.drawCirclesEnabled = false
-//        set1.mode = .linear
-//        set1.lineWidth = 1
-//        set1.setColor(UIColor(hexString: "F7931A"))
-//        set1.fill = Fill(color: UIColor(hexString: "#283a89"))
-//        set1.fillAlpha = 0.7
-//        set1.drawFilledEnabled = true
-//        set1.drawVerticalHighlightIndicatorEnabled = false
-//        set1.highlightColor = diffPriceOfCrypto.textColor
-//        let data = LineChartData(dataSet: set1)
-//        data.setDrawValues(false)
-//        lineChartView.data = data
-//        lineChartView.xAxis.valueFormatter = xAxisValueFormatter
     func setData(dataSet: LineChartDataSet, xAxisValueFormatter: ChartViewPresenter.MyXAxisFormatter) {
         dataSet.label = ""
         dataSet.drawCirclesEnabled = false
@@ -871,23 +666,9 @@ class ChartViewController: UIViewController, ChartViewDelegate , ChartViewContro
     }
 }
 
-//class MyXAxisFormatter : NSObject, IAxisValueFormatter {
-//    var dateFormat : String
-//    
-//    func stringForValue(_ value: Double, axis: AxisBase?) -> String {
-//        let date = Date(timeIntervalSince1970: TimeInterval(value) / 1000)
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateFormat = dateFormat
-//        let dateString = dateFormatter.string(from: date)
-//        return dateString
-//    }
-//    init(dateFormat: String) {
-//        self.dateFormat = dateFormat
-//    }
-//    
-//}
 
 extension ChartViewController : UITableViewDelegate, UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == marketDataTableView {
             return presenter.marketData.count
