@@ -31,15 +31,7 @@ class NewsViewPresenter : NewsViewPresenterProtocol {
     }
     
     func getNews() {
-    
         DispatchQueue.global().async {
-//            let request = NSMutableURLRequest(
-//                url: NSURL(string: "https://min-api.cryptocompare.com/data/v2/news/?lang=EN")! as URL,
-//                cachePolicy: .useProtocolCachePolicy,
-//                timeoutInterval: 10.0)
-//            request.httpMethod = "GET"
-//            URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
-            
             NetworkRequestManager.request(url: Urls.news.rawValue) { data, response, error in
                 guard let stocksData = data, error == nil, response != nil else {return}
                 

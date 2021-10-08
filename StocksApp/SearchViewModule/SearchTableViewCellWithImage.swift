@@ -39,9 +39,6 @@ class SearchTableViewCellWithImage: UICollectionViewCell {
         self.layer.shadowOpacity = 1
         self.layer.shadowRadius = 10
         self.layer.shadowOffset = CGSize(width: 0, height: -4)
-//        self.clipsToBounds = true
-
-
     }
 
 
@@ -75,13 +72,11 @@ extension SearchTableViewCellWithImage {
         imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         imageView.widthAnchor.constraint(equalToConstant: 35).isActive = true
         imageView.heightAnchor.constraint(equalToConstant: 35).isActive = true
-        // oponentLabel constraints
+        
         nameOfCrypto.topAnchor.constraint(equalTo: topAnchor, constant: 11).isActive = true
         nameOfCrypto.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 15).isActive = true
-//        nameOfCrypto.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 16).isActive = true
-        nameOfCrypto.widthAnchor.constraint(equalToConstant: 128).isActive = true
+        nameOfCrypto.widthAnchor.constraint(equalToConstant: 250).isActive = true
 
-        // lastMessageLabel constraints
         symbolOfCrypto.topAnchor.constraint(equalTo: nameOfCrypto.bottomAnchor).isActive = true
         symbolOfCrypto.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 15).isActive = true
         symbolOfCrypto.widthAnchor.constraint(equalToConstant: 128).isActive = true

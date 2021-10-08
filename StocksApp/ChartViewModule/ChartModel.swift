@@ -72,7 +72,6 @@ struct MarketData: Decodable {
         case circulatingSupply = "circulating_supply"
 
      }
-    
 }
 
 

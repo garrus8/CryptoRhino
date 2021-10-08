@@ -103,7 +103,6 @@ extension ChartViewController {
             scrollView.contentInset.bottom -= 67
         } else if buttonsStack.arrangedSubviews.count == 2 {
             buttonsStack.heightAnchor.constraint(equalToConstant: 123).isActive = true
-            //            scrollView.contentInset.bottom += 123
         } else {
             buttonsStack.heightAnchor.constraint(equalToConstant: 0).isActive = true
             scrollView.contentInset.bottom -= 123

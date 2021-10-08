@@ -53,7 +53,6 @@ extension ChartViewController {
         yearChartButton.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.size.width - 46) / 4).isActive = true
         yearChartButton.heightAnchor.constraint(equalToConstant: 26).isActive = true
         
-        
         chartAndPriceView.addSubview(lineChartView)
         lineChartView.centerXAnchor.constraint(equalTo: chartAndPriceView.centerXAnchor).isActive = true
         lineChartView.topAnchor.constraint(equalTo: diffPriceOfCrypto.bottomAnchor, constant: 10).isActive = true

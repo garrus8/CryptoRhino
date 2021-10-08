@@ -6,7 +6,6 @@
 //
 
 import UIKit
-//import SafariServices
 
 protocol NewsViewControllerProtocol : UIViewController {
     var activityIndicator: UIActivityIndicatorView { get set }
@@ -15,17 +14,10 @@ protocol NewsViewControllerProtocol : UIViewController {
 
 class NewsViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, NewsViewControllerProtocol  {
 
-//    var newsData = [NewsData]()
     var presenter : NewsViewPresenterProtocol!
     var collectionView : UICollectionView!
     var activityIndicator = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
     
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        setupCollectionView()
-////        getNews()
-//        
-//    }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupCollectionView()
@@ -44,50 +36,10 @@ class NewsViewController: UIViewController, UICollectionViewDataSource, UICollec
         activityIndicator.center = view.center
         activityIndicator.color = .white
         collectionView.addSubview(activityIndicator)
-//        DispatchQueue.main.async {
-//        self.activityIndicator.startAnimating()
-//        self.activityIndicator.isHidden = false
-//        }
-        
         collectionView.delegate = self
         collectionView.dataSource = self
         
     }
-    
-//    func getNews(){
-//        DispatchQueue.global().async {
-//            let request = NSMutableURLRequest(
-//                url: NSURL(string: "https://min-api.cryptocompare.com/data/v2/news/?lang=EN")! as URL,
-//                cachePolicy: .useProtocolCachePolicy,
-//                timeoutInterval: 10.0)
-//            request.httpMethod = "GET"
-//            URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
-//                guard let stocksData = data, error == nil, response != nil else {return}
-//
-//                do {
-//                    let newsData = try News.decode(from: stocksData)
-//                    for i in 0..<(newsData?.data?.count)! {
-//                        let news = newsData?.data![i]
-//                        self.newsData.append(news!)
-//
-//                    }
-//
-//                    DispatchQueue.main.async {
-//                        self.activityIndicator.stopAnimating()
-//                        self.activityIndicator.isHidden = true
-//                        self.collectionView.reloadData()
-//                    }
-//
-//                } catch let error as NSError {
-//                    print(error.localizedDescription)
-//                }
-//
-//            }.resume()
-//        }
-//    }
-    
-
-    // MARK: - Table view data source
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         presenter.newsData.count
@@ -103,10 +55,6 @@ class NewsViewController: UIViewController, UICollectionViewDataSource, UICollec
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
-//        let elem = presenter.newsData[indexPath.item]
-//        guard let url = URL(string: elem.url!) else {return}
-//        let vc = SFSafariViewController(url: url)
-//        present(vc, animated: true, completion: nil)
         presenter.openSafari(indexPath: indexPath)
     }
 }

@@ -46,8 +46,8 @@ class ChartViewController: UIViewController {
     }()
     var marketDataTableView = UITableView()
     var communityDataTableView = UITableView()
-    private var contentViewFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 1470)
-    private var detailInfoViewFrame = CGRect(x: 15, y: 600, width: UIScreen.main.bounds.size.width - 30, height: 870)
+    private var contentViewFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 1540)
+    private var detailInfoViewFrame = CGRect(x: 15, y: 600, width: UIScreen.main.bounds.size.width - 30, height: 940)
     
     func setupScrollView(){
         
@@ -60,7 +60,8 @@ class ChartViewController: UIViewController {
         
         chartAndPriceView.frame = CGRect(x:0.0, y: 0.0, width: view.frame.size.width, height: 600)
         contentView.frame = contentViewFrame
-        scrollView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 83)
+//        scrollView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 83)
+        scrollView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         scrollView.backgroundColor = UIColor(hexString: "#4158B7")
         scrollView.contentSize = CGSize(width: self.view.bounds.size.width, height: chartAndPriceView.frame.height + detailInfoView.frame.height)
     }
@@ -305,14 +306,8 @@ class ChartViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        updateData()
-//        setupChartAndPriceView()
-//        setupDetailInfo()
-//        navigationBarSetup()
+
         presenter.chartLoad(idOfCrypto: presenter.labels[KeysOfLabels.idOfCrypto.rawValue]!, interval: Interval.day)
-        
-//        lineChartViewSetup()
         
         marketDataTableView.register(MarketDataCell.self, forCellReuseIdentifier: "MarketDataCell")
         marketDataTableView.delegate = self
@@ -323,162 +318,6 @@ class ChartViewController: UIViewController {
         scrollView.delegate = self
         
     }
-    
-//    private func setupChartAndPriceView(){
-//        chartAndPriceView.addSubview(priceOfCrypto)
-//        
-//        priceOfCrypto.centerXAnchor.constraint(equalTo: chartAndPriceView.centerXAnchor).isActive = true
-//        priceOfCrypto.topAnchor.constraint(equalTo: chartAndPriceView.topAnchor, constant: 20).isActive = true
-//        
-//        chartAndPriceView.addSubview(diffPriceOfCrypto)
-//        diffPriceOfCrypto.centerXAnchor.constraint(equalTo: chartAndPriceView.centerXAnchor).isActive = true
-//        diffPriceOfCrypto.topAnchor.constraint(equalTo: priceOfCrypto.bottomAnchor, constant: 5).isActive = true
-//        
-//        let buttonsView = UIView()
-//        buttonsView.layer.cornerRadius = 7
-//        buttonsView.layer.backgroundColor = UIColor(red: 0.146, green: 0.197, blue: 0.421, alpha: 1).cgColor
-//        buttonsView.translatesAutoresizingMaskIntoConstraints = false
-//        
-//        chartAndPriceView.addSubview(buttonsView)
-//        buttonsView.centerXAnchor.constraint(equalTo: chartAndPriceView.centerXAnchor).isActive = true
-//        buttonsView.bottomAnchor.constraint(equalTo: chartAndPriceView.bottomAnchor).isActive = true
-//        buttonsView.heightAnchor.constraint(equalToConstant: 32).isActive = true
-//        buttonsView.widthAnchor.constraint(equalTo: chartAndPriceView.widthAnchor, constant: -20).isActive = true
-//        
-//        buttonsView.addSubview(dayChartButton)
-//        dayChartButton.leadingAnchor.constraint(equalTo: buttonsView.leadingAnchor, constant: 3).isActive = true
-//        dayChartButton.topAnchor.constraint(equalTo: buttonsView.topAnchor, constant: 3).isActive = true
-//        dayChartButton.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.size.width - 46) / 4).isActive = true
-//        dayChartButton.heightAnchor.constraint(equalToConstant: 26).isActive = true
-//        
-//        buttonsView.addSubview(weekChartButton)
-//        weekChartButton.leadingAnchor.constraint(equalTo: dayChartButton.trailingAnchor, constant: 5).isActive = true
-//        weekChartButton.topAnchor.constraint(equalTo: buttonsView.topAnchor, constant: 3).isActive = true
-//        weekChartButton.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.size.width - 46) / 4).isActive = true
-//        weekChartButton.heightAnchor.constraint(equalToConstant: 26).isActive = true
-//        
-//        buttonsView.addSubview(monthChartButton)
-//        monthChartButton.leadingAnchor.constraint(equalTo: weekChartButton.trailingAnchor, constant: 5).isActive = true
-//        monthChartButton.topAnchor.constraint(equalTo: buttonsView.topAnchor, constant: 3).isActive = true
-//        monthChartButton.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.size.width - 46) / 4).isActive = true
-//        monthChartButton.heightAnchor.constraint(equalToConstant: 26).isActive = true
-//        
-//        buttonsView.addSubview(yearChartButton)
-//        yearChartButton.leadingAnchor.constraint(equalTo: monthChartButton.trailingAnchor, constant: 5).isActive = true
-//        yearChartButton.topAnchor.constraint(equalTo: buttonsView.topAnchor, constant: 3).isActive = true
-//        yearChartButton.widthAnchor.constraint(equalToConstant: (UIScreen.main.bounds.size.width - 46) / 4).isActive = true
-//        yearChartButton.heightAnchor.constraint(equalToConstant: 26).isActive = true
-//        
-//        
-//        chartAndPriceView.addSubview(lineChartView)
-//        lineChartView.centerXAnchor.constraint(equalTo: chartAndPriceView.centerXAnchor).isActive = true
-//        lineChartView.topAnchor.constraint(equalTo: diffPriceOfCrypto.bottomAnchor, constant: 10).isActive = true
-//        lineChartView.widthAnchor.constraint(equalTo: chartAndPriceView.widthAnchor, constant: -20).isActive = true
-//        lineChartView.bottomAnchor.constraint(equalTo: buttonsView.topAnchor, constant: -5).isActive = true
-//    }
-    
-    
-//    func setupDetailInfo() {
-//        let title = UILabel(); title.text = "Description"; title.textColor = .white; title.font = UIFont(name: "avenir", size: 22)
-//        let imageConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .regular, scale: .large)
-//        let image = UIImage(systemName: "chevron.down", withConfiguration: imageConfig)
-//        
-//        let button : UIButton = {
-//            let button = UIButton(type: .custom)
-//            button.translatesAutoresizingMaskIntoConstraints = false
-//            button.widthAnchor.constraint(equalToConstant: 60).isActive = true
-//            button.heightAnchor.constraint(equalToConstant: 60).isActive = true
-//            button.imageView?.contentMode = .scaleAspectFit
-//            button.imageView?.tintColor = .white
-//            button.setImage(image, for: .normal)
-//            
-//            button.addTarget(self,
-//                             action: #selector(loadMore),
-//                             for: .touchUpInside)
-//            return button
-//        }()
-//        
-//        let headerStack = UIStackView(arrangedSubviews: [title,button])
-//        headerStack.axis = .horizontal
-//        headerStack.setCustomSpacing(10, after: title)
-//        headerStack.alignment = .fill
-//        headerStack.translatesAutoresizingMaskIntoConstraints = false
-//        
-//        marketDataTableView.backgroundColor = UIColor(hexString: "#4158B7")
-//        communityDataTableView.backgroundColor = UIColor(hexString: "#4158B7")
-//        detailInfoView.addSubview(marketDataTableView)
-//        detailInfoView.addSubview(communityDataTableView)
-//        detailInfoView.addSubview(headerStack)
-//        detailInfoView.addSubview(descriptionLabel)
-//        
-//        
-//        let marketDatatitle = UILabel(); marketDatatitle.text = "Market data"; marketDatatitle.textColor = .white
-//        marketDatatitle.font = UIFont(name: "avenir", size: 22)
-//        marketDatatitle.translatesAutoresizingMaskIntoConstraints = false
-//        detailInfoView.addSubview(marketDatatitle)
-//        
-//        marketDatatitle.topAnchor.constraint(equalTo: detailInfoView.topAnchor, constant: 29).isActive = true
-//        marketDatatitle.widthAnchor.constraint(equalTo: detailInfoView.widthAnchor).isActive = true
-//        
-//        marketDataTableView.translatesAutoresizingMaskIntoConstraints = false
-//        marketDataTableView.topAnchor.constraint(equalTo: marketDatatitle.bottomAnchor, constant: 10).isActive = true
-//        marketDataTableView.widthAnchor.constraint(equalTo: detailInfoView.widthAnchor).isActive = true
-//        marketDataTableView.heightAnchor.constraint(equalToConstant: 250).isActive = true
-//        
-//        headerStack.topAnchor.constraint(equalTo: marketDataTableView.bottomAnchor, constant: 18).isActive = true
-//        headerStack.widthAnchor.constraint(equalTo: detailInfoView.widthAnchor).isActive = true
-//        headerStack.heightAnchor.constraint(equalToConstant: 40).isActive = true
-//        
-//        let communityDatatitle = UILabel(); communityDatatitle.text = "Community data"; communityDatatitle.textColor = .white
-//        communityDatatitle.font = UIFont(name: "avenir", size: 22)
-//        communityDatatitle.translatesAutoresizingMaskIntoConstraints = false
-//        detailInfoView.addSubview(communityDatatitle)
-//        
-//        descriptionLabel.topAnchor.constraint(equalTo: headerStack.bottomAnchor, constant: 14).isActive = true
-//        descriptionLabel.widthAnchor.constraint(equalTo: detailInfoView.widthAnchor).isActive = true
-//        descriptionLabel.bottomAnchor.constraint(equalTo: communityDatatitle.topAnchor, constant: -18).isActive = true
-//        
-//        communityDatatitle.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor).isActive = true
-//        communityDatatitle.widthAnchor.constraint(equalTo: detailInfoView.widthAnchor).isActive = true
-//        communityDatatitle.heightAnchor.constraint(equalToConstant: 50).isActive = true
-//        communityDatatitle.bottomAnchor.constraint(equalTo: communityDataTableView.topAnchor).isActive = true
-//        
-//        communityDataTableView.translatesAutoresizingMaskIntoConstraints = false
-//        communityDataTableView.topAnchor.constraint(equalTo: communityDatatitle.bottomAnchor).isActive = true
-//        communityDataTableView.widthAnchor.constraint(equalTo: detailInfoView.widthAnchor).isActive = true
-//        communityDataTableView.heightAnchor.constraint(equalToConstant: 130).isActive = true
-//        
-//        var arrangedSubviews : [UIView] = []
-//        if presenter.labels[KeysOfLabels.redditUrl.rawValue] == "" || presenter.labels[KeysOfLabels.redditUrl.rawValue]!.isEmpty || presenter.labels[KeysOfLabels.redditUrl.rawValue] == "https://reddit.com" {
-//            arrangedSubviews = [onSiteButton]
-//        } else if presenter.labels[KeysOfLabels.siteUrl.rawValue] == "" || presenter.labels[KeysOfLabels.siteUrl.rawValue]!.isEmpty {
-//            arrangedSubviews = [onRedditButton]
-//        } else {
-//            arrangedSubviews = [onRedditButton, onSiteButton]
-//        }
-//        
-//        let buttonsStack = UIStackView(arrangedSubviews: arrangedSubviews)
-//        buttonsStack.axis = .vertical
-//        buttonsStack.distribution = .fillEqually
-//        buttonsStack.spacing = 11
-//        buttonsStack.translatesAutoresizingMaskIntoConstraints = false
-//        
-//        detailInfoView.addSubview(buttonsStack)
-//        buttonsStack.topAnchor.constraint(equalTo: communityDataTableView.bottomAnchor, constant: 10).isActive = true
-//        buttonsStack.centerXAnchor.constraint(equalTo: detailInfoView.centerXAnchor).isActive = true
-//        buttonsStack.widthAnchor.constraint(equalTo: detailInfoView.widthAnchor, constant: -2).isActive = true
-//        
-//        if buttonsStack.arrangedSubviews.count == 1 {
-//            buttonsStack.heightAnchor.constraint(equalToConstant: 56).isActive = true
-//            scrollView.contentInset.bottom -= 67
-//        } else if buttonsStack.arrangedSubviews.count == 2 {
-//            buttonsStack.heightAnchor.constraint(equalToConstant: 123).isActive = true
-//            //            scrollView.contentInset.bottom += 123
-//        } else {
-//            buttonsStack.heightAnchor.constraint(equalToConstant: 0).isActive = true
-//            scrollView.contentInset.bottom -= 123
-//        }
-//    }
     
     @objc
     private func onReddit() {
@@ -519,7 +358,6 @@ class ChartViewController: UIViewController {
                         if let button = button as? UIButton  {
                             let imageConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .regular, scale: .large)
                             if button.imageView?.image == UIImage(systemName: "chevron.down", withConfiguration: imageConfig) {
-                                //                            let imageConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .regular, scale: .large)
                                 button.setImage(UIImage(systemName: "chevron.up", withConfiguration: imageConfig), for: .normal)
                             }
                         }
@@ -541,7 +379,6 @@ class ChartViewController: UIViewController {
                         if let button = button as? UIButton  {
                             let imageConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .regular, scale: .large)
                             if button.imageView?.image == UIImage(systemName: "chevron.up", withConfiguration: imageConfig) {
-                                //                            let imageConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .regular, scale: .large)
                                 button.setImage(UIImage(systemName: "chevron.down", withConfiguration: imageConfig), for: .normal)
                             }
                         }
@@ -557,9 +394,7 @@ class ChartViewController: UIViewController {
 }
 
 extension ChartViewController : ChartViewControllerProtocol {
-//    func increaseScrollViewBottom (for number : CGFloat) {
-//        scrollView.contentInset.bottom += number
-//    }
+
     func reloadMarketDataTableView() {
         marketDataTableView.reloadData()
     }

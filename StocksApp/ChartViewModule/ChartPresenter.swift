@@ -20,12 +20,6 @@ protocol ChartViewPresenterProtocol : AnyObject {
     func saveTapped()
     func chartLoad(idOfCrypto: String, interval: Interval)
 }
-//enum Interval : String {
-//    case day; case week; case month; case year
-//}
-//enum KeysOfLabels : String {
-//    case symbolOfCurrentCrypto; case descriptionLabel; case nameOfCrypto; case computedDiffPrice; case priceOfCrypto; case idOfCrypto; case symbolOfTicker; case redditUrl; case siteUrl; case imageString
-//}
 
 class ChartViewPresenter : ChartViewPresenterProtocol {
     weak var view : ChartViewControllerProtocol!
@@ -41,7 +35,6 @@ class ChartViewPresenter : ChartViewPresenterProtocol {
     let imageOfHeartFill = UIImage(systemName: "heart.fill")
     var networkManager : NetworkManagerForChartProtocol!
     var coreDataManager : CoreDataManagerForChartProtocol!
-//    weak var websocketManager : WebSocketManager!
     var labels = [String:String]()
     
     init(crypto : Crypto, view : ChartViewControllerProtocol,
@@ -51,7 +44,6 @@ class ChartViewPresenter : ChartViewPresenterProtocol {
         self.crypto = crypto
         self.networkManager = networkManager
         self.coreDataManager = coreDataManager
-//        self.websocketManager = websocketManager
         load()
         isFavorite()
         checkAndLoad()
@@ -123,8 +115,19 @@ class ChartViewPresenter : ChartViewPresenterProtocol {
             labels[KeysOfLabels.siteUrl.rawValue] = ""
         }
     }
+
+    
+    func converter1(first : Int = 1, price : Int) -> Int {
+        return first * price
+    }
+    
+    func converter2(second : Int, price : Int) -> Int {
+        return second / price
+    }
+    
     
     func checkAndLoad() {
+        
     if labels[KeysOfLabels.priceOfCrypto.rawValue] == "Price of crypto" {
         DispatchQueue.global().async {
             DataSingleton.shared.dict1[(self.labels[KeysOfLabels.symbolOfCurrentCrypto.rawValue]?.uppercased())!] = 0
@@ -182,18 +185,14 @@ class ChartViewPresenter : ChartViewPresenterProtocol {
                     if let marketData = stocks.marketData {
                         self.marketData = MarketDataArray(marketData: marketData).array
                         self.view.reloadMarketDataTableView()
-//                        self.view.marketDataTableView.reloadData()
+
                     }
                     if let communityData = stocks.communityData {
                         self.communityData = CommunityDataArray(communityData: communityData).array
                         self.view.reloadCommunityDataTableView()
-//                        self.view.communityDataTableView.reloadData()
+
                     }
                     self.view.updateData()
-//                    self.view.setupDetailInfo()
-//                    self.view.increaseScrollViewBottom(for: 67)
-//                    self.view.scrollView.contentInset.bottom += 67
-                    
                 }
             }
         }
@@ -269,9 +268,8 @@ class ChartViewPresenter : ChartViewPresenterProtocol {
             
             DataSingleton.shared.favorites.insert(object, at: 0)
             coreDataManager.addData(object: object)
-//            websocketManager.webSocket(symbols: DataSingleton.shared.symbols, symbolsF: DataSingleton.shared.symbolsF)
-
         }
+        
         bool.toggle()
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newDataNotif"), object: nil)
     }
@@ -295,19 +293,19 @@ class ChartViewPresenter : ChartViewPresenterProtocol {
                 dateFormat = "MMM d"
                 prevValue = Int((Calendar.current.date(byAdding: .month, value: -1, to: Date()))!.timeIntervalSince1970)
             case .year:
-                dateFormat = "dd.MM.yy"
+                dateFormat = "MMM d"
                 prevValue = Int((Calendar.current.date(byAdding: .year, value: -1, to: Date()))!.timeIntervalSince1970)
             }
 
             NetworkRequestManager.request(url: "https://api.coingecko.com/api/v3/coins/\(idOfCrypto)/market_chart/range?vs_currency=usd&from=\(prevValue)&to=\(nowUnix)") { data, response, error in
                 guard let stocksData = data, error == nil, response != nil else {
-                    print("ХЫЧ ХЫЧ");
+                    print("ХЫЧ ХЫЧ1");
                     self.chartLoad(idOfCrypto: idOfCrypto, interval: interval);
                     return}
                 
                 do {
-                    guard let stocks = try CoinGeckoPrice.decode(from: stocksData) else {return}
-                    guard let prices = stocks.prices else {return}
+                    guard let stocks = try CoinGeckoPrice.decode(from: stocksData) else {print("ХЫЧ ХЫЧ2");return}
+                    guard let prices = stocks.prices else {print("ХЫЧ ХЫЧ3");return}
                     for i in prices {
                         let chartData = ChartDataEntry(x: i[0], y: i[1])
                         self.values.append(chartData)
@@ -316,7 +314,6 @@ class ChartViewPresenter : ChartViewPresenterProtocol {
                         let xAxisValueFormatter = MyXAxisFormatter(dateFormat: dateFormat)
                         let dataSet = LineChartDataSet(entries: self.values)
                         self.view.setData(dataSet: dataSet, xAxisValueFormatter: xAxisValueFormatter)
-//                        self.lineChartView.xAxis.valueFormatter = MyXAxisFormatter(dateFormat: dateFormat)
                         self.view.lineChartViewSetup()
                     }
                     

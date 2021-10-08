@@ -49,9 +49,8 @@ class CarouselCollectionViewCell: UICollectionViewCell {
         layer.shadowOpacity = 1
         layer.shadowRadius = 10
         layer.shadowOffset = CGSize(width: 0, height: 3)
-//        layer.masksToBounds = false
-//        clipsToBounds = true
     }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -71,13 +70,8 @@ class CarouselCollectionViewCell: UICollectionViewCell {
         imageView.layer.cornerRadius = imageView.frame.height/2
         imageView.clipsToBounds = true
         
-//        if let priceofCrypto = crypto.price {
-//            price.text = priceofCrypto
-//            price.text?.insert("$", at: priceofCrypto.startIndex)
-//        }
         if let priceOfCrypto = crypto.price {
         price.text = "$" + priceOfCrypto
-//        price.text?.insert("$", at: price.text!.startIndex)
         }
         guard let percentages = crypto.percentages?.priceChangePercentage24H else {return}
         
@@ -103,7 +97,6 @@ class CarouselCollectionViewCell: UICollectionViewCell {
             if let percentages = crypto.percentages {
                 fullString.append(NSAttributedString(string: " \(percentages.priceChangePercentage24H ?? "")%"))
             }
-//            fullString.append(NSAttributedString(string: "%"))
             percent.attributedText = fullString
             percent.textColor = UIColor(red: 0.486, green: 0.863, blue: 0.475, alpha: 1)
         }

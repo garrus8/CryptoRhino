@@ -19,7 +19,6 @@ class NewsCell: UICollectionViewCell {
 
         label.layer.masksToBounds = true
         label.numberOfLines = 3
-//        label.lineBreakMode = .byTruncatingTail
         label.lineBreakMode = .byWordWrapping
         label.font = UIFont(name: "Avenir", size: 14)
         label.textColor = .white
@@ -29,12 +28,10 @@ class NewsCell: UICollectionViewCell {
     let symbolOfCrypto : UILabel = {
         let label =  UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-//        textView.layer.cornerRadius = 15
         label.layer.masksToBounds = true
         label.numberOfLines = 3
         label.lineBreakMode = .byTruncatingTail
         label.font = UIFont(name: "Avenir", size: 12)
-        //SFCompactText-Regular
         label.textColor = UIColor(red: 0.643, green: 0.766, blue: 0.996, alpha: 1)
         label.sizeToFit()
         return label
@@ -65,13 +62,11 @@ class NewsCell: UICollectionViewCell {
         setupElements()
         setupConstraints()
         self.layer.cornerRadius = 15
-//        self.clipsToBounds = true
         layer.shadowPath = UIBezierPath(roundedRect: self.bounds, cornerRadius: 0).cgPath
         layer.shadowColor = UIColor(red: 0.024, green: 0.086, blue: 0.369, alpha: 0.3).cgColor
         layer.shadowOpacity = 1
         layer.shadowRadius = 10
         layer.shadowOffset = CGSize(width: 0, height: -4)
-
         
     }
     
@@ -106,8 +101,6 @@ class NewsCell: UICollectionViewCell {
 // MARK: - Setup Constraints
 extension NewsCell {
     func setupConstraints() {
-//        addSubview(nameOfCrypto)
-//        addSubview(symbolOfCrypto)
         addSubview(imageView)
         addSubview(publishedOn)
     

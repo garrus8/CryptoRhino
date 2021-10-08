@@ -89,7 +89,7 @@ class NetworkManager {
                 DispatchQueue.main.async() {
                     group.enter()
                     print("getTopOfCrypto 5")
-                    let alert = UIAlertController(title: "Sorry, you have exceeded our API request limit", message: "Try in one minute", preferredStyle: .alert)
+                    let alert = UIAlertController(title: "Sorry, you have exceeded our API request limit1", message: "Try in one minute", preferredStyle: .alert)
                     alert.show()
                     group.leave()
                 }
@@ -201,7 +201,7 @@ class NetworkManager {
             } else {
                 DispatchQueue.main.async() {
                     group.enter()
-                    let alert = UIAlertController(title: "Sorry, you have exceeded our API request limit", message: "Try in one minute", preferredStyle: .alert)
+                    let alert = UIAlertController(title: "Sorry, you have exceeded our API request limit2", message: "Try in one minute", preferredStyle: .alert)
                     alert.show()
                     print("getFullListOfCoinGecko 4")
                     group.leave()
@@ -245,7 +245,7 @@ class NetworkManager {
             } else {
                 DispatchQueue.main.async() {
                     group.enter()
-                    let alert = UIAlertController(title: "Sorry, you have exceeded our API request limit", message: "Try in one minute", preferredStyle: .alert)
+                    let alert = UIAlertController(title: "Sorry, you have exceeded our API request limit3", message: "Try in one minute", preferredStyle: .alert)
                     alert.show()
                     print("getFullCoinCapList 4")
                     group.leave()
@@ -274,7 +274,7 @@ class NetworkManager {
                             self.getCoinGeckoData(id: id, symbol: symbol, group: group, complition : complition);
                             group.leave();
                             return}
-                
+                        
                         
                         complition(stocks)
                         group.leave()
@@ -348,14 +348,12 @@ class NetworkManager {
                             self.obtainImage(StringUrl: stringUrl, group: group) { image in
                                 elemA.image = image
                                 elemA.imageString = stocks.image?.large
-                                
-//                                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newDataNotif"), object: nil)
-                                
                             }
                         }
                         elemA.nameOfCrypto = stocks.name
                         if let price = stocks.marketData?.currentPrice?["usd"] {
-                            elemA.price = String(price)
+                            elemA.price = price.toString()
+//                            elemA.price = String(format: "%.00000f", price)
                         }
                         if let priceChangePercentage24H = stocks.marketData?.priceChangePercentage24H {
                             let roundedValue = round(priceChangePercentage24H * 100) / 100.0
@@ -420,7 +418,6 @@ class NetworkManager {
         // GROUP 3
         DispatchGroups.shared.groupOne.wait()
         DispatchQueue.global().async(group : group) {
-            print("POPAL BLYAT")
             for index in 0..<20 {
                 group.enter()
                 var elemOfCoinCap : [String : String?]
@@ -443,29 +440,8 @@ class NetworkManager {
         }
     }
     
-    
-//    func updateUI(collectionViews: [UICollectionView]){
-//        DispatchGroups.shared.groupOne.wait()
-//        DispatchGroups.shared.groupTwo.wait()
-//        //        groupThree.wait()
-//        DispatchQueue.main.async {
-//            for i in collectionViews {
-//                i.reloadData()
-//            }
-//        }
-//    }
-//    func recoursiveUpdateUI(collectionViews: [UICollectionView]){
-//        updateUI(collectionViews: collectionViews)
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-//            self.recoursiveUpdateUI(collectionViews: collectionViews)
-//        }
-//    }
-    
     func setupSections() {
         DispatchGroups.shared.groupOne.wait()
-        //        groupTwo.wait()
-        //        groupThree.wait()
-        
         DispatchQueue.global().async(group : DispatchGroups.shared.groupSetupSections, flags: .barrier) {
             
             let carousel = SectionOfCrypto(type: "carousel", title: "Top by Market Cap", items: DataSingleton.shared.collectionViewArray)
@@ -477,15 +453,15 @@ class NetworkManager {
     }
     
     func quickSortForCoinGecko (_ list : inout [GeckoListElement], start : Int, end : Int) {
-
+        
         if end - start < 2 {
             return
         }
         let pivot = list[start + (end - start) / 2]
         var low = start
         var high = end - 1
-
-
+        
+        
         while (low <= high) {
             if list[low].symbol! < pivot.symbol! {
                 low += 1
@@ -495,38 +471,18 @@ class NetworkManager {
                 high -= 1
                 continue
             }
-
+            
             let temp = list[low]
             list[low] = list[high]
             list[high] = temp
-
+            
             low += 1
             high -= 1
         }
         quickSortForCoinGecko(&list, start: start, end: high + 1)
         quickSortForCoinGecko(&list, start: high + 1, end: end)
-
+        
     }
-    
-    //    func binarySearchFoCoinGeckoList(key : String, list : [GeckoListElement]) -> Int? {
-    //
-    //        var low = 0
-    //        var high = list.count - 1
-    //
-    //        while low <= high {
-    //            let mid = low + (high - low) / 2
-    //            if key.lowercased() < list[mid].symbol!.lowercased() {
-    //                high = mid - 1
-    //            } else if key.lowercased() > list[mid].symbol!.lowercased() {
-    //                low = mid + 1
-    //            } else {
-    //                return mid
-    //            }
-    //        }
-    //        return nil
-    //    }
-    
-    
 }
 
 extension NetworkManager : NetworkManagerMainProtocol, NetworkManagerForChartProtocol, NetworkManagerForNewsProtocol, NetworkManagerForCoreDataProtocol {}

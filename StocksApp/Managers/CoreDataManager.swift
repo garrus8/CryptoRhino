@@ -53,7 +53,6 @@ class CoreDataManager {
                 for i in DataSingleton.shared.favorites {
                     if let symbol = i.symbol{
                         let crypto = Crypto(symbolOfCrypto: symbol, nameOfCrypto: i.name!, descriptionOfCrypto: i.descrtiption!, image: UIImage(named: "pngwing.com")!, percentages: Persentages())
-                        //                    DispatchQueue.global().async(flags: .barrier) {
                         print("self.resultsF",DataSingleton.shared.resultsF.count)
                         DataSingleton.shared.symbolsF.append(i.symbol!)
                         DataSingleton.shared.resultsF.append(crypto)
@@ -76,7 +75,6 @@ class CoreDataManager {
                 DataSingleton.shared.websocketArray.append(symbol)
                 DataSingleton.shared.dict1[symbol] = 0
                 var sub = [DataSingleton.shared.resultsF.first!]
-                //                        self.putCoinGeckoData(array: &self.resultsF, group: self.groupTwo)
                 self.networkManager.putCoinGeckoData(array: &sub, group: DispatchGroups.shared.groupTwo, otherArray: [])
                 DataSingleton.shared.resultsF[0] = sub.first!
             }

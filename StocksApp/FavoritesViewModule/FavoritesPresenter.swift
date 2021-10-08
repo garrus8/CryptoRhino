@@ -62,9 +62,7 @@ class FavoritesViewPresenter : FavoritesViewPresenterProtocol {
             result = DataSingleton.shared.resultsF[indexPath.row]
         }
         let chartVC = builder.createChartViewModule(crypto: result)
-//        view.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         view.navigationController?.pushViewController(chartVC, animated: true)
-//        view.present(chartVC, animated:true, completion:nil)
     }
     func filter(searchText : String) {
         if isFavoritesEmpty {
@@ -75,7 +73,6 @@ class FavoritesViewPresenter : FavoritesViewPresenterProtocol {
             })
         } else {
             filteredResultsOfFavorites = DataSingleton.shared.resultsF.filter({ (searchElem : Crypto) -> Bool in
-                
                 return searchElem.nameOfCrypto?.lowercased().hasPrefix(searchText.lowercased()) ?? false ||
                     searchElem.symbolOfCrypto.lowercased().hasPrefix(searchText.lowercased())
             })

@@ -15,20 +15,8 @@ protocol FavoritesViewControllerProtocol : UIViewController {
 class FavoritesViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, FavoritesViewControllerProtocol  {
     
     var collectionView : UICollectionView!
-//    let finHubToken = Constants.finHubToken
-    //MARK: - PRESENTER
     var presenter : FavoritesViewPresenterProtocol!
-//    var favorites = [Favorites]()
-//    var results = [Crypto]()
-//    var symbols = [String]()
-//    var coinGecoList = [GeckoListElement]()
-//    private var filteredResults = [Crypto]()
-    
-//    private var filteredResults = GeckoList()
-//    private var filteredResultsOfFavorites = [Crypto]()
-    //MARK: - PRESENTER
     let searchController = UISearchController(searchResultsController: nil)
-    
     var searchBarIsEmpty : Bool {
         guard let text = searchController.searchBar.text else {return false}
         return text.isEmpty
@@ -41,7 +29,6 @@ class FavoritesViewController: UIViewController, UICollectionViewDataSource, UIC
         let imageViewWithLabel = UIView()
         imageViewWithLabel.frame.size.width = 260
         imageViewWithLabel.frame.size.height = 307
-//        imageViewWithLabel.backgroundColor = .brown
         
         let rocketImage = UIImage(named: "rocket")
         let rocketImageView = UIImageView()
@@ -50,7 +37,6 @@ class FavoritesViewController: UIViewController, UICollectionViewDataSource, UIC
         rocketImageView.contentMode = UIView.ContentMode.scaleAspectFit
         rocketImageView.frame.size.width = 230
         rocketImageView.frame.size.height = 207
-//        rocketImageView.center = imageViewWithLabel.center
         rocketImageView.center.x = imageViewWithLabel.center.x
         rocketImageView.center.y = imageViewWithLabel.center.y - 30
         
@@ -76,32 +62,9 @@ class FavoritesViewController: UIViewController, UICollectionViewDataSource, UIC
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         navigationItem.searchController = searchController
-        
-//        let imageViewWithLabel = UIView()
-//        let rocketImage = UIImage(named: "rocket")
-//        let rocketImageView = UIImageView()
-//        rocketImageView.image = rocketImage
-//        imageViewWithLabel.addSubview(rocketImageView)
-//        rocketImageView.contentMode = UIView.ContentMode.scaleAspectFit
-//        rocketImageView.frame.size.width = 200
-//        rocketImageView.frame.size.height = 200
         view.addSubview(imageViewWithLabel)
-//        imageViewWithLabel.frame = CGRect(x: view.center.x, y: 150, width: 260, height: 400)
         imageViewWithLabel.center = CGPoint(x: view.center.x, y: 300)
-        
-        
-//        imageViewWithLabel.center = self.view.center
-        
-        
-        definesPresentationContext = true
-//        collectionView.delegate = self
-
-        // DELEGATE
-//        networkManager.delegate = self
         refresh()
-//        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: NSNotification.Name(rawValue: "WebsocketDataUpdate"), object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(self.reloadData), name: NSNotification.Name(rawValue: "newDataNotif"), object: nil)
- 
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -110,6 +73,8 @@ class FavoritesViewController: UIViewController, UICollectionViewDataSource, UIC
         searchController.searchBar.searchTextField.textColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.75)
         searchController.searchBar.searchTextField.leftView?.tintColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.75)
         searchController.searchBar.tintColor = .white
+        definesPresentationContext = true
+        searchController.isActive = true
     }
     func setupCollectionView() {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
@@ -119,7 +84,7 @@ class FavoritesViewController: UIViewController, UICollectionViewDataSource, UIC
         collectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.backgroundColor = UIColor(hexString: "#4158B7")
-        
+        view.addSubview(collectionView)
         collectionView.register(TableCollectionViewCell.self, forCellWithReuseIdentifier: TableCollectionViewCell.reuseId)
         collectionView.register(SearchTableViewCell.self, forCellWithReuseIdentifier: SearchTableViewCell.reuseId)
         collectionView.delegate = self
@@ -132,21 +97,10 @@ class FavoritesViewController: UIViewController, UICollectionViewDataSource, UIC
             self.refresh()
         }
    }
-//    @objc func reloadData() {
-//        collectionView.reloadData()
-//    }
-    
-    
-    // MARK: - Table view data source
+
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        //MARK: - PRESENTER
-//        if isFiltering && NetworkManager.shared.resultsF.isEmpty {
-//            return filteredResults.count
-//        } else if isFiltering && !NetworkManager.shared.resultsF.isEmpty {
-//            return filteredResultsOfFavorites.count
-//        }
-//        return NetworkManager.shared.resultsF.count
+
         let items = presenter.returnNumberOfItems()
         if items == 0 {
             imageViewWithLabel.isHidden = false
@@ -160,31 +114,7 @@ class FavoritesViewController: UIViewController, UICollectionViewDataSource, UIC
         return CGSize(width: UIScreen.main.bounds.size.width - 24, height: 63)
     }
 
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-////        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FavoritesCell.reuseId, for: indexPath) as? FavoritesCell else {return UICollectionViewCell()}
-//
-//
-//        if isFiltering {
-//
-//            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchTableViewCell.reuseId, for: indexPath) as? SearchTableViewCell else {return UICollectionViewCell()}
-//            let results = filteredResults[indexPath.row]
-//            cell.nameOfCrypto.text = results.displaySymbol
-//            cell.symbolOfCrypto.text = results.fullBinanceListDescription
-//            return cell
-//
-//
-//        } else {
-//            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TableCollectionViewCell.reuseId, for: indexPath) as? TableCollectionViewCell else {return UICollectionViewCell()}
-//            guard let results = NetworkManager.shared.resultsF[indexPath.row] as Crypto? else {return UICollectionViewCell()}
-//            cell.configure(with: results)
-//            return cell
-//
-//        }
-//
-////        return cell
-//    }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        //MARK: - PRESENTER
         if isFiltering && presenter.isFavoritesEmpty {
 
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchTableViewCell.reuseId, for: indexPath) as? SearchTableViewCell else {return UICollectionViewCell()}
@@ -208,28 +138,10 @@ class FavoritesViewController: UIViewController, UICollectionViewDataSource, UIC
 
     }
 
-
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        //MARK: - PRESENTER
-//        let result: Crypto
-//        
-////        let ChartVC = ChartViewController()
-//        if isFiltering && presenter.isFavoritesEmpty {
-//            let elem = filteredResults[indexPath.row]
-//            result = Crypto(symbolOfCrypto: elem.symbol!, nameOfCrypto: elem.name, id: elem.id)
-//        } else if isFiltering && !presenter.isFavoritesEmpty {
-//            result = filteredResultsOfFavorites[indexPath.row]
-//        } else {
-//            result = NetworkManager.shared.resultsF[indexPath.row]
-//        }
-//        let ChartVC = ChartViewController()
-//        ChartVC.crypto = result
-//        self.navigationController?.pushViewController(ChartVC, animated: true)
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         presenter.showChartView(indexPath: indexPath)
-        
-        }
-    
+    }
 }
 
 
@@ -238,25 +150,17 @@ extension FavoritesViewController : UISearchResultsUpdating   {
         filterContentForSearchText(searchController.searchBar.text!)
     }
     func filterContentForSearchText(_ searchText : String){
-        //MARK: - PRESENTER
-//        if NetworkManager.shared.resultsF.isEmpty {
-//            filteredResults = NetworkManager.shared.fullBinanceList.filter({ (searchElem : GeckoListElement) -> Bool in
-//                
-//                return searchElem.symbol!.lowercased().hasPrefix(searchText.lowercased()) ||
-//                    searchElem.name!.split(separator: "/").first!.lowercased().hasPrefix(searchText.lowercased())
-//            })
-//        } else {
-//            filteredResultsOfFavorites = NetworkManager.shared.resultsF.filter({ (searchElem : Crypto) -> Bool in
-//                
-//                return searchElem.nameOfCrypto!.lowercased().hasPrefix(searchText.lowercased()) ||
-//                    searchElem.symbolOfCrypto.split(separator: "/").first!.lowercased().hasPrefix(searchText.lowercased())
-//            })
-//        }
         presenter.filter(searchText: searchText)
-            
-       
         DispatchQueue.main.async {
             self.collectionView.reloadData()
         }
+    }
+}
+
+extension FavoritesViewController : UISearchControllerDelegate {
+    func didPresentSearchController(_ searchController: UISearchController) {
+        DispatchQueue.main.async {
+                searchController.searchBar.becomeFirstResponder()
+            }
     }
 }

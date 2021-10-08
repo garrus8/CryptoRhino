@@ -54,9 +54,7 @@ class SearchViewPresenter : SearchViewPresenterProtocol {
             
             guard let name = searchElem.name else {return false}
             return searchElem.symbol?.lowercased().hasPrefix(searchText.lowercased()) ?? false ||
-//                name.split(separator: "/").first!.lowercased().hasPrefix(searchText.lowercased())
                 name.lowercased().hasPrefix(searchText.lowercased())
-
         })
     }
     func getFilteredResult(indexPath : IndexPath) -> GeckoListElement {
@@ -67,7 +65,6 @@ class SearchViewPresenter : SearchViewPresenterProtocol {
             let result = DataSingleton.shared.topList[indexPath.row]
             return result
     }
-  
 }
 
 

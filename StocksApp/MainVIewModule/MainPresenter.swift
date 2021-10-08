@@ -14,7 +14,6 @@ protocol MainViewPresenterProtocol : AnyObject {
     func createCompositionalLayout() -> UICollectionViewLayout
     func reloadData()
     func showChartView(indexPath : IndexPath)
-//    func returnDataSource() -> UICollectionViewDiffableDataSource<SectionOfCrypto, Crypto>?
 }
 
 class MainViewPresenter : MainViewPresenterProtocol {
@@ -72,7 +71,6 @@ class MainViewPresenter : MainViewPresenterProtocol {
                 updateUI(collectionViews: [view.returnCollectionView()])
                 recoursiveUpdateUI(collectionViews: [view.returnCollectionView()])
 
-//                NotificationCenter.default.addObserver(view, selector: #selector(view.reloadCollectionView), name: NSNotification.Name(rawValue: "newImage"), object: nil)
             }
         } else {
             let alert = UIAlertController(title: "No internet connection", message: "Check your internet connection and restart the app", preferredStyle: .alert)
@@ -81,7 +79,6 @@ class MainViewPresenter : MainViewPresenterProtocol {
         
     }
     func setupDataSource() {
-        //            CollectionViewGroup.enter()
         dataSource = UICollectionViewDiffableDataSource<SectionOfCrypto, Crypto>(collectionView: view.returnCollectionView(), cellProvider: { (collectionView, indexPath, crypto) -> UICollectionViewCell? in
             let carousel = SectionOfCrypto(type: "carousel", title: "Top by Market Cap", items: DataSingleton.shared.collectionViewArray)
             let table = SectionOfCrypto(type: "table", title: "Hot by 24H Volume", items: DataSingleton.shared.results)
@@ -109,7 +106,6 @@ class MainViewPresenter : MainViewPresenterProtocol {
             
             return sectionHeader
         }
-        //            CollectionViewGroup.leave()
     }
     
     func createCompositionalLayout() -> UICollectionViewLayout {
@@ -148,12 +144,8 @@ class MainViewPresenter : MainViewPresenterProtocol {
     func updateUI(collectionViews: [UICollectionView]){
         DispatchGroups.shared.groupOne.wait()
         DispatchGroups.shared.groupTwo.wait()
-        //        groupThree.wait()
         DispatchQueue.main.async {
             self.view.reloadCollectionView()
-//            for i in collectionViews {
-//                i.reloadData()
-//            }
         }
     }
     func recoursiveUpdateUI(collectionViews: [UICollectionView]){

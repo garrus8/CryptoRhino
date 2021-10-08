@@ -47,7 +47,6 @@ class TableCollectionViewCell: UICollectionViewCell {
         self.layer.shadowOpacity = 1
         self.layer.shadowRadius = 10
         self.layer.shadowOffset = CGSize(width: 0, height: -4)
-//        friendImageView.layer.cornerRadius = friendImageView.frame.height/2
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -73,7 +72,6 @@ class TableCollectionViewCell: UICollectionViewCell {
         
         if let priceOfCrypto = crypto.price {
         price.text = "$" + priceOfCrypto
-//        price.text?.insert("$", at: price.text!.startIndex)
         }
         guard let percentages = crypto.percentages?.priceChangePercentage24H else {return}
         
@@ -114,30 +112,30 @@ extension TableCollectionViewCell {
         addSubview(price)
         addSubview(percent)
         
-        // oponentImageView constraints
         friendImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 12).isActive = true
         friendImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         friendImageView.widthAnchor.constraint(equalToConstant: 35).isActive = true
         friendImageView.heightAnchor.constraint(equalToConstant: 35).isActive = true
         
         
-        // oponentLabel constraints
         nameOfCrypto.topAnchor.constraint(equalTo: self.topAnchor, constant: 11).isActive = true
         nameOfCrypto.leadingAnchor.constraint(equalTo: friendImageView.trailingAnchor, constant: 8).isActive = true
-//        nameOfCrypto.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 16).isActive = true
         nameOfCrypto.widthAnchor.constraint(equalToConstant: 128).isActive = true
+    
         
-        // lastMessageLabel constraints
         symbolOfCrypto.topAnchor.constraint(equalTo: nameOfCrypto.bottomAnchor, constant: 4).isActive = true
         symbolOfCrypto.leadingAnchor.constraint(equalTo: friendImageView.trailingAnchor, constant: 8).isActive = true
         symbolOfCrypto.widthAnchor.constraint(equalToConstant: 128).isActive = true
         
         price.topAnchor.constraint(equalTo: topAnchor, constant: 12).isActive = true
-        price.leadingAnchor.constraint(equalTo: nameOfCrypto.trailingAnchor, constant: 65).isActive = true
+//        price.leadingAnchor.constraint(equalTo: nameOfCrypto.trailingAnchor, constant: 65).isActive = true
+        price.widthAnchor.constraint(equalToConstant: 100).isActive = true
         price.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -12).isActive = true
         
+        
         percent.topAnchor.constraint(equalTo: price.bottomAnchor).isActive = true
-        percent.leadingAnchor.constraint(equalTo: symbolOfCrypto.trailingAnchor, constant: 65).isActive = true
+//        percent.leadingAnchor.constraint(equalTo: symbolOfCrypto.trailingAnchor, constant: 65).isActive = true
+        percent.widthAnchor.constraint(equalToConstant: 100).isActive = true
         percent.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -12).isActive = true
         
     }

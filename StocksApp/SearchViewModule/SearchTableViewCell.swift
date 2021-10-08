@@ -38,9 +38,6 @@ class SearchTableViewCell: UICollectionViewCell {
         self.layer.shadowOpacity = 1
         self.layer.shadowRadius = 10
         self.layer.shadowOffset = CGSize(width: 0, height: -4)
-//        self.clipsToBounds = true
-        
-        
     }
 
     
@@ -68,13 +65,9 @@ extension SearchTableViewCell {
         nameOfCrypto.topAnchor.constraint(equalTo: topAnchor, constant: 11).isActive = true
         nameOfCrypto.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
         nameOfCrypto.widthAnchor.constraint(equalToConstant: 250).isActive = true
-        
-        // lastMessageLabel constraints
+    
         symbolOfCrypto.topAnchor.constraint(equalTo: nameOfCrypto.bottomAnchor).isActive = true
         symbolOfCrypto.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
         symbolOfCrypto.widthAnchor.constraint(equalToConstant: 128).isActive = true
-        
-
-        
     }
 }

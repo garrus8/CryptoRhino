@@ -30,7 +30,7 @@ class SearchViewController: UIViewController, SearchViewControllerProtocol  {
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         navigationItem.searchController = searchController
-        definesPresentationContext = true
+        
         
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -41,6 +41,8 @@ class SearchViewController: UIViewController, SearchViewControllerProtocol  {
         searchController.searchBar.searchTextField.textColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.75)
         searchController.searchBar.searchTextField.leftView?.tintColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.75)
         searchController.searchBar.tintColor = .white
+        definesPresentationContext = true
+        searchController.isActive = true
     }
     private func setupCollectionView() {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
@@ -53,7 +55,6 @@ class SearchViewController: UIViewController, SearchViewControllerProtocol  {
         collectionView.register(SearchTableViewCell.self, forCellWithReuseIdentifier: SearchTableViewCell.reuseId)
         collectionView.register(SearchTableViewCellWithImage.self, forCellWithReuseIdentifier: SearchTableViewCellWithImage.reuseId)
         collectionView.register(HeaderCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HeaderCollectionReusableView.id)
-//        layout.itemSize = CGSize(width: collectionView.bounds.width - 20, height: 60)
         collectionView.delegate = self
         collectionView.dataSource = self
         
@@ -120,6 +121,14 @@ extension SearchViewController : UISearchResultsUpdating   {
         
         DispatchQueue.main.async {
             self.collectionView.reloadData()
+        }
+    }
+}
+
+extension SearchViewController : UISearchControllerDelegate {
+    func didPresentSearchController(_ searchController: UISearchController) {
+        DispatchQueue.main.async {
+            searchController.searchBar.becomeFirstResponder()
         }
     }
 }

@@ -14,37 +14,14 @@ protocol WebSocketProtocol {
 // WEBSOCKET
 final class WebSocketManager : WebSocketProtocol {
     
-    private let webSocketTask = URLSession(configuration: .default).webSocketTask(with: URL(string: Urls.webSocket.rawValue)!)
+//    private let webSocketTask = URLSession(configuration: .default).webSocketTask(with: URL(string: Urls.webSocket.rawValue)!)
+    private let webSocketTask = URLSession(configuration: .default).webSocketTask(with: URL(string: FinHubApiRandomizer.api)!)
     
-    //func webSocket(symbols : [String], symbolsF : [String]) {
-    //    DispatchQueue.global().async {
-    //
-    //        let set = Set(symbols).union(Set(symbolsF))
-    //
-    //        for symbol in set {
-    //            let symbolForFinHub = "BINANCE:\(symbol)USDT"
-    //            let message = URLSessionWebSocketTask.Message.string("{\"type\":\"subscribe\",\"symbol\":\"\(symbolForFinHub)\"}")
-    //
-    //
-    //            self.webSocketTask.send(message) { error in
-    //                if let error = error {
-    //                    print("WebSocket couldn’t send message because: \(error)")
-    //                }
-    //            }
-    //        }
-    //
-    //        self.webSocketTask.resume()
-    //        self.ping()
-    //
-    //    }
-    //}
     func webSocket (symbols: [String]) {
         DispatchGroups.shared.groupOne.wait()
         DispatchGroups.shared.groupTwo.wait()
-        //        for group in groupsForWait {
-        //            group.wait()
-        //        }
         DispatchQueue.global().async {
+            print("123123123123--___----__", FinHubApiRandomizer.api)
             let set = Set(symbols)
             for symbol in set {
                 let symbolForFinHub = "BINANCE:\(symbol)USDT"
