@@ -26,7 +26,7 @@ class NewsViewController: UIViewController, UICollectionViewDataSource, UICollec
     func setupCollectionView() {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 20, left: 10, bottom: 10, right: 10)
-        layout.itemSize = CGSize(width: self.view.frame.size.width - 30, height: 132)
+        layout.itemSize = CGSize(width: self.view.frame.size.width - 30, height: 138)
         collectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.backgroundColor = UIColor(hexString: "#4158B7")

@@ -39,7 +39,7 @@ class FavoritesCell: UICollectionViewCell {
     func configure(with crypto: Crypto) {
         nameOfCrypto.text = crypto.nameOfCrypto
         symbolOfCrypto.text = crypto.symbolOfCrypto
-        price.text = crypto.price
+        price.text = crypto.priceLabel
         percent.text = crypto.percentages?.priceChangePercentage24H
         friendImageView.image = UIImage()
     }

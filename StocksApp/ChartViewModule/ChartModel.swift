@@ -12,7 +12,7 @@ enum Interval : String {
     case day; case week; case month; case year
 }
 enum KeysOfLabels : String {
-    case symbolOfCurrentCrypto; case descriptionLabel; case nameOfCrypto; case computedDiffPrice; case priceOfCrypto; case idOfCrypto; case symbolOfTicker; case redditUrl; case siteUrl; case imageString
+    case symbolOfCurrentCrypto; case descriptionLabel; case nameOfCrypto; case computedDiffPrice; case priceOfCrypto; case idOfCrypto; case symbolOfTicker; case redditUrl; case siteUrl; case imageString; case priceDict
 }
 
 // MARK: - CommunityData

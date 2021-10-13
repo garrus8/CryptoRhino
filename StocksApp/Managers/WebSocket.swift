@@ -95,7 +95,7 @@ final class WebSocketManager : WebSocketProtocol {
                 let itemBForFinHub = "BINANCE:\(itemB.symbolOfCrypto.uppercased())USDT"
                 if itemA.s == itemBForFinHub {
                     DispatchQueue.global().async(flags: .barrier) {
-                        array[indexB].price = itemA.p.toString()
+                        array[indexB].priceLabel = itemA.p.toString()
                     }
                 }
             }

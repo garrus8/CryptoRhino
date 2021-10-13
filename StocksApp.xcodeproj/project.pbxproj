@@ -14,6 +14,9 @@
 		F42913F926A1B6D500F4F0D2 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42913F826A1B6D400F4F0D2 /* Extensions.swift */; };
 		F4416B43264D1A6A00505F7A /* RequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4416B42264D1A6A00505F7A /* RequestManager.swift */; };
 		F4440E58270F27EA004AD4B5 /* Converter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4440E57270F27EA004AD4B5 /* Converter.swift */; };
+		F4440E5A271061F4004AD4B5 /* ConverterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4440E59271061F4004AD4B5 /* ConverterView.swift */; };
+		F4440E5C271081DC004AD4B5 /* KeyboardBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4440E5B271081DC004AD4B5 /* KeyboardBar.swift */; };
+		F4440E5E27108FA1004AD4B5 /* ExtensionsForChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4440E5D27108FA1004AD4B5 /* ExtensionsForChartView.swift */; };
 		F446FD7726F48E960062BD3D /* ChartModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F446FD7626F48E960062BD3D /* ChartModel.swift */; };
 		F446FD7926F490470062BD3D /* NewsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F446FD7826F490470062BD3D /* NewsModel.swift */; };
 		F446FD7D26F4AF770062BD3D /* Singleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F446FD7C26F4AF770062BD3D /* Singleton.swift */; };
@@ -88,6 +91,9 @@
 		F42913F826A1B6D400F4F0D2 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		F4416B42264D1A6A00505F7A /* RequestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestManager.swift; sourceTree = "<group>"; };
 		F4440E57270F27EA004AD4B5 /* Converter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Converter.swift; sourceTree = "<group>"; };
+		F4440E59271061F4004AD4B5 /* ConverterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConverterView.swift; sourceTree = "<group>"; };
+		F4440E5B271081DC004AD4B5 /* KeyboardBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardBar.swift; sourceTree = "<group>"; };
+		F4440E5D27108FA1004AD4B5 /* ExtensionsForChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionsForChartView.swift; sourceTree = "<group>"; };
 		F446FD7626F48E960062BD3D /* ChartModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartModel.swift; sourceTree = "<group>"; };
 		F446FD7826F490470062BD3D /* NewsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsModel.swift; sourceTree = "<group>"; };
 		F446FD7C26F4AF770062BD3D /* Singleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Singleton.swift; sourceTree = "<group>"; };
@@ -252,7 +258,10 @@
 			isa = PBXGroup;
 			children = (
 				F4DE6651261C9DC100109F0A /* ChartViewController.swift */,
+				F4440E5D27108FA1004AD4B5 /* ExtensionsForChartView.swift */,
+				F4440E5B271081DC004AD4B5 /* KeyboardBar.swift */,
 				F4CCA6BF27045815005F43D9 /* ChartAndPriceExtension.swift */,
+				F4440E59271061F4004AD4B5 /* ConverterView.swift */,
 				F4CCA6C1270458E0005F43D9 /* DetailInfoExtension.swift */,
 				F4D01DF326F21B3D003F344F /* ChartPresenter.swift */,
 				F446FD7626F48E960062BD3D /* ChartModel.swift */,
@@ -608,7 +617,9 @@
 				F449CF3C2681DEA200739830 /* CarouselCollectionViewCell.swift in Sources */,
 				F449CF452682051800739830 /* SectionHeader.swift in Sources */,
 				F4D01DEE26F1F646003F344F /* SearchModel.swift in Sources */,
+				F4440E5A271061F4004AD4B5 /* ConverterView.swift in Sources */,
 				F446FD7926F490470062BD3D /* NewsModel.swift in Sources */,
+				F4440E5C271081DC004AD4B5 /* KeyboardBar.swift in Sources */,
 				F4E3414A26D398E0003044A7 /* MainTabBarController.swift in Sources */,
 				F446FD8126F4B7DC0062BD3D /* CoreDataManager.swift in Sources */,
 				F4D01DF926F22BB6003F344F /* NewsPresenter.swift in Sources */,
@@ -632,6 +643,7 @@
 				F4B5CDF22620378600B43385 /* NewsViewController.swift in Sources */,
 				F4D01DE326F08E80003F344F /* MainPresenter.swift in Sources */,
 				F456AC1426A83CA4003664B3 /* MarketDataCell.swift in Sources */,
+				F4440E5E27108FA1004AD4B5 /* ExtensionsForChartView.swift in Sources */,
 				F4D01DE726F09324003F344F /* ModuleBuilder.swift in Sources */,
 				F4D2F7A425E7D7AE009EB2C6 /* StocksApp.xcdatamodeld in Sources */,
 				F4EAC24726DD1CD8002ABDDE /* HeaderCollectionReusableView.swift in Sources */,

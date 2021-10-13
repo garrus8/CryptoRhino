@@ -20,7 +20,6 @@ final class MainTabBarController : UITabBarController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -29,7 +28,6 @@ final class MainTabBarController : UITabBarController {
         navMainVC.navigationBar.topItem?.title = "Main"
         navMainVC.tabBarItem.image = UIImage(named: "Icon_home")
         navMainVC.tabBarItem.title = "Home"
-//        navMainVC.navigationBar.isTranslucent = false
         
         let searchVC = builder.createSearchViewModule()
         let navSearchVC = UINavigationController(rootViewController: searchVC)
@@ -49,8 +47,6 @@ final class MainTabBarController : UITabBarController {
         navNewsVC.navigationBar.topItem?.title = "News"
         navNewsVC.tabBarItem.image = UIImage(named: "Icon_news")
         navNewsVC.tabBarItem.title = "News"
-//        navNewsVC.navigationBar.isTranslucent = false
-        
         
         let arrayOfNVC = [
             navMainVC,
@@ -60,21 +56,11 @@ final class MainTabBarController : UITabBarController {
         ]
    
         for i in arrayOfNVC {
-
             let appearance = UINavigationBarAppearance()
             appearance.backgroundColor = UIColor(hexString: "#4158B7")
             appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
             appearance.shadowImage = UIImage()
-//            appearance.backgroundImage = UIImage()
             i.navigationBar.standardAppearance = appearance
-            
-            
-//            i.navigationController?.view.backgroundColor = UIColor(hexString: "#4158B7")
-////            i.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
-//            i.navigationBar.shadowImage = UIImage()
-//            i.navigationBar.barTintColor = UIColor(hexString: "#4158B7")
-////            i.navigationBar.barStyle = .black
-//            i.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         }
         
         viewControllers = arrayOfNVC
@@ -83,7 +69,5 @@ final class MainTabBarController : UITabBarController {
         tabBar.isTranslucent = false
         tabBar.tintColor = UIColor(red: 0.467, green: 0.557, blue: 0.95, alpha: 1)
         tabBar.unselectedItemTintColor = .white
-      
     }
-    
 }

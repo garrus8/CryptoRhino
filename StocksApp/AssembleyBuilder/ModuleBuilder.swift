@@ -34,12 +34,14 @@ final class ModuleBuilder : Builder {
         view.presenter = presenter
         return view
     }
+    
     func createFavoritesViewModule() -> UIViewController {
         let view = FavoritesViewController()
         let presenter = FavoritesViewPresenter(view: view, builder: self)
         view.presenter = presenter
         return view
     }
+    
     func createNewsViewModule() -> UIViewController {
         let view = NewsViewController()
         let networkManager = NetworkManager()

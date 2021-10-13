@@ -59,7 +59,7 @@ class MainViewPresenter : MainViewPresenterProtocol {
                                                 otherArray: DataSingleton.shared.collectionViewArray)
                 networkManager.putCoinGeckoData(array: &DataSingleton.shared.resultsF,
                                                 group: DispatchGroups.shared.groupTwo,
-                                                otherArray: [])
+                                                otherArray: DataSingleton.shared.results)
                 DispatchGroups.shared.groupTwo.wait()
                 networkManager.putCoinGeckoData(array: &DataSingleton.shared.collectionViewArray, group: DispatchGroups.shared.groupThree, otherArray: DataSingleton.shared.results)
                 

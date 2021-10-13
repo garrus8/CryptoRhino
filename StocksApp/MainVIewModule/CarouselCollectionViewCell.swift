@@ -70,7 +70,7 @@ class CarouselCollectionViewCell: UICollectionViewCell {
         imageView.layer.cornerRadius = imageView.frame.height/2
         imageView.clipsToBounds = true
         
-        if let priceOfCrypto = crypto.price {
+        if let priceOfCrypto = crypto.priceLabel {
         price.text = "$" + priceOfCrypto
         }
         guard let percentages = crypto.percentages?.priceChangePercentage24H else {return}

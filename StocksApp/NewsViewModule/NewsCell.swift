@@ -119,13 +119,13 @@ extension NewsCell {
 
         addSubview(stack)
         
-        stack.topAnchor.constraint(equalTo: self.topAnchor, constant: 13).isActive = true
-        stack.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 7).isActive = true
+        stack.topAnchor.constraint(equalTo: self.topAnchor, constant: 12).isActive = true
+        stack.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 12).isActive = true
         stack.trailingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: -9).isActive = true
         stack.bottomAnchor.constraint(equalTo: publishedOn.topAnchor, constant: -6).isActive = true
         
-        publishedOn.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -6).isActive = true
-        publishedOn.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 7).isActive = true
+        publishedOn.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -12).isActive = true
+        publishedOn.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 12).isActive = true
         publishedOn.heightAnchor.constraint(equalToConstant: 10).isActive = true
         publishedOn.widthAnchor.constraint(equalToConstant: 100).isActive = true
     

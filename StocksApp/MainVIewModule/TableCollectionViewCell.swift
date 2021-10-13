@@ -70,7 +70,7 @@ class TableCollectionViewCell: UICollectionViewCell {
         symbolOfCrypto.text = crypto.symbolOfCrypto
         friendImageView.image = crypto.image
         
-        if let priceOfCrypto = crypto.price {
+        if let priceOfCrypto = crypto.priceLabel {
         price.text = "$" + priceOfCrypto
         }
         guard let percentages = crypto.percentages?.priceChangePercentage24H else {return}

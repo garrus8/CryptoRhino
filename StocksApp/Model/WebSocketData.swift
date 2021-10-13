@@ -71,7 +71,8 @@ class Crypto : Hashable, Equatable {
     }
     
     var symbolOfCrypto : String
-    var price : String?
+    var priceLabel : String?
+    var pricesDict : [String : Double]?
     var change : String?
     var nameOfCrypto : String?
     var descriptionOfCrypto : String?
@@ -89,16 +90,14 @@ class Crypto : Hashable, Equatable {
     init(symbolOfCrypto : String, price : String, change: String, nameOfCrypto: String?, descriptionOfCrypto: String?, id : String?, percentages : Persentages?, image : UIImage) {
 
         self.symbolOfCrypto = symbolOfCrypto
-        self.price = price
+        self.priceLabel = price
         self.change = change
         self.nameOfCrypto = nameOfCrypto
         self.descriptionOfCrypto = descriptionOfCrypto
         self.id = id
         self.percentages = percentages
         self.image = image
-//        self.marketDataArray = nil
-//        self.communityDataArray = nil
-//        self.links = nil
+        self.pricesDict = [String : Double]()
 
     }
     init(symbolOfCrypto : String) {
@@ -107,7 +106,7 @@ class Crypto : Hashable, Equatable {
     init(symbolOfCrypto : String, id : String) {
         
         self.symbolOfCrypto = symbolOfCrypto
-        self.price = ""
+        self.priceLabel = ""
         self.change = ""
         self.nameOfCrypto = ""
         self.descriptionOfCrypto = ""

@@ -9,10 +9,10 @@ import Foundation
 
 enum Urls : String {
     case news = "https://min-api.cryptocompare.com/data/v2/news/?lang=EN&api_key=a5004f964bbd78cf22e98243f51abbd051354a00fc78576635af0af749f10b78"
-    case topOfCrypto = "https://min-api.cryptocompare.com/data/top/totalvolfull?limit=20&tsym=USD&api_key=a5004f964bbd78cf22e98243f51abbd051354a00fc78576635af0af749f10b78"
+    case topOfCrypto = "https://min-api.cryptocompare.com/data/top/totalvolfull?limit=15&tsym=USD&api_key=a5004f964bbd78cf22e98243f51abbd051354a00fc78576635af0af749f10b78"
     case topSearch = "https://api.coingecko.com/api/v3/search/trending"
     case fullListOfCoinGecko = "https://api.coingecko.com/api/v3/coins/list"
-    case fullCoinCapList = "https://api.coincap.io/v2/assets?limit=800"
+    case fullCoinCapList = "https://api.coincap.io/v2/assets?limit=1000"
 //    case webSocket = "wss://ws.finnhub.io?token=c12ev3748v6oi252n1fg"
 }
 

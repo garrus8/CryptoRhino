@@ -10,8 +10,9 @@ import CoreData
 import Charts
 
 protocol ChartViewPresenterProtocol : AnyObject {
-    var labels: [String : String] {get}
-    var bool: Bool {get}
+    var labels : [String : String] {get}
+    var priceDict : [String : Double] {get}
+    var bool : Bool {get}
     var marketData : [MarketDataElem] {get}
     var communityData : [MarketDataElem] {get}
     var image : UIImage {get}
@@ -19,6 +20,8 @@ protocol ChartViewPresenterProtocol : AnyObject {
     func removeValues()
     func saveTapped()
     func chartLoad(idOfCrypto: String, interval: Interval)
+    func converterFromCrypto(first : Double, price : Double?) -> String
+    func converterToCrypto(second : Double, price : Double?) -> String
 }
 
 class ChartViewPresenter : ChartViewPresenterProtocol {
@@ -35,7 +38,8 @@ class ChartViewPresenter : ChartViewPresenterProtocol {
     let imageOfHeartFill = UIImage(systemName: "heart.fill")
     var networkManager : NetworkManagerForChartProtocol!
     var coreDataManager : CoreDataManagerForChartProtocol!
-    var labels = [String:String]()
+    var labels = [String : String]()
+    var priceDict = [String : Double]()
     
     init(crypto : Crypto, view : ChartViewControllerProtocol,
          networkManager : NetworkManagerForChartProtocol,
@@ -45,13 +49,10 @@ class ChartViewPresenter : ChartViewPresenterProtocol {
         self.networkManager = networkManager
         self.coreDataManager = coreDataManager
         load()
-        isFavorite()
         checkAndLoad()
+        isFavorite()
     }
-    deinit {
-        print("DEINIT")
-    }
-    
+
     func removeValues() {
         values.removeAll()
     }
@@ -81,11 +82,16 @@ class ChartViewPresenter : ChartViewPresenterProtocol {
             labels[KeysOfLabels.computedDiffPrice.rawValue] = ""
         }
         
-        if let priceOfCryptoCheck = crypto.price {
+        if let priceOfCryptoCheck = crypto.priceLabel {
             labels[KeysOfLabels.priceOfCrypto.rawValue] = priceOfCryptoCheck
         } else {
             labels[KeysOfLabels.priceOfCrypto.rawValue] = "Price of crypto"
         }
+        
+        if let priceDict = crypto.pricesDict {
+            self.priceDict = priceDict
+        }
+        
         if let cryptoId = crypto.id {
             labels[KeysOfLabels.idOfCrypto.rawValue] = cryptoId
         }
@@ -117,17 +123,21 @@ class ChartViewPresenter : ChartViewPresenterProtocol {
     }
 
     
-    func converter1(first : Int = 1, price : Int) -> Int {
-        return first * price
+    func converterFromCrypto(first : Double = 1, price : Double?) -> String {
+        guard let price = price else {return ""}
+        let convertedValue = first * price
+        return convertedValue.toString()
     }
     
-    func converter2(second : Int, price : Int) -> Int {
-        return second / price
+    func converterToCrypto(second : Double, price : Double?) -> String {
+        guard let price = price else {return ""}
+        let convertedValue = second / price
+        return convertedValue.toString()
     }
     
     
     func checkAndLoad() {
-        
+    
     if labels[KeysOfLabels.priceOfCrypto.rawValue] == "Price of crypto" {
         DispatchQueue.global().async {
             DataSingleton.shared.dict1[(self.labels[KeysOfLabels.symbolOfCurrentCrypto.rawValue]?.uppercased())!] = 0
@@ -160,6 +170,12 @@ class ChartViewPresenter : ChartViewPresenterProtocol {
                                                     scrollViewChange: height)
                     }
                     
+                    if let priceDict = stocks.marketData?.currentPrice {
+                        self.priceDict = priceDict
+                    }
+//                    if let price = stocks.marketData?.currentPrice?["usd"] {
+//                        self.labels[KeysOfLabels.priceOfCrypto.rawValue] = price.toString()
+//                    }
                     if let redditUrl = stocks.links?.subredditURL {
                         self.labels[KeysOfLabels.redditUrl.rawValue] = redditUrl
                     }
@@ -173,13 +189,30 @@ class ChartViewPresenter : ChartViewPresenterProtocol {
                             self.labels[KeysOfLabels.computedDiffPrice.rawValue] = String(percent30D)
                         }
                         
-                        self.percentages = Persentages(priceChangePercentage24H: String(marketData.priceChangePercentage24H ?? 0),
-                                                       priceChangePercentage7D: String(marketData.priceChangePercentage7D ?? 0),
-                                                       priceChangePercentage30D: String(marketData.priceChangePercentage30D ?? 0),
-                                                       priceChangePercentage1Y: String(marketData.priceChangePercentage1Y ?? 0))
+                        if let priceChangePercentage24H = stocks.marketData?.priceChangePercentage24H {
+                            let roundedValue = round(priceChangePercentage24H * 100) / 100.0
+                            self.percentages.priceChangePercentage24H = String(roundedValue)
+                        }
+                        if let priceChangePercentage30D = stocks.marketData?.priceChangePercentage30D {
+                            let roundedValue = round(priceChangePercentage30D * 100) / 100.0
+                            self.percentages.priceChangePercentage30D = String(roundedValue)
+                        }
+                        if let priceChangePercentage7D = stocks.marketData?.priceChangePercentage7D {
+                            let roundedValue = round(priceChangePercentage7D * 100) / 100.0
+                            self.percentages.priceChangePercentage7D = String(roundedValue)
+                        }
+                        if let priceChangePercentage1Y = stocks.marketData?.priceChangePercentage1Y {
+                            let roundedValue = round(priceChangePercentage1Y * 100) / 100.0
+                            self.percentages.priceChangePercentage1Y = String(roundedValue)
+                        }
+                        
+//                        self.percentages = Persentages(priceChangePercentage24H: String(marketData.priceChangePercentage24H ?? 0),
+//                                                       priceChangePercentage7D: String(marketData.priceChangePercentage7D ?? 0),
+//                                                       priceChangePercentage30D: String(marketData.priceChangePercentage30D ?? 0),
+//                                                       priceChangePercentage1Y: String(marketData.priceChangePercentage1Y ?? 0))
                         
                         if let currentPriceInUSD = marketData.currentPrice?["usd"] {
-                            self.labels[KeysOfLabels.priceOfCrypto.rawValue] = String(currentPriceInUSD)
+                            self.labels[KeysOfLabels.priceOfCrypto.rawValue] = currentPriceInUSD.toString()
                         }
                     }
                     if let marketData = stocks.marketData {
@@ -287,7 +320,7 @@ class ChartViewPresenter : ChartViewPresenterProtocol {
                 dateFormat = "HH:mm"
                 prevValue = Int((Calendar.current.date(byAdding: .day, value: -1, to: Date()))!.timeIntervalSince1970)
             case .week:
-                dateFormat = "E HH:mm"
+                dateFormat = "E"
                 prevValue = Int((Calendar.current.date(byAdding: .day, value: -7, to: Date()))!.timeIntervalSince1970)
             case .month:
                 dateFormat = "MMM d"
