@@ -16,11 +16,11 @@ class NewsCell: UICollectionViewCell {
     let nameOfCrypto : UILabel = {
         let label =  UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-
+        
         label.layer.masksToBounds = true
         label.numberOfLines = 3
         label.lineBreakMode = .byWordWrapping
-        label.font = UIFont(name: "Avenir", size: 14)
+        label.font = UIFont(name: "AvenirNext-DemiBold", size: 14)
         label.textColor = .white
         label.sizeToFit()
         return label
@@ -31,31 +31,28 @@ class NewsCell: UICollectionViewCell {
         label.layer.masksToBounds = true
         label.numberOfLines = 3
         label.lineBreakMode = .byTruncatingTail
-        label.font = UIFont(name: "Avenir", size: 12)
-        label.textColor = UIColor(red: 0.643, green: 0.766, blue: 0.996, alpha: 1)
+        label.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 13)
+        label.textColor = UIColor(red: 0.808, green: 0.871, blue: 1, alpha: 1)
         label.sizeToFit()
         return label
     }()
-
     let imageView : UIImageView = {
         let image = UIImageView()
         image.layer.cornerRadius = 7
         image.clipsToBounds = true
         return image
     }()
-    
     var publishedOn : UILabel = {
-    let label =  UILabel()
-    label.translatesAutoresizingMaskIntoConstraints = false
-    label.layer.masksToBounds = true
-    label.lineBreakMode = .byTruncatingTail
-    label.font = UIFont.systemFont(ofSize: 8)
+        let label =  UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.layer.masksToBounds = true
+        label.lineBreakMode = .byTruncatingTail
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 10)
         label.textColor = .white
-    label.sizeToFit()
+        label.sizeToFit()
+        return label
+    }()
     
-    return label
-}()
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = UIColor(red: 0.062, green: 0.139, blue: 0.467, alpha: 1)
@@ -81,18 +78,17 @@ class NewsCell: UICollectionViewCell {
         nameOfCrypto.text = newsData.title
         symbolOfCrypto.text = newsData.body?.html2String
         let imageUrl = newsData.imageurl!
-
+        
         presenter.obtainImage(stringUrl: imageUrl) { image in
             DispatchQueue.main.async {
                 self.imageView.image = image
             }
         }
-        
         let publishedOnDate = Double(newsData.publishedOn!)
         let date = NSDate(timeIntervalSince1970: publishedOnDate) as Date
         publishedOn.text = date.timeAgoDisplay()
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -103,7 +99,7 @@ extension NewsCell {
     func setupConstraints() {
         addSubview(imageView)
         addSubview(publishedOn)
-    
+        
         imageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -6).isActive = true
         imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         imageView.widthAnchor.constraint(equalToConstant: 133).isActive = true
@@ -114,20 +110,19 @@ extension NewsCell {
         let stack = UIStackView(arrangedSubviews: arrangedSubviews)
         stack.axis = .vertical
         stack.distribution = .fill
-        stack.spacing = 5
+        stack.spacing = 0
         stack.translatesAutoresizingMaskIntoConstraints = false
-
+        
         addSubview(stack)
         
         stack.topAnchor.constraint(equalTo: self.topAnchor, constant: 12).isActive = true
         stack.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 12).isActive = true
         stack.trailingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: -9).isActive = true
-        stack.bottomAnchor.constraint(equalTo: publishedOn.topAnchor, constant: -6).isActive = true
+        stack.bottomAnchor.constraint(equalTo: publishedOn.topAnchor, constant: -4).isActive = true
         
-        publishedOn.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -12).isActive = true
+        publishedOn.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -6).isActive = true
         publishedOn.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 12).isActive = true
-        publishedOn.heightAnchor.constraint(equalToConstant: 10).isActive = true
+        publishedOn.heightAnchor.constraint(equalToConstant: 8).isActive = true
         publishedOn.widthAnchor.constraint(equalToConstant: 100).isActive = true
-    
     }
 }

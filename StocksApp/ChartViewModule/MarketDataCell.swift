@@ -20,16 +20,17 @@ class MarketDataCell: UITableViewCell {
         value.translatesAutoresizingMaskIntoConstraints = false
         setupConstraints()
     }
+    
     func configure (with marketData: MarketDataElem) {
         name.text = marketData.name.camelCaseToWords()
         name.textColor = .white
-        name.font = UIFont(name: "avenir", size: 14)
+        name.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 16)
         
         value.text = marketData.value
         value.textColor = .white
-        value.font = UIFont(name: "avenir", size: 14)
-        
+        value.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 16)
     }
+    
     func setupConstraints() {
         addSubview(name)
         addSubview(value)
@@ -44,7 +45,6 @@ class MarketDataCell: UITableViewCell {
         value.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         value.topAnchor.constraint(equalTo: self.topAnchor, constant: 5).isActive = true
         name.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 5).isActive = true
-        
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

@@ -58,7 +58,7 @@ class NetworkManager {
                         for i in 0..<(stocksData.count) {
                             group.enter()
                             let elem = stocksData[i]
-                            guard let cryptoCompareName = elem.coinInfo?.name else { print("getTopOfCrypto 3"); return}
+                            guard let cryptoCompareName = elem.coinInfo?.name else {return}
                             
                             if cryptoCompareName != "USDT" || cryptoCompareName != "BNBBEAR" || cryptoCompareName != "UNI" || cryptoCompareName != "USDC" || cryptoCompareName != "WBTC" {
                                 guard let cryptoCompareFullName = elem.coinInfo?.fullName else {return}
@@ -116,7 +116,6 @@ class NetworkManager {
                             }
                         }
                         group.leave()
-                        
                     } catch let error as NSError {
                         print(error.localizedDescription)
                     }
@@ -148,7 +147,11 @@ class NetworkManager {
                         DispatchQueue.global().async(group : group, flags: .barrier) {
                             DataSingleton.shared.coinGecoList = stocks
                             self.quickSortForCoinGecko(&DataSingleton.shared.coinGecoList, start: 0, end: DataSingleton.shared.coinGecoList.count)
-                            DataSingleton.shared.coinGecoList.removeAll{ $0.id!.contains("binance-peg")}
+//                            DataSingleton.shared.coinGecoList.removeAll{ $0.id!.contains("binance-peg")}
+                            DataSingleton.shared.coinGecoList.removeAll{ elem in
+                                guard let id = elem.id else {return false}
+                                return id.contains("binance-peg")
+                            }
                             waitingGroup.wait()
                             for (index,geckoElem) in DataSingleton.shared.coinGecoList.enumerated() {
                                 var elem = GeckoListElement(id: geckoElem.id, symbol: geckoElem.symbol?.uppercased(), name: geckoElem.name, rank: 101)
@@ -227,25 +230,21 @@ class NetworkManager {
     
     func getCoinGeckoData(id: String, symbol : String, group: DispatchGroup, complition : @escaping (GeckoSymbol)->()) {
         DispatchQueue.global().async(group : group) {
-            if DataSingleton.shared.dict1[symbol.uppercased()]! < 5 {
-                group.enter()
+            guard DataSingleton.shared.dict1[symbol.uppercased()] != nil else {return}
+            if DataSingleton.shared.dict1[symbol.uppercased()]! < 3 {
                 NetworkRequestManager.request(url: "https://api.coingecko.com/api/v3/coins/\(id)?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=false") { data, response, error in
-                    
                     guard let stocksData = data, error == nil, response != nil else {
                         DataSingleton.shared.dict1[symbol.uppercased()]! += 1
                         self.getCoinGeckoData(id: id, symbol: symbol, group: group, complition : complition);
-                        group.leave();
                         return}
                     
                     do {
                         guard let stocks = try GeckoSymbol.decode(from: stocksData) else {
                             DataSingleton.shared.dict1[symbol.uppercased()]! += 1
                             self.getCoinGeckoData(id: id, symbol: symbol, group: group, complition : complition);
-                            group.leave();
                             return}
                         
                         complition(stocks)
-                        group.leave()
                         
                     } catch let error as NSError {
                         print(error.localizedDescription)
@@ -270,7 +269,8 @@ class NetworkManager {
                     group.enter()
                     let symbol = elemA.symbolOfCrypto
                     for elemB in otherArray {
-                        if elemB.symbolOfCrypto == symbol && !elemB.priceLabel!.isEmpty {
+                        guard let priceLabel = elemB.priceLabel else {return}
+                        if elemB.symbolOfCrypto == symbol && !priceLabel.isEmpty {
                             elemA.image = elemB.image
                             elemA.imageString = elemB.imageString
                             elemA.nameOfCrypto = elemB.nameOfCrypto
@@ -385,7 +385,7 @@ class NetworkManager {
                     guard let symbol = elemOfCoinCap["symbol"] else {return}
                     guard let symbol = symbol else {return}
                     
-                    if symbol == "USDT" || symbol == "USDC" ||  symbol == "WBTC" || symbol == "UNI" || symbol == "BNBBEAR" {group.leave(); continue }
+                    if symbol == "USDT" || symbol == "USDC" || symbol == "UNI" ||  symbol == "WBTC" || symbol == "BNBBEAR" {group.leave(); continue }
                     let crypto = Crypto(symbolOfCrypto: symbol, id: (elemOfCoinCap["id"] ?? "") ?? "")
                     DataSingleton.shared.collectionViewArray.append(crypto)
                     DataSingleton.shared.collectionViewSymbols.append(crypto.symbolOfCrypto.uppercased())
@@ -407,7 +407,7 @@ class NetworkManager {
     }
     
     func quickSortForCoinGecko (_ list : inout [GeckoListElement], start : Int, end : Int) {
-        
+
         if end - start < 2 {
             return
         }
@@ -415,18 +415,19 @@ class NetworkManager {
         var low = start
         var high = end - 1
         while (low <= high) {
-            if list[low].symbol! < pivot.symbol! {
+            guard let lowSymbol = list[low].symbol, let highSymbol = list[high].symbol, let pivotSymbol = pivot.symbol else {return}
+            if lowSymbol < pivotSymbol {
                 low += 1
                 continue
             }
-            if list[high].symbol! > pivot.symbol! {
+            if highSymbol > pivotSymbol {
                 high -= 1
                 continue
             }
             let temp = list[low]
             list[low] = list[high]
             list[high] = temp
-            
+
             low += 1
             high -= 1
         }

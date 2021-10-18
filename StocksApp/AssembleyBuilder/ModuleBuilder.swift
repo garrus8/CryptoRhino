@@ -15,7 +15,6 @@ protocol Builder {
     func createChartViewModule(crypto: Crypto) -> UIViewController
 }
 
-
 final class ModuleBuilder : Builder {
     
     func createMainViewModule() -> UIViewController {

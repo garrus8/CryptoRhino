@@ -8,31 +8,31 @@
 import UIKit
 
 class CarouselCollectionViewCell: UICollectionViewCell {
-    static var reuseId: String = "CarouselCollectionViewCell"
     
+    static var reuseId: String = "CarouselCollectionViewCell"
     private let imageView = UIImageView()
     private let nameOfCrypto : UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "Avenir", size: 16)
+        label.font = UIFont(name: "AvenirNext-Medium", size: 16)
         label.textColor = .white
         label.numberOfLines = 2
         return label
     }()
     private let symbolOfCrypto : UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "Avenir", size: 14)
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 13)
         label.textColor = UIColor(red: 0.717, green: 0.807, blue: 1, alpha: 1)
         return label
     }()
     private let price : UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "Avenir", size: 14)
+        label.font = UIFont(name: "AvenirNext-Medium", size: 15)
         label.textColor = UIColor(red: 0.913, green: 0.943, blue: 1, alpha: 1)
         return label
     }()
     private let percent : UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "Avenir", size: 15)
+        label.font = UIFont(name: "AvenirNext-Medium", size: 14)
         return label
     }()
     
@@ -45,7 +45,6 @@ class CarouselCollectionViewCell: UICollectionViewCell {
         layer.cornerRadius = 10
         layer.shadowPath = UIBezierPath(rect: self.layer.bounds).cgPath
         layer.shadowColor = UIColor(red: 0.083, green: 0.13, blue: 0.333, alpha: 0.4).cgColor
-
         layer.shadowOpacity = 1
         layer.shadowRadius = 10
         layer.shadowOffset = CGSize(width: 0, height: 3)
@@ -104,6 +103,7 @@ class CarouselCollectionViewCell: UICollectionViewCell {
 }
 // MARK: - Setup Constraints
 extension CarouselCollectionViewCell {
+    
     func setupConstraints() {
         addSubview(imageView)
         addSubview(nameOfCrypto)
@@ -111,10 +111,9 @@ extension CarouselCollectionViewCell {
         addSubview(price)
         addSubview(percent)
         
-        
         nameOfCrypto.topAnchor.constraint(equalTo: topAnchor, constant: 12).isActive = true
         nameOfCrypto.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 12).isActive = true
-        nameOfCrypto.trailingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: -8).isActive = true
+        nameOfCrypto.trailingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: -5).isActive = true
         
         imageView.topAnchor.constraint(equalTo: topAnchor, constant: 12).isActive = true
         imageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -12).isActive = true
@@ -132,6 +131,5 @@ extension CarouselCollectionViewCell {
         percent.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -12).isActive = true
         percent.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 12).isActive = true
         percent.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -12).isActive = true
-
     }
 }

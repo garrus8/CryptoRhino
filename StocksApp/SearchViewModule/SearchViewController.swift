@@ -9,7 +9,6 @@ import UIKit
 
 protocol SearchViewControllerProtocol : UIViewController {
     var isFiltering: Bool { get }
-    
 }
 
 class SearchViewController: UIViewController, SearchViewControllerProtocol  {
@@ -20,25 +19,24 @@ class SearchViewController: UIViewController, SearchViewControllerProtocol  {
     var isFiltering : Bool {
         return searchController.isActive && !searchBarIsEmpty
     }
-    
     private var searchBarIsEmpty : Bool {
         guard let text = searchController.searchBar.text else {return false}
         return text.isEmpty
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         navigationItem.searchController = searchController
-        
-        
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupCollectionView()
-        searchController.searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "Name or symbol of cryptocurrency", attributes: [NSAttributedString.Key.foregroundColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.75)])
-        searchController.searchBar.searchTextField.backgroundColor = UIColor(red: 0.124, green: 0.185, blue: 0.446, alpha: 0.5)
-        searchController.searchBar.searchTextField.textColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.75)
+        searchController.searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "Name or symbol of cryptocurrency", attributes: [NSAttributedString.Key.foregroundColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.75), NSAttributedString.Key.font: UIFont(name: "AppleSDGothicNeo-Medium", size: 16)!])
+        searchController.searchBar.searchTextField.backgroundColor =  UIColor(red: 0.144, green: 0.233, blue: 0.587, alpha: 1)
+        searchController.searchBar.searchTextField.textColor = .white
         searchController.searchBar.searchTextField.leftView?.tintColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.75)
         searchController.searchBar.tintColor = .white
         definesPresentationContext = true
@@ -60,6 +58,7 @@ class SearchViewController: UIViewController, SearchViewControllerProtocol  {
         
     }
 }
+
 extension SearchViewController : UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -85,6 +84,7 @@ extension SearchViewController : UICollectionViewDataSource {
     }
 }
 extension SearchViewController : UICollectionViewDelegate {
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         presenter.showChartView(indexPath : indexPath)
@@ -112,13 +112,13 @@ extension SearchViewController : UICollectionViewDelegateFlowLayout {
     }
 }
 extension SearchViewController : UISearchResultsUpdating   {
+    
     func updateSearchResults(for searchController: UISearchController) {
         filterContentForSearchText(searchController.searchBar.text!)
     }
+    
     func filterContentForSearchText(_ searchText : String){
-
         presenter.filter(searchText: searchText)
-        
         DispatchQueue.main.async {
             self.collectionView.reloadData()
         }
@@ -126,6 +126,7 @@ extension SearchViewController : UISearchResultsUpdating   {
 }
 
 extension SearchViewController : UISearchControllerDelegate {
+    
     func didPresentSearchController(_ searchController: UISearchController) {
         DispatchQueue.main.async {
             searchController.searchBar.becomeFirstResponder()

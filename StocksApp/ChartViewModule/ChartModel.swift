@@ -15,8 +15,8 @@ enum KeysOfLabels : String {
     case symbolOfCurrentCrypto; case descriptionLabel; case nameOfCrypto; case computedDiffPrice; case priceOfCrypto; case idOfCrypto; case symbolOfTicker; case redditUrl; case siteUrl; case imageString; case priceDict
 }
 
-// MARK: - CommunityData
 struct CommunityData: Decodable {
+
     let twitterFollowers: Int?
     let redditAveragePosts48H, redditAverageComments48H: Double?
     let redditSubscribers : Int?
@@ -29,7 +29,9 @@ struct CommunityData: Decodable {
     }
 }
 struct CommunityDataArray {
+    
     let array : [MarketDataElem]
+    
     init(communityData : CommunityData) {
         let twitterFollowers = String(communityData.twitterFollowers ?? 0)
         let redditAveragePosts48H = String(communityData.redditAveragePosts48H ?? 0)
@@ -45,8 +47,8 @@ struct CommunityDataArray {
     }
 }
 
-
 struct MarketData: Decodable {
+    
     let currentPrice: [String: Double]?
     let priceChange24H, priceChangePercentage24H, priceChangePercentage7D, priceChangePercentage30D, priceChangePercentage1Y : Double?
     let marketCap: [String: Double]?
@@ -70,13 +72,13 @@ struct MarketData: Decodable {
         case marketCapChangePercentage24H = "market_cap_change_percentage_24h"
         case maxSupply = "max_supply"
         case circulatingSupply = "circulating_supply"
-
      }
 }
 
-
 struct MarketDataArray {
+    
     let array : [MarketDataElem]
+    
     init(marketData : MarketData) {
         let marketCap = marketData.marketCap?["usd"]?.formattedWithSeparator
         let marketCapRank = marketData.marketCapRank?.formattedWithSeparator
@@ -102,11 +104,13 @@ struct MarketDataArray {
 }
 
 struct MarketDataElem {
+    
     let name : String
     let value : String
 }
 
 struct Persentages {
+    
     var priceChangePercentage24H : String?
     var priceChangePercentage7D : String?
     var priceChangePercentage30D : String?

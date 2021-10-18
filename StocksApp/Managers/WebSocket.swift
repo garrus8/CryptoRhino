@@ -11,37 +11,40 @@ protocol WebSocketProtocol {
     func webSocket (symbols: [String])
     func receiveMessage()
 }
-// WEBSOCKET
+
 final class WebSocketManager : WebSocketProtocol {
     
-//    private let webSocketTask = URLSession(configuration: .default).webSocketTask(with: URL(string: Urls.webSocket.rawValue)!)
-    private let webSocketTask = URLSession(configuration: .default).webSocketTask(with: URL(string: FinHubApiRandomizer.api)!)
+    private var webSocketTask : URLSessionWebSocketTask?
+    
+    init() {
+        if let url = URL(string: FinHubApiRandomizer.api) {
+            webSocketTask = URLSession(configuration: .default).webSocketTask(with: url)
+        }
+    }
     
     func webSocket (symbols: [String]) {
         DispatchGroups.shared.groupOne.wait()
         DispatchGroups.shared.groupTwo.wait()
         DispatchQueue.global().async {
-            print("123123123123--___----__", FinHubApiRandomizer.api)
             let set = Set(symbols)
             for symbol in set {
                 let symbolForFinHub = "BINANCE:\(symbol)USDT"
                 let message = URLSessionWebSocketTask.Message.string("{\"type\":\"subscribe\",\"symbol\":\"\(symbolForFinHub)\"}")
                 
-                self.webSocketTask.send(message) { error in
+                self.webSocketTask?.send(message) { error in
                     if let error = error {
                         print("WebSocket couldn’t send message because: \(error)")
                     }
                 }
             }
-            self.webSocketTask.resume()
+            self.webSocketTask?.resume()
             self.ping()
         }
     }
     
-    
     private func ping() {
         DispatchQueue.global().async(qos: .utility) {
-            self.webSocketTask.sendPing { error in
+            self.webSocketTask?.sendPing { error in
                 if let error = error {
                     print("Error when sending PING \(error)")
                 } else {
@@ -54,13 +57,12 @@ final class WebSocketManager : WebSocketProtocol {
         }
     }
     
-    
     func receiveMessage() {
         DispatchGroups.shared.groupOne.wait()
         DispatchGroups.shared.groupTwo.wait()
         
         DispatchQueue.global().async {
-            self.webSocketTask.receive { [weak self] result in
+            self.webSocketTask?.receive { [weak self] result in
                 guard let self = self else {return}
                 switch result {
                 case .failure(let error):
@@ -75,7 +77,6 @@ final class WebSocketManager : WebSocketProtocol {
                                 self.putDataFromWebSocket(tickData: tickData, array: DataSingleton.shared.resultsF, isFavorite: true)
                             }
                         }
-                        
                     case .data(let data):
                         print("Received data: \(data)")
                     @unknown default:
@@ -87,7 +88,6 @@ final class WebSocketManager : WebSocketProtocol {
             }
         }
     }
-    
     
     private func putDataFromWebSocket (tickData : [Datum], array : [Crypto], isFavorite : Bool = false) {
         for itemA in tickData {

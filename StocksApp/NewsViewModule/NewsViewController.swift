@@ -32,18 +32,15 @@ class NewsViewController: UIViewController, UICollectionViewDataSource, UICollec
         collectionView.backgroundColor = UIColor(hexString: "#4158B7")
         collectionView.register(NewsCell.self, forCellWithReuseIdentifier: NewsCell.reuseId)
         view.addSubview(collectionView)
-        
         activityIndicator.center = view.center
         activityIndicator.color = .white
         collectionView.addSubview(activityIndicator)
         collectionView.delegate = self
         collectionView.dataSource = self
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         presenter.newsData.count
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

@@ -9,10 +9,10 @@ import Foundation
 import Network
 
 final class NetworkMonitor {
+    
     static let shared = NetworkMonitor()
     private let queue = DispatchQueue.global()
     private let monitor : NWPathMonitor
-    
     public private(set) var isConnected = false
     public private(set) var connectionType : ConnectionType = .unknown
     

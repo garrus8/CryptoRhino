@@ -24,7 +24,6 @@ class FavoritesViewController: UIViewController, UICollectionViewDataSource, UIC
     var isFiltering : Bool {
         return searchController.isActive && !searchBarIsEmpty
     }
-    
     let imageViewWithLabel : UIView = {
         let imageViewWithLabel = UIView()
         imageViewWithLabel.frame.size.width = 260
@@ -43,8 +42,7 @@ class FavoritesViewController: UIViewController, UICollectionViewDataSource, UIC
         let label = UILabel()
         label.text = "You don't have any favorite cryptocurrencies. Use search to find them"
         label.textColor = .white
-        label.font = UIFont(name: "Avenir", size: 20)
-        
+        label.font = UIFont(name: "AvenirNext-Medium", size: 20)
         imageViewWithLabel.addSubview(label)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.topAnchor.constraint(equalTo: rocketImageView.bottomAnchor, constant: 0).isActive = true
@@ -68,9 +66,9 @@ class FavoritesViewController: UIViewController, UICollectionViewDataSource, UIC
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        searchController.searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "Name or symbol of cryptocurrency", attributes: [NSAttributedString.Key.foregroundColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.75)])
-        searchController.searchBar.searchTextField.backgroundColor = UIColor(red: 0.124, green: 0.185, blue: 0.446, alpha: 0.5)
-        searchController.searchBar.searchTextField.textColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.75)
+        searchController.searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "Name or symbol of cryptocurrency", attributes: [NSAttributedString.Key.foregroundColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.75), NSAttributedString.Key.font: UIFont(name: "AppleSDGothicNeo-Medium", size: 16)!])
+        searchController.searchBar.searchTextField.backgroundColor =  UIColor(red: 0.144, green: 0.233, blue: 0.587, alpha: 1)
+        searchController.searchBar.searchTextField.textColor = .white
         searchController.searchBar.searchTextField.leftView?.tintColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.75)
         searchController.searchBar.tintColor = .white
         definesPresentationContext = true
@@ -100,7 +98,6 @@ class FavoritesViewController: UIViewController, UICollectionViewDataSource, UIC
 
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-
         let items = presenter.returnNumberOfItems()
         if items == 0 {
             imageViewWithLabel.isHidden = false
@@ -108,15 +105,14 @@ class FavoritesViewController: UIViewController, UICollectionViewDataSource, UIC
             imageViewWithLabel.isHidden = true
         }
         return items
-        
     }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: UIScreen.main.bounds.size.width - 24, height: 63)
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if isFiltering && presenter.isFavoritesEmpty {
-
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchTableViewCell.reuseId, for: indexPath) as? SearchTableViewCell else {return UICollectionViewCell()}
             let results = presenter.getResultForFilteredAndEmpty(indexPath: indexPath)
             cell.nameOfCrypto.text = results.name
@@ -135,7 +131,6 @@ class FavoritesViewController: UIViewController, UICollectionViewDataSource, UIC
             cell.configure(with: results)
             return cell
         }
-
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -146,9 +141,11 @@ class FavoritesViewController: UIViewController, UICollectionViewDataSource, UIC
 
 
 extension FavoritesViewController : UISearchResultsUpdating   {
+    
     func updateSearchResults(for searchController: UISearchController) {
         filterContentForSearchText(searchController.searchBar.text!)
     }
+    
     func filterContentForSearchText(_ searchText : String){
         presenter.filter(searchText: searchText)
         DispatchQueue.main.async {
@@ -158,6 +155,7 @@ extension FavoritesViewController : UISearchResultsUpdating   {
 }
 
 extension FavoritesViewController : UISearchControllerDelegate {
+    
     func didPresentSearchController(_ searchController: UISearchController) {
         DispatchQueue.main.async {
                 searchController.searchBar.becomeFirstResponder()

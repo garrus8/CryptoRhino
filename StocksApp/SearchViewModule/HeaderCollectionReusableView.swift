@@ -8,6 +8,7 @@
 import UIKit
 
 class HeaderCollectionReusableView: UICollectionReusableView {
+    
     static let id = "HeaderCollectionReusableView"
     
     private let label : UILabel = {
@@ -15,7 +16,7 @@ class HeaderCollectionReusableView: UICollectionReusableView {
         label.text = "Trending search"
         label.textAlignment = .left
         label.textColor = .white
-        label.font = UIFont(name: "avenir", size: 22)
+        label.font = UIFont(name: "AvenirNext-DemiBold", size: 22)
         return label
     }()
     
@@ -35,7 +36,5 @@ class HeaderCollectionReusableView: UICollectionReusableView {
         super.layoutSubviews()
         label.frame = bounds
         label.frame = CGRect(x: 20, y: Int(bounds.minY) + 10, width: Int(bounds.width), height: Int(bounds.height))
-        
     }
-
 }

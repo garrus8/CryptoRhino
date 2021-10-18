@@ -8,11 +8,11 @@
 import UIKit
 
 extension ChartViewController {
+    
     func setupDetailInfo() {
-        let title = UILabel(); title.text = "Description"; title.textColor = .white; title.font = UIFont(name: "avenir", size: 22)
+        let title = UILabel(); title.text = "Description"; title.textColor = .white; title.font = UIFont(name: "AvenirNext-DemiBold", size: 22)
         let imageConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .regular, scale: .large)
         let image = UIImage(systemName: "chevron.down", withConfiguration: imageConfig)
-        
         let button : UIButton = {
             let button = UIButton(type: .custom)
             button.translatesAutoresizingMaskIntoConstraints = false
@@ -43,7 +43,7 @@ extension ChartViewController {
         
         
         let marketDatatitle = UILabel(); marketDatatitle.text = "Market data"; marketDatatitle.textColor = .white
-        marketDatatitle.font = UIFont(name: "avenir", size: 22)
+        marketDatatitle.font = UIFont(name: "AvenirNext-DemiBold", size: 22)
         marketDatatitle.translatesAutoresizingMaskIntoConstraints = false
         detailInfoView.addSubview(marketDatatitle)
         
@@ -60,7 +60,7 @@ extension ChartViewController {
         headerStack.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         let communityDatatitle = UILabel(); communityDatatitle.text = "Community data"; communityDatatitle.textColor = .white
-        communityDatatitle.font = UIFont(name: "avenir", size: 22)
+        communityDatatitle.font = UIFont(name: "AvenirNext-DemiBold", size: 22)
         communityDatatitle.translatesAutoresizingMaskIntoConstraints = false
         detailInfoView.addSubview(communityDatatitle)
         
@@ -79,12 +79,14 @@ extension ChartViewController {
         communityDataTableView.heightAnchor.constraint(equalToConstant: 130).isActive = true
         
         var arrangedSubviews : [UIView] = []
-        if presenter.labels[KeysOfLabels.redditUrl.rawValue] == "" || presenter.labels[KeysOfLabels.redditUrl.rawValue]!.isEmpty || presenter.labels[KeysOfLabels.redditUrl.rawValue] == "https://reddit.com" {
+        if let redditUrl = presenter.labels[KeysOfLabels.redditUrl.rawValue], let siteUrl = presenter.labels[KeysOfLabels.siteUrl.rawValue] {
+        if presenter.labels[KeysOfLabels.redditUrl.rawValue] == "" || redditUrl.isEmpty || presenter.labels[KeysOfLabels.redditUrl.rawValue] == "https://reddit.com" {
             arrangedSubviews = [onSiteButton]
-        } else if presenter.labels[KeysOfLabels.siteUrl.rawValue] == "" || presenter.labels[KeysOfLabels.siteUrl.rawValue]!.isEmpty {
+        } else if presenter.labels[KeysOfLabels.siteUrl.rawValue] == "" || siteUrl.isEmpty {
             arrangedSubviews = [onRedditButton]
         } else {
             arrangedSubviews = [onRedditButton, onSiteButton]
+        }
         }
         
         let buttonsStack = UIStackView(arrangedSubviews: arrangedSubviews)

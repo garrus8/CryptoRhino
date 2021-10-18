@@ -10,7 +10,7 @@ import Charts
 import SafariServices
 
 protocol ChartViewControllerProtocol : UIViewController {
-    
+    var activityIndicator: UIActivityIndicatorView { get set }
     func reloadCommunityDataTableView()
     func reloadMarketDataTableView()
     func updateContentViewFrame(contentViewFrameChange : CGFloat, detailInfoViewFrameChange : CGFloat, scrollViewChange : CGFloat)
@@ -21,12 +21,10 @@ protocol ChartViewControllerProtocol : UIViewController {
 }
 
 class ChartViewController: UIViewController {
-    
+
     var presenter : ChartViewPresenterProtocol!
-    
     var scrollView = UIScrollView()
     private let contentView = UIView()
-    
     let chartAndPriceView : UIView = {
         let chart = UIView()
         chart.backgroundColor = UIColor(hexString: "#4158B7")
@@ -43,15 +41,14 @@ class ChartViewController: UIViewController {
     }()
     var marketDataTableView = UITableView()
     var communityDataTableView = UITableView()
-    private var contentViewFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 1573)
-    private var detailInfoViewFrame = CGRect(x: 15, y: 633, width: UIScreen.main.bounds.size.width - 30, height: 940)
-    
-    
+    private var contentViewFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 1520)
+    private var detailInfoViewFrame = CGRect(x: 15, y: 633, width: UIScreen.main.bounds.size.width - 30, height: 890)
     let nameOfCrypto : UILabel = {
         let label = UILabel()
         label.text = "nameOfCrypto"
         label.numberOfLines = 0
         label.sizeToFit()
+        label.font = UIFont(name: "AvenirNext-DemiBold", size: 17)
         label.textColor = UIColor.black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -60,13 +57,12 @@ class ChartViewController: UIViewController {
         let label = UILabel()
         label.text = "priceOfCrypto"
         label.numberOfLines = 0
-        label.font = UIFont(name: "avenir", size: 30)
+        label.font = UIFont(name: "AvenirNext-Medium", size: 30)
         label.sizeToFit()
         label.textColor = .white
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
     let cryptoTextField : UITextField = {
         let textField = UITextField()
         textField.keyboardType = .decimalPad
@@ -74,12 +70,12 @@ class ChartViewController: UIViewController {
         textField.clearsOnBeginEditing = true
         textField.keyboardAppearance = .dark
         textField.textColor = .white
+        textField.font = UIFont(name: "AvenirNext-DemiBold", size: 14)
         textField.textAlignment = .right
         textField.addTarget(self, action: #selector(cryptoTextFieldEditing), for: .editingChanged)
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
-    
     private func returnToolBar() -> UIToolbar {
         let bar = UIToolbar()
         let doneBtn = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(dismissMyKeyboard))
@@ -89,7 +85,6 @@ class ChartViewController: UIViewController {
         bar.sizeToFit()
         return bar
     }
-    
     @objc
     private func cryptoTextFieldEditing() {
         guard let number = cryptoTextField.text else {return}
@@ -99,7 +94,6 @@ class ChartViewController: UIViewController {
         let convertNumber = presenter.converterFromCrypto(first: double, price: presenter.priceDict[lowercased])
         currencyTextField.text = convertNumber
     }
-    
     let currencyTextField : UITextField = {
         let textField = UITextField()
         textField.keyboardType = .decimalPad
@@ -107,12 +101,12 @@ class ChartViewController: UIViewController {
         textField.clearsOnBeginEditing = true
         textField.keyboardAppearance = .dark
         textField.textColor = .white
+        textField.font = UIFont(name: "AvenirNext-DemiBold", size: 14)
         textField.textAlignment = .right
         textField.addTarget(self, action: #selector(currencyTextFieldEditing), for: .editingChanged)
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
-    
     @objc
     private func currencyTextFieldEditing() {
         guard let number = currencyTextField.text else {return}
@@ -122,16 +116,11 @@ class ChartViewController: UIViewController {
         let convertNumber = presenter.converterToCrypto(second: double, price: presenter.priceDict[lowercased])
         cryptoTextField.text = convertNumber
     }
-    
-    
-    @objc func dismissMyKeyboard(){
-     view.endEditing(true)
-     }
-    
     let converterCryptoLabel : UILabel = {
         let label = UILabel()
         label.sizeToFit()
         label.textColor = .white
+        label.font = UIFont(name: "AvenirNext-Medium", size: 14)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -140,10 +129,11 @@ class ChartViewController: UIViewController {
     let converterCurrencyLabel : UITextField = {
         let label = UITextField()
         label.sizeToFit()
-        label.textColor = UIColor(red: 0.059, green: 0.11, blue: 0.329, alpha: 1)
+        label.textColor = UIColor(red: 0.053, green: 0.109, blue: 0.371, alpha: 1)
         label.backgroundColor = UIColor(red: 0.946, green: 0.956, blue: 1, alpha: 1)
         label.layer.cornerRadius = 5
         label.textAlignment = .center
+        label.font = UIFont(name: "AvenirNext-Medium", size: 14)
         label.text = "USD"
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -153,25 +143,23 @@ class ChartViewController: UIViewController {
         let label = UILabel()
         label.text = "diffPriceOfCrypto"
         label.numberOfLines = 0
-        label.font = UIFont(name: "avenir", size: 15)
+        label.font = UIFont(name: "AppleSDGothicNeo-SemiBold", size: 15)
         label.sizeToFit()
         label.textColor = .white
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
     let descriptionLabel : UILabel = {
         let textView = UILabel()
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.layer.masksToBounds = true
         textView.numberOfLines = 7
         textView.lineBreakMode = .byTruncatingTail
-        textView.font = UIFont.systemFont(ofSize: 14)
+        textView.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 16)
         textView.textColor = .white
         textView.sizeToFit()
         return textView
     }()
-    
     private var computedDiffPrice : String {
         get {
             return diffPriceOfCrypto.text ?? ""
@@ -197,26 +185,21 @@ class ChartViewController: UIViewController {
                 let fullString = NSMutableAttributedString()
                 fullString.append(NSAttributedString(attachment: imageAttachment))
                 fullString.append(NSAttributedString(string: " \(newValue)%"))
-                
+
                 diffPriceOfCrypto.attributedText = fullString
                 diffPriceOfCrypto.textColor = UIColor.green
             }
         }
     }
-    
+
     var dayChartButton : UIButton = {
         let button = UIButton(setTitle: "day")
         button.addTarget(self,
                          action: #selector(dayChartButtonLoad),
                          for: .touchUpInside)
-        button.layer.cornerRadius = 4
-        button.backgroundColor = UIColor(red: 0.324, green: 0.424, blue: 0.854, alpha: 1)
-        button.setTitleColor(.white, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
         return button
-        
     }()
-    
+    var activityIndicator = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
     @objc
     private func dayChartButtonLoad() {
         presenter.removeValues()
@@ -238,14 +221,8 @@ class ChartViewController: UIViewController {
         button.addTarget(self,
                          action: #selector(weekChartButtonLoad),
                          for: .touchUpInside)
-        button.layer.cornerRadius = 4
-        button.backgroundColor = UIColor(red: 0.146, green: 0.197, blue: 0.421, alpha: 1)
-        button.setTitleColor(.white, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
         return button
-        
     }()
-
     @objc
     private func weekChartButtonLoad() {
         presenter.removeValues()
@@ -267,14 +244,9 @@ class ChartViewController: UIViewController {
         button.addTarget(self,
                          action: #selector(monthChartButtonLoad),
                          for: .touchUpInside)
-        button.layer.cornerRadius = 4
-        button.backgroundColor = UIColor(red: 0.146, green: 0.197, blue: 0.421, alpha: 1)
-        button.setTitleColor(.white, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
         return button
         
     }()
-    
     @objc
     private func monthChartButtonLoad() {
         presenter.removeValues()
@@ -296,14 +268,8 @@ class ChartViewController: UIViewController {
         button.addTarget(self,
                          action: #selector(yearChartButtonLoad),
                          for: .touchUpInside)
-        button.layer.cornerRadius = 4
-        button.backgroundColor = UIColor(red: 0.146, green: 0.197, blue: 0.421, alpha: 1)
-        button.setTitleColor(.white, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
         return button
-        
     }()
-    
     @objc
     private func yearChartButtonLoad() {
         presenter.removeValues()
@@ -320,7 +286,6 @@ class ChartViewController: UIViewController {
             }
         }
     }
-    
     let onRedditButton : UIButton = {
         let button = UIButton(type: .custom)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -328,12 +293,12 @@ class ChartViewController: UIViewController {
         button.layer.cornerRadius = 14
         button.setTitleColor(.white, for: .normal)
         button.setTitle("Reddit", for: .normal)
+        button.titleLabel?.font = UIFont(name: "AvenirNext-DemiBold", size: 17)
         button.addTarget(self,
                          action: #selector(onReddit),
                          for: .touchUpInside)
         return button
     }()
-    
     let onSiteButton : UIButton = {
         let button = UIButton(type: .custom)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -343,14 +308,24 @@ class ChartViewController: UIViewController {
         button.layer.borderColor = UIColor(red: 0.969, green: 0.576, blue: 0.102, alpha: 1).cgColor
         button.setTitleColor(UIColor(red: 0.969, green: 0.576, blue: 0.102, alpha: 1), for: .normal)
         button.setTitle("Website", for: .normal)
+        button.titleLabel?.font = UIFont(name: "AvenirNext-DemiBold", size: 17)
         button.addTarget(self,
                          action: #selector(onSite),
                          for: .touchUpInside)
         return button
     }()
     
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        hidesBottomBarWhenPushed = true
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     private var count = 0
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         if count < 3 {
@@ -369,7 +344,12 @@ class ChartViewController: UIViewController {
         cryptoTextField.text = "1"
         currencyTextField.text = presenter.labels[KeysOfLabels.priceOfCrypto.rawValue]
         converterCryptoLabel.text = presenter.labels[KeysOfLabels.symbolOfCurrentCrypto.rawValue]
+        setupChartButton(button: &dayChartButton)
+        setupChartButton(button: &weekChartButton)
+        setupChartButton(button: &monthChartButton)
+        setupChartButton(button: &yearChartButton)
     }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         currencyTextField.addBottomBorder()
@@ -384,9 +364,9 @@ class ChartViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        presenter.chartLoad(idOfCrypto: presenter.labels[KeysOfLabels.idOfCrypto.rawValue]!, interval: Interval.day)
-        
+        if let idOfCrypto = presenter.labels[KeysOfLabels.idOfCrypto.rawValue] {
+            presenter.chartLoad(idOfCrypto: idOfCrypto, interval: Interval.day)
+        }
         marketDataTableView.register(MarketDataCell.self, forCellReuseIdentifier: "MarketDataCell")
         marketDataTableView.delegate = self
         marketDataTableView.dataSource = self
@@ -397,21 +377,17 @@ class ChartViewController: UIViewController {
         cryptoTextField.delegate = self
         scrollView.delegate = self
         setupToHideKeyboardOnTapOnView()
-        
     }
     
     func setupScrollView(){
-        
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         contentView.addSubview(chartAndPriceView)
         contentView.addSubview(detailInfoView)
         contentView.backgroundColor = UIColor(hexString: "#4158B7")
         detailInfoView.frame = detailInfoViewFrame
-        
-        chartAndPriceView.frame = CGRect(x:0.0, y: 0.0, width: view.frame.size.width, height: 633)
+        chartAndPriceView.frame = CGRect(x:0.0, y: 0.0, width: view.frame.size.width, height: 630)
         contentView.frame = contentViewFrame
-//        scrollView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 83)
         scrollView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         scrollView.backgroundColor = UIColor(hexString: "#4158B7")
         scrollView.contentSize = CGSize(width: self.view.bounds.size.width, height: chartAndPriceView.frame.height + detailInfoView.frame.height)
@@ -424,6 +400,7 @@ class ChartViewController: UIViewController {
         let vc = SFSafariViewController(url: url)
         present(vc, animated: true, completion: nil)
     }
+    
     @objc
     private func onSite() {
         guard let siteUrl = presenter.labels[KeysOfLabels.siteUrl.rawValue] else {return}
@@ -431,8 +408,7 @@ class ChartViewController: UIViewController {
         let vc = SFSafariViewController(url: url)
         present(vc, animated: true, completion: nil)
     }
-    
-    
+
     private var clickBool = true
     private var constHeightOfTextLabel = CGFloat()
     
@@ -444,8 +420,8 @@ class ChartViewController: UIViewController {
             descriptionLabel.lineBreakMode = .byWordWrapping
             constHeightOfTextLabel = descriptionLabel.frame.height
             let height = descriptionLabel.systemLayoutSizeFitting(CGSize(width: descriptionLabel.frame.width, height: UIView.layoutFittingCompressedSize.height), withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel).height
-            scrollView.contentInset.bottom += (height - descriptionLabel.frame.height)
-            contentViewFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: contentViewFrame.height + height - constHeightOfTextLabel)
+            scrollView.contentInset.bottom += (height - descriptionLabel.frame.height - 30)
+            contentViewFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: contentViewFrame.height + height - constHeightOfTextLabel - 30)
             contentView.frame = contentViewFrame
             detailInfoViewFrame = CGRect(x: 15, y: 600, width: UIScreen.main.bounds.size.width - 30, height: detailInfoViewFrame.height + height - constHeightOfTextLabel)
             detailInfoView.frame = detailInfoViewFrame
@@ -462,8 +438,6 @@ class ChartViewController: UIViewController {
                     }
                 }
             }
-            
-            
         } else {
             descriptionLabel.numberOfLines = 7
             descriptionLabel.lineBreakMode = .byTruncatingTail
@@ -487,8 +461,20 @@ class ChartViewController: UIViewController {
         }
         clickBool.toggle()
     }
-    
-
+    @objc func dismissMyKeyboard(){
+     view.endEditing(true)
+     }
+    func setupChartButton(button : inout UIButton) {
+        if button.titleLabel?.text == "day" {
+            button.backgroundColor = UIColor(red: 0.324, green: 0.424, blue: 0.854, alpha: 1)
+        } else {
+            button.backgroundColor = UIColor(red: 0.146, green: 0.197, blue: 0.421, alpha: 1)
+        }
+        button.setTitleColor(.white, for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.layer.cornerRadius = 4
+        button.titleLabel?.font = UIFont(name: "AvenirNext-Medium", size: 15)
+    }
 }
 
 extension ChartViewController : ChartViewControllerProtocol {
@@ -531,9 +517,7 @@ extension ChartViewController : ChartViewControllerProtocol {
             navigationItem.rightBarButtonItem?.tintColor = UIColor(red: 0.969, green: 0.576, blue: 0.102, alpha: 1)
             navigationController?.navigationBar.tintColor = .white
             
-            
             let logoAndTitle = UIView()
-            
             let label : UILabel = {
                 let label = UILabel()
                 label.text = " \(self.nameOfCrypto.text ?? "")"
@@ -543,7 +527,6 @@ extension ChartViewController : ChartViewControllerProtocol {
                 label.textAlignment = NSTextAlignment.center
                 return label
             }()
-            
             let logo : UIImageView = {
                 let logo = UIImageView()
                 logo.image = presenter.image
@@ -554,7 +537,6 @@ extension ChartViewController : ChartViewControllerProtocol {
                 logo.clipsToBounds = true
                 return logo
             }()
-            
             logoAndTitle.addSubview(label)
             logoAndTitle.addSubview(logo)
             navigationItem.titleView = logoAndTitle
@@ -611,9 +593,7 @@ extension ChartViewController : UIPickerViewDelegate, UIPickerViewDataSource {
     
     private func setupPickerView() {
         let picker = UIPickerView()
-//        picker.isOpaque = false
         picker.backgroundColor = UIColor(red: 0.058, green: 0.109, blue: 0.329, alpha: 1)
-//        picker.alpha = 0.3
         picker.tintColor = .white
         picker.delegate = self
         converterCurrencyLabel.inputView = picker
@@ -631,9 +611,7 @@ extension ChartViewController : ChartViewDelegate {
         lineChartView.xAxis.labelTextColor = .white
         lineChartView.rightAxis.labelTextColor = .white
         lineChartView.animate(xAxisDuration: 0.8)
-        
     }
-    
     
     func setData(dataSet: LineChartDataSet, xAxisValueFormatter: ChartViewPresenter.MyXAxisFormatter) {
         dataSet.label = ""
@@ -650,10 +628,8 @@ extension ChartViewController : ChartViewDelegate {
         data.setDrawValues(false)
         lineChartView.data = data
         lineChartView.xAxis.valueFormatter = xAxisValueFormatter
-        
     }
 }
-
 
 extension ChartViewController : UITableViewDelegate, UITableViewDataSource {
     
@@ -697,6 +673,4 @@ extension ChartViewController : UITextFieldDelegate {
     @objc func dismissKeyboard() {
         view.endEditing(true)
     }
-    
-    
 }

@@ -19,7 +19,6 @@ protocol MainViewPresenterProtocol : AnyObject {
 class MainViewPresenter : MainViewPresenterProtocol {
  
     private weak var view : MainViewControllerProtocol!
-    
     var dataSource : UICollectionViewDiffableDataSource<SectionOfCrypto, Crypto>?
     var sections = [SectionOfCrypto]()
     var builder : Builder
@@ -52,7 +51,10 @@ class MainViewPresenter : MainViewPresenterProtocol {
             
             view.setupCollectionView()
             setupDataSource()
-            
+            networkManager.setupSections()
+            reloadData()
+            updateUI(collectionViews: [view.returnCollectionView()])
+            recoursiveUpdateUI(collectionViews: [view.returnCollectionView()])
             if DataSingleton.shared.coinCapDict.count != 0 {
                 networkManager.putCoinGeckoData(array: &DataSingleton.shared.results,
                                                 group: DispatchGroups.shared.groupTwo,
@@ -62,15 +64,8 @@ class MainViewPresenter : MainViewPresenterProtocol {
                                                 otherArray: DataSingleton.shared.results)
                 DispatchGroups.shared.groupTwo.wait()
                 networkManager.putCoinGeckoData(array: &DataSingleton.shared.collectionViewArray, group: DispatchGroups.shared.groupThree, otherArray: DataSingleton.shared.results)
-                
                 webSocketManager.webSocket(symbols: DataSingleton.shared.websocketArray)
                 webSocketManager.receiveMessage()
-                DispatchGroups.shared.groupThree.wait()
-                networkManager.setupSections()
-                reloadData()
-                updateUI(collectionViews: [view.returnCollectionView()])
-                recoursiveUpdateUI(collectionViews: [view.returnCollectionView()])
-
             }
         } else {
             let alert = UIAlertController(title: "No internet connection", message: "Check your internet connection and restart the app", preferredStyle: .alert)
@@ -101,7 +96,7 @@ class MainViewPresenter : MainViewPresenterProtocol {
             guard let section = self.dataSource?.snapshot().sectionIdentifier(containingItem: item) else {return nil}
             if section.title.isEmpty {return nil}
             sectionHeader.title.text = section.title
-            sectionHeader.title.font = UIFont(name: "Avenir", size: 22)
+            sectionHeader.title.font = UIFont(name: "AvenirNext-DemiBold", size: 22)
             sectionHeader.title.textColor = .white
             
             return sectionHeader

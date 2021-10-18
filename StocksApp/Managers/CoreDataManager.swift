@@ -28,8 +28,8 @@ class CoreDataManager {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         return appDelegate.persistentContainer.viewContext
     }
+    
     func getData() {
-        // GROUP 1
         
         let context = self.getContext()
         let fetchRequest : NSFetchRequest<Favorites> = Favorites.fetchRequest()
@@ -45,14 +45,13 @@ class CoreDataManager {
         }
     }
     
-    
     private func setData(group : DispatchGroup) {
         DispatchQueue.global().async(group: group) {
             DataSingleton.shared.resultsF.removeAll()
             DispatchQueue.global().async(flags: .barrier) {
                 for i in DataSingleton.shared.favorites {
                     if let symbol = i.symbol{
-                        let crypto = Crypto(symbolOfCrypto: symbol, nameOfCrypto: i.name!, descriptionOfCrypto: i.descrtiption!, image: UIImage(named: "pngwing.com")!, percentages: Persentages())
+                        let crypto = Crypto(symbolOfCrypto: symbol, nameOfCrypto: i.name!, descriptionOfCrypto: i.descrtiption!, image: UIImage(named: "pngwing.com") ?? UIImage(), percentages: Persentages())
                         print("self.resultsF",DataSingleton.shared.resultsF.count)
                         DataSingleton.shared.symbolsF.append(i.symbol!)
                         DataSingleton.shared.resultsF.append(crypto)
@@ -67,16 +66,18 @@ class CoreDataManager {
     func addData(object : Favorites) {
         
         if let symbol = object.symbol {
-            let crypto = Crypto(symbolOfCrypto: symbol, nameOfCrypto: object.name!, descriptionOfCrypto: object.descrtiption!, image: UIImage(named: "pngwing.com")!, percentages: Persentages())
+            let crypto = Crypto(symbolOfCrypto: symbol, nameOfCrypto: object.name!, descriptionOfCrypto: object.descrtiption!, image: UIImage(named: "pngwing.com") ?? UIImage(), percentages: Persentages())
             
             DispatchQueue.global().async(flags: .barrier) {
                 DataSingleton.shared.symbolsF.insert(object.symbol!, at: 0)
                 DataSingleton.shared.resultsF.insert(crypto, at: 0)
                 DataSingleton.shared.websocketArray.append(symbol)
                 DataSingleton.shared.dict1[symbol] = 0
-                var sub = [DataSingleton.shared.resultsF.first!]
+                guard let firstElem = DataSingleton.shared.resultsF.first else {return}
+                var sub = [firstElem]
                 self.networkManager.putCoinGeckoData(array: &sub, group: DispatchGroups.shared.groupTwo, otherArray: [])
-                DataSingleton.shared.resultsF[0] = sub.first!
+                guard let firstOfSub = sub.first else {return}
+                DataSingleton.shared.resultsF[0] = firstOfSub
             }
         }
     }

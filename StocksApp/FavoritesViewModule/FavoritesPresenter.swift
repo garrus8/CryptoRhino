@@ -8,6 +8,7 @@
 import Foundation
 
 protocol FavoritesViewPresenterProtocol : AnyObject {
+    
     var filteredResults: GeckoList {get}
     var filteredResultsOfFavorites: [Crypto] {get}
     var isFavoritesEmpty : Bool {get}
@@ -21,6 +22,7 @@ protocol FavoritesViewPresenterProtocol : AnyObject {
 }
     
 class FavoritesViewPresenter : FavoritesViewPresenterProtocol {
+    
     weak var view : FavoritesViewControllerProtocol!
     var filteredResults = GeckoList()
     var filteredResultsOfFavorites = [Crypto]()
@@ -28,6 +30,7 @@ class FavoritesViewPresenter : FavoritesViewPresenterProtocol {
         DataSingleton.shared.resultsF.isEmpty
     }
     var builder : Builder
+    
     init(view: FavoritesViewControllerProtocol, builder : Builder) {
         self.view = view
         self.builder = builder
@@ -45,17 +48,20 @@ class FavoritesViewPresenter : FavoritesViewPresenterProtocol {
     func getResultForFilteredAndEmpty (indexPath : IndexPath) -> GeckoListElement {
         filteredResults[indexPath.row]
     }
+    
     func getResultForFilteredAndFilled (indexPath : IndexPath) -> Crypto {
         filteredResultsOfFavorites[indexPath.row]
     }
+    
     func getResultForNotFiltered (indexPath : IndexPath) -> Crypto {
         DataSingleton.shared.resultsF[indexPath.row]
     }
+    
     func showChartView (indexPath : IndexPath) {
         let result: Crypto
         if view.isFiltering && isFavoritesEmpty {
             let elem = filteredResults[indexPath.row]
-            result = Crypto(symbolOfCrypto: elem.symbol!, nameOfCrypto: elem.name, id: elem.id)
+            result = Crypto(symbolOfCrypto: elem.symbol ?? "symbolOfCrypto", nameOfCrypto: elem.name, id: elem.id)
         } else if view.isFiltering && !isFavoritesEmpty {
             result = filteredResultsOfFavorites[indexPath.row]
         } else {
@@ -64,6 +70,7 @@ class FavoritesViewPresenter : FavoritesViewPresenterProtocol {
         let chartVC = builder.createChartViewModule(crypto: result)
         view.navigationController?.pushViewController(chartVC, animated: true)
     }
+    
     func filter(searchText : String) {
         if isFavoritesEmpty {
             filteredResults = DataSingleton.shared.fullBinanceList.filter({ (searchElem : GeckoListElement) -> Bool in

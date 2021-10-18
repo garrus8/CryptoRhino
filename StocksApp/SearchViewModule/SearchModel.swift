@@ -7,9 +7,8 @@
 
 import UIKit
 
-
-// CoinGecko
 struct GeckoListElement: Codable {
+    
     var id, symbol, name : String?
     var rank : Int?
 }
@@ -17,6 +16,7 @@ struct GeckoListElement: Codable {
 typealias GeckoList = [GeckoListElement]
 
 struct TopSearchItem {
+    
     let id: String
     let name, symbol: String
     let large: UIImage

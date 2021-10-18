@@ -26,7 +26,6 @@ class SearchTableViewCellWithImage: UICollectionViewCell {
 
     let imageView = UIImageView()
 
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = UIColor(red: 0.062, green: 0.139, blue: 0.467, alpha: 1)
@@ -40,7 +39,6 @@ class SearchTableViewCellWithImage: UICollectionViewCell {
         self.layer.shadowRadius = 10
         self.layer.shadowOffset = CGSize(width: 0, height: -4)
     }
-
 
     private func setupElements() {
         nameOfCrypto.translatesAutoresizingMaskIntoConstraints = false
@@ -75,14 +73,11 @@ extension SearchTableViewCellWithImage {
         
         nameOfCrypto.topAnchor.constraint(equalTo: topAnchor, constant: 11).isActive = true
         nameOfCrypto.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 15).isActive = true
-        nameOfCrypto.widthAnchor.constraint(equalToConstant: 250).isActive = true
+        nameOfCrypto.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
 
         symbolOfCrypto.topAnchor.constraint(equalTo: nameOfCrypto.bottomAnchor).isActive = true
         symbolOfCrypto.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 15).isActive = true
-        symbolOfCrypto.widthAnchor.constraint(equalToConstant: 128).isActive = true
-
-
-
+        symbolOfCrypto.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
     }
 }
 

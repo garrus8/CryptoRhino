@@ -19,7 +19,6 @@ class MainViewController: UIViewController, MainViewControllerProtocol {
         
     var presenter : MainViewPresenterProtocol!
     static let shared = MainViewController()
-   
     private var collectionView : UICollectionView!
     private let CollectionViewGroup = DispatchGroup()
 
@@ -28,8 +27,10 @@ class MainViewController: UIViewController, MainViewControllerProtocol {
         definesPresentationContext = true
         presenter.launchMethods()
     }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
     
-//    @objc
     func reloadCollectionView() {
         DispatchQueue.main.async {
             self.collectionView.reloadData()
@@ -80,23 +81,16 @@ class MainViewController: UIViewController, MainViewControllerProtocol {
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(top: 20 , leading: 15, bottom: 0, trailing: 15)
-        
         let header = createSectionHeader()
-        
         section.boundarySupplementaryItems = [header]
-        
         return section
-        
     }
     
     private func createSectionHeader() -> NSCollectionLayoutBoundarySupplementaryItem {
         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(1))
         let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
-        
         return header
     }
-    
-
 }
 
 extension MainViewController: UICollectionViewDelegate {

@@ -8,6 +8,7 @@
 import UIKit
 
 extension ChartViewController {
+    
      func setupChartAndPriceView(){
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "arrow.2.circlepath", withConfiguration: UIImage.SymbolConfiguration(weight: .regular))?.withTintColor(.systemOrange, renderingMode: .alwaysOriginal)
@@ -21,6 +22,8 @@ extension ChartViewController {
         converterView.addSubview(converterCryptoLabel)
         converterView.addSubview(converterCurrencyLabel)
         converterView.addSubview(imageView)
+        chartAndPriceView.addSubview(priceOfCrypto)
+        chartAndPriceView.addSubview(diffPriceOfCrypto)
         
         converterView.topAnchor.constraint(equalTo: chartAndPriceView.topAnchor, constant: 24).isActive = true
         converterView.widthAnchor.constraint(equalTo: chartAndPriceView.widthAnchor).isActive = true
@@ -52,63 +55,12 @@ extension ChartViewController {
         currencyTextField.topAnchor.constraint(equalTo: converterView.topAnchor).isActive = true
         currencyTextField.bottomAnchor.constraint(equalTo: converterView.bottomAnchor).isActive = true
         
-        
-        chartAndPriceView.addSubview(priceOfCrypto)
-        
         priceOfCrypto.centerXAnchor.constraint(equalTo: chartAndPriceView.centerXAnchor, constant: -54).isActive = true
         priceOfCrypto.topAnchor.constraint(equalTo: converterView.bottomAnchor, constant: 36).isActive = true
         
-        chartAndPriceView.addSubview(diffPriceOfCrypto)
-        
-//        diffPriceOfCrypto.centerXAnchor.constraint(equalTo: chartAndPriceView.centerXAnchor, constant: 54).isActive = true
         diffPriceOfCrypto.leadingAnchor.constraint(equalTo: priceOfCrypto.trailingAnchor, constant: 10).isActive = true
         diffPriceOfCrypto.widthAnchor.constraint(equalToConstant: 80).isActive = true
-//        diffPriceOfCrypto.topAnchor.constraint(equalTo: converterView.bottomAnchor, constant: 20).isActive = true
-//        diffPriceOfCrypto.bottomAnchor.constraint(equalTo: priceOfCrypto.bottomAnchor).isActive = true
-        
         diffPriceOfCrypto.centerYAnchor.constraint(equalTo: priceOfCrypto.centerYAnchor, constant: 5).isActive = true
-        
-//        let converterView = UIView()
-//        converterView.translatesAutoresizingMaskIntoConstraints = false
-//
-//        chartAndPriceView.addSubview(converterView)
-//        converterView.addSubview(cryptoTextField)
-//        converterView.addSubview(currencyTextField)
-//        converterView.addSubview(converterCryptoLabel)
-//        converterView.addSubview(converterCurrencyLabel)
-//        converterView.addSubview(imageView)
-//
-//        converterView.topAnchor.constraint(equalTo: diffPriceOfCrypto.bottomAnchor, constant: 10).isActive = true
-//        converterView.widthAnchor.constraint(equalTo: chartAndPriceView.widthAnchor).isActive = true
-//        converterView.heightAnchor.constraint(equalToConstant: 33).isActive = true
-//
-//        converterCryptoLabel.trailingAnchor.constraint(equalTo: cryptoTextField.leadingAnchor, constant: -8).isActive = true
-//        converterCryptoLabel.leadingAnchor.constraint(equalTo: converterView.leadingAnchor, constant: 12).isActive = true
-//        converterCryptoLabel.topAnchor.constraint(equalTo: converterView.topAnchor).isActive = true
-//        converterCryptoLabel.bottomAnchor.constraint(equalTo: converterView.bottomAnchor).isActive = true
-//
-//        cryptoTextField.topAnchor.constraint(equalTo: converterView.topAnchor).isActive = true
-//        cryptoTextField.trailingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: -12).isActive = true
-//        cryptoTextField.leadingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: -112).isActive = true
-//        cryptoTextField.bottomAnchor.constraint(equalTo: converterView.bottomAnchor).isActive = true
-//
-//        imageView.translatesAutoresizingMaskIntoConstraints = false
-//        imageView.heightAnchor.constraint(equalToConstant: 25).isActive = true
-//        imageView.widthAnchor.constraint(equalToConstant: 25).isActive = true
-//        imageView.centerXAnchor.constraint(equalTo: converterView.centerXAnchor).isActive = true
-//        imageView.centerYAnchor.constraint(equalTo: converterView.centerYAnchor).isActive = true
-//
-//        converterCurrencyLabel.trailingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 55).isActive = true
-//        converterCurrencyLabel.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 12).isActive = true
-//        converterCurrencyLabel.topAnchor.constraint(equalTo: converterView.topAnchor).isActive = true
-//        converterCurrencyLabel.bottomAnchor.constraint(equalTo: converterView.bottomAnchor).isActive = true
-//
-//        currencyTextField.trailingAnchor.constraint(equalTo: converterView.trailingAnchor, constant: -12).isActive = true
-//        currencyTextField.leadingAnchor.constraint(equalTo: converterCurrencyLabel.trailingAnchor, constant: 8).isActive = true
-//        currencyTextField.topAnchor.constraint(equalTo: converterView.topAnchor).isActive = true
-//        currencyTextField.bottomAnchor.constraint(equalTo: converterView.bottomAnchor).isActive = true
-    
-
         
         let buttonsView = UIView()
         buttonsView.layer.cornerRadius = 7
@@ -150,6 +102,14 @@ extension ChartViewController {
         lineChartView.topAnchor.constraint(equalTo: diffPriceOfCrypto.bottomAnchor, constant: 10).isActive = true
         lineChartView.widthAnchor.constraint(equalTo: chartAndPriceView.widthAnchor, constant: -20).isActive = true
         lineChartView.bottomAnchor.constraint(equalTo: buttonsView.topAnchor, constant: -5).isActive = true
+        
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        lineChartView.addSubview(activityIndicator)
+        activityIndicator.centerXAnchor.constraint(equalTo: lineChartView.centerXAnchor).isActive = true
+        activityIndicator.centerYAnchor.constraint(equalTo: lineChartView.centerYAnchor).isActive = true
+        activityIndicator.color = .white
+        activityIndicator.frame.size.height = 80
+        activityIndicator.frame.size.width = 80
     }
 }
 

@@ -8,6 +8,7 @@
 import UIKit
 
 extension UIButton {
+    
     convenience init(setTitle : String) {
         self.init()
         self.setTitle(setTitle,
@@ -17,14 +18,15 @@ extension UIButton {
         self.sizeToFit()
         self.translatesAutoresizingMaskIntoConstraints = false
         self.backgroundColor = .red
-        
     }
+    
     convenience init(cornerRadius : CGFloat) {
         self.init(type : .system)
         self.layer.cornerRadius = cornerRadius
     }
 }
 extension Data {
+    
     var html2AttributedString: NSAttributedString? {
         do {
             return try NSAttributedString(data: self, options: [.documentType: NSAttributedString.DocumentType.html, .characterEncoding: String.Encoding.utf8.rawValue], documentAttributes: nil)
@@ -36,6 +38,7 @@ extension Data {
     var html2String: String { html2AttributedString?.string ?? "" }
 }
 extension StringProtocol {
+    
     var html2AttributedString: NSAttributedString? {
         Data(utf8).html2AttributedString
     }
@@ -44,6 +47,7 @@ extension StringProtocol {
     }
 }
 extension Date {
+    
     func timeAgoDisplay() -> String {
         let formatter = RelativeDateTimeFormatter()
         formatter.unitsStyle = .full
@@ -52,6 +56,7 @@ extension Date {
 }
 
 extension UIColor {
+    
     convenience init(hexString: String) {
         let hex = hexString.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
         var int = UInt64()
@@ -103,6 +108,7 @@ extension String {
     }
 }
 extension String {
+    
     func capitalizingFirstLetter() -> String {
       return prefix(1).uppercased() + dropFirst()
     }
@@ -113,6 +119,7 @@ extension String {
 }
 
 extension Formatter {
+    
     static let withSeparator: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
@@ -121,6 +128,7 @@ extension Formatter {
     }()
 }
 extension Numeric {
+    
     var formattedWithSeparator: String { Formatter.withSeparator.string(for: self) ?? "" }
 }
 

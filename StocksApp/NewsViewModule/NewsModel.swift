@@ -8,6 +8,7 @@
 import Foundation
 
 struct NewsData: Codable {
+    
     let id: String?
     let guid: String?
     let publishedOn: Int?
@@ -28,17 +29,19 @@ struct NewsData: Codable {
 }
 
 enum Lang: String, Codable {
+    
     case en = "EN"
 }
 
 struct SourceInfo: Codable {
+    
     let name: String?
     let lang: Lang?
     let img: String?
 }
 
-//NEWS
 struct News: Codable {
+    
     let data: [NewsData]?
 
     enum CodingKeys: String, CodingKey {

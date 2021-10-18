@@ -9,24 +9,21 @@ import UIKit
 
 class FavoritesCell: UICollectionViewCell {
     static var reuseId: String = "FavoritesCell"
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        backgroundColor = UIColor(white: 1, alpha: 1)
-        setupElements()
-        setupConstraints()
-        
-        self.layer.cornerRadius = 8
-        self.clipsToBounds = true
-        friendImageView.layer.cornerRadius = friendImageView.frame.height/2
-        
-        
-    }
     var friendImageView = UIImageView()
     var nameOfCrypto = UILabel()
     var symbolOfCrypto = UILabel()
     var price = UILabel()
     var percent = UILabel()
     
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        backgroundColor = UIColor(white: 1, alpha: 1)
+        setupElements()
+        setupConstraints()
+        self.layer.cornerRadius = 8
+        self.clipsToBounds = true
+        friendImageView.layer.cornerRadius = friendImageView.frame.height/2
+    }
     
     func setupElements() {
         nameOfCrypto.translatesAutoresizingMaskIntoConstraints = false
@@ -51,6 +48,7 @@ class FavoritesCell: UICollectionViewCell {
 
 // MARK: - Setup Constraints
 extension FavoritesCell {
+    
     func setupConstraints() {
         addSubview(friendImageView)
         addSubview(nameOfCrypto)
@@ -78,6 +76,5 @@ extension FavoritesCell {
         percent.topAnchor.constraint(equalTo: price.bottomAnchor).isActive = true
         percent.leadingAnchor.constraint(equalTo: symbolOfCrypto.trailingAnchor, constant: 36).isActive = true
         percent.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 12).isActive = true
-        
     }
 }

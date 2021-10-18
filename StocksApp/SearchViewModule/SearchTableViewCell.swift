@@ -24,8 +24,6 @@ class SearchTableViewCell: UICollectionViewCell {
         return label
     }()
     
-   
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = UIColor(red: 0.062, green: 0.139, blue: 0.467, alpha: 1)
@@ -58,16 +56,17 @@ class SearchTableViewCell: UICollectionViewCell {
 
 // MARK: - Setup Constraints
 extension SearchTableViewCell {
+    
     private func setupConstraints() {
         addSubview(nameOfCrypto)
         addSubview(symbolOfCrypto)
     
         nameOfCrypto.topAnchor.constraint(equalTo: topAnchor, constant: 11).isActive = true
         nameOfCrypto.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
-        nameOfCrypto.widthAnchor.constraint(equalToConstant: 250).isActive = true
+        nameOfCrypto.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
     
         symbolOfCrypto.topAnchor.constraint(equalTo: nameOfCrypto.bottomAnchor).isActive = true
         symbolOfCrypto.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
-        symbolOfCrypto.widthAnchor.constraint(equalToConstant: 128).isActive = true
+        symbolOfCrypto.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
     }
 }

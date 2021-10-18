@@ -58,7 +58,7 @@ final class MainTabBarController : UITabBarController {
         for i in arrayOfNVC {
             let appearance = UINavigationBarAppearance()
             appearance.backgroundColor = UIColor(hexString: "#4158B7")
-            appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+            appearance.titleTextAttributes = [.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont(name: "AvenirNext-DemiBold", size: 17)!]
             appearance.shadowImage = UIImage()
             i.navigationBar.standardAppearance = appearance
         }
@@ -69,5 +69,7 @@ final class MainTabBarController : UITabBarController {
         tabBar.isTranslucent = false
         tabBar.tintColor = UIColor(red: 0.467, green: 0.557, blue: 0.95, alpha: 1)
         tabBar.unselectedItemTintColor = .white
+        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: UIFont(name: "AvenirNext-DemiBold", size: 12)!], for: .normal)
+        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: UIFont(name: "AvenirNext-DemiBold", size: 12)!], for: .selected)
     }
 }

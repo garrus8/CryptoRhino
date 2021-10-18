@@ -17,8 +17,8 @@ protocol SearchViewPresenterProtocol : AnyObject {
     func getTopListElem(indexPath : IndexPath) -> TopSearchItem
 }
 
-
 class SearchViewPresenter : SearchViewPresenterProtocol {
+    
     private weak var view : SearchViewControllerProtocol!
     var filteredResults = GeckoList()
     private var builder : Builder!

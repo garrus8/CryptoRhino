@@ -20,7 +20,7 @@ class SectionHeader : UICollectionReusableView {
     
     func customize() {
         title.textColor = .black
-        title.font = UIFont(name: "avenir", size: 20)
+        title.font = UIFont(name: "AvenirNext-DemiBold", size: 22)
         title.translatesAutoresizingMaskIntoConstraints = false
     }
     
@@ -32,7 +32,6 @@ class SectionHeader : UICollectionReusableView {
             title.trailingAnchor.constraint(equalTo: trailingAnchor),
             title.leadingAnchor.constraint(equalTo: leadingAnchor)
         ])
-
     }
     
     required init?(coder: NSCoder) {

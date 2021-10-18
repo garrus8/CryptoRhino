@@ -10,29 +10,28 @@ import UIKit
 class TableCollectionViewCell: UICollectionViewCell {
     
     static var reuseId: String = "TableCollectionViewCell"
-    
     let friendImageView = UIImageView()
     let nameOfCrypto : UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "Avenir", size: 15)
+        label.font = UIFont(name: "AvenirNext-Medium", size: 17)
         label.textColor = .white
         return label
     }()
     let symbolOfCrypto : UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "Avenir", size: 14)
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 13)
         label.textColor = UIColor(hexString: "#C2B6D7")
         return label
     }()
     let price : UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "Avenir", size: 16)
+        label.font = UIFont(name: "AvenirNext-Medium", size: 15)
         label.textColor = .white
         return label
     }()
     let percent : UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "Avenir", size: 14)
+        label.font = UIFont(name: "AvenirNext-Medium", size: 14)
         return label
     }()
     
@@ -105,6 +104,7 @@ class TableCollectionViewCell: UICollectionViewCell {
 
 // MARK: - Setup Constraints
 extension TableCollectionViewCell {
+    
     private func setupConstraints() {
         addSubview(friendImageView)
         addSubview(nameOfCrypto)
@@ -117,24 +117,19 @@ extension TableCollectionViewCell {
         friendImageView.widthAnchor.constraint(equalToConstant: 35).isActive = true
         friendImageView.heightAnchor.constraint(equalToConstant: 35).isActive = true
         
-        
         nameOfCrypto.topAnchor.constraint(equalTo: self.topAnchor, constant: 11).isActive = true
         nameOfCrypto.leadingAnchor.constraint(equalTo: friendImageView.trailingAnchor, constant: 8).isActive = true
-        nameOfCrypto.widthAnchor.constraint(equalToConstant: 128).isActive = true
-    
+        nameOfCrypto.trailingAnchor.constraint(equalTo: price.leadingAnchor, constant: -5).isActive = true
         
         symbolOfCrypto.topAnchor.constraint(equalTo: nameOfCrypto.bottomAnchor, constant: 4).isActive = true
         symbolOfCrypto.leadingAnchor.constraint(equalTo: friendImageView.trailingAnchor, constant: 8).isActive = true
-        symbolOfCrypto.widthAnchor.constraint(equalToConstant: 128).isActive = true
+        nameOfCrypto.trailingAnchor.constraint(equalTo: percent.leadingAnchor, constant: -5).isActive = true
         
         price.topAnchor.constraint(equalTo: topAnchor, constant: 12).isActive = true
-//        price.leadingAnchor.constraint(equalTo: nameOfCrypto.trailingAnchor, constant: 65).isActive = true
         price.widthAnchor.constraint(equalToConstant: 100).isActive = true
         price.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -12).isActive = true
         
-        
         percent.topAnchor.constraint(equalTo: price.bottomAnchor).isActive = true
-//        percent.leadingAnchor.constraint(equalTo: symbolOfCrypto.trailingAnchor, constant: 65).isActive = true
         percent.widthAnchor.constraint(equalToConstant: 100).isActive = true
         percent.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -12).isActive = true
         
