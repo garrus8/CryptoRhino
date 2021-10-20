@@ -13,13 +13,13 @@ class SearchTableViewCellWithImage: UICollectionViewCell {
 
     let nameOfCrypto : UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "SFProDisplay-Medium", size: 15)
+        label.font = UIFont(name: "AvenirNext-Medium", size: 17)
         label.textColor = .white
         return label
     }()
     let symbolOfCrypto : UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "SFCompactText-Regular", size: 14)
+        label.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 13)
         label.textColor = UIColor(hexString: "#C2B6D7")
         return label
     }()
@@ -66,18 +66,18 @@ extension SearchTableViewCellWithImage {
         addSubview(symbolOfCrypto)
         addSubview(imageView)
 
-        imageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15).isActive = true
+        imageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 12).isActive = true
         imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         imageView.widthAnchor.constraint(equalToConstant: 35).isActive = true
         imageView.heightAnchor.constraint(equalToConstant: 35).isActive = true
         
         nameOfCrypto.topAnchor.constraint(equalTo: topAnchor, constant: 11).isActive = true
-        nameOfCrypto.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 15).isActive = true
-        nameOfCrypto.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
+        nameOfCrypto.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 8).isActive = true
+        nameOfCrypto.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12).isActive = true
 
         symbolOfCrypto.topAnchor.constraint(equalTo: nameOfCrypto.bottomAnchor).isActive = true
-        symbolOfCrypto.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 15).isActive = true
-        symbolOfCrypto.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
+        symbolOfCrypto.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 8).isActive = true
+        symbolOfCrypto.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12).isActive = true
     }
 }
 

@@ -51,7 +51,7 @@ extension ChartViewController {
         marketDatatitle.widthAnchor.constraint(equalTo: detailInfoView.widthAnchor).isActive = true
         
         marketDataTableView.translatesAutoresizingMaskIntoConstraints = false
-        marketDataTableView.topAnchor.constraint(equalTo: marketDatatitle.bottomAnchor, constant: 10).isActive = true
+        marketDataTableView.topAnchor.constraint(equalTo: marketDatatitle.bottomAnchor, constant: 6).isActive = true
         marketDataTableView.widthAnchor.constraint(equalTo: detailInfoView.widthAnchor).isActive = true
         marketDataTableView.heightAnchor.constraint(equalToConstant: 250).isActive = true
         
@@ -66,15 +66,13 @@ extension ChartViewController {
         
         descriptionLabel.topAnchor.constraint(equalTo: headerStack.bottomAnchor, constant: 14).isActive = true
         descriptionLabel.widthAnchor.constraint(equalTo: detailInfoView.widthAnchor).isActive = true
-        descriptionLabel.bottomAnchor.constraint(equalTo: communityDatatitle.topAnchor, constant: -18).isActive = true
+        descriptionLabel.bottomAnchor.constraint(equalTo: communityDatatitle.topAnchor, constant: -19).isActive = true
         
         communityDatatitle.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor).isActive = true
         communityDatatitle.widthAnchor.constraint(equalTo: detailInfoView.widthAnchor).isActive = true
-        communityDatatitle.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        communityDatatitle.bottomAnchor.constraint(equalTo: communityDataTableView.topAnchor).isActive = true
-        
+
         communityDataTableView.translatesAutoresizingMaskIntoConstraints = false
-        communityDataTableView.topAnchor.constraint(equalTo: communityDatatitle.bottomAnchor).isActive = true
+        communityDataTableView.topAnchor.constraint(equalTo: communityDatatitle.bottomAnchor, constant: 6).isActive = true
         communityDataTableView.widthAnchor.constraint(equalTo: detailInfoView.widthAnchor).isActive = true
         communityDataTableView.heightAnchor.constraint(equalToConstant: 130).isActive = true
         

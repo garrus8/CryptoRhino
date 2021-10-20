@@ -73,6 +73,7 @@ class FavoritesViewController: UIViewController, UICollectionViewDataSource, UIC
         searchController.searchBar.tintColor = .white
         definesPresentationContext = true
         searchController.isActive = true
+        searchController.searchBar.keyboardAppearance = .dark
     }
     func setupCollectionView() {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()

@@ -52,7 +52,6 @@ class CoreDataManager {
                 for i in DataSingleton.shared.favorites {
                     if let symbol = i.symbol{
                         let crypto = Crypto(symbolOfCrypto: symbol, nameOfCrypto: i.name!, descriptionOfCrypto: i.descrtiption!, image: UIImage(named: "pngwing.com") ?? UIImage(), percentages: Persentages())
-                        print("self.resultsF",DataSingleton.shared.resultsF.count)
                         DataSingleton.shared.symbolsF.append(i.symbol!)
                         DataSingleton.shared.resultsF.append(crypto)
                         DataSingleton.shared.websocketArray.append(symbol)

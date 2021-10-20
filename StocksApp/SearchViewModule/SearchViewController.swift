@@ -41,11 +41,12 @@ class SearchViewController: UIViewController, SearchViewControllerProtocol  {
         searchController.searchBar.tintColor = .white
         definesPresentationContext = true
         searchController.isActive = true
+        searchController.searchBar.keyboardAppearance = .dark
     }
     private func setupCollectionView() {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 20, left: 10, bottom: 10, right: 10)
-        layout.itemSize = CGSize(width: self.view.frame.size.width - 20, height: self.view.frame.size.height / 8)
+        layout.sectionInset = UIEdgeInsets(top: 20, left: 15, bottom: 10, right: 15)
+        layout.itemSize = CGSize(width: self.view.frame.size.width - 30, height: 62)
         collectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
         view.addSubview(collectionView)
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -91,7 +92,7 @@ extension SearchViewController : UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.size.width - 30, height: 63)
+        return CGSize(width: UIScreen.main.bounds.size.width - 30, height: 62)
     }
 }
 

@@ -120,7 +120,7 @@ extension NewsCell {
         stack.trailingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: -9).isActive = true
         stack.bottomAnchor.constraint(equalTo: publishedOn.topAnchor, constant: -4).isActive = true
         
-        publishedOn.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -6).isActive = true
+        publishedOn.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8).isActive = true
         publishedOn.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 12).isActive = true
         publishedOn.heightAnchor.constraint(equalToConstant: 8).isActive = true
         publishedOn.widthAnchor.constraint(equalToConstant: 100).isActive = true

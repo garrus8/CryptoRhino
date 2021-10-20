@@ -67,7 +67,7 @@ class MainViewController: UIViewController, MainViewControllerProtocol {
         
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .continuous
-        section.contentInsets = NSDirectionalEdgeInsets.init(top: 20, leading: 15, bottom: 20, trailing: 7)
+        section.contentInsets = NSDirectionalEdgeInsets.init(top: 12, leading: 15, bottom: 20, trailing: 7)
         let header = createSectionHeader()
         section.boundarySupplementaryItems = [header]
         return section
@@ -80,7 +80,7 @@ class MainViewController: UIViewController, MainViewControllerProtocol {
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(71))
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 20 , leading: 15, bottom: 0, trailing: 15)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 12 , leading: 15, bottom: 0, trailing: 15)
         let header = createSectionHeader()
         section.boundarySupplementaryItems = [header]
         return section

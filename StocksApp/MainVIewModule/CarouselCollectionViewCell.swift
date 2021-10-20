@@ -77,7 +77,7 @@ class CarouselCollectionViewCell: UICollectionViewCell {
         if percentages.hasPrefix("-") {
             let imageAttachment = NSTextAttachment()
             imageAttachment.image = UIImage(systemName: "arrowtriangle.down.fill")?.withTintColor(.red)
-            
+            imageAttachment.bounds = CGRect(x: 0, y: 0, width: 10, height: 10)
             let fullString = NSMutableAttributedString()
             fullString.append(NSAttributedString(attachment: imageAttachment))
             if let percentages = crypto.percentages {
@@ -90,14 +90,14 @@ class CarouselCollectionViewCell: UICollectionViewCell {
         } else {
             let imageAttachment = NSTextAttachment()
             imageAttachment.image = UIImage(systemName: "arrowtriangle.up.fill")?.withTintColor(.green)
-            
+            imageAttachment.bounds = CGRect(x: 0, y: 0, width: 10, height: 10)
             let fullString = NSMutableAttributedString()
             fullString.append(NSAttributedString(attachment: imageAttachment))
             if let percentages = crypto.percentages {
                 fullString.append(NSAttributedString(string: " \(percentages.priceChangePercentage24H ?? "")%"))
             }
             percent.attributedText = fullString
-            percent.textColor = UIColor(red: 0.486, green: 0.863, blue: 0.475, alpha: 1)
+            percent.textColor = UIColor(red: 0.19, green: 0.858, blue: 0.652, alpha: 1)
         }
     }
 }
@@ -120,7 +120,7 @@ extension CarouselCollectionViewCell {
         imageView.widthAnchor.constraint(equalToConstant: 28).isActive = true
         imageView.heightAnchor.constraint(equalToConstant: 28).isActive = true
         
-        symbolOfCrypto.topAnchor.constraint(equalTo: nameOfCrypto.bottomAnchor, constant: 4).isActive = true
+        symbolOfCrypto.topAnchor.constraint(equalTo: nameOfCrypto.bottomAnchor, constant: 2).isActive = true
         symbolOfCrypto.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 12).isActive = true
         symbolOfCrypto.widthAnchor.constraint(equalToConstant: 60).isActive = true
         

@@ -187,7 +187,7 @@ class ChartViewController: UIViewController {
                 fullString.append(NSAttributedString(string: " \(newValue)%"))
 
                 diffPriceOfCrypto.attributedText = fullString
-                diffPriceOfCrypto.textColor = UIColor.green
+                diffPriceOfCrypto.textColor = UIColor(red: 0.19, green: 0.858, blue: 0.652, alpha: 1)
             }
         }
     }

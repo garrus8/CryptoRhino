@@ -26,11 +26,13 @@ class TableCollectionViewCell: UICollectionViewCell {
     let price : UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "AvenirNext-Medium", size: 15)
+        label.textAlignment = .right
         label.textColor = .white
         return label
     }()
     let percent : UILabel = {
         let label = UILabel()
+        label.textAlignment = .right
         label.font = UIFont(name: "AvenirNext-Medium", size: 14)
         return label
     }()
@@ -77,7 +79,7 @@ class TableCollectionViewCell: UICollectionViewCell {
         if percentages.hasPrefix("-") {
             let imageAttachment = NSTextAttachment()
             imageAttachment.image = UIImage(systemName: "arrowtriangle.down.fill")?.withTintColor(.red)
-            
+            imageAttachment.bounds = CGRect(x: 0, y: 0, width: 10, height: 10)
             let fullString = NSMutableAttributedString()
             fullString.append(NSAttributedString(attachment: imageAttachment))
             if let percentages = crypto.percentages {
@@ -90,14 +92,14 @@ class TableCollectionViewCell: UICollectionViewCell {
         } else {
             let imageAttachment = NSTextAttachment()
             imageAttachment.image = UIImage(systemName: "arrowtriangle.up.fill")?.withTintColor(.green)
-            
+            imageAttachment.bounds = CGRect(x: 0, y: 0, width: 10, height: 10)
             let fullString = NSMutableAttributedString()
             fullString.append(NSAttributedString(attachment: imageAttachment))
             if let percentages = crypto.percentages {
                 fullString.append(NSAttributedString(string: " \(percentages.priceChangePercentage24H ?? "")%"))
             }
             percent.attributedText = fullString
-            percent.textColor = UIColor(red: 0.486, green: 0.863, blue: 0.475, alpha: 1)
+            percent.textColor = UIColor(red: 0.19, green: 0.858, blue: 0.652, alpha: 1)
         }
     }
 }
@@ -121,7 +123,7 @@ extension TableCollectionViewCell {
         nameOfCrypto.leadingAnchor.constraint(equalTo: friendImageView.trailingAnchor, constant: 8).isActive = true
         nameOfCrypto.trailingAnchor.constraint(equalTo: price.leadingAnchor, constant: -5).isActive = true
         
-        symbolOfCrypto.topAnchor.constraint(equalTo: nameOfCrypto.bottomAnchor, constant: 4).isActive = true
+        symbolOfCrypto.topAnchor.constraint(equalTo: nameOfCrypto.bottomAnchor, constant: 2).isActive = true
         symbolOfCrypto.leadingAnchor.constraint(equalTo: friendImageView.trailingAnchor, constant: 8).isActive = true
         nameOfCrypto.trailingAnchor.constraint(equalTo: percent.leadingAnchor, constant: -5).isActive = true
         

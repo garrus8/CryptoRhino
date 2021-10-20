@@ -35,6 +35,6 @@ class HeaderCollectionReusableView: UICollectionReusableView {
     override func layoutSubviews() {
         super.layoutSubviews()
         label.frame = bounds
-        label.frame = CGRect(x: 20, y: Int(bounds.minY) + 10, width: Int(bounds.width), height: Int(bounds.height))
+        label.frame = CGRect(x: 15, y: Int(bounds.minY) + 12, width: Int(bounds.width), height: Int(bounds.height))
     }
 }
