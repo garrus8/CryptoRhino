@@ -5,7 +5,7 @@
 //  Created by Григорий Толкачев on 15.09.2021.
 //
 
-import Foundation
+import UIKit
 
 
 protocol SearchViewPresenterProtocol : AnyObject {
@@ -58,12 +58,20 @@ class SearchViewPresenter : SearchViewPresenterProtocol {
         })
     }
     func getFilteredResult(indexPath : IndexPath) -> GeckoListElement {
+        if filteredResults.count > 0 && indexPath.row < filteredResults.count {
             let result = filteredResults[indexPath.row]
             return result
+        } else {
+            return GeckoListElement()
+        }
     }
     func getTopListElem(indexPath : IndexPath) -> TopSearchItem {
+        if DataSingleton.shared.topList.count > 0 && indexPath.row < DataSingleton.shared.topList.count {
             let result = DataSingleton.shared.topList[indexPath.row]
             return result
+        } else {
+            return TopSearchItem(id: "", name: "", symbol: "", large: UIImage())
+        }
     }
 }
 

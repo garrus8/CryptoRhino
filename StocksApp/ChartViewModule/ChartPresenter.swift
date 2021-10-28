@@ -157,14 +157,14 @@ class ChartViewPresenter : ChartViewPresenterProtocol {
                     self.labels[KeysOfLabels.descriptionLabel.rawValue] = stocks.geckoSymbolDescription?.en?.html2String
                     
                     if self.labels[KeysOfLabels.descriptionLabel.rawValue] == nil || self.labels[KeysOfLabels.descriptionLabel.rawValue] == "" {
-                        self.view.updateContentViewFrame(contentViewFrameChange: 50,
-                                                    detailInfoViewFrameChange: 50,
-                                                    scrollViewChange: 50)
+                        self.view.updateContentViewFrame(contentViewFrameChange: 60,
+                                                    detailInfoViewFrameChange: 60,
+                                                    scrollViewChange: 60, isIncrement: false)
                     } else if self.labels[KeysOfLabels.descriptionLabel.rawValue]!.count / 45 < 7 {
                         let height = CGFloat((7 - (self.labels[KeysOfLabels.descriptionLabel.rawValue]!.count / 45)) * 10)
                         self.view.updateContentViewFrame(contentViewFrameChange: height,
                                                     detailInfoViewFrameChange: height,
-                                                    scrollViewChange: height)
+                                                    scrollViewChange: height, isIncrement: false)
                     }
                     
                     if let priceDict = stocks.marketData?.currentPrice {
@@ -210,22 +210,23 @@ class ChartViewPresenter : ChartViewPresenterProtocol {
                         self.communityData = CommunityDataArray(communityData: communityData).array
                         self.view.reloadCommunityDataTableView()
                     }
+                    self.view.updateContentViewFrame(contentViewFrameChange: 40, detailInfoViewFrameChange: 40, scrollViewChange: 40, isIncrement: true)
                     self.view.updateData()
                 }
             }
         }
     } else {
         if self.labels[KeysOfLabels.descriptionLabel.rawValue] == nil || self.labels[KeysOfLabels.descriptionLabel.rawValue] == "" {
-            self.view.updateContentViewFrame(contentViewFrameChange: 50,
-                                             detailInfoViewFrameChange: 50,
-                                             scrollViewChange: 50)
+            self.view.updateContentViewFrame(contentViewFrameChange: 60,
+                                             detailInfoViewFrameChange: 60,
+                                             scrollViewChange: 60, isIncrement: false)
         }
         guard let descriptionLabel = self.labels[KeysOfLabels.descriptionLabel.rawValue] else {return}
-        if descriptionLabel.count / 45 < 7 && descriptionLabel != ""{
-            let height = CGFloat((7 - (descriptionLabel.count / 45)) * 10)
+        if descriptionLabel.count / 45 < 7 && descriptionLabel != "" {
+            let height = CGFloat((7 - (descriptionLabel.count / 40)) * 10)
             self.view.updateContentViewFrame(contentViewFrameChange: height,
                                              detailInfoViewFrameChange: height,
-                                             scrollViewChange: height)
+                                             scrollViewChange: height, isIncrement: false)
         }
     }
 }

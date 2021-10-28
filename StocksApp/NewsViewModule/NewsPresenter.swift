@@ -60,7 +60,8 @@ class NewsViewPresenter : NewsViewPresenterProtocol {
     
     func openSafari(indexPath : IndexPath) {
         let elem = newsData[indexPath.item]
-        guard let url = URL(string: elem.url!) else {return}
+        guard let elemUrl = elem.url else {return}
+        guard let url = URL(string: elemUrl) else {return}
         let vc = SFSafariViewController(url: url)
         vc.preferredControlTintColor = .white
         vc.preferredBarTintColor = UIColor(red: 0.058, green: 0.109, blue: 0.329, alpha: 1)

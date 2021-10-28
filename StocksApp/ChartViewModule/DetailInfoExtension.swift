@@ -41,7 +41,6 @@ extension ChartViewController {
         detailInfoView.addSubview(headerStack)
         detailInfoView.addSubview(descriptionLabel)
         
-        
         let marketDatatitle = UILabel(); marketDatatitle.text = "Market data"; marketDatatitle.textColor = .white
         marketDatatitle.font = UIFont(name: "AvenirNext-DemiBold", size: 22)
         marketDatatitle.translatesAutoresizingMaskIntoConstraints = false
@@ -75,37 +74,30 @@ extension ChartViewController {
         communityDataTableView.topAnchor.constraint(equalTo: communityDatatitle.bottomAnchor, constant: 6).isActive = true
         communityDataTableView.widthAnchor.constraint(equalTo: detailInfoView.widthAnchor).isActive = true
         communityDataTableView.heightAnchor.constraint(equalToConstant: 130).isActive = true
-        
+        setupRedditButton()
+    }
+    
+    func setupRedditButton() {
         var arrangedSubviews : [UIView] = []
-        if let redditUrl = presenter.labels[KeysOfLabels.redditUrl.rawValue], let siteUrl = presenter.labels[KeysOfLabels.siteUrl.rawValue] {
-        if presenter.labels[KeysOfLabels.redditUrl.rawValue] == "" || redditUrl.isEmpty || presenter.labels[KeysOfLabels.redditUrl.rawValue] == "https://reddit.com" {
-            arrangedSubviews = [onSiteButton]
-        } else if presenter.labels[KeysOfLabels.siteUrl.rawValue] == "" || siteUrl.isEmpty {
-            arrangedSubviews = [onRedditButton]
-        } else {
-            arrangedSubviews = [onRedditButton, onSiteButton]
-        }
+        var height = CGFloat(0)
+        if let redditUrl = presenter.labels[KeysOfLabels.redditUrl.rawValue] {
+            if !redditUrl.isEmpty && redditUrl != "https://reddit.com" {
+                arrangedSubviews = [onRedditButton]
+                height = CGFloat(56)
+            } else {
+                scrollView.contentInset.bottom -= 40
+            }
         }
         
         let buttonsStack = UIStackView(arrangedSubviews: arrangedSubviews)
         buttonsStack.axis = .vertical
         buttonsStack.distribution = .fillEqually
-        buttonsStack.spacing = 11
         buttonsStack.translatesAutoresizingMaskIntoConstraints = false
         
         detailInfoView.addSubview(buttonsStack)
         buttonsStack.topAnchor.constraint(equalTo: communityDataTableView.bottomAnchor, constant: 10).isActive = true
         buttonsStack.centerXAnchor.constraint(equalTo: detailInfoView.centerXAnchor).isActive = true
         buttonsStack.widthAnchor.constraint(equalTo: detailInfoView.widthAnchor, constant: -2).isActive = true
-        
-        if buttonsStack.arrangedSubviews.count == 1 {
-            buttonsStack.heightAnchor.constraint(equalToConstant: 56).isActive = true
-            scrollView.contentInset.bottom -= 67
-        } else if buttonsStack.arrangedSubviews.count == 2 {
-            buttonsStack.heightAnchor.constraint(equalToConstant: 123).isActive = true
-        } else {
-            buttonsStack.heightAnchor.constraint(equalToConstant: 0).isActive = true
-            scrollView.contentInset.bottom -= 123
-        }
+        buttonsStack.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
 }

@@ -13,7 +13,7 @@ protocol ChartViewControllerProtocol : UIViewController {
     var activityIndicator: UIActivityIndicatorView { get set }
     func reloadCommunityDataTableView()
     func reloadMarketDataTableView()
-    func updateContentViewFrame(contentViewFrameChange : CGFloat, detailInfoViewFrameChange : CGFloat, scrollViewChange : CGFloat)
+    func updateContentViewFrame(contentViewFrameChange : CGFloat, detailInfoViewFrameChange : CGFloat, scrollViewChange : CGFloat, isIncrement : Bool)
     func navigationBarSetup()
     func setData(dataSet: LineChartDataSet, xAxisValueFormatter: ChartViewPresenter.MyXAxisFormatter)
     func lineChartViewSetup()
@@ -41,8 +41,8 @@ class ChartViewController: UIViewController {
     }()
     var marketDataTableView = UITableView()
     var communityDataTableView = UITableView()
-    private var contentViewFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 1520)
-    private var detailInfoViewFrame = CGRect(x: 15, y: 633, width: UIScreen.main.bounds.size.width - 30, height: 890)
+    private var contentViewFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 1450)
+    private var detailInfoViewFrame = CGRect(x: 15, y: 633, width: UIScreen.main.bounds.size.width - 30, height: 820)
     let nameOfCrypto : UILabel = {
         let label = UILabel()
         label.text = "nameOfCrypto"
@@ -292,25 +292,10 @@ class ChartViewController: UIViewController {
         button.backgroundColor = UIColor(red: 0.969, green: 0.576, blue: 0.102, alpha: 1)
         button.layer.cornerRadius = 14
         button.setTitleColor(.white, for: .normal)
-        button.setTitle("Reddit", for: .normal)
+        button.setTitle("On Reddit", for: .normal)
         button.titleLabel?.font = UIFont(name: "AvenirNext-DemiBold", size: 17)
         button.addTarget(self,
                          action: #selector(onReddit),
-                         for: .touchUpInside)
-        return button
-    }()
-    let onSiteButton : UIButton = {
-        let button = UIButton(type: .custom)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .clear
-        button.layer.cornerRadius = 14
-        button.layer.borderWidth = 2
-        button.layer.borderColor = UIColor(red: 0.969, green: 0.576, blue: 0.102, alpha: 1).cgColor
-        button.setTitleColor(UIColor(red: 0.969, green: 0.576, blue: 0.102, alpha: 1), for: .normal)
-        button.setTitle("Website", for: .normal)
-        button.titleLabel?.font = UIFont(name: "AvenirNext-DemiBold", size: 17)
-        button.addTarget(self,
-                         action: #selector(onSite),
                          for: .touchUpInside)
         return button
     }()
@@ -398,14 +383,8 @@ class ChartViewController: UIViewController {
         guard let redditUrl = presenter.labels[KeysOfLabels.redditUrl.rawValue] else {return}
         guard let url = URL(string: redditUrl) else {return}
         let vc = SFSafariViewController(url: url)
-        present(vc, animated: true, completion: nil)
-    }
-    
-    @objc
-    private func onSite() {
-        guard let siteUrl = presenter.labels[KeysOfLabels.siteUrl.rawValue] else {return}
-        guard let url = URL(string: siteUrl) else {return}
-        let vc = SFSafariViewController(url: url)
+        vc.preferredControlTintColor = .white
+        vc.preferredBarTintColor = UIColor(red: 0.058, green: 0.109, blue: 0.329, alpha: 1)
         present(vc, animated: true, completion: nil)
     }
 
@@ -494,13 +473,20 @@ extension ChartViewController : ChartViewControllerProtocol {
             priceOfCrypto.text?.append("$")
             priceOfCrypto.text?.append(presenter.labels[KeysOfLabels.priceOfCrypto.rawValue] ?? "Name of crypto")
             currencyTextField.text = presenter.labels[KeysOfLabels.priceOfCrypto.rawValue]
+            setupRedditButton()
         }
     }
     
-    func updateContentViewFrame(contentViewFrameChange : CGFloat, detailInfoViewFrameChange : CGFloat, scrollViewChange : CGFloat) {
-        self.contentViewFrame.size.height -= contentViewFrameChange
-        self.detailInfoViewFrame.size.height -= detailInfoViewFrameChange
-        self.scrollView.contentInset.bottom -= scrollViewChange
+    func updateContentViewFrame(contentViewFrameChange : CGFloat, detailInfoViewFrameChange : CGFloat, scrollViewChange : CGFloat, isIncrement : Bool) {
+        if isIncrement {
+            self.contentViewFrame.size.height += contentViewFrameChange
+            self.detailInfoViewFrame.size.height += detailInfoViewFrameChange
+            self.scrollView.contentInset.bottom += scrollViewChange
+        } else {
+            self.contentViewFrame.size.height -= contentViewFrameChange
+            self.detailInfoViewFrame.size.height -= detailInfoViewFrameChange
+            self.scrollView.contentInset.bottom -= scrollViewChange
+        }
     }
     
     func navigationBarSetup() {
