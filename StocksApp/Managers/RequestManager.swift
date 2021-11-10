@@ -21,6 +21,7 @@ final class NetworkRequestManager : NetworkRequest {
             cachePolicy: .useProtocolCachePolicy,
             timeoutInterval: 2)
         request.httpMethod = "GET"
+        
         if url == Urls.fullCoinCapList.rawValue {
             request.setValue( "Bearer ebb5b8d0-64a8-4f93-bc12-c6539115e99b", forHTTPHeaderField: "Authorization")
         }

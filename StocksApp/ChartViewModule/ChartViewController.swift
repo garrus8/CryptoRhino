@@ -7,7 +7,7 @@
 
 import UIKit
 import Charts
-import SafariServices
+//import SafariServices
 
 protocol ChartViewControllerProtocol : UIViewController {
     var activityIndicator: UIActivityIndicatorView { get set }
@@ -382,10 +382,11 @@ class ChartViewController: UIViewController {
     private func onReddit() {
         guard let redditUrl = presenter.labels[KeysOfLabels.redditUrl.rawValue] else {return}
         guard let url = URL(string: redditUrl) else {return}
-        let vc = SFSafariViewController(url: url)
-        vc.preferredControlTintColor = .white
-        vc.preferredBarTintColor = UIColor(red: 0.058, green: 0.109, blue: 0.329, alpha: 1)
-        present(vc, animated: true, completion: nil)
+//        let vc = SFSafariViewController(url: url)
+//        vc.preferredControlTintColor = .white
+//        vc.preferredBarTintColor = UIColor(red: 0.058, green: 0.109, blue: 0.329, alpha: 1)
+//        present(vc, animated: true, completion: nil)
+        UIApplication.shared.open(url)
     }
 
     private var clickBool = true
