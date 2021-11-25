@@ -401,9 +401,9 @@ class ChartViewController: UIViewController {
             constHeightOfTextLabel = descriptionLabel.frame.height
             let height = descriptionLabel.systemLayoutSizeFitting(CGSize(width: descriptionLabel.frame.width, height: UIView.layoutFittingCompressedSize.height), withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel).height
             scrollView.contentInset.bottom += (height - descriptionLabel.frame.height - 30)
-            contentViewFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: contentViewFrame.height + height - constHeightOfTextLabel - 30)
+            contentViewFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: contentViewFrame.height + height - constHeightOfTextLabel)
             contentView.frame = contentViewFrame
-            detailInfoViewFrame = CGRect(x: 15, y: 600, width: UIScreen.main.bounds.size.width - 30, height: detailInfoViewFrame.height + height - constHeightOfTextLabel)
+            detailInfoViewFrame = CGRect(x: 15, y: 630, width: UIScreen.main.bounds.size.width - 30, height: detailInfoViewFrame.height + height - constHeightOfTextLabel)
             detailInfoView.frame = detailInfoViewFrame
             
             for elem in detailInfoView.subviews {

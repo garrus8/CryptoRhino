@@ -83,7 +83,6 @@ final class WebSocketManager : WebSocketProtocol {
                         fatalError()
                     }
                     self.receiveMessage()
-                    
                 }
             }
         }
