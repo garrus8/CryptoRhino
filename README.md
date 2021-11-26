@@ -9,12 +9,12 @@ CryptoRhino is designed and developed to fit our users' needs ensuring the user 
 
 To stay up to date with the latest developments in the world of cryptocurrencies, read our latest news section collected from multiple news sources from across the world. Our dynamic interactive charts and cutting edge news feed will keep you informed, improving your trading decisions.
 
-Our users are able to track favorite coins, keeping them up-to-date with prices around the clock. Among the available cryptocurrencies are Bitcoin, Ethereum, Litecoin, Bitcoin Cash, Cardano, Binance Coin, Stellar, XRP, Solana, Polkadot, Dogecoin, and thousands of others. Our users can sort cryptocurrency indexes and prices by various criteria. The default view displays the top coins searched for today and other options are available.
+Our users are able to track favorite coins, keeping them up-to-date with prices around the clock. Among the available cryptocurrencies are Bitcoin, Ethereum, Litecoin, Bitcoin Cash, Cardano, Binance Coin, Stellar, XRP, Solana, Polkadot, Dogecoin, and thousands of others. Our users can sort cryptocurrency indexes and prices by various criteria. The default view displays the top coins searched for today and other options are available.![Карточка 2 7](https://user-images.githubusercontent.com/38909451/143554120-3502d3d5-b7fd-4271-95ff-3fd8a9d7262b.png)
 
-![Карточка1](https://user-images.githubusercontent.com/38909451/143553818-6569ad51-8e82-4af9-9dfe-0fed09d3ae22.png)
-![Карточка2](https://user-images.githubusercontent.com/38909451/143553856-48938fe1-18cc-404f-b984-3ddc6420a1f4.png)
-![Карточка3](https://user-images.githubusercontent.com/38909451/143553876-41ba8494-0729-4962-9e82-0556b6af11fe.png)
-![Карточка4](https://user-images.githubusercontent.com/38909451/143553885-d6823d35-24fb-4426-a8f8-808e309ec739.png)
-![Карточка5](https://user-images.githubusercontent.com/38909451/143553891-33b5543f-f13c-495a-8a21-6548baf1befa.png)
-![Карточка6](https://user-images.githubusercontent.com/38909451/143553896-9c1f8354-0a9d-4979-8f15-6fe37071345e.png)
-![Карточка7](https://user-images.githubusercontent.com/38909451/143553918-d368de73-62ec-4a26-84f8-3e7775cf3b0a.png)
+Cards:
+![Карточка 2 6](https://user-images.githubusercontent.com/38909451/143554118-2cc97e46-9ef7-4b7d-b4d1-a0e3e0784b53.png)
+![Карточка 2 1](https://user-images.githubusercontent.com/38909451/143554078-e4c861f3-1899-44db-9a59-20d5768ad40e.png)
+![Карточка 2 2](https://user-images.githubusercontent.com/38909451/143554099-63abedac-1f7f-47cb-9891-460405a31737.png)
+![Карточка 2 3](https://user-images.githubusercontent.com/38909451/143554105-a42ddf42-8449-41a8-9265-31eb9af0ac4e.png)
+![Карточка 2 4](https://user-images.githubusercontent.com/38909451/143554108-d44678bc-3b57-43c5-bb6a-3a1866b22c05.png)
+![Карточка 2 5](https://user-images.githubusercontent.com/38909451/143554111-29d744ff-889d-4f50-ae9f-24b5ea198be9.png)
