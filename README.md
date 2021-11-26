@@ -9,7 +9,7 @@ CryptoRhino is designed and developed to fit our users' needs ensuring the user 
 
 To stay up to date with the latest developments in the world of cryptocurrencies, read our latest news section collected from multiple news sources from across the world. Our dynamic interactive charts and cutting edge news feed will keep you informed, improving your trading decisions.
 
-Our users are able to track favorite coins, keeping them up-to-date with prices around the clock. Among the available cryptocurrencies are Bitcoin, Ethereum, Litecoin, Bitcoin Cash, Cardano, Binance Coin, Stellar, XRP, Solana, Polkadot, Dogecoin, and thousands of others. Our users can sort cryptocurrency indexes and prices by various criteria. The default view displays the top coins searched for today and other options are available.![Карточка 2 7](https://user-images.githubusercontent.com/38909451/143554120-3502d3d5-b7fd-4271-95ff-3fd8a9d7262b.png)
+Our users are able to track favorite coins, keeping them up-to-date with prices around the clock. Among the available cryptocurrencies are Bitcoin, Ethereum, Litecoin, Bitcoin Cash, Cardano, Binance Coin, Stellar, XRP, Solana, Polkadot, Dogecoin, and thousands of others. Our users can sort cryptocurrency indexes and prices by various criteria. The default view displays the top coins searched for today and other options are available.
 
 Cards:
 
