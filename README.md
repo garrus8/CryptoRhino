@@ -11,4 +11,10 @@ To stay up to date with the latest developments in the world of cryptocurrencies
 
 Our users are able to track favorite coins, keeping them up-to-date with prices around the clock. Among the available cryptocurrencies are Bitcoin, Ethereum, Litecoin, Bitcoin Cash, Cardano, Binance Coin, Stellar, XRP, Solana, Polkadot, Dogecoin, and thousands of others. Our users can sort cryptocurrency indexes and prices by various criteria. The default view displays the top coins searched for today and other options are available.
 
-CryptoRhino doesn't collect any personal data and does not offer in-app purchases. We offer a completely free service to our users.
+![Карточка1](https://user-images.githubusercontent.com/38909451/143553818-6569ad51-8e82-4af9-9dfe-0fed09d3ae22.png)
+![Карточка2](https://user-images.githubusercontent.com/38909451/143553856-48938fe1-18cc-404f-b984-3ddc6420a1f4.png)
+![Карточка3](https://user-images.githubusercontent.com/38909451/143553876-41ba8494-0729-4962-9e82-0556b6af11fe.png)
+![Карточка4](https://user-images.githubusercontent.com/38909451/143553885-d6823d35-24fb-4426-a8f8-808e309ec739.png)
+![Карточка5](https://user-images.githubusercontent.com/38909451/143553891-33b5543f-f13c-495a-8a21-6548baf1befa.png)
+![Карточка6](https://user-images.githubusercontent.com/38909451/143553896-9c1f8354-0a9d-4979-8f15-6fe37071345e.png)
+![Карточка7](https://user-images.githubusercontent.com/38909451/143553918-d368de73-62ec-4a26-84f8-3e7775cf3b0a.png)
