@@ -65,11 +65,23 @@ final class MainTabBarController : UITabBarController {
         
         viewControllers = arrayOfNVC
         
-        tabBar.barTintColor = UIColor(red: 0.058, green: 0.109, blue: 0.329, alpha: 1)
-        tabBar.isTranslucent = false
-        tabBar.tintColor = UIColor(red: 0.467, green: 0.557, blue: 0.95, alpha: 1)
-        tabBar.unselectedItemTintColor = .white
-        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: UIFont(name: "AvenirNext-DemiBold", size: 12)!], for: .normal)
-        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: UIFont(name: "AvenirNext-DemiBold", size: 12)!], for: .selected)
+        if #available(iOS 15, *) {
+            let tabBarAppearance = UITabBarAppearance()
+            let tabBarItemAppearance = UITabBarItemAppearance()
+            tabBarItemAppearance.selected.titleTextAttributes = [NSAttributedString.Key.font: UIFont(name: "AvenirNext-DemiBold", size: 12)!]
+            tabBarItemAppearance.normal.titleTextAttributes = [NSAttributedString.Key.font: UIFont(name: "AvenirNext-DemiBold", size: 12)!, .foregroundColor: UIColor.white]
+            tabBarAppearance.backgroundColor = UIColor(red: 0.058, green: 0.109, blue: 0.329, alpha: 1)
+            tabBarItemAppearance.normal.iconColor = .white
+            tabBarAppearance.stackedLayoutAppearance = tabBarItemAppearance
+            tabBar.standardAppearance = tabBarAppearance
+            tabBar.scrollEdgeAppearance = tabBarAppearance
+        } else {
+            tabBar.isTranslucent = false
+            tabBar.tintColor = UIColor(red: 0.467, green: 0.557, blue: 0.95, alpha: 1)
+            tabBar.unselectedItemTintColor = .white
+            tabBar.barTintColor = UIColor(red: 0.058, green: 0.109, blue: 0.329, alpha: 1)
+            UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: UIFont(name: "AvenirNext-DemiBold", size: 12)!], for: .normal)
+            UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: UIFont(name: "AvenirNext-DemiBold", size: 12)!], for: .selected)
+        }
     }
 }
