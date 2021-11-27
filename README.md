@@ -1,8 +1,8 @@
 # CryptoRhino
 
 Run the .xcworkspace file
-Tested on Xcode versions 12 and up. in version 13 there is a glitch with a tab bar, it turns black when scrolling down, ignore this.
-В Xcode версии 13 существует глитч с таб баром, он становится черным при прокрутке вниз, игнорируйте это.
+Works only on the latest version of Xcode 13. Earlier versions conflict with ios 15!
+Работает только на версии Хcode 13. На ранних версиях есть конфликт с ios 15!
 
 Description:
 CryptoRhino is a real-time cryptocurrency tracker and converter. We track cryptocurrency prices in real-time and additional information, such as the latest news articles and stories. We display historical prices using a real-time dynamic chart that highlights current and past trends. CryptoRhino offers a conversion service between a large offering of cryptocurrencies and fiat money.
