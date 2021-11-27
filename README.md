@@ -1,7 +1,9 @@
 # CryptoRhino
 
 Run the .xcworkspace file
+
 Works only on the latest version of Xcode 13. Earlier versions conflict with ios 15!
+
 Работает только на версии Хcode 13. На ранних версиях есть конфликт с ios 15!
 
 Description:
