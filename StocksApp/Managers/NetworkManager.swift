@@ -383,13 +383,13 @@ class NetworkManager {
                 if DataSingleton.shared.coinCapDict.count != 0 {
                     elemOfCoinCap = DataSingleton.shared.coinCapDict[index]
                     guard let symbol = elemOfCoinCap["symbol"] else {return}
-                    guard let symbol = symbol else {return}
+                    guard let checkedSymbol = symbol else {return}
                     
                     if symbol == "USDT" || symbol == "USDC" || symbol == "UNI" ||  symbol == "WBTC" || symbol == "BNBBEAR" {group.leave(); continue }
-                    let crypto = Crypto(symbolOfCrypto: symbol, id: (elemOfCoinCap["id"] ?? "") ?? "")
+                    let crypto = Crypto(symbolOfCrypto: checkedSymbol, id: (elemOfCoinCap["id"] ?? "") ?? "")
                     DataSingleton.shared.collectionViewArray.append(crypto)
                     DataSingleton.shared.collectionViewSymbols.append(crypto.symbolOfCrypto.uppercased())
-                    DataSingleton.shared.dict1[symbol] = 0
+                    DataSingleton.shared.dict1[checkedSymbol] = 0
                     DataSingleton.shared.websocketArray.append(crypto.symbolOfCrypto.uppercased())
                     group.leave()
                 }
