@@ -57,7 +57,7 @@ class MainViewPresenter : MainViewPresenterProtocol {
             recoursiveUpdateUI(collectionViews: [view.returnCollectionView()])
             if DataSingleton.shared.coinCapDict.count != 0 {
                 networkManager.putCoinGeckoData(array: &DataSingleton.shared.results,
-                                                group: DispatchGroups.shared.groupTwo,
+                                                group: DispatchGroups.shared.groupThree,
                                                 otherArray: DataSingleton.shared.collectionViewArray)
                 networkManager.putCoinGeckoData(array: &DataSingleton.shared.resultsF,
                                                 group: DispatchGroups.shared.groupTwo,
