@@ -60,7 +60,7 @@ class NetworkManager {
                             let elem = stocksData[i]
                             guard let cryptoCompareName = elem.coinInfo?.name else {return}
                             
-                            if cryptoCompareName != "USDT" || cryptoCompareName != "BNBBEAR" || cryptoCompareName != "UNI" || cryptoCompareName != "USDC" || cryptoCompareName != "WBTC" {
+                            if !DataSingleton.shared.blackList.contains(cryptoCompareName) {
                                 guard let cryptoCompareFullName = elem.coinInfo?.fullName else {return}
                                 let crypto = Crypto(symbolOfCrypto: cryptoCompareName, price: "", change: "", nameOfCrypto: cryptoCompareFullName, descriptionOfCrypto: nil, id: "", percentages: Persentages(), image: UIImage(named: "pngwing.com")!)
                                 self.queue.async(group : group, flags : .barrier) {
@@ -385,7 +385,7 @@ class NetworkManager {
                     guard let symbol = elemOfCoinCap["symbol"] else {return}
                     guard let checkedSymbol = symbol else {return}
                     
-                    if symbol == "USDT" || symbol == "USDC" || symbol == "UNI" ||  symbol == "WBTC" || symbol == "BNBBEAR" {group.leave(); continue }
+                    if !DataSingleton.shared.blackList.contains(checkedSymbol) {group.leave(); continue }
                     let crypto = Crypto(symbolOfCrypto: checkedSymbol, id: (elemOfCoinCap["id"] ?? "") ?? "")
                     DataSingleton.shared.collectionViewArray.append(crypto)
                     DataSingleton.shared.collectionViewSymbols.append(crypto.symbolOfCrypto.uppercased())
