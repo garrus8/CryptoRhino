@@ -27,6 +27,7 @@ class DataSingleton {
     var collectionViewSymbols = [String]()
     var collectionViewArray = [Crypto]()
     var websocketArray = [String]()
+    var blackList = ["USDT", "BNBBEAR", "UNI", "USDC", "WBTC", "SAND", "MONAV"]
     
     static let shared = DataSingleton()
     private init() {}
