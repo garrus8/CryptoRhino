@@ -385,7 +385,7 @@ class NetworkManager {
                     guard let symbol = elemOfCoinCap["symbol"] else {return}
                     guard let checkedSymbol = symbol else {return}
                     
-                    if !DataSingleton.shared.blackList.contains(checkedSymbol) {group.leave(); continue }
+                    if DataSingleton.shared.blackList.contains(checkedSymbol) {group.leave(); continue }
                     let crypto = Crypto(symbolOfCrypto: checkedSymbol, id: (elemOfCoinCap["id"] ?? "") ?? "")
                     DataSingleton.shared.collectionViewArray.append(crypto)
                     DataSingleton.shared.collectionViewSymbols.append(crypto.symbolOfCrypto.uppercased())
